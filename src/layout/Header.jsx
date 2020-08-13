@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text } from '@statisticsnorway/ssb-component-library';
+import { Bell } from 'react-feather';
 
 const Header = ({ siteTitle, version }) => {
     const [menuIsOpen, toggleMenu] = useState(false);
@@ -17,6 +18,13 @@ const Header = ({ siteTitle, version }) => {
                         <div className="site-title">{siteTitle}</div>
                         &nbsp;
                         <div className="desktop-version-number"><Text>v{version}</Text></div>
+                    </div>
+                </div>
+                <div className="right-section">
+                    <div className="actionIcons">
+                        <a className="actionIcon">
+                            <Bell />
+                        </a>
                     </div>
                 </div>
             </div>

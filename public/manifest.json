@@ -1,6 +1,7 @@
 {
   "short_name": "SSB Forbruk",
   "name": "Forbruksdata",
+  "description": "Forbruksundersøkelse 2021",
   "icons": [
     {
       "src": "favicon.ico",

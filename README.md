@@ -1,5 +1,21 @@
 ## React PWA PoC/Prototype for Forbruksundersøkele 2021
 
+### Development
+
+```bash
+$ npm install -g react-scripts
+$ npm i
+$ npm start
+```
+
+Point browser to http://localhost:3000/
+
+----
+
+## Testing PWA on mobile
+
+*OBS*: Uses nginx to serve the application - will be configured properly on a later date
+
 ### Prerequisites
 - [Docker](https://docs.docker.com/get-docker/)
 

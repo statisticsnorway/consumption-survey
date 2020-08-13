@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Header from './layout/Header';
-import Workspace from './pages/Workspace';
+import Home from './pages/home/Home';
 
 import './App.css';
 import './ssb.scss'
-
-import items from './mock/items';
 
 const App = () => {
     return (
@@ -15,7 +13,7 @@ const App = () => {
             </header>
             <div className="header-component-wrapper front-page">
                 <div className="content-wrapper">
-                    <Workspace items={items}/>
+                    <Home />
                 </div>
             </div>
             <div className="footer-wrapper">
