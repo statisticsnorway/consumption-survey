@@ -6,6 +6,21 @@
 
   a.actionIcon {
     color: #00824D;
+    position: relative;
+
+    .actionIconBadge {
+      background-color: $ssb-red-3;
+      border-radius: 8px;
+      width: 16px;
+      height: 16px;
+      position:absolute;
+      top: -6px;
+      right: -2px;
+      font-size: 0.65rem;
+      color: $ssb-white;
+      padding-top: 2px;
+    }
+
   }
 
   .actionIcon {

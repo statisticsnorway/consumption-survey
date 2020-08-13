@@ -5,7 +5,9 @@
     justify-content: flex-start;
   }
 
-  .content-wrapper {
-    width: 100%;
+  .pwaInstallButton {
+    --install-button-color: $ssb-green-4;
+    background-color: $ssb-green-4;
+    margin: 0;
   }
 }

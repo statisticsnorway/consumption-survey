@@ -12,6 +12,7 @@
     "node-sass": "4.13.1",
     "prop-types": "15.7.2",
     "react": "^16.13.1",
+    "react-device-detect": "^1.13.1",
     "react-dom": "^16.13.1",
     "react-feather": "2.0.8",
     "react-qr-reader": "2.2.1",

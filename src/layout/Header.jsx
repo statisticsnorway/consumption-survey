@@ -22,8 +22,9 @@ const Header = ({ siteTitle, version }) => {
                 </div>
                 <div className="right-section">
                     <div className="actionIcons">
-                        <a className="actionIcon">
+                        <a className="actionIcon badge">
                             <Bell />
+                            <div className="actionIconBadge">3</div>
                         </a>
                     </div>
                 </div>
