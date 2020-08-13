@@ -1,0 +1,35 @@
+$mobile: 'screen and (max-width: 767px)';
+$tablet: 'screen and (min-width: 768px) and (max-width: 991px)';
+$desktop: 'screen and (min-width: 992px)';
+
+// Use media queries like this:
+//@media #{$mobile} { @content }
+
+$global-padding-size: 8px;
+$max-content-size: 1200px;
+
+.divider-left {
+  border-left: 1px solid $ssb-dark-2;
+}
+
+.divider-right {
+  border-right: 1px solid $ssb-dark-2;
+}
+
+.negative-wrapper {
+  background-color: $ssb-dark-5;
+  padding: 32px 18px;
+  width: 100%;
+
+  > * {
+    margin: 16px;
+  }
+}
+
+@keyframes bump {
+  0% { margin-right: 0;}
+
+  50% { margin-right: -10px; }
+
+  100% { margin-right: 0; }
+}

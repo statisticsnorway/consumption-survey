@@ -1,0 +1,41 @@
+body {
+  margin: 0 auto;
+  width: 100%;
+
+  .app {
+    color: $ssb-dark-6;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+
+  .app-content {
+    display: grid;
+    grid-template-columns: minmax(320px, $max-content-size);
+    justify-content: center;
+    margin: 0 $global-padding-size;
+    position: relative;
+
+    @media #{$mobile} {
+      margin: 0;
+    }
+
+    header {
+      display: grid;
+    }
+
+    footer {
+      width: 100%;
+    }
+  }
+
+  .page-wrapper {
+    > section {
+      padding: 35px 5px 50px 5px;
+    }
+  }
+
+  .dark-background {
+    background: $ssb-dark-5;
+  }
+}

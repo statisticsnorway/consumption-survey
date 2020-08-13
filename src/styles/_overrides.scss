@@ -1,0 +1,11 @@
+@media(max-width: 480px) {
+  .header-component-wrapper.front-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .content-wrapper {
+    width: 100%;
+  }
+}

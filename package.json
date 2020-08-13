@@ -1,0 +1,43 @@
+{
+  "name": "pwa-react-consumption-data",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@statisticsnorway/ssb-component-library": "2.0.10",
+    "bootstrap": "4.4.1",
+    "node-sass": "4.13.1",
+    "prop-types": "15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-feather": "2.0.8",
+    "react-qr-reader": "2.2.1",
+    "react-scripts": "3.4.1",
+    "react-webcam": "5.0.1",
+    "tesseract.js": "2.1.1",
+    "tesseractocr": "1.2.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+.home-nav {
+    /* height: 40vmin; */
+    height: 60px;
+    width: 325px;
+    pointer-events: none;
+    /* background-image: url('./ssb-96x96.jpg'); */
+    background-repeat: no-repeat;
+}
+
+@media(min-width: 480px) {
+    .header-component-wrapper {
+        align-items: start !important;
+    }
+}
+
+.footer-wrapper {
+    background: #274247;
+    color: #fff;
+    display: grid;
+    grid-row-gap: 50px;
+    grid-template-columns: minmax(auto, 1200px);
+    justify-content: center;
+    padding: 35px 0;
+    position: relative;
+}
+
+.footer-content {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0
+    1rem;
+}
+/*
+@media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
+}
+*/
+
+video {
+    height: 250px !important;
+    max-height: 250px !important;
+}
+
+@media (max-width: 480px) {
+    .home-nav {
+        width: 60px;
+    }
+}
+
