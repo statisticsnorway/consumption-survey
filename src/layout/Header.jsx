@@ -17,7 +17,7 @@ const Header = ({ siteTitle, version }) => {
                         <div className="diagonal-divider" />
                         <div className="site-title">{siteTitle}</div>
                         &nbsp;
-                        <div className="desktop-version-number"><Text>v{version}</Text></div>
+                        {version && <div className="desktop-version-number"><Text>v{version}</Text></div>}
                     </div>
                 </div>
                 <div className="right-section">

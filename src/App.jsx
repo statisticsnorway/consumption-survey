@@ -9,7 +9,7 @@ const App = () => {
     return (
         <div className="app">
             <header className="app-header">
-                <Header siteTitle="Forbruksdata" version="0.0.1"/>
+                <Header siteTitle="Forbruk 2021" />
             </header>
             <div className="header-component-wrapper front-page">
                 <div className="content-wrapper">

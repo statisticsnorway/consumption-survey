@@ -1,11 +1,19 @@
 .homeScreen {
-  height: 100%;
-}
-
-.welcome {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+}
+.welcome {
   flex-direction: column;
+  background-color: #FFF;
+  border: 1px solid #62919A; /* $ssb-dark-3 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+}
+
+.welcomeText {
+  color: #A3136C;
 }
