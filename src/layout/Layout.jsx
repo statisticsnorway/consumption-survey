@@ -16,34 +16,6 @@ const Settings = dummyComponent('Settings');
 const Profile = dummyComponent('Profile');
 const Notifications = dummyComponent('Notifications');
 
-const ADD_PURCHASE_PROPS = {
-    iconActive: <PlusCircle/>,
-    /* onClick: () => {
-        history.push('/purchases/xx');
-    }, */
-};
-
-const CHILD_BUTTON_PROPS = [
-    {
-        icon: <Umbrella/>,
-        onClick: () => {
-            const myRouter = new MyBrowserRouter();
-            myRouter.goTo('/purchases/service');
-            window.location.reload();
-            /* history.push('/purchases/service'); */
-        }
-    }, {
-        icon: <ShoppingCart/>,
-        onClick: () => {
-            const myRouter = new MyBrowserRouter();
-            myRouter.history.push('/purchases/purchase');
-            window.location.reload();
-            // myRouter.goTo('/purchases/purchase');
-            /* history.push('/purchases/purchase'); */
-        }
-    }
-];
-
 const Layout = (props) => {
     const history = useHistory();
 

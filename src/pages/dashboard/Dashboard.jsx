@@ -24,27 +24,19 @@ const modifiers = {
 
 const ADD_PURCHASE_PROPS = (history) => ({
     iconActive: <PlusCircle/>,
-    /* onClick: () => {
-        history.push('/purchases/xx');
-    }, */
 });
 
 const CHILD_BUTTON_PROPS = (history) => ([
     {
+        id: 'service',
         icon: <Umbrella/>,
         onClick: () => {
-            /* const myRouter = new MyBrowserRouter();
-            myRouter.goTo('/purchases/service');
-            window.location.reload(); */
             history.push('/purchases/service');
         }
     }, {
+        id: 'shop',
         icon: <ShoppingCart/>,
         onClick: () => {
-            /* const myRouter = new MyBrowserRouter();
-            myRouter.history.push('/purchases/purchase');
-            window.location.reload(); */
-            // myRouter.goTo('/purchases/purchase');
             history.push('/purchases/purchase');
         }
     }

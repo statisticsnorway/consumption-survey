@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FloatingMenu, MainButton, ChildButton } from 'react-floating-button-menu';
-import MyBrowserRouter from '../../utils/MyBrowserRouter';
 
 const FloatingButton = ({mainProps, childButtonProps, className}) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +12,7 @@ const FloatingButton = ({mainProps, childButtonProps, className}) => {
                 spacing={15}
                 size={40}
                 style={{ margin: '1rem' }}
+                className={`li--${btnProps.id}`}
             />
         )) || [];
 
