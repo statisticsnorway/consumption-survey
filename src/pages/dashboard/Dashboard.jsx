@@ -1,8 +1,11 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import DayPicker from 'react-day-picker';
 
 import './dashboard.scss';
 import 'react-day-picker/lib/style.css';
+
+import purchases from '../../mock/purchaes'
 
 const modifiers = {
     surveyPeriod: {
@@ -16,18 +19,22 @@ const modifiers = {
 };
 
 const Dashboard = () => {
+    const history = useHistory();
+
     return (
-        <div className="dasboard">
-            <DayPicker
-                canChangeMonth={false}
-                modifiers={modifiers}
-                initialMonth={new Date(2020, 7)}
-                selectedDays={[
-                    new Date(2020, 7, 4),
-                    new Date(2020, 7, 6),
-                    new Date(2020, 7, 9)
-                ]}
-            />
+        <div className="homeScreen">
+            <div className="dashboard">
+                <DayPicker
+                    canChangeMonth={false}
+                    onDayClick={(w) => {
+                        console.log('clicked on date', w);
+                        history.push('/purchases/14')
+                    }}
+                    modifiers={modifiers}
+                    initialMonth={new Date(2020, 7)}
+                    selectedDays={purchases.map(purchase => purchase.date)}
+                />
+            </div>
         </div>
     )
 };
