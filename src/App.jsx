@@ -8,9 +8,7 @@ import './ssb.scss'
 
 const App = () => {
     return (
-        <Layout>
-            <Home/>
-        </Layout>
+        <Layout />
     );
 };
 

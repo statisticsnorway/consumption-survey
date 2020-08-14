@@ -1,16 +1,20 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import DayPicker from 'react-day-picker';
+import ConsumptionList from '../consumption/ConsumptionList';
 
 import './dashboard.scss';
 import 'react-day-picker/lib/style.css';
 
-import purchases from '../../mock/purchaes'
+import consumption from '../../mock/consumption'
+import FloatingButton from '../../components/buttons/FloatingButton';
+import { PlusCircle, ShoppingCart, Umbrella } from 'react-feather';
+import MyBrowserRouter from '../../utils/MyBrowserRouter';
 
 const modifiers = {
     surveyPeriod: {
         after: new Date(2020, 7, 1),
-        before: new Date(2020, 7, 15),
+        before: new Date(2020, 7, 16),
     },
     missingStretch: {
         after: new Date(2020, 7, 10),
@@ -18,11 +22,39 @@ const modifiers = {
     }
 };
 
+const ADD_PURCHASE_PROPS = (history) => ({
+    iconActive: <PlusCircle/>,
+    /* onClick: () => {
+        history.push('/purchases/xx');
+    }, */
+});
+
+const CHILD_BUTTON_PROPS = (history) => ([
+    {
+        icon: <Umbrella/>,
+        onClick: () => {
+            /* const myRouter = new MyBrowserRouter();
+            myRouter.goTo('/purchases/service');
+            window.location.reload(); */
+            history.push('/purchases/service');
+        }
+    }, {
+        icon: <ShoppingCart/>,
+        onClick: () => {
+            /* const myRouter = new MyBrowserRouter();
+            myRouter.history.push('/purchases/purchase');
+            window.location.reload(); */
+            // myRouter.goTo('/purchases/purchase');
+            history.push('/purchases/purchase');
+        }
+    }
+]);
+
 const Dashboard = () => {
     const history = useHistory();
 
     return (
-        <div className="homeScreen">
+        <>
             <div className="dashboard">
                 <DayPicker
                     canChangeMonth={false}
@@ -32,10 +64,17 @@ const Dashboard = () => {
                     }}
                     modifiers={modifiers}
                     initialMonth={new Date(2020, 7)}
-                    selectedDays={purchases.map(purchase => purchase.date)}
+                    selectedDays={consumption.map(purchase => purchase.date)}
                 />
             </div>
-        </div>
+
+            <ConsumptionList consumption={consumption}/>
+            <FloatingButton
+                mainProps={ADD_PURCHASE_PROPS(history)}
+                childButtonProps={CHILD_BUTTON_PROPS(history)}
+                className="floatingAddNew"
+            />
+        </>
     )
 };
 

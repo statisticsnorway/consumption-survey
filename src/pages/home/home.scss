@@ -3,6 +3,10 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  width: 100%;
+  padding: 1rem;
+
+  flex-direction: column;
 }
 .welcome {
   flex-direction: column;

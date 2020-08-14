@@ -1,0 +1,32 @@
+.singleConsumption {
+  .amount {
+    text-align: right;
+    font-weight: normal;
+  }
+
+  .date, .source {
+    font-weight: bold;
+  }
+
+  .type {
+    width: 30px;
+  }
+
+  .type--shop {
+    color: #A3136C;
+  }
+
+  .type--service {
+    color: #1D9DE2;
+  }
+}
+
+.consumptionsTable {
+  td, th {
+    padding: 0.5rem 0;
+  }
+
+  tr + tr {
+    border-top: 1px solid #C3DCDC;
+  }
+}

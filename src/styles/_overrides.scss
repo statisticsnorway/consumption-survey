@@ -12,6 +12,12 @@
   }
 }
 
+.header-component-wrapper.front-page {
+  overflow-y: auto;
+  padding-top: 1rem;
+  margin-bottom: 60px;
+}
+
 .header-component-wrapper .content-holder {
   padding: 20px !important;
 }
@@ -22,5 +28,7 @@
 
 .footer-wrapper {
   padding: 20px 5px;
+  position: absolute;
+  bottom: 0;
 }
 

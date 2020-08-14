@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import useCustomElement from 'use-custom-element';
+import '@pwabuilder/pwainstall';
 
 const Welcome = props => {
     const [customElementProps, ref] = useCustomElement(props);
