@@ -5,9 +5,7 @@ import { BrowserRouter, Route, useHistory } from 'react-router-dom';
 import Dashboard from '../pages/dashboard/Dashboard';
 import Home from '../pages/home/Home';
 import PurchaseDetail from '../pages/purchases/PurchaseDetail';
-import { PlusCircle, ShoppingCart, Umbrella } from 'react-feather';
-import FloatingButton from '../components/buttons/FloatingButton';
-import MyBrowserRouter from '../utils/MyBrowserRouter';
+import AddService from '../pages/services/AddService';
 
 const dummyComponent = text => () => <div className="homeScreen"><h3>{text}</h3></div>;
 
@@ -32,6 +30,9 @@ const Layout = (props) => {
                         </Route>
                         <Route exact path="/purchases/:purchaseId">
                             <PurchaseDetail/>
+                        </Route>
+                        <Route exact path="/service/addNew">
+                            <AddService />
                         </Route>
                         <Route exact path="/help">
                             <Help/>

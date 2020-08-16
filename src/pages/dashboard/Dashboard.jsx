@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import DayPicker from 'react-day-picker';
+import { AppContext } from '../../App';
+
 import ConsumptionList from '../consumption/ConsumptionList';
 
 import './dashboard.scss';
 import 'react-day-picker/lib/style.css';
 
-import consumption from '../../mock/consumption'
 import FloatingButton from '../../components/buttons/FloatingButton';
 import { PlusCircle, ShoppingCart, Umbrella } from 'react-feather';
 import MyBrowserRouter from '../../utils/MyBrowserRouter';
@@ -31,7 +32,7 @@ const CHILD_BUTTON_PROPS = (history) => ([
         id: 'service',
         icon: <Umbrella/>,
         onClick: () => {
-            history.push('/purchases/service');
+            history.push('/service/addNew');
         }
     }, {
         id: 'shop',
@@ -44,6 +45,7 @@ const CHILD_BUTTON_PROPS = (history) => ([
 
 const Dashboard = () => {
     const history = useHistory();
+    const { consumptionList } = useContext(AppContext);
 
     return (
         <>
@@ -56,11 +58,11 @@ const Dashboard = () => {
                     }}
                     modifiers={modifiers}
                     initialMonth={new Date(2020, 7)}
-                    selectedDays={consumption.map(purchase => purchase.date)}
+                    selectedDays={consumptionList.map(purchase => purchase.date)}
                 />
             </div>
 
-            <ConsumptionList consumption={consumption}/>
+            <ConsumptionList consumption={consumptionList}/>
             <FloatingButton
                 mainProps={ADD_PURCHASE_PROPS(history)}
                 childButtonProps={CHILD_BUTTON_PROPS(history)}

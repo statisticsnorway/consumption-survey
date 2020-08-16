@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import useCustomElement from 'use-custom-element';
 import { Share } from 'react-feather';
-import { isIOS, isMacOs } from 'react-device-detect';
+import { isIOS, isSafari } from 'react-device-detect';
 import PwaInstallPopupIOS from 'react-pwa-install-ios';
 import '@pwabuilder/pwainstall';
 
@@ -13,7 +13,7 @@ const appIconPath = `${window.location.origin}/ssb-96x96.jpg`;
 const Welcome = props => {
     const [customElementProps, ref] = useCustomElement(props);
 
-    const iosShim = isIOS || isMacOs;
+    const iosShim = isIOS || isSafari;
     console.log('iconPath', appIconPath);
 
     return (
