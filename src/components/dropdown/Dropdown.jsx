@@ -14,6 +14,8 @@ const DropDown = (props) => {
 
     const {id, options, onChange, selection, disabled, renderOption, styleClass} = props;
 
+    console.log('current selection', selection, options, `-${options[selection || 0]}-`);
+
     const onSelectChange = (e) => {
         onChange(e);
         toggleShow();
@@ -27,14 +29,14 @@ const DropDown = (props) => {
                 onClick={toggleShow}
                 disabled={disabled}
             >
-                {options[selection]}
+                <span>{options[selection ? selection : 0]}</span>
                 <ChevronDown />
             </button>
             {show &&
             <div className="dropdownItems">
-                {Object.keys(options).map(k => <a onClick={(e) => {
+                {Object.keys(options).map(k => k > 0 ? <a onClick={(e) => {
                     onSelectChange({target: {value: k}});
-                }}>{(typeof renderOption === 'function') ? renderOption(k) : options[k]}</a>)}
+                }}>{(typeof renderOption === 'function') ? renderOption(k) : options[k]}</a> : null)}
             </div>
             }
         </div>
