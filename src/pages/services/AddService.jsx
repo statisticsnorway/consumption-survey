@@ -1,9 +1,22 @@
 import React, { useContext } from 'react';
 import { Camera } from 'react-feather';
 import { useHistory } from 'react-router-dom';
+import { AppContext } from '../../App';
 import { useFormFields } from '../../common/forms';
 import FloatingButton from '../../components/buttons/FloatingButton';
-import { AppContext } from '../../App';
+import DropDown from '../../components/dropdown/Dropdown';
+
+import '../workspace.scss';
+import './services.scss';
+
+import services from '../../mock/services';
+import providers from '../../mock/providers';
+
+const makeOptions = (items) =>
+    items.reduce((acc, item) => ({ ...acc, [item.id]: item.name }), {});
+
+const getSelection = (sel, items) =>
+    sel ? items.find((item) => `${item.id}` === sel): items[0];
 
 const DMY = /(\d{2})\.(\d{2})\.(\d{4})/;
 const convertDate = (hDate) =>
@@ -11,7 +24,7 @@ const convertDate = (hDate) =>
 
 const transformConsumption = (id, service) => ({
     id,
-    source: service.provider,
+    source: getSelection(service.provider, providers).name,
     type: 'service',
     date: convertDate(service.date),
     amount: service.amount,
@@ -31,8 +44,6 @@ const AddService = () => {
         receipts: [],
     });
 
-    console.log('Inc', addSvcFields);
-
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Submitting', addSvcFields);
@@ -41,21 +52,23 @@ const AddService = () => {
     };
 
     return (
-        <>
-            <form>
-                <>
+        <div className="workspace addSvc">
+            <form className="workspace-panel item-form-panel ">
+                <div className="addSvcForm">
                     <label htmlFor="name">Tjeneste</label>
-                    <input
-                        id="name"
-                        value={addSvcFields.name}
+                    <DropDown
+                        id="addService-name"
+                        options={makeOptions(services)}
                         onChange={updateAddSvcFields('name')}
+                        selection={getSelection(addSvcFields.name, services).id}
                     />
 
                     <label htmlFor="provider">Hos</label>
-                    <input
-                        id="provider"
-                        value={addSvcFields.provider}
+                    <DropDown
+                        id="addService--provider"
+                        options={makeOptions(providers)}
                         onChange={updateAddSvcFields('provider')}
+                        selection={getSelection(addSvcFields.provider, providers).id}
                     />
 
                     <label htmlFor="date">Dato</label>
@@ -71,16 +84,16 @@ const AddService = () => {
                         value={addSvcFields.amount}
                         onChange={updateAddSvcFields('amount')}
                     />
-                </>
+                </div>
 
-                <button onClick={handleSubmit}>Lagre</button>
+                <button onClick={handleSubmit} className="submitButton">Lagre</button>
             </form>
 
             <FloatingButton
                 mainProps={{ iconActive: <Camera /> }}
                 className="floatingAddNew"
             />
-        </>
+        </div>
     );
 };
 
