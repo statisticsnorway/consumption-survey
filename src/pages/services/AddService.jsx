@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
-import { Camera } from 'react-feather';
 import { useHistory } from 'react-router-dom';
+import { Camera } from 'react-feather';
 import { AppContext } from '../../App';
 import { useFormFields } from '../../common/forms';
 import FloatingButton from '../../components/buttons/FloatingButton';
 import DropDown from '../../components/dropdown/Dropdown';
+import { getSelection, makeOptions, convertDate, pad } from '../../common/formHelpers'
 
 import '../workspace.scss';
 import './services.scss';
@@ -12,23 +13,7 @@ import './services.scss';
 import services from '../../mock/services';
 import providers from '../../mock/providers';
 
-const pad = (items) => ([ { 0: '     ' }, ...items ]);
-
-const makeOptions = (items) =>
-    items.reduce((acc, item) => ({ ...acc, [item.id]: item.name }), { 0: '     ' });
-
-const getSelection = (sel, items) => {
-    const padded = pad(items);
-    const res = (sel > 0) ? padded.find((item) => `${item.id}` === sel) : padded[0];
-    console.log('searching', sel, items, res);
-    return res;
-}
-
-const DMY = /(\d{2})\.(\d{2})\.(\d{4})/;
-const convertDate = (hDate) =>
-    new Date(hDate.replace(DMY,'$3-$2-$1'));
-
-const transformConsumption = (id, service) => ({
+const transformService = (id, service) => ({
     id,
     source: getSelection(service.provider, providers).name,
     type: 'service',
@@ -53,7 +38,7 @@ const AddService = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Submitting', addSvcFields);
-        setConsumptionList((prev) => ([ ...prev, transformConsumption(prev.length, addSvcFields)]));
+        setConsumptionList((prev) => ([ ...prev, transformService(prev.length, addSvcFields)]));
         history.push('/dashboard');
     };
 

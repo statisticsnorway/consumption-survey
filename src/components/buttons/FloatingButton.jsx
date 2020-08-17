@@ -8,7 +8,7 @@ const FloatingButton = ({mainProps, childButtonProps, className}) => {
         && childButtonProps.map((btnProps) => (
             <ChildButton
                 icon={btnProps.icon}
-                onClick={() => { btnProps.onClick(); }}
+                onClick={(e) => { btnProps.onClick(e); setIsOpen(false); }}
                 spacing={15}
                 size={40}
                 style={{ margin: '1rem' }}

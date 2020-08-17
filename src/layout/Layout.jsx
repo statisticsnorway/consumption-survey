@@ -6,6 +6,7 @@ import Dashboard from '../pages/dashboard/Dashboard';
 import Home from '../pages/home/Home';
 import PurchaseDetail from '../pages/purchases/PurchaseDetail';
 import AddService from '../pages/services/AddService';
+import AddPurchase from '../pages/purchases/AddPurchase';
 
 const dummyComponent = text => () => <div className="homeScreen"><h3>{text}</h3></div>;
 
@@ -28,8 +29,8 @@ const Layout = (props) => {
                         <Route exact path="/dashboard">
                             <Dashboard/>
                         </Route>
-                        <Route exact path="/purchases/:purchaseId">
-                            <PurchaseDetail/>
+                        <Route exact path="/purchases/addNew">
+                            <AddPurchase />
                         </Route>
                         <Route exact path="/service/addNew">
                             <AddService />

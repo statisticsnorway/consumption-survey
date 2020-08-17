@@ -13,7 +13,7 @@ const ConsumptionList = ({consumption, noItemsText = 'Ingen registrering endå'}
                 <td className={`type type--${c.type}`}>{c.type === 'shop' ? <ShoppingCart width={15}/> : <Umbrella width={15}/>}</td>
                 <td className="date">{simpleFormat(c.date)}</td>
                 <td className="source">{c.source}</td>
-                <td className="amount">{c.amount}</td>
+                <td className="amount">{Number.parseFloat(c.amount).toFixed(2)}</td>
             </tr>
         ));
 

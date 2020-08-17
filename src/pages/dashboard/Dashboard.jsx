@@ -38,7 +38,7 @@ const CHILD_BUTTON_PROPS = (history) => ([
         id: 'shop',
         icon: <ShoppingCart/>,
         onClick: () => {
-            history.push('/purchases/purchase');
+            history.push('/purchases/addNew');
         }
     }
 ]);
