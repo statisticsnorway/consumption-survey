@@ -3,7 +3,7 @@ name: $(Build.SourceBranch)-$(date:yyyyMMdd)$(rev:.r)
 trigger:
   branches:
     include:
-      - '*'
+      - master
   tags:
     include:
       - '*'
@@ -21,13 +21,9 @@ variables:
   - name: fullSha
     value: '$(Build.SourceVersion)'
   - name: imageName
-    value: 'eu.gcr.io/prod-bip/ssb/hamlet/consumptionsurvey'
+    value: 'eu.gcr.io/prod-bip/ssb/forbruk/consumptionsurvey'
   - name: repoName
-    value: 'prod-bip/ssb/hamlet/consumptionsurvey'
-  - name:  MAVEN_CACHE_FOLDER
-    value: $(Pipeline.Workspace)/.m2/repository
-  - name: MAVEN_OPTS
-    value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+    value: 'prod-bip/ssb/forbruk/consumptionsurvey'
 
 resources:
   repositories:
@@ -41,9 +37,7 @@ resources:
 # builds Docker image, pushes this to GCR and checks for any image vulnerabilities
 jobs:
   - job: buildTestDockerBuildDockerPush
-    displayName: 'Test/build app and Dockerimage'
-    # Job condition: Run these jobs on any branch, but not on tags
-    condition: not(startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    displayName: 'Build and push Docker image'
     # Steps in this Job
     steps:
       # Build Docker image
@@ -97,7 +91,7 @@ jobs:
         inputs:
           projectId: 'prod-bip'
           imageHost: 'https://eu.gcr.io/'
-          image: 'prod-bip/ssb/hamlet/consumptionsurvey'
+          image: '$(repoName)'
           imageTag: '$(Build.SourceBranchName)-imagescan-$(fullSha)'
 
   - template: docker/docker-tag-for-production.yml@templates
