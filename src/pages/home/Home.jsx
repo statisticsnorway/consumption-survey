@@ -1,9 +1,13 @@
 import React from 'react';
-import Install from './Install';
+import { isPWA } from '../../utils/pwaUtils';
+import Welcome from './Welcome';
+import Dashboard from '../dashboard/Dashboard';
 
-const Home = () => (
+import './home.scss';
+
+const Home = (props) => (
     <div className="homeScreen">
-        <Install />
+        {!isPWA() ? <Welcome {...props} /> : <Dashboard />}
     </div>
 );
 

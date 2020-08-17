@@ -39,6 +39,7 @@ body {
   font-family: $font-open-sans;
   line-height: normal; // override bootstrap global line-height style
   overflow-x: hidden; // removes horisontal scroll bar created by part preface
+  overflow-y: hidden;
 }
 
 section {

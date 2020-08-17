@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import Header from './layout/Header';
-import Home from './pages/home/Home';
+import React, { useState, createContext } from 'react';
+import Layout from './layout/Layout';
 
 import './App.css';
 import './ssb.scss'
 
+import mockList from './mock/consumption';
+
+export const AppContext = createContext({});
+
 const App = () => {
+    const [consumptionList, setConsumptionList] = useState(mockList);
+
     return (
-        <div className="app">
-            <header className="app-header">
-                <Header siteTitle="Forbruksdata" version="0.0.1"/>
-            </header>
-            <div className="header-component-wrapper front-page">
-                <div className="content-wrapper">
-                    <Home />
-                </div>
-            </div>
-            <div className="footer-wrapper">
-                <div className="footer-content">
-                    <span className="ssb-text-wrapper small-text negative copyright-mark">
-                        &copy; Statistisk sentrabyrå 2020
-                    </span>
-                </div>
-            </div>
-        </div>
-    );
+        <AppContext.Provider value={{consumptionList, setConsumptionList}}>
+            <Layout/>
+        </AppContext.Provider>);
 };
 
 export default App;

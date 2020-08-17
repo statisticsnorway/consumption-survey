@@ -1,0 +1,47 @@
+.addPurchase,
+.addItem {
+  width: 80%;
+
+  .submitButton {
+    color: #fff;
+    background-color: #00824D;
+    border-color: #00824D;
+    border-radius: 4px;
+    line-height: 1.5rem;
+  }
+}
+
+.addPurchaseForm,
+.addItemForm {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+
+  label {
+    margin: 1rem 0 0.25rem;
+    color: #0b2e13;
+    font-weight: bold;
+  }
+
+  input {
+    border: 1px solid #1A9D49;
+    border-radius: 4px;
+    line-height: 2rem;
+  }
+}
+
+.floatingAddNew .li--manual-entry {
+  background-color: #1D9DE2 !important;
+}
+
+.floatingAddNew .li--barcode {
+  background-color: #A3136C !important;
+}
+
+.submitNewItemButton {
+  background-color: #1D9DE2;
+  border-color: #1D9DE2;
+  border-radius: 4px;
+  line-height: 1.5rem;
+  color: #fff;
+}
