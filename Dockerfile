@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package*.json /app/
 RUN npm install
 COPY ./ /app/
-# COPY ./secure /app/secure // CAUSING PIPELINE TO FAIL 
+COPY ./secure /app/secure // CAUSING PIPELINE TO FAIL 
 RUN npm run build
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
