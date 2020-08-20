@@ -124,6 +124,10 @@ const AddPurchase = () => {
                         id: 'barcode',
                         icon: <AlignJustify style={{transform: 'rotate(90deg)'}}/>,
                         onClick: toggleBarCodeScanner,
+                    }, {
+                        id: 'photo',
+                        icon: <Camera />,
+                        onClick: toggleBarCodeScanner,
                     }
                 ]}
                 className="floatingAddNew"
