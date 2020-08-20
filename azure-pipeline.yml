@@ -86,13 +86,13 @@ jobs:
 
       # Wait for scan on image in GCR to complete and check for any vulnerabilities
       # with effective severity HIGH or CRITICAL
-      - task: gcr-vulneralbility-check@0
-        displayName: 'Image vulnerability check'
-        inputs:
-          projectId: 'prod-bip'
-          imageHost: 'https://eu.gcr.io/'
-          image: '$(repoName)'
-          imageTag: '$(Build.SourceBranchName)-imagescan-$(fullSha)'
+      # - task: gcr-vulneralbility-check@0
+      #   displayName: 'Image vulnerability check'
+      #   inputs:
+      #     projectId: 'prod-bip'
+      #     imageHost: 'https://eu.gcr.io/'
+      #     image: '$(repoName)'
+      #     imageTag: '$(Build.SourceBranchName)-imagescan-$(fullSha)'
 
   - template: docker/docker-tag-for-production.yml@templates
     parameters:
