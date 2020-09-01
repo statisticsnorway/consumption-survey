@@ -1,0 +1,26 @@
+.footerWrapper {
+  padding: 20px 5px;
+  position: absolute;
+  bottom: 0;
+
+  background: #274247;
+  color: #fff;
+  width: 100%;
+}
+
+.footerContent {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0
+  1rem;
+
+  a {
+    color: #fff;
+  }
+  a:hover {
+    color: #1A9D49;
+  }
+}
+

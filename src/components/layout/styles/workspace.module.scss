@@ -1,0 +1,33 @@
+@import 'src/styles/common';
+
+.workspace {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 1rem;
+  background-color: $ssb-dark-1;
+  height: 100vh;
+
+  h3, h4 {
+    display: inline-block;
+    margin: 0;
+  }
+
+  .workspacePanel {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #C3DCDC;
+    background-color: #fff;
+  }
+
+  .itemFormPanel {
+    background-color: #fff;
+  }
+
+  .addItemPanel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

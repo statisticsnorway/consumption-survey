@@ -1,0 +1,36 @@
+@import 'src/styles/common';
+
+@media(max-width: 480px) {
+  .header-component-wrapper.front-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .pwaInstallButton {
+    --install-button-color: $ssb-green-4;
+    background-color: $ssb-green-4;
+    margin: 0;
+  }
+}
+
+.header-component-wrapper.front-page {
+  overflow-y: auto;
+  padding-top: 1rem;
+  margin-bottom: 60px;
+}
+
+.header-component-wrapper .content-holder {
+  padding: 20px !important;
+}
+
+.left-section, .right-section {
+  margin-bottom: 0px !important;
+}
+
+.footer-wrapper {
+  padding: 20px 5px;
+  position: absolute;
+  bottom: 0;
+}
+
