@@ -12,5 +12,5 @@ COPY ./ ./next.config.js /app/
 RUN npm run build
 
 EXPOSE 80
-CMD [ "npm", "start-prod" ]
+CMD [ "npm", "start" ]
 
