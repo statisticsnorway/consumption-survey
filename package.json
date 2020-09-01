@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "node_modules/.bin/next dev",
     "build": "node_modules/.bin/next build",
-    "start": "node_modules/.bin/next start",
-    "start-prod": "node_modules/.bin/next start -p 80"
+    "start:dev": "node_modules/.bin/next start",
+    "start": "node_modules/.bin/next start -p 80"
   },
   "dependencies": {
     "@statisticsnorway/ssb-component-library": "^2.0.29",
