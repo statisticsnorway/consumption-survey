@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY package*.json /app/
 RUN npm install --production
+RUN npm install --save-dev typescript @types/react @types/node
 
 COPY ./ ./next.config.js /app/
 RUN npm run build
