@@ -1,14 +1,13 @@
 version: '3'
+
 services:
-  react-ui:
+  nextjs:
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile.dev
+
+  nginx:
+    build: ./nginx
     ports:
-      - "443:443"
-    container_name: fbu-frontend
-    volumes:
-      - '.:/app'
-      - '/app/node_modules'
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - 443:443
+      - 80:80

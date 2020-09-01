@@ -1,0 +1,19 @@
+@import "@statisticsnorway/ssb-component-library/src/main.scss";
+
+@import 'common';
+
+body {
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  line-height: normal; // override bootstrap global line-height style
+  overflow-x: hidden; // removes horisontal scroll bar created by part preface
+  overflow-y: hidden;
+
+  padding: 0;
+  margin: 0;
+}
+
+section {
+  width: 100%;
+}
+
