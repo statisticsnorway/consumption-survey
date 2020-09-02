@@ -12,5 +12,11 @@ COPY ./ ./next.config.js /app/
 RUN npm run build
 
 EXPOSE 80
+
+# with auth headers, header size is considerably increased
+# testing if this will fix the problem with BIP
+# TODO: consider multi-container pod config (sidecar)
+ENV NODE_OPTIONS "--max-http-header-size=16834"
+
 CMD [ "npm", "start" ]
 
