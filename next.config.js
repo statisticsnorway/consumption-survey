@@ -1,6 +1,7 @@
 const withPlugins = require('next-compose-plugins');
 const withPWA = require('next-pwa');
 const withStyles = require('@webdeb/next-styles');
+const withSourceMaps = require('@zeit/next-source-maps');
 
 module.exports = withPWA({
     pwa: {
@@ -14,5 +15,10 @@ module.exports = withPlugins([
         modules: true,
         miniCssExtractOptions: {ignoreOrder: true}
     }],
-    [withPWA, {pwa: {dest: 'public'}}],
+    [withSourceMaps, {
+        webpack(config, options) {
+            return config
+        }
+    }],
+    [withPWA, {pwa: {dest: 'public'}}]
 ]);
