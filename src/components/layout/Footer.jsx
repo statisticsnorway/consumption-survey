@@ -8,16 +8,16 @@ const Footer = () => {
         <div className={footerStyles.footerWrapper}>
             <div className={footerStyles.footerContent}>
                 <Link href="/dashboard">
-                    <a><Grid/></a>
+                    <a aria-label="dashboard"><Grid/></a>
                 </Link>
                 <Link href="/support/help">
-                    <a><HelpCircle/></a>
+                    <a aria-label="help"><HelpCircle/></a>
                 </Link>
                 <Link href="/support/settings">
-                    <a><Settings/></a>
+                    <a aria-label="settings"><Settings/></a>
                 </Link>
                 <Link href="/support/profile">
-                    <a><User/></a>
+                    <a aria-label="profile"><User/></a>
                 </Link>
             </div>
         </div>

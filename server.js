@@ -7,10 +7,12 @@ const next = require('next');
 const app = next({dev: false});
 const handle = app.getRequestHandler();
 
+const PORT = Number.parseInt(process.env.PORT || 3000);
+
 app.prepare()
     .then(() => {
         createServer((req, res) => handle(req, res))
-            .listen(3000, () => {
+            .listen(PORT, () => {
                 console.log('Custom Server started on port 3000');
             })
     });

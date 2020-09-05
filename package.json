@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "node_modules/.bin/next dev",
     "build": "node_modules/.bin/next build",
-    "start:dev": "NODE_ENV=production node server.js",
-    "start": "node_modules/.bin/next start -p 80"
+    "start:dev": "NODE_ENV=production PORT=3000 node server.js",
+    "start": "NODE_ENV=production PORT=80 node server.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
