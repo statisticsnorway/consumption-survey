@@ -10,6 +10,7 @@ import { WelcomeContextProps } from '../types/react';
 import { useLocalStorage } from '../hocs/localStorage';
 import Dashboard from '../pages/dashboard';
 import { WorkspacePanel } from './layout/Workspace';
+import { isPWA } from '../utils/pwaUtils';
 
 import styles from './welcome.module.scss';
 
@@ -59,7 +60,7 @@ const Welcome = () => {
     const [showInstallPrompt, setShowInstallPrompt] = useLocalStorage('showInstallPrompt', 'true');
     const [useWebVersion, setUseWebVersion] = useLocalStorage('useWebVersion');
 
-    console.log('Welcome', showInstallPrompt, useWebVersion);
+    console.log('Welcome showInstall:', showInstallPrompt, ' useWeb: ', useWebVersion);
 
     const pwaCtxtOptions = {
         showInstallPrompt,
@@ -68,20 +69,19 @@ const Welcome = () => {
         setUseWebVersion
     };
 
-    if (!showInstallPrompt) {
-        return <Dashboard/>
-    }
 
-    // TODO: remove isSafari once this is tested
-    return (
-        <>
-            <WelcomeContext.Provider value={pwaCtxtOptions}>
-                {((isIOS && isMobileSafari) || isSafari) && <WelcomeIOS/>}
-                {isAndroid && isChrome && <WelcomeAndroid/>}
-                {(!(isAndroid || isIOS)) && isChrome && <Dashboard />}
-            </WelcomeContext.Provider>
-        </>
-    );
+    // TODO: remove isSafari() check once this is tested
+    return isPWA() ?
+        <Dashboard /> :
+        (
+            <>
+                <WelcomeContext.Provider value={pwaCtxtOptions}>
+                    {((isIOS && isMobileSafari) || isSafari) && <WelcomeIOS/>}
+                    {isAndroid && isChrome && <WelcomeAndroid/>}
+                    {(!(isAndroid || isIOS)) && isChrome && <Dashboard/>}
+                </WelcomeContext.Provider>
+            </>
+        );
 };
 
 export default Welcome;
