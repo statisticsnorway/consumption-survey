@@ -9,7 +9,13 @@
 /coverage
 
 # production
+.next/
 /build
+
+# sw and source maps
+**/sw.js
+**/service-worker.js
+**/*.map
 
 # misc
 secure/
@@ -19,6 +25,7 @@ video/
 .env.development.local
 .env.test.local
 .env.production.local
+**/*.map
 
 npm-debug.log*
 yarn-debug.log*

@@ -1,12 +1,29 @@
 const withPlugins = require('next-compose-plugins');
-const withPWA = require('next-pwa');
 const withStyles = require('@webdeb/next-styles');
+const withSourceMaps = require('@zeit/next-source-maps');
+const withOffline = require('next-offline');
 
-module.exports = withPWA({
-    pwa: {
-        dest: 'public'
+const offlineOpts = {
+    workboxOpts: {
+        swDest: '../public/service-worker.js',
+        runtimeCaching: [
+            {
+                urlPattern: /^https?.*/,
+                handler: 'NetworkFirst',
+                options: {
+                    cacheName: 'offlineCache',
+                    expiration: {
+                        maxEntries: 20,
+                        maxAgeSeconds: 2 * 24 * 60 * 60, // 2 days
+                    },
+                    cacheableResponse: {
+                        statuses: [0, 200]
+                    }
+                }
+            }
+        ]
     }
-});
+};
 
 module.exports = withPlugins([
     [withStyles, {
@@ -14,5 +31,10 @@ module.exports = withPlugins([
         modules: true,
         miniCssExtractOptions: {ignoreOrder: true}
     }],
-    [withPWA, {pwa: {dest: 'public'}}],
+    [withSourceMaps, {
+        webpack(config, options) {
+            return config
+        }
+    }],
+    [withOffline, offlineOpts]
 ]);

@@ -1,8 +1,11 @@
-import Head from 'next/head'
-import Nav from '../components/nav'
-import Dashboard from './dashboard';
-import Layout from '../components/layout/Layout';
+import dynamic from 'next/dynamic';
+
+const WelcomeNoSSR = dynamic(
+    () => import('../components/Welcome'),
+    { ssr: false }
+);
 
 export default function Home() {
-    return <Dashboard/>;
+    console.log('Home', WelcomeNoSSR);
+    return <WelcomeNoSSR />
 }
