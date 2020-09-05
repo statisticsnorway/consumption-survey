@@ -11,6 +11,11 @@
 # production
 /build
 
+# sw and source maps
+**/sw.js
+**/service-worker.js
+**/*.map
+
 # misc
 secure/
 video/
