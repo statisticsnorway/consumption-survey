@@ -11,6 +11,8 @@ import { useLocalStorage } from '../hocs/localStorage';
 import Dashboard from '../pages/dashboard';
 import { WorkspacePanel } from './layout/Workspace';
 
+import styles from './welcome.module.scss';
+
 const WelcomeContext = createContext({} as WelcomeContextProps);
 
 const appIconPath = () => `${window.location.origin}/icons/maskable_icon-96x96.png`;
@@ -20,7 +22,7 @@ const WelcomeIOS = () => {
     if (showInstallPrompt) {
         return (
             <PwaInstallPopupIOS delay={1} force>
-                <div className="iosShim arrow-box">
+                <div className={`${styles.iosShim} ${styles.arrowBox}`}>
                     <img src={appIconPath()} className="logo"/>
                     <span>Click on</span>
                     <Share style={{margin: '0 0.5rem', color: '#3396D2'}}/>
