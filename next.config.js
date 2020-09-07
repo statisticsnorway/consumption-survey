@@ -1,7 +1,8 @@
 const withPlugins = require('next-compose-plugins');
 const withStyles = require('@webdeb/next-styles');
 const withSourceMaps = require('@zeit/next-source-maps');
-const withOffline = require('next-offline');
+// const withOffline = require('next-offline');
+const withPWA = require('next-pwa');
 
 const offlineOpts = {
     workboxOpts: {
@@ -36,5 +37,5 @@ module.exports = withPlugins([
             return config
         }
     }],
-    [withOffline, offlineOpts]
+    [withPWA, { pwa: { dest: 'public' }}]
 ]);
