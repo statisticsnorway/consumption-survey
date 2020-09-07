@@ -25,7 +25,7 @@ const WelcomeIOS = () => {
             <PwaInstallPopupIOS delay={1} force>
                 <div className={`${styles.iosShim} ${styles.arrowBox}`}>
                     <img src={appIconPath()} className="logo"/>
-                    <span>Click on</span>
+                    <span>Click on --- </span>
                     <Share style={{margin: '0 0.5rem', color: '#3396D2'}}/>
                     <span>and <b>Add to Home Screen</b></span>
                 </div>
