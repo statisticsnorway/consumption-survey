@@ -19,6 +19,8 @@ EXPOSE 80
 # testing if this will fix the problem with BIP
 # TODO: consider multi-container pod config (sidecar)
 ENV NODE_OPTIONS "--max-http-header-size=16834"
+ENV NODE_ENV "production"
+ENV PORT 80
 
 CMD [ "npm", "start" ]
 
