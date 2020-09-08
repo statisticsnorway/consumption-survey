@@ -4,6 +4,7 @@ import { Bell } from 'react-feather';
 import { Text } from '@statisticsnorway/ssb-component-library';
 
 import styles from './styles/header.module.scss';
+import Notifications from './Notifications';
 
 const Header = ({siteTitle, version}) => {
     const [menuIsOpen, toggleMenu] = useState(false);
@@ -23,12 +24,7 @@ const Header = ({siteTitle, version}) => {
                 </div>
             </div>
             <div className={styles.rightSection}>
-                <div className={styles.actionIcons}>
-                    <a className={`${styles.actionIcon} badge`}>
-                        <Link href="/notifications"><Bell/></Link>
-                        <div className={styles.actionIconBadge}>3</div>
-                    </a>
-                </div>
+                <Notifications showBadge={true} badgeContent="3"/>
             </div>
         </div>
     );
