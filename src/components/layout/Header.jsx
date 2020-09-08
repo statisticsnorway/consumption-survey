@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import Link from 'next/link';
-import { Bell } from 'react-feather';
 import { Text } from '@statisticsnorway/ssb-component-library';
-
 import styles from './styles/header.module.scss';
 import Notifications from './Notifications';
 
