@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Text } from '@statisticsnorway/ssb-component-library';
 import styles from './styles/header.module.scss';
-import Notifications from './Notifications';
+import Notifications from '../common/notifications/Notifications';
 
 const Header = ({siteTitle, version}) => {
     const [menuIsOpen, toggleMenu] = useState(false);
@@ -21,7 +21,7 @@ const Header = ({siteTitle, version}) => {
                 </div>
             </div>
             <div className={styles.rightSection}>
-                <Notifications showBadge={true} badgeContent="3"/>
+                <Notifications/>
             </div>
         </div>
     );

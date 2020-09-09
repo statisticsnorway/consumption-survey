@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Bell } from 'react-feather';
-import styles from './styles/notifications.module.scss';
+import styles from './notifications.module.scss';
 
 const Notifications = ({ showBadge = false, badgeContent = '' }) => {
     return <div className={styles.actionIcons}>
