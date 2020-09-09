@@ -8,7 +8,7 @@ import '@pwabuilder/pwainstall';
 import { Share } from 'react-feather';
 import { WelcomeContextProps } from '../types/react';
 import { useLocalStorage } from '../hocs/localStorage';
-import Dashboard from '../pages/dashboard';
+import Dashboard from '../pages/dashboard/Dashboard';
 import { WorkspacePanel } from './layout/Workspace';
 import { isPWA } from '../utils/pwaUtils';
 

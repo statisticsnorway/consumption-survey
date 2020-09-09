@@ -10,12 +10,14 @@
 
 # production
 .next/
+next-env.d.ts
 /build
 
 # sw and source maps
 **/sw.js
 **/service-worker.js
 **/*.map
+**/workbox-*.js
 
 # misc
 secure/

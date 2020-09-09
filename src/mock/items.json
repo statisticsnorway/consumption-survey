@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Kaffe",
+    "category": "Drikkevare",
+    "unitCost": "69.00",
+    "quantity": "1",
+    "totalCost": "69.00"
+  },
+  {
+    "name": "Sukker",
+    "category": "Baking",
+    "unitCost": "21.90",
+    "quantity": "1",
+    "totalCost": "21.90"
+  }
+]
