@@ -1,0 +1,97 @@
+.addPurchase,
+.addItem {
+  width: 80%;
+  padding: 0 !important;
+
+  .submitButton {
+    color: #fff;
+    background-color: #00824D;
+    border-color: #00824D;
+    border-radius: 4px;
+    line-height: 1.5rem;
+  }
+}
+
+.addPurchaseForm,
+.addItemForm {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  padding: 1rem;
+
+  label {
+    margin: 1rem 0 0.25rem;
+    color: #0b2e13;
+    font-weight: bold;
+  }
+
+  input {
+    border: 1px solid #1A9D49;
+    border-radius: 4px;
+    line-height: 2rem;
+  }
+}
+
+.floatingAddNew .li--manual-entry {
+  background-color: #1D9DE2 !important;
+}
+
+.floatingAddNew .li--barcode {
+  background-color: #A3136C !important;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem;
+  background-color: #efe;
+}
+
+.formAction {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0.5rem;
+  margin-left: 1rem;
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+.submitNewItemButton {
+  background-color: #00824D;
+  border-color: #00824D;
+  border-radius: 4px;
+  line-height: 1.5rem;
+  color: #fff;
+}
+
+.cancelNewItemButton {
+  background-color: transparent;
+  border: 0;
+  color: red;
+  margin-left: 1rem;
+  line-height: 1.5rem;
+  border-radius: 4px;
+}
+
+.coicopItems {
+  position: absolute;
+  z-index: 100;
+  left: 0;
+  top: 37px;
+  background: #fff;
+  border: 1px solid #0b2e13;
+  padding: 0.5rem;
+}
+
+.coicopItemName {
+  display: block;
+  padding: 0.5rem;
+}
+
+.coicopItemName:nth-child(even) {
+  background-color: #eee;
+}

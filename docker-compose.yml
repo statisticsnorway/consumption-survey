@@ -6,6 +6,10 @@ services:
       context: ./
       dockerfile: Dockerfile.dev
 
+  backend:
+    build:
+      context: ../survey-service
+
   nginx:
     build: ./nginx
     ports:

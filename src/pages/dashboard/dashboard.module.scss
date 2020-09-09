@@ -1,0 +1,33 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+}
+
+.floatingAddNew {
+  position: absolute;
+  right: 20px;
+  bottom: 100px;
+
+  a, li {
+    background-color: #00824D !important;
+    color: #fff !important;
+  }
+
+  li {
+    margin: 0.5rem 0;
+  }
+
+  li:first-of-type {
+    margin-bottom: 1.25rem;
+  }
+
+  .liShop {
+    background-color: #A3136C !important;
+  }
+
+  .liService {
+    background-color: #1D9DE2 !important;
+  }
+}

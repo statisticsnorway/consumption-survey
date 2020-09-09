@@ -1,0 +1,29 @@
+/* Datepicker */
+.DayPicker {
+  background-color: #FFF;
+  border: 1px solid #C3DCDC /* #62919A; $ssb-dark-3 */
+}
+
+.DayPicker-Day {
+  border-radius: 0 !important;
+}
+
+.DayPicker-Day--today {
+  color: #9272FC !important;
+  background-color: #F2F0FF !important;
+  font-weight: bold !important;
+}
+
+.DayPicker-Day--selected {
+  background-color: #00824D !important;
+}
+
+.DayPicker-Day--surveyPeriod {
+  background-color: #ECFEED;
+}
+
+.DayPicker-Day--missingStretch {
+  background-color: rgba(255, 204, 204, .25); /* #FFCCCC; */
+  color: #ED5935;
+  font-weight: bold;
+}
