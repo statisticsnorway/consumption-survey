@@ -7,7 +7,7 @@ const Footer = () => {
     return (
         <div className={footerStyles.footerWrapper}>
             <div className={footerStyles.footerContent}>
-                <Link href="/dashboard">
+                <Link href="/dashboard/Dashboard">
                     <a aria-label="dashboard"><Grid/></a>
                 </Link>
                 <Link href="/support/help">

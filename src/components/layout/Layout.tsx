@@ -3,17 +3,20 @@ import Head from 'next/head';
 import Header from './Header';
 import Footer from './Footer';
 import Workspace from './Workspace';
+import ServiceWorkerStatus from '../pwa/ServiceWorkerStatus';
 
 import styles from './styles/layout.module.scss';
 
 type LayoutProps = {
     children: ReactNode,
+    isOnline?: boolean,
     home?: boolean,
 };
 
 const Layout = ({
                     children,
-                    home
+                    isOnline,
+                    home,
                 }: LayoutProps) => {
     return (
         <html lang="no">
@@ -34,8 +37,9 @@ const Layout = ({
                 <meta name="theme-color" content="#0b2e13"/>
             </Head>
             <div>
-                <Header siteTitle="Forbruk 2021" version="0.1"/>
+                <Header siteTitle="Forbruk 2021" version="0.1.6"/>
                 <Workspace>
+                    <ServiceWorkerStatus />
                     {children}
                 </Workspace>
                 <Footer/>

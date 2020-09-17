@@ -1,3 +1,11 @@
+export const isBrowser = () => (typeof window !== 'undefined')
+
+export const isServiceWorker = () =>
+    isBrowser() && ('serviceWorker' in navigator)
+
+export const isWorkboxActive = () =>
+    isServiceWorker() && window.workbox !== undefined
+
 export const isPWA = () => {
     console.log('Navigator: ', window.navigator);
     console.log('window::media', window.matchMedia('(display-mode: standalone)'));
