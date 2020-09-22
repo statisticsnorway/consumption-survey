@@ -31,7 +31,7 @@ export const VersionUpdateSnackbar = ({open}) => {
             open={open}
             onClick={showLoading ? null : onClick}
             message={msgComponent}
-            actionText="Update"
+            actionText="UPDATE"
         />
     ) : null;
 };

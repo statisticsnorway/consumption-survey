@@ -33,7 +33,6 @@ const SWHelper = ({ isOnline }) => {
                 .then((reg) => {
                     setRegistration(reg);
                     reg.addEventListener('updatefound', (updateEvent) => {
-                        logEvent(updateEvent);
                         const newSW = reg.installing;
                         newSW.addEventListener('statechange', (stateChgEvt) => {
                             if (stateChgEvt.target && readyForReload(stateChgEvt.target.state)) {
