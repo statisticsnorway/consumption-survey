@@ -3,7 +3,7 @@ import { Text } from '@statisticsnorway/ssb-component-library';
 import styles from './styles/header.module.scss';
 import Notifications from '../common/notifications/Notifications';
 
-const Header = ({siteTitle, version}) => {
+const Header = ({siteTitle, version, isOnline }) => {
     const [menuIsOpen, toggleMenu] = useState(false);
 
     return (
@@ -21,7 +21,7 @@ const Header = ({siteTitle, version}) => {
                 </div>
             </div>
             <div className={styles.rightSection}>
-                <Notifications/>
+                <Notifications showBadge={isOnline} isOnline={isOnline} />
             </div>
         </div>
     );

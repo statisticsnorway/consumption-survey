@@ -8,7 +8,10 @@ export const isWorkboxActive = () =>
 
 export const isPWA = () => {
     console.log('Navigator: ', window.navigator);
-    console.log('window::media', window.matchMedia('(display-mode: standalone)'));
+    console.log('window::media',
+        window.matchMedia('(display-mode: standalone)'),
+        'matches: ',
+        window.matchMedia('(display-mode: standalone)').matches);
     console.log('referrer', document.referrer);
 
     const result = window.navigator.standalone
