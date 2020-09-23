@@ -1,12 +1,15 @@
 import Link from 'next/link';
-import { Bell } from 'react-feather';
+import { Bell, CloudOff } from 'react-feather';
 import styles from './notifications.module.scss';
 
-const Notifications = ({ showBadge = false, badgeContent = '' }) => {
+const Notifications = ({ isOnline, showBadge = false, badgeContent = '' }) => {
     return <div className={styles.actionIcons}>
-        <a className={`${styles.actionIcon} badge`}>
-            <Link href="/notifications"><Bell /></Link>
-            {showBadge ? <div className={styles.actionIconBadge}>{badgeContent}</div> : null}
+        <a className={`${styles.actionIcon} badge ${isOnline ? '' : styles.offline}`}>
+            <Link href="/notifications">{isOnline ? <Bell /> : <CloudOff />}</Link>
+
+            {showBadge && badgeContent &&
+                <div className={styles.actionIconBadge}>{badgeContent}</div>
+            }
         </a>
     </div>
 }

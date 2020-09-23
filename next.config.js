@@ -3,13 +3,15 @@ const withStyles = require('@webdeb/next-styles');
 const withSourceMaps = require('@zeit/next-source-maps');
 // const withOffline = require('next-offline');
 const withPWA = require('next-pwa');
+const runtimeCaching = require('next-pwa/cache');
 
+/*
 const offlineOpts = {
     workboxOpts: {
         swDest: '../public/service-worker.js',
         runtimeCaching: [
             {
-                urlPattern: /^https?.*/,
+                urlPattern: /^https?.* /,
                 handler: 'NetworkFirst',
                 options: {
                     cacheName: 'offlineCache',
@@ -25,6 +27,17 @@ const offlineOpts = {
         ]
     }
 };
+*/
+
+runtimeCaching[0].handler = 'CacheFirst';
+const pwaOptions = {
+    pwa: {
+        dest: 'public',
+        register: false,            // we will be registering our own SW
+        skipWaiting: false,         // we will register SW as soon as it is installed
+        runtimeCaching 
+    }
+};
 
 module.exports = withPlugins([
     [withStyles, {
@@ -37,5 +50,5 @@ module.exports = withPlugins([
             return config
         }
     }],
-    [withPWA, { pwa: { dest: 'public' }}]
+    [withPWA, pwaOptions]
 ]);

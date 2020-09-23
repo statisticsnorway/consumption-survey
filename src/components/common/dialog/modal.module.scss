@@ -1,3 +1,5 @@
+@import 'src/styles/common';
+
 .fbuModalOverlay {
   position: absolute;
   top: 0;
@@ -16,4 +18,20 @@
   margin: 0 auto;
   padding: 30px;
   width: 80%;
+}
+
+.snackbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1rem;
+  margin: 0 0 1rem;
+
+  background-color: $ssb-dark-6;
+  color: $ssb-purple-1;
+
+  a {
+    color: $ssb-green-2;
+  }
 }

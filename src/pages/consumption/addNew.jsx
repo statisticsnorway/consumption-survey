@@ -3,7 +3,7 @@ import Autocomplete from 'react-autocomplete';
 import Loader from '../../components/common/Loader';
 import { useCoicopSearch } from '../../hocs/coicop';
 
-import workspaceStyles from '../../components/layout/workspace.module.scss';
+import workspaceStyles from '../../components/layout/styles/workspace.module.scss';
 import styles from './purchases.module.scss';
 
 const AddNewPurchase = () => {
