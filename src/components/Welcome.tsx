@@ -65,6 +65,7 @@ const Welcome = ({router}) => {
 
     if (isPWA()) {
         router.push('/dashboard/Dashboard');
+        return null;
     } else {
         if (appGlobals.pwaActivated) {
             return <GoToApp/>;
