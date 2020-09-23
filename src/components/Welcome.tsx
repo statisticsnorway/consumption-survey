@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { withRouter } from 'next/router';
+import { useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
 // TODO: remove isSafari once this is tested
 import { isIOS, isMobileSafari, isSafari, isAndroid, isChrome } from 'react-device-detect';
 // TODO: see if we can do away with one of react-pwa-install or react-pwa-install-ios
@@ -14,6 +14,7 @@ import { isPWA } from '../utils/pwaUtils';
 import { AppContext } from '../pages/_app';
 
 import styles from './welcome.module.scss';
+import Loader from './common/Loader';
 
 const appIconPath = () => `${window.location.origin}/icons/maskable_icon-96x96.png`;
 
@@ -22,7 +23,9 @@ const WelcomeIOS = () => {
     if (firstVisitWeb) {
         return (
             <>
-                <span>SIP {JSON.stringify(firstVisitWeb)}</span>
+                <WorkspacePanel>
+                    <p>Se popup nede ...</p>
+                </WorkspacePanel>
                 <PwaInstallPopupIOS delay={1} force>
                     <div className={`${styles.iosShim} ${styles.arrowBox}`}>
                         <img src={appIconPath()} className="logo"/>
@@ -34,7 +37,7 @@ const WelcomeIOS = () => {
             </>
         );
     } else {
-        return <p>Go To App</p>;
+        return <GoToApp/>;
     }
 };
 
@@ -54,19 +57,23 @@ const WelcomeAndroid = () => {
             </WorkspacePanel>
         );
     } else {
-        return <p>Android none</p>;
+        return <GoToApp/>;
     }
 };
 
-const Welcome = ({router}) => {
+const Welcome = () => {
     const appGlobals = useContext(AppContext);
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isPWA()) {
+            router.push('/dashboard/Dashboard');
+        }
+    }, []);
 
     console.log('From cache: ', appGlobals);
 
-    if (isPWA()) {
-        router.push('/dashboard/Dashboard');
-        return null;
-    } else {
+    if (!isPWA()) {
         if (appGlobals.pwaActivated) {
             return <GoToApp/>;
         } else {
@@ -81,7 +88,14 @@ const Welcome = ({router}) => {
                 </>
             );
         }
+    } else {
+        return (
+            <>
+                <Loader/>
+                <p>Loading dashboard ...</p>
+            </>
+        );
     }
 };
 
-export default withRouter(Welcome);
+export default Welcome;
