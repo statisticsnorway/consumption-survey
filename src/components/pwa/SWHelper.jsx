@@ -8,7 +8,7 @@ const readyForReload = (state) =>
         .includes(state);
 
 
-const SWHelper = ({ isOnline }) => {
+const SWHelper = ({ isOnline, firstVisitWeb }) => {
     const router = useRouter();
     const [registration, setRegistration] = useState(null);
     const [showReload, setShowReload] = useState(false);
@@ -27,19 +27,26 @@ const SWHelper = ({ isOnline }) => {
     }, [isOnline, router.route]);
 
     useEffect(() => {
+        if (registration) {
+            registration.addEventListener('updatefound', (updateEvent) => {
+                console.log('Update found', updateEvent);
+                const newSW = registration.installing;
+                newSW.addEventListener('statechange', (stateChgEvt) => {
+                    if (stateChgEvt.target && readyForReload(stateChgEvt.target.state)) {
+                        setShowReload(true);
+                    }
+                })
+            });
+        }
+    }, [registration, firstVisitWeb])
+
+    useEffect(() => {
         if (isWorkboxActive()) {
             const wb = window.workbox;
             wb.register()
                 .then((reg) => {
                     setRegistration(reg);
-                    reg.addEventListener('updatefound', (updateEvent) => {
-                        const newSW = reg.installing;
-                        newSW.addEventListener('statechange', (stateChgEvt) => {
-                            if (stateChgEvt.target && readyForReload(stateChgEvt.target.state)) {
-                                setShowReload(true);
-                            }
-                        })
-                    });
+
                 });
         }
     }, []);

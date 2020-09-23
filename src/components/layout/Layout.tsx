@@ -62,7 +62,7 @@ const Layout = ({
             <div>
                 <Header siteTitle="Forbruk 2021" version="0.1" isOnline={isOnline} />
                 <Workspace>
-                    <SWHelper isOnline={isOnline} />
+                    <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb} />
                     {children}
                 </Workspace>
                 <Footer/>
