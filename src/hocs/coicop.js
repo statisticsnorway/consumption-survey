@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useAxios from 'axios-hooks';
 
 const SURVEY_SERVICE_HOST = process.env.NEXT_PUBLIC_SURVEY_SERVICE_HOST || 'http://localhost:5555';
-const COICOP_SEARCH_ENDPOINT = `${SURVEY_SERVICE_HOST}/coicop/v1/search`;
+const COICOP_SEARCH_ENDPOINT = `${SURVEY_SERVICE_HOST}/v1/items/search`;
 
 export const useCoicopSearch = (term) => {
     const [coicopSearchTerm, setCoicopSearchTerm] = useState(term);
