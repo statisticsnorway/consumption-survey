@@ -12,6 +12,7 @@ import { WorkspacePanel } from './layout/Workspace';
 import GoToApp from './pwa/GoToApp';
 import { isPWA } from '../utils/pwaUtils';
 import { AppContext } from '../pages/_app';
+import Auth from './auth/Auth';
 
 import styles from './welcome.module.scss';
 import Loader from './common/Loader';
@@ -65,12 +66,6 @@ const Welcome = () => {
     const appGlobals = useContext(AppContext);
     const router = useRouter();
 
-    useEffect(() => {
-        if (isPWA()) {
-            router.push('/dashboard/Dashboard');
-        }
-    }, []);
-
     console.log('From cache: ', appGlobals);
 
     if (!isPWA()) {
@@ -90,10 +85,9 @@ const Welcome = () => {
         }
     } else {
         return (
-            <>
-                <Loader/>
-                <p>Loading dashboard ...</p>
-            </>
+            <Auth>
+                <Dashboard />
+            </Auth>
         );
     }
 };

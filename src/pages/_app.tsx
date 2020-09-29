@@ -1,11 +1,11 @@
 import { createContext } from 'react';
 import App, { AppProps } from 'next/app';
 import Layout from '../components/layout/Layout';
-import { isBrowser, isPWA, isWorkboxActive } from '../utils/pwaUtils';
+import { isPWA } from '../utils/pwaUtils';
+import { getFromCache, saveToCache } from '../hocs/swCache';
 
 import 'react-day-picker/lib/style.css';
 import '../styles/globals.scss';
-import { getFromCache, saveToCache } from '../hocs/swCache';
 
 interface AppState {
     appGlobals: {

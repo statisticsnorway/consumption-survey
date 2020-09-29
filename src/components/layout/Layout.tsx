@@ -47,7 +47,7 @@ const Layout = ({
                 <meta charSet='utf-8'/>
                 <meta httpEquiv='X-UA-Compatible' content='IE=edge'/>
                 <meta name='viewport'
-                      content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5,user-scalable=yes'/>
+                      content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1'/>
                 <meta name='description' content='Description'/>
                 <meta name='keywords' content='Keywords'/>
                 <title>SSB Forbruksundersøkelse 2021</title>
