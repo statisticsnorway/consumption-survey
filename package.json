@@ -29,6 +29,7 @@
     "react-dom": "16.13.1",
     "react-feather": "^2.0.8",
     "react-floating-button-menu": "^2.0.8",
+    "react-idle-timer": "^4.3.6",
     "react-no-ssr": "^1.1.0",
     "react-pin-input": "^1.0.0",
     "react-pwa-install-ios": "^1.4.0",
