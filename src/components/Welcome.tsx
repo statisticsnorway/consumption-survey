@@ -85,9 +85,7 @@ const Welcome = () => {
         }
     } else {
         return (
-            <Auth>
-                <Dashboard />
-            </Auth>
+            <Dashboard/>
         );
     }
 };

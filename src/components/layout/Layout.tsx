@@ -7,7 +7,7 @@ import Footer from './Footer';
 import Workspace from './Workspace';
 import SWHelper from '../pwa/SWHelper';
 
-import { isBrowser } from '../../utils/pwaUtils';
+import { isBrowser, isPWA } from '../../utils/pwaUtils';
 import { AppContext } from '../../pages/_app';
 import Pin from '../auth/Pin';
 import ManagePin from '../auth/ManagePin';
@@ -99,8 +99,8 @@ const Layout = (props: LayoutProps) => {
             <Header siteTitle="Forbruk 2021" version="0.1" isOnline={isOnline}/>
             <Workspace>
                 <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
-                {pin
-                && (needPinAuth ?
+                {isPWA() && pin &&
+                (needPinAuth ?
                     <Pin
                         title="Oppgi PIN"
                         id="lock"
@@ -109,14 +109,16 @@ const Layout = (props: LayoutProps) => {
                         }}
                         validatePin={check => pin === check}
                     /> :
-                    props.children)}
-                {!pin &&
+                    props.children
+                )}
+                {isPWA() && !pin &&
                 <ManagePin
                     onComplete={(newPin) => {
                         console.log('[Layout] :: newPin =>', newPin);
                         setPin(newPin);
                     }}
                 />}
+                {!isPWA() && props.children}
             </Workspace>
             <Footer/>
         </div>
