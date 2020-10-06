@@ -11,20 +11,19 @@ const dbHandle = openDB<ConsumptionSchema>(CONSUMPTION_DB, 1, {
     },
 });
 
-export const preferencesStore = {
-    async get (key) {
-        return (await dbHandle).get(PREFERENCES_STORE, key);
-    },
-    async set (key, val) {
-        return (await dbHandle).put(PREFERENCES_STORE, key, val);
-    },
-    async delete (key) {
-        return (await dbHandle).delete(PREFERENCES_STORE, key);
-    },
-    async clear () {
-        return (await dbHandle).clear(PREFERENCES_STORE);
-    },
-    async keys () {
-        return (await dbHandle).getAllKeys(PREFERENCES_STORE);
-    }
-};
+export const get = async (key) => (await dbHandle).get(PREFERENCES_STORE, key);
+
+export const keys = async () => (await dbHandle).getAllKeys(PREFERENCES_STORE);
+
+export const set = async (key, val) => (await dbHandle).put(PREFERENCES_STORE, val, key);
+
+export const getAll = async () => (await dbHandle).getAll(PREFERENCES_STORE);
+
+/*
+async delete (key) {
+    return (await dbHandle).delete(PREFERENCES_STORE, key);
+},
+async clear () {
+    return (await dbHandle).clear(PREFERENCES_STORE);
+},
+ */

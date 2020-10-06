@@ -1,4 +1,5 @@
 import { DBSchema } from 'idb';
+import { SUPPORTED_PREFERENCES } from '../components/common/contexts';
 
 // --- main db ---
 export const CONSUMPTION_DB = 'consumption';
@@ -8,8 +9,7 @@ export const PREFERENCES_STORE = 'preferences';
 export const RECEIPTS_STORE = 'receipts';
 
 // --- preferences : types ---
-export type SUPPORTED_PREFERENCES = 'pin'
-    | 'lang';
+
 
 // --- receipts : types ---
 export type ITEM_TYPE = {
@@ -29,7 +29,7 @@ export interface ConsumptionSchema extends DBSchema {
     // --- preferences store ---
     [PREFERENCES_STORE]: {
         key: SUPPORTED_PREFERENCES;
-        value: string;
+        value: any;
     },
 
     // --- receipts store ---

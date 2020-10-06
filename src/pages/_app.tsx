@@ -4,14 +4,20 @@ import Layout from '../components/layout/Layout';
 import { isPWA } from '../utils/pwaUtils';
 import { getFromCache, saveToCache } from '../hocs/swCache';
 
+const PreferencesProvider = dynamic(
+    () => import('../idb/PreferencesProvider'),
+    {ssr: false}
+);
+
+const AuthProvider = dynamic(
+    () => import('../components/auth/AuthProvider'),
+    {ssr: false}
+);
+
 import 'react-day-picker/lib/style.css';
 import '../styles/globals.scss';
-
-interface AppState {
-    appGlobals: {
-        [key: string]: string;
-    };
-};
+import dynamic from 'next/dynamic';
+import Loader from '../components/common/Loader';
 
 interface AppContext {
     firstVisitWeb?: boolean;
@@ -24,6 +30,8 @@ class MyApp extends App<AppProps, AppContext> {
     state = {
         firstVisitWeb: true,
         pwaActivated: false,
+
+        initComplete: false,
     };
 
     componentDidMount(): void {
@@ -43,19 +51,24 @@ class MyApp extends App<AppProps, AppContext> {
 
         const pwaActivated = Boolean(pwaActivatedFlag);
 
-        const newState = { firstVisitWeb, pwaActivated };
+        const newState = {firstVisitWeb, pwaActivated};
         console.log(`${new Date()} : setState called with `, newState);
         this.setState(newState);
     }
 
     render() {
         const {Component, pageProps} = this.props;
+        const {initComplete} = this.state;
         return (
-            <AppContext.Provider value={this.state}>
-                <Layout>
-                    <Component {...pageProps} />
-                </Layout>
-            </AppContext.Provider>
+            <PreferencesProvider>
+                <AuthProvider>
+                    <AppContext.Provider value={this.state}>
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </AppContext.Provider>
+                </AuthProvider>
+            </PreferencesProvider>
         );
     }
 };

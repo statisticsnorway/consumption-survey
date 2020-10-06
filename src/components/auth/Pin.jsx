@@ -1,19 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import PinInput from 'react-pin-input';
 
 import styles from './auth.module.scss';
 
-const Pin = ({length = 4, onValidPin}) => {
-    const router = useRouter();
+const Pin = ({length = 4, initialValue = '', onValidPin, validatePin = (chk) => !!chk}, id) => {
     const [style, setStyle] = useState({});
 
-    const validatePin = (pin) => pin === '2021';
-
     const onComplete = (pin) => {
-        console.log('PIN entered', pin, pin === '2021');
+        console.log(`${pin} => ${validatePin(pin)}`)
         if (validatePin(pin)) {
-            onValidPin();
+            onValidPin(pin);
         } else {
             setStyle({color: 'red'});
         }
@@ -23,15 +20,17 @@ const Pin = ({length = 4, onValidPin}) => {
         <div className={styles.pinLock}>
             <PinInput
                 length={length}
-                initialValue=""
+                initialValue={initialValue}
                 secret
                 onChange={(value, index) => {
                 }}
+                id={`${id}-cmp`}
                 type="numeric"
                 inputMode="tel"
                 inputStyle={style}
                 onComplete={onComplete}
                 autoSelect={true}
+
             />
         </div>
     );

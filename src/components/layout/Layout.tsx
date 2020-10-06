@@ -10,7 +10,9 @@ import SWHelper from '../pwa/SWHelper';
 import { isBrowser } from '../../utils/pwaUtils';
 import { AppContext } from '../../pages/_app';
 import Pin from '../auth/Pin';
+import ManagePin from '../auth/ManagePin';
 import Auth from '../auth/Auth';
+import { AuthContext } from '../common/contexts';
 
 export const THREE_MINUTES = 3;
 
@@ -23,6 +25,7 @@ type LayoutProps = {
 const Layout = (props: LayoutProps) => {
     const [isOnline, setIsOnline] = useState(true);
     const {firstVisitWeb, pwaActivated} = useContext(AppContext);
+    const {pin, setPin} = useContext(AuthContext);
     const [wentIdleAt, setWentIdleAt] = useState(null);
     const [activeAgainAt, setActiveAgainAt] = useState(null);
     const [needPinAuth, setNeedPinAuth] = useState(true);
@@ -96,11 +99,22 @@ const Layout = (props: LayoutProps) => {
             <Header siteTitle="Forbruk 2021" version="0.1" isOnline={isOnline}/>
             <Workspace>
                 <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
-                <Auth>
-                    {needPinAuth ? <Pin onValidPin={() => {
-                        setNeedPinAuth(false);
-                    }}/> : props.children}
-                </Auth>
+                {pin
+                && (needPinAuth ?
+                    <Pin
+                        onValidPin={() => {
+                            setNeedPinAuth(false);
+                        }}
+                        validatePin={check => pin === check}
+                    /> :
+                    props.children)}
+                {!pin &&
+                <ManagePin
+                    onComplete={(newPin) => {
+                        console.log('[Layout] :: newPin =>', newPin);
+                        setPin(newPin);
+                    }}
+                />}
             </Workspace>
             <Footer/>
         </div>
