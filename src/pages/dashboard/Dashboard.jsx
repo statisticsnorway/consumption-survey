@@ -39,6 +39,7 @@ const Dashboard = ({ router }) => {
                 }}
                 modifiers={modifiers}
                 initialMonth={new Date(2020, 8)}
+                showWeekNumbers={true}
                 selectedDays={consumptionList.map(purchase => purchase.date)}
             />
             <ConsumptionList consumption={consumptionList}/>

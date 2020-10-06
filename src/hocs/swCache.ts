@@ -1,7 +1,19 @@
 export const APP_CACHE_NAME = 'fbu-app-cache';
 export const APP_GLOBALS = '/fbu-app-globals';
 
-export const saveToCache = async (key, value, append = true, cacheEndpoint = APP_GLOBALS) => {
+export type CACHE_SAVE_FN = (
+    key: string,
+    value: string,
+    append?: boolean,
+    cacheEndPoint?: string
+) => Promise<string>;
+
+export type CACHE_FETCH_FN = (
+    key?: string | undefined,
+    cacheEndPoint?: string
+) => Promise<string | null | undefined | {}>;
+
+export const saveToCache:CACHE_SAVE_FN = async (key, value, append = true, cacheEndpoint = APP_GLOBALS) => {
     if (key && value) {
         try {
             const cache = await caches.open(APP_CACHE_NAME);
@@ -26,7 +38,7 @@ export const saveToCache = async (key, value, append = true, cacheEndpoint = APP
 };
 
 // if @param key is empty, return the whole cache
-export const getFromCache = async (key = undefined, cacheEndpoint = APP_GLOBALS) => {
+export const getFromCache:CACHE_FETCH_FN = async (key = undefined, cacheEndpoint = APP_GLOBALS) => {
     try {
         const cache = await caches.open(APP_CACHE_NAME);
         const res = await cache.match(cacheEndpoint);

@@ -27,3 +27,28 @@
   color: #ED5935;
   font-weight: bold;
 }
+
+
+/* PIN input */
+.pincode-input-container
+{
+  background: #fff;
+  display: inline-flex;
+
+  .pincode-input-text
+  {
+    padding:0 !important;
+    margin:0 2px;
+    text-align:center;
+    border: 1px solid;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .pincode-input-text:focus
+  {
+    outline:none;
+    box-shadow:none;
+  }
+}
