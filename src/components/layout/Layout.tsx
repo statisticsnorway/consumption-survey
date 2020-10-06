@@ -102,6 +102,8 @@ const Layout = (props: LayoutProps) => {
                 {pin
                 && (needPinAuth ?
                     <Pin
+                        title="Oppgi PIN"
+                        id="lock"
                         onValidPin={() => {
                             setNeedPinAuth(false);
                         }}

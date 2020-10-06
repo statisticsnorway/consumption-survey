@@ -1,52 +1,66 @@
-import { useState, useContext, useRef } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Pin from './Pin';
 import { AuthContext } from '../common/contexts';
 
 const ManagePin = ({onComplete}) => {
     const {pin, setPin} = useContext(AuthContext);
     const [confirmPin, setConfirmPin] = useState('');
-    const [verified, setVerified] = useState(false);
+    const [step, setStep] = useState(0);
 
-    console.log(`pin: ${pin}, pin1=${confirmPin}`);
-
-    if (pin && !verified) {
-        return (
-            <>
-                <b>Oppgi din nåværende PIN</b>
-                <Pin
-                    id="verify"
-                    validatePin={(check) => check === pin}
-                    onValidPin={() => {
-                        setVerified(true);
-                    }}
-                />
-            </>
-        );
-    } else {
-        return (
-            <>
-                <b>Velg en ny PIN</b>
-                <Pin
-                    id="pin1"
-                    initialValue=''
-                    onValidPin={(pin1) => {
-                        console.log(`pin1=${confirmPin}`);
-                        setConfirmPin(pin1);
-                    }}
-                />
-                <Pin
-                    id="pin2"
-                    validatePin={(pin2) => {
-                        console.log(`pin2: ${pin2}`);
-                        return pin2 === confirmPin;
-                    }}
-                    onValidPin={(newPin) => {
-                        setPin(newPin);
-                        onComplete(newPin);
-                    }}
-                />
-            </>
-        );
+    switch (step) {
+        case 0:
+            if (pin) {
+                return (
+                    <>
+                        <Pin
+                            title="Oppgi nåværende PIN"
+                            id="verify"
+                            validatePin={(check) => check === pin}
+                            onValidPin={() => {
+                                setStep(1);
+                            }}
+                        />
+                    </>
+                );
+            } else {
+                setStep(1);
+                return <></>
+            }
+            break;
+        case 1:
+            return (
+                <>
+                    <Pin
+                        title="Velg ny PIN"
+                        id="pin1"
+                        onValidPin={(pin1val) => {
+                            setConfirmPin(pin1val);
+                            setStep(2)
+                        }}
+                    />
+                </>
+            );
+            break;
+        case 2:
+            return (
+                <>
+                    <Pin
+                        title="Bekreft PIN"
+                        id="pin2"
+                        validatePin={(pin2val) => {
+                            console.log(`pin: ${pin} pin1: ${confirmPin} pin2: ${pin2val}`);
+                            return pin2val === confirmPin;
+                        }}
+                        onValidPin={(newPin) => {
+                            setPin(newPin);
+                            onComplete(newPin);
+                        }}
+                    />
+                </>
+            );
+            break;
+        default:
+            return <p>Unknown step</p>;
     }
 };
 
