@@ -1,0 +1,14 @@
+{
+  "title": "Settings",
+  "test": "It rains a lot in Bergen",
+
+  "pin": {
+    "title": "PIN",
+    "description": "Change PIN"
+  },
+
+  "language": {
+    "title": "Language",
+    "description": "Change language"
+  }
+}
