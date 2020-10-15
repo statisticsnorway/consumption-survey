@@ -4,6 +4,9 @@ const withSourceMaps = require('@zeit/next-source-maps');
 // const withOffline = require('next-offline');
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
+const { nextI18NextRewrites } = require('next-i18next/rewrites');
+
+const localeSubpaths = {};
 
 /*
 const offlineOpts = {
@@ -30,12 +33,16 @@ const offlineOpts = {
 */
 
 runtimeCaching[0].handler = 'CacheFirst';
-const pwaOptions = {
+const nextConfig = {
+    rewrites: async () => nextI18NextRewrites(localeSubpaths),
+    publicRuntimeConfig: {
+        localeSubpaths,
+    },
     pwa: {
         dest: 'public',
         register: false,            // we will be registering our own SW
         skipWaiting: false,         // we will register SW as soon as it is installed
-        runtimeCaching 
+        runtimeCaching
     }
 };
 
@@ -50,5 +57,5 @@ module.exports = withPlugins([
             return config
         }
     }],
-    [withPWA, pwaOptions]
+    [withPWA, nextConfig]
 ]);

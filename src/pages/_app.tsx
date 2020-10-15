@@ -3,6 +3,7 @@ import App, { AppProps } from 'next/app';
 import Layout from '../components/layout/Layout';
 import { isPWA } from '../utils/pwaUtils';
 import { getFromCache, saveToCache } from '../hocs/swCache';
+import { appWithTranslation } from '../../i18n';
 
 const PreferencesProvider = dynamic(
     () => import('../idb/PreferencesProvider'),
@@ -32,6 +33,12 @@ class MyApp extends App<AppProps, AppContext> {
         pwaActivated: false,
 
         initComplete: false,
+    };
+
+    static async getInitialProps (ctxt) {
+        return {
+            ...await App.getInitialProps(ctxt)
+        }
     };
 
     componentDidMount(): void {
@@ -83,5 +90,5 @@ const MyApp = ({Component, pageProps}) => {
 };
 */
 
-export default MyApp;
+export default appWithTranslation(MyApp);
 

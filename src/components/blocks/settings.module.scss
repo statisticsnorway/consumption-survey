@@ -1,16 +1,37 @@
 .settingsPanel {
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
-  margin: 1rem 0;
   padding: 0.5rem 0;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
 
-  h4 {
-    margin-bottom: 0.5rem;
+  .main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .titleAndDesc {
+      h4 {
+        margin-bottom: 0.5rem;
+      }
+
+      h5 {
+        margin: 0;
+        color: #999;
+      }
+    }
+
+    .expandIcon {
+      color: #ccc;
+    }
   }
 
-  h5 {
-    margin: 0;
-    color: #999;
+  .expansion {
+    margin-top: 0.5rem;
+    border-top: 1px dashed #eee;
+    padding: 1rem 0.5rem;
   }
+}
+
+.settingsPanel + .settingsPanel {
+  border-top: 1px solid #eee;
 }

@@ -1,0 +1,14 @@
+{
+  "title": "Innstillinger",
+  "test": "Det reknar mykje i Bergen",
+
+  "pin": {
+    "title": "PIN",
+    "description": "Endre PIN (nn)"
+  },
+
+  "language": {
+    "title": "Språk",
+    "description": "Endre språk (nn)"
+  }
+}

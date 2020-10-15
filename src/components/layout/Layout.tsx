@@ -13,8 +13,10 @@ import Pin from '../auth/Pin';
 import ManagePin from '../auth/ManagePin';
 import Auth from '../auth/Auth';
 import { AuthContext } from '../common/contexts';
+import { useLoader } from '../../hocs/globalLoader';
+import Loader from '../common/Loader';
 
-export const THREE_MINUTES = 3;
+export const THREE_MINUTES = 3 * 60 * 1000;
 
 type LayoutProps = {
     children: ReactNode,
@@ -29,9 +31,10 @@ const Layout = (props: LayoutProps) => {
     const [wentIdleAt, setWentIdleAt] = useState(null);
     const [activeAgainAt, setActiveAgainAt] = useState(null);
     const [needPinAuth, setNeedPinAuth] = useState(true);
+    const {loading} = useLoader();
 
     const {reset} = useIdleTimer({
-        timeout: 5 * 1000,
+        timeout: THREE_MINUTES,
         onIdle: () => {
             setWentIdleAt(new Date());
         },
@@ -76,6 +79,7 @@ const Layout = (props: LayoutProps) => {
 
     console.log('Layout', firstVisitWeb, pwaActivated);
     console.log('Went Idle @', wentIdleAt, 'active again @', activeAgainAt);
+    console.log('----------- loading: ', loading);
 
     return (
         <html lang="no">
@@ -99,6 +103,7 @@ const Layout = (props: LayoutProps) => {
             <Header siteTitle="Forbruk 2021" version="0.1" isOnline={isOnline}/>
             <Workspace>
                 <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
+                {loading && <Loader/> }
                 {isPWA() && pin &&
                 (needPinAuth ?
                     <Pin
