@@ -4,9 +4,11 @@ import { i18n, withTranslation } from '../../../i18n';
 import SettingsPanel from '../../components/blocks/SettingsPanel';
 import { WorkspacePanel } from '../../components/layout/Workspace';
 import { LANGUAGES } from '../../utils/jsUtils';
+import { useLoader } from '../../hocs/globalLoader';
 
 const Settings = ({t}) => {
     const router = useRouter();
+    const {setLoading} = useLoader();
 
     return (
         <>
@@ -27,7 +29,11 @@ const Settings = ({t}) => {
                 >
                     <RadioGroup
                         onChange={(newLang) => {
-                            i18n.changeLanguage(newLang);
+                            setLoading(true);
+                            i18n.changeLanguage(newLang)
+                                .then(() => {
+                                    setLoading(false);
+                                });
                         }}
                         selectedValue={i18n.language}
                         orientation="column"
