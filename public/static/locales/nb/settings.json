@@ -10,5 +10,13 @@
   "language": {
     "title": "Språk",
     "description": "Endre språk"
+  },
+  "contact": {
+    "title": "Kontaktpreferanser",
+    "description": "Endre kontaktpreferanse",
+    "method": {
+      "email": "e-post",
+      "sms": "sms"
+    }
   }
 }
