@@ -1,84 +1,92 @@
-import { createContext } from 'react';
-import App, { AppProps } from 'next/app';
-import Layout from '../components/layout/Layout';
-import { isPWA } from '../utils/pwaUtils';
-import { getFromCache, saveToCache } from '../hocs/swCache';
-import { appWithTranslation } from '../../i18n';
+import { createContext } from 'react'
+import App, { AppProps } from 'next/app'
+import Layout from '../components/layout/Layout'
+import { isPWA } from '../utils/pwaUtils'
+import { getFromCache, saveToCache } from '../hocs/swCache'
+import { appWithTranslation, i18n } from '../../i18n'
+import { SUPPORTED_PREFERENCES } from '../components/common/contexts'
 
 const PreferencesProvider = dynamic(
-    () => import('../idb/PreferencesProvider'),
-    {ssr: false}
-);
+  () => import('../idb/PreferencesProvider'),
+  { ssr: false }
+)
 
-const AuthProvider = dynamic(
-    () => import('../components/auth/AuthProvider'),
-    {ssr: false}
-);
+const AuthProvider = dynamic(() => import('../components/auth/AuthProvider'), {
+  ssr: false,
+})
 
-import 'react-day-picker/lib/style.css';
-import '../styles/globals.scss';
-import dynamic from 'next/dynamic';
-import Loader from '../components/common/Loader';
+import('../idb/preferences').then((mod) => {
+  mod.get(SUPPORTED_PREFERENCES.LANG).then((r) => {
+    if (r) i18n.changeLanguage(r)
+    else i18n.changeLanguage('nb')
+  })
+})
+
+import 'react-day-picker/lib/style.css'
+import '../styles/globals.scss'
+import dynamic from 'next/dynamic'
+import Loader from '../components/common/Loader'
 
 interface AppContext {
-    firstVisitWeb?: boolean;
-    pwaActivated?: boolean;
-};
+  firstVisitWeb?: boolean
+  pwaActivated?: boolean
+}
 
-export const AppContext = createContext({} as AppContext);
+export const AppContext = createContext({} as AppContext)
 
 class MyApp extends App<AppProps, AppContext> {
-    state = {
-        firstVisitWeb: true,
-        pwaActivated: false,
+  state = {
+    firstVisitWeb: true,
+    pwaActivated: false,
 
-        initComplete: false,
-    };
+    initComplete: false,
+  }
 
-    static async getInitialProps (ctxt) {
-        return {
-            ...await App.getInitialProps(ctxt)
-        }
-    };
+  static async getInitialProps(ctxt) {
+    return {
+      ...(await App.getInitialProps(ctxt)),
+    }
+  }
 
-    componentDidMount(): void {
-        this.pickupFromCache();
+  componentDidMount(): void {
+    this.pickupFromCache()
+  }
+
+  pickupFromCache = async () => {
+    const firstVisitWebFlag = !(await getFromCache('firstVisitWeb'))
+    const firstVisitWeb = Boolean(firstVisitWebFlag)
+
+    if (firstVisitWeb) {
+      await saveToCache('firstVisitWeb', 'false')
     }
 
-    pickupFromCache = async () => {
-        const firstVisitWebFlag = !await getFromCache('firstVisitWeb');
-        const firstVisitWeb = Boolean(firstVisitWebFlag);
+    const pwaActivatedFlag = isPWA()
+      ? await saveToCache('pwaActivated', 'true')
+      : false
 
-        if (firstVisitWeb) {
-            await saveToCache('firstVisitWeb', 'false');
-        }
+    const pwaActivated = Boolean(pwaActivatedFlag)
 
-        const pwaActivatedFlag
-            = isPWA() ? await saveToCache('pwaActivated', 'true') : false;
+    const newState = { firstVisitWeb, pwaActivated }
+    console.log(`${new Date()} : setState called with `, newState)
+    this.setState(newState)
+  }
 
-        const pwaActivated = Boolean(pwaActivatedFlag);
-
-        const newState = {firstVisitWeb, pwaActivated};
-        console.log(`${new Date()} : setState called with `, newState);
-        this.setState(newState);
-    }
-
-    render() {
-        const {Component, pageProps} = this.props;
-        const {initComplete} = this.state;
-        return (
-            <PreferencesProvider>
-                <AuthProvider>
-                    <AppContext.Provider value={this.state}>
-                        <Layout>
-                            <Component {...pageProps} />
-                        </Layout>
-                    </AppContext.Provider>
-                </AuthProvider>
-            </PreferencesProvider>
-        );
-    }
-};
+  render() {
+    const { Component, pageProps } = this.props
+    const { initComplete } = this.state
+    return (
+      <PreferencesProvider>
+        <AuthProvider>
+          <AppContext.Provider value={this.state}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </AppContext.Provider>
+        </AuthProvider>
+      </PreferencesProvider>
+    )
+  }
+}
 
 /*
 const MyApp = ({Component, pageProps}) => {
@@ -90,5 +98,4 @@ const MyApp = ({Component, pageProps}) => {
 };
 */
 
-export default appWithTranslation(MyApp);
-
+export default appWithTranslation(MyApp)

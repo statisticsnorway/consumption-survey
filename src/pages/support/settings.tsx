@@ -6,14 +6,17 @@ import {
 import { i18n, withTranslation } from '../../../i18n'
 import SettingsPanel from '../../components/blocks/SettingsPanel'
 import { WorkspacePanel } from '../../components/layout/Workspace'
-import { LANGUAGES, CONTACT_METHODS as CM } from '../../utils/jsUtils'
+import { LANGUAGES } from '../../utils/jsUtils'
 import { useLoader } from '../../hocs/globalLoader'
-import { useContact } from '../../hocs/contact'
+import { usePreference } from '../../hocs/preference'
+import { SUPPORTED_PREFERENCES as SP } from '../../components/common/contexts'
+import { CONTACT_METHODS as CM } from '../../utils/jsUtils'
 
 const Settings = ({ t }) => {
   const router = useRouter()
   const { setLoading } = useLoader()
-  const [contactPref, setContactPref] = useContact()
+  const [contactPreference, setContactPreference] = usePreference(SP.CONTACT)
+  const [languagePreference, setLanguagePreference] = usePreference(SP.LANG)
 
   return (
     <>
@@ -36,7 +39,9 @@ const Settings = ({ t }) => {
             onChange={(newLang) => {
               setLoading(true)
               i18n.changeLanguage(newLang).then(() => {
-                setLoading(false)
+                setLanguagePreference(newLang).then(() => {
+                  setLoading(false)
+                })
               })
             }}
             selectedValue={i18n.language}
@@ -54,9 +59,10 @@ const Settings = ({ t }) => {
         >
           <CheckboxGroup
             onChange={(cp) => {
-              setContactPref(cp)
+              console.log('Set value:', cp)
+              setContactPreference(cp)
             }}
-            selectedValues={contactPref}
+            selectedValues={contactPreference}
             orientation='column'
             items={Object.keys(CM).map((key) => ({
               label: t('contact.method.' + key),
