@@ -17,9 +17,11 @@ const ContactPreferences = ({ t }) => {
             setContactPreference(cp)
           }}
           selectedValues={
-            contactPreference
-              ? [CONTACT_METHODS.inApp, ...contactPreference]
-              : [CONTACT_METHODS.inApp]
+            //assumption is that if no preference has been set aka first login
+            // - set inApp-method as selected, it will then be added to contact preference
+            // - else show preferences (which should now contain inapp)
+            //is this a bit dirty?
+            contactPreference ? contactPreference : [CONTACT_METHODS.inApp]
           }
           orientation='column'
           items={Object.keys(CONTACT_METHODS).map((key) => ({
