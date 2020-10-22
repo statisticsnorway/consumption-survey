@@ -17,6 +17,7 @@ export type PreferencesType = {
   preferences: {
     [key: string]: any
   }
+  updateMemory: (key: string, value: any) => void
   getPreference: (key: string) => Promise<any>
   setPreference: (key: string, value: any) => Promise<SUPPORTED_PREFERENCES>
 }

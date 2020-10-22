@@ -1,14 +1,18 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState, useEffect, useReducer } from 'react'
 import { PreferencesContext } from '../components/common/contexts'
 
 export const usePreference = (pref) => {
-  const { preferences, setPreference, getPreference } = useContext(
-    PreferencesContext
-  )
+  const {
+    preferences,
+    updateMemory,
+    setPreference,
+    getPreference,
+  } = useContext(PreferencesContext)
   const [preferenceValue, setPreferenceValue] = useState(preferences[pref])
 
   useEffect(() => {
     console.log(preferenceValue)
+    console.log('preferences', preferences)
     getPreference(pref).then((res) => {
       if (res) {
         console.log('init', res)
@@ -20,17 +24,18 @@ export const usePreference = (pref) => {
     console.log('PREFVAL:', preferenceValue)
 
     setPreference(pref, preferenceValue).then(() => {
+      updateMemory(pref, preferenceValue)
       console.log('set')
     })
   }, [preferenceValue])
-  useEffect(() => {
+  /*useEffect(() => {
     getPreference(pref).then((res) => {
       if (res) {
         console.log('change', res)
         setPreferenceValue(res)
       }
     })
-  }, [preferences])
+  }, [preferences])*/
 
-  return [preferenceValue, setPreferenceValue]
+  return [preferenceValue, setPreferenceValue] as [any, (pref: any) => any]
 }

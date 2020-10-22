@@ -11,12 +11,15 @@ import { useLoader } from '../../hocs/globalLoader'
 import { usePreference } from '../../hocs/preference'
 import { SUPPORTED_PREFERENCES as SP } from '../../components/common/contexts'
 import { CONTACT_METHODS as CM } from '../../utils/jsUtils'
+import ContactPreferences from '../../components/blocks/ContactPreferences'
+import LanguagePreference from '../../components/blocks/LanguagePreference'
+import { useEffect } from 'react'
 
 const Settings = ({ t }) => {
   const router = useRouter()
   const { setLoading } = useLoader()
-  const [contactPreference, setContactPreference] = usePreference(SP.CONTACT)
-  const [languagePreference, setLanguagePreference] = usePreference(SP.LANG)
+  //const [contactPreference, setContactPreference] = usePreference(SP.CONTACT)
+  //const [languagePreference, setLanguagePreference] = usePreference(SP.LANG)
 
   return (
     <>
@@ -35,13 +38,12 @@ const Settings = ({ t }) => {
           title={t('language.title')}
           description={LANGUAGES[i18n.language]}
         >
-          <RadioGroup
+          <LanguagePreference />
+          {/*<RadioGroup
             onChange={(newLang) => {
-              setLoading(true)
+              //setLoading(true)
               i18n.changeLanguage(newLang).then(() => {
-                setLanguagePreference(newLang).then(() => {
-                  setLoading(false)
-                })
+                setLanguagePreference(newLang)
               })
             }}
             selectedValue={i18n.language}
@@ -50,14 +52,15 @@ const Settings = ({ t }) => {
               label: LANGUAGES[key],
               value: key,
             }))}
-          />
+        />*/}
         </SettingsPanel>
         <SettingsPanel
           expandable={true}
           title={t('contact.title')}
           description={t('contact.description')}
         >
-          <CheckboxGroup
+          <ContactPreferences />
+          {/*<CheckboxGroup
             onChange={(cp) => {
               console.log('Set value:', cp)
               setContactPreference(cp)
@@ -68,7 +71,7 @@ const Settings = ({ t }) => {
               label: t('contact.method.' + key),
               value: key,
             }))}
-          />
+        />*/}
         </SettingsPanel>
       </WorkspacePanel>
     </>
