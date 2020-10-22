@@ -15,6 +15,7 @@
     "title": "Kontaktpreferanser",
     "description": "Endre kontaktpreferanse",
     "method": {
+      "inApp": "I applikasjonen",
       "email": "e-post",
       "sms": "sms"
     }

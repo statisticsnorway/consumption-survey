@@ -16,11 +16,16 @@ const ContactPreferences = ({ t }) => {
           onChange={(cp) => {
             setContactPreference(cp)
           }}
-          selectedValues={contactPreference}
+          selectedValues={
+            contactPreference
+              ? [CONTACT_METHODS.inApp, ...contactPreference]
+              : [CONTACT_METHODS.inApp]
+          }
           orientation='column'
           items={Object.keys(CONTACT_METHODS).map((key) => ({
             label: t('contact.method.' + key),
             value: key,
+            disabled: key === CONTACT_METHODS.inApp ? true : false,
           }))}
         />
       }

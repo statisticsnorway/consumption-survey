@@ -9,6 +9,7 @@ export const LANGUAGES = {
 }
 
 export const CONTACT_METHODS = {
+  inApp: 'inApp',
   sms: 'sms',
-  email: 'e-post',
+  email: 'email',
 }

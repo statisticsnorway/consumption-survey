@@ -15,6 +15,7 @@
     "title": "Contact preference",
     "description": "Change contact preference",
     "method": {
+      "inApp": "In application",
       "email": "email",
       "sms": "sms"
     }
