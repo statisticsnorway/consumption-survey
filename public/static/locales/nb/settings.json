@@ -10,5 +10,14 @@
   "language": {
     "title": "Språk",
     "description": "Endre språk"
+  },
+  "contact": {
+    "title": "Kontaktpreferanser",
+    "description": "Endre kontaktpreferanse",
+    "method": {
+      "inApp": "I applikasjonen",
+      "email": "e-post",
+      "sms": "sms"
+    }
   }
 }

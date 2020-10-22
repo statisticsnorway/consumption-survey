@@ -10,5 +10,14 @@
   "language": {
     "title": "Language",
     "description": "Change language"
+  },
+  "contact": {
+    "title": "Contact preference",
+    "description": "Change contact preference",
+    "method": {
+      "inApp": "In application",
+      "email": "email",
+      "sms": "sms"
+    }
   }
 }

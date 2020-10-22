@@ -1,23 +1,25 @@
-import { createContext } from 'react';
+import { createContext } from 'react'
 
 export enum SUPPORTED_PREFERENCES {
-    PIN = 'pin',
-    LANG = 'lang',
-};
+  PIN = 'pin',
+  LANG = 'lang',
+  CONTACT = 'contact',
+}
 
 export type AuthContextType = {
-    [SUPPORTED_PREFERENCES.PIN]: string;
-setPin: (pin: string) => void;
-};
+  [SUPPORTED_PREFERENCES.PIN]: string
+  setPin: (pin: string) => void
+}
 
-export const AuthContext = createContext({} as AuthContextType);
+export const AuthContext = createContext({} as AuthContextType)
 
 export type PreferencesType = {
-    preferences: {
-        [key: string]: any;
-    };
-    getPreference: (key: string) => Promise<any>;
-    setPreference: (key: string, value: any) => Promise<SUPPORTED_PREFERENCES>;
-};
+  preferences: {
+    [key: string]: any
+  }
+  updateMemory: (key: string, value: any) => void
+  getPreference: (key: string) => Promise<any>
+  setPreference: (key: string, value: any) => Promise<SUPPORTED_PREFERENCES>
+}
 
-export const PreferencesContext = createContext({} as PreferencesType);
+export const PreferencesContext = createContext({} as PreferencesType)
