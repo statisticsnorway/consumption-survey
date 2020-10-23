@@ -19,6 +19,8 @@ next-env.d.ts
 **/*.map
 **/workbox-*.js
 
+worker-development.js
+
 # misc
 secure/
 video/
