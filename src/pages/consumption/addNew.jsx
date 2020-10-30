@@ -7,7 +7,6 @@ import { Button } from '@statisticsnorway/ssb-component-library'
 import workspaceStyles from '../../components/layout/styles/workspace.module.scss'
 import styles from './purchases.module.scss'
 import Purchase from '../../components/blocks/purchase/Purchase'
-import usePurchase from '../../hocs/purchase'
 
 const AddNewPurchase = () => {
   const {
