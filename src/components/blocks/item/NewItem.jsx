@@ -1,14 +1,14 @@
 import { MinusCircle, PlusCircle } from 'react-feather'
 import { Input } from '@statisticsnorway/ssb-component-library'
 import styles from './item.module.scss'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Autocomplete from 'react-autocomplete'
-import purchaseStyles from '../../../pages/consumption/purchases.module.scss'
+import pstyles from '../../../pages/consumption/purchases.module.scss'
 
 import { useCoicopSearch } from '../../../hocs/coicop'
 
-export default function Item({ item: purchaseItem, updateItem, removeItem }) {
-  const [item, setItem] = useState(purchaseItem)
+export default function NewItem({ addItem }) {
+  const [item, setItem] = useState({})
 
   const {
     coicopSearchTerm,
@@ -17,40 +17,33 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
     loading,
     error,
   } = useCoicopSearch()
-  const [itemName, setItemName] = useState(purchaseItem.name)
+
+  const [itemName, setItemName] = useState('')
   const [itemAmount, setItemAmount] = useState('')
   const [itemPrice, setItemPrice] = useState('')
 
-  useEffect(() => {
-    if (
-      item.name !== purchaseItem.name ||
-      item.amount !== purchaseItem.amount ||
-      item.price !== purchaseItem.price
-    ) {
-      updateItem(purchaseItem, item)
+  const checkIfComplete = (item) => {
+    if (item.name && item.amount && item.price) {
+      addItem(item)
+      setItem({})
     }
-  }, [item])
-
-  useEffect(() => {
-    setItem(purchaseItem)
-  }, [purchaseItem])
+  }
 
   return (
     <div className={styles.itemComponent} style={{ display: 'inline-flex' }}>
       <div style={{ marginRight: '10px', flex: '3' }}>
+        <label
+          style={{ fontSize: '0.8rem', display: 'block', color: 'gray' }}
+          htmlFor='name'
+        >
+          Vare
+        </label>
+
         <div
           id='name'
           className={styles.inputBlock}
           style={{ display: 'flex', alignItems: 'center' }}
         >
-          <MinusCircle
-            style={{ width: '20%', color: 'red' }}
-            size='14'
-            onClick={() => {
-              removeItem(item)
-            }}
-          />
-
           <Autocomplete
             id='itemName'
             value={itemName}
@@ -61,7 +54,7 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
             }}
             renderInput={(props) => (
               <input
-                placeholder='Skriv inn vare'
+                placeholder='Skriv inn ny vare'
                 {...props}
                 style={{
                   padding: '0',
@@ -74,7 +67,7 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
             items={coicopEntries}
             renderMenu={(items, value, style) =>
               items && items.length > 0 && itemName ? (
-                <div className={purchaseStyles.coicopItems} children={items} />
+                <div className={pstyles.coicopItems} children={items} />
               ) : (
                 <></>
               )
@@ -82,9 +75,9 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
             shouldItemRender={(item, value) =>
               item.text.toLowerCase().indexOf(value.toLowerCase()) > -1
             }
-            renderItem={(item, highlighted) => (
-              <div className={purchaseStyles.coicopItemName}>{item.text}</div>
-            )}
+            renderItem={(item, highlighted) => {
+              return <div className={pstyles.coicopItemName}>{item.text}</div>
+            }}
             onSelect={(value) => {
               setItemName(value)
               setItem({ ...item, name: value })
@@ -96,6 +89,13 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
         </div>
       </div>
       <div style={{ marginRight: '10px', flex: '1.5' }}>
+        <label
+          style={{ fontSize: '0.8rem', display: 'block', color: 'gray' }}
+          htmlFor='amount'
+        >
+          Antall
+        </label>
+
         <div
           id='amount'
           className={`${styles.inputBlock} ${styles.amountInputBlock}`}
@@ -115,7 +115,7 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
             <Input
               value={item.amount}
               handleChange={(val) => {
-                setItem({ ...item, amount: val })
+                setItem({ ...item, amount: Number(val) })
               }}
               type='number'
               placeholder={'0'}
@@ -131,6 +131,13 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
         </div>
       </div>
       <div style={{ flex: '1.5' }}>
+        <label
+          style={{ fontSize: '0.8rem', display: 'block', color: 'gray' }}
+          htmlFor='price'
+        >
+          Pris
+        </label>
+
         <div
           id='price'
           className={`${styles.inputBlock} ${styles.amountInputBlock}`}
@@ -142,10 +149,16 @@ export default function Item({ item: purchaseItem, updateItem, removeItem }) {
           <Input
             value={item.price}
             handleChange={(val) => {
-              setItem({ ...item, price: val })
+              setItem({ ...item, price: Number(val) })
             }}
             type='number'
             placeholder='Beløp'
+          />
+
+          <PlusCircle
+            onClick={() => checkIfComplete(item)}
+            style={{ width: '100%', color: 'green' }}
+            size='14'
           />
         </div>
       </div>

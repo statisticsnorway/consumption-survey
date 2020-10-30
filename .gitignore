@@ -19,6 +19,7 @@ next-env.d.ts
 **/*.map
 **/workbox-*.js
 
+# dont know what this is
 worker-development.js
 
 # misc

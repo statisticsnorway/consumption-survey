@@ -1,62 +1,83 @@
-import { useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import DayPickerInput from 'react-day-picker/DayPickerInput'
-import TimePicker from 'rc-time-picker'
 import {
   Input,
   Checkbox,
   Divider,
-  Text,
+  Button,
 } from '@statisticsnorway/ssb-component-library'
 import moment from 'moment'
+import { useRouter } from 'next/router'
 
 import styles from '../../../pages/consumption/purchases.module.scss'
 import Item from '../item/Item'
-
-const timeStyle = {
-  border: '0',
-  fontSize: '2rem',
-}
+import NewItem from '../item/NewItem'
+import { WorkspaceContext } from '../../layout/Workspace'
 
 export default function Purchase() {
-  const [date, setDate] = useState(moment(Date.now()).format('DD MMM'))
-  const [time, setTime] = useState(moment(Date.now()))
-  const [store, setStore] = useState('Narvesen')
-  const [items, setItems] = useState([{ id: 1 }, { id: 2 }, { id: 3 }])
+  const router = useRouter()
+  const [dateOfPurchase, setDateOfPurchase] = useState(
+    moment(Date.now()).format('DD MMM')
+  )
+  const [store, setStore] = useState('')
+  const [items, setItems] = useState([])
   const [regularExpendature, setRegularExpendature] = useState(false)
+  const [totalSum, setTotalSum] = useState(0)
+
+  const { purchases, addPurchase } = useContext(WorkspaceContext)
+
+  const addItem = (item) => {
+    setItems([{ ...item, created: Date.now() }, ...items])
+  }
+  const removeItem = (item) => {
+    setItems(items.filter((i) => (i.name !== item.name ? true : false)))
+  }
+  const updateItem = (oldItem, newItem) => {
+    setItems(
+      items.map((i) =>
+        i.name === oldItem.name ? { ...newItem, modified: Date.now() } : i
+      )
+    )
+  }
+
+  useEffect(() => {
+    setTotalSum(
+      items.reduce((acc, curr) => (curr.price ? acc + curr.price : acc), 0)
+    )
+  }, [items])
+  useEffect(() => {
+    console.log('PURCHASES', purchases)
+  }, [purchases])
 
   return (
     <div>
-      <Checkbox
-        value={'regularexp'}
-        callback={() => setRegularExpendature(!regularExpendature)}
-        selected={regularExpendature}
-      >
-        Fast utgift
-      </Checkbox>
+      <div style={{ paddingLeft: '0.2rem' }}>
+        <Checkbox
+          value='regularExpendature'
+          callback={() => setRegularExpendature(!regularExpendature)}
+          selected={regularExpendature}
+        >
+          Fast utgift
+        </Checkbox>
+      </div>
       <Divider />
       <div className={styles.addPurchaseForm}>
         <div style={{ display: 'inline-flex' }}>
           <div className={styles.timeInput}>
-            <label style={{ display: 'block' }} htmlFor='day'>
-              Dag
+            <label
+              style={{ fontSize: '0.8rem', display: 'block', color: 'gray' }}
+              htmlFor='day'
+            >
+              Dato
             </label>
             <DayPickerInput
+              style={{ color: 'black' }}
               formatDate={(date) => moment(date).format('DD MMM')}
               id='day'
-              value={date}
+              value={dateOfPurchase}
               onDayChange={(day) => {
-                setDate(day)
+                setDateOfPurchase(day)
               }}
-            />
-          </div>
-          <div className={styles.timeInput}>
-            <label style={{ display: 'block' }} htmlFor='time'>
-              Klokkeslett
-            </label>
-            <TimePicker
-              id='time'
-              value={time}
-              onChange={(val) => setTime(val)}
             />
           </div>
         </div>
@@ -67,26 +88,63 @@ export default function Purchase() {
           Butikk
         </label>
         <Input
-          className={`${styles.marginTop10} ${styles.marginBottom10}`}
+          className={`${styles.marginBottom10}`}
           value={store}
           handleChange={(val) => setStore(val)}
+          placeholder='Legg inn butikk'
         />
         <Divider />
-        <div style={{ display: 'flex' }}>
-          <div style={{ flex: '1' }}>
-            <Text>Vare</Text>
-          </div>
-          <div style={{ flex: '1' }}>
-            <Text>Antall</Text>
-          </div>
-          <div style={{ flex: '1' }}>
-            <Text>Beløp</Text>
-          </div>
+
+        <NewItem addItem={addItem} />
+        {items.map((item) => {
+          return (
+            <Item
+              removeItem={removeItem}
+              updateItem={updateItem}
+              key={item.name}
+              item={item}
+            />
+          )
+        })}
+        <div>
+          <div
+            className={styles.marginTop10}
+            style={{ float: 'right', borderBottom: 'double' }}
+          >{`Totalsum: ${totalSum}`}</div>
         </div>
-        <Item />
-        {items.map((item) => (
-          <Item />
-        ))}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            margin: '10px',
+          }}
+        >
+          <Button
+            primary
+            type='submit'
+            onClick={() => {
+              addPurchase({
+                dateOfPurchase,
+                store,
+                created: Date.now(),
+                totalSum,
+                regularExpendature,
+                items,
+              })
+              router.push('/dashboard/Dashboard')
+            }}
+          >
+            Lagre
+          </Button>
+          <Button
+            onClick={() => {
+              router.push('/dashboard/Dashboard')
+            }}
+            type='reset'
+          >
+            Avbryt
+          </Button>
+        </div>
       </div>
     </div>
   )
