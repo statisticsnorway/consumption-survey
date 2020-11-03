@@ -18,15 +18,8 @@ export default function NewItem({ addItem }) {
     error,
   } = useCoicopSearch()
 
-  const [itemName, setItemName] = useState('')
-  const [itemAmount, setItemAmount] = useState('')
-  const [itemPrice, setItemPrice] = useState('')
-
   const checkIfComplete = (item) => {
     if (item.name && item.amount && item.price) {
-      //setItemName('')
-      //setItemAmount('')
-      // setItemPrice('')
       addItem(item)
       setItem({ name: '', amount: '', price: '' })
     }
@@ -82,7 +75,6 @@ export default function NewItem({ addItem }) {
               return <div className={pstyles.coicopItemName}>{item.text}</div>
             }}
             onSelect={(value) => {
-              //setItemName(value)
               setItem({ ...item, name: value })
             }}
             getItemValue={(item) => {
@@ -124,7 +116,6 @@ export default function NewItem({ addItem }) {
               }}
               value={item.amount}
               onChange={(event) => {
-                //setItemAmount(Number(event.target.value))
                 setItem({ ...item, amount: Number(event.target.value) })
               }}
               type='number'
@@ -168,7 +159,6 @@ export default function NewItem({ addItem }) {
             }}
             value={item.price}
             onChange={(event) => {
-              //setItemPrice(Number(event.target.value))
               setItem({ ...item, price: Number(event.target.value) })
             }}
             type='number'
