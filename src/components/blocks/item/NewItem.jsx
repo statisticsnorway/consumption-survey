@@ -8,7 +8,7 @@ import pstyles from '../../../pages/consumption/purchases.module.scss'
 import { useCoicopSearch } from '../../../hocs/coicop'
 
 export default function NewItem({ addItem }) {
-  const [item, setItem] = useState({})
+  const [item, setItem] = useState({ name: '', amount: '', price: '' })
 
   const {
     coicopSearchTerm,
@@ -24,8 +24,11 @@ export default function NewItem({ addItem }) {
 
   const checkIfComplete = (item) => {
     if (item.name && item.amount && item.price) {
+      //setItemName('')
+      //setItemAmount('')
+      // setItemPrice('')
       addItem(item)
-      setItem({})
+      setItem({ name: '', amount: '', price: '' })
     }
   }
 
@@ -46,11 +49,11 @@ export default function NewItem({ addItem }) {
         >
           <Autocomplete
             id='itemName'
-            value={itemName}
+            value={item.name}
             wrapperStyle={{ position: 'relative', width: '100%' }}
             onChange={(e, value) => {
               setCoicopSearchTerm(value)
-              setItemName(value)
+              setItem({ ...item, name: value })
             }}
             renderInput={(props) => (
               <input
@@ -66,7 +69,7 @@ export default function NewItem({ addItem }) {
             )}
             items={coicopEntries}
             renderMenu={(items, value, style) =>
-              items && items.length > 0 && itemName ? (
+              items && items.length > 0 && item.name ? (
                 <div className={pstyles.coicopItems} children={items} />
               ) : (
                 <></>
@@ -79,7 +82,7 @@ export default function NewItem({ addItem }) {
               return <div className={pstyles.coicopItemName}>{item.text}</div>
             }}
             onSelect={(value) => {
-              setItemName(value)
+              //setItemName(value)
               setItem({ ...item, name: value })
             }}
             getItemValue={(item) => {
@@ -106,24 +109,31 @@ export default function NewItem({ addItem }) {
         >
           <MinusCircle
             onClick={() => {
-              setItem({ ...item, amount: item.amount - 1 })
+              setItem({ ...item, amount: Number(item.amount) - 1 })
             }}
             style={{ width: '100%' }}
             size='14'
           />
           <div style={{}}>
-            <Input
+            <input
+              style={{
+                padding: '0',
+                height: '44px',
+                width: '100%',
+                paddingRight: '0',
+              }}
               value={item.amount}
-              handleChange={(val) => {
-                setItem({ ...item, amount: Number(val) })
+              onChange={(event) => {
+                //setItemAmount(Number(event.target.value))
+                setItem({ ...item, amount: Number(event.target.value) })
               }}
               type='number'
-              placeholder={'0'}
+              placeholder='0'
             />
           </div>
           <PlusCircle
             onClick={() => {
-              setItem({ ...item, amount: item.amount + 1 })
+              setItem({ ...item, amount: Number(item.amount) + 1 })
             }}
             style={{ width: '100%' }}
             size='14'
@@ -146,17 +156,29 @@ export default function NewItem({ addItem }) {
             alignItems: 'center',
           }}
         >
-          <Input
+          <input
+            onKeyPress={(event) => {
+              if (event.key === 'Enter') checkIfComplete(item)
+            }}
+            style={{
+              padding: '0',
+              height: '44px',
+              width: '100%',
+              paddingRight: '0',
+            }}
             value={item.price}
-            handleChange={(val) => {
-              setItem({ ...item, price: Number(val) })
+            onChange={(event) => {
+              //setItemPrice(Number(event.target.value))
+              setItem({ ...item, price: Number(event.target.value) })
             }}
             type='number'
             placeholder='Beløp'
           />
 
           <PlusCircle
-            onClick={() => checkIfComplete(item)}
+            onClick={() => {
+              checkIfComplete(item)
+            }}
             style={{ width: '100%', color: 'green' }}
             size='14'
           />
