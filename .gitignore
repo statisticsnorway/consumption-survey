@@ -22,6 +22,9 @@ next-env.d.ts
 # dont know what this is
 worker-development.js
 
+# creds/config
+src/fb/config.js
+
 # misc
 secure/
 video/
