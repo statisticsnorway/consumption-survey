@@ -9,6 +9,8 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@firebase/app": "^0.6.13",
+    "@firebase/firestore": "^2.0.1",
     "@material-ui/core": "^4.11.0",
     "@material-ui/pickers": "^3.2.10",
     "@pwabuilder/pwainstall": "^1.6.6",
