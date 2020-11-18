@@ -29,7 +29,7 @@ const Dashboard = ({ router }) => {
   const ADD_PURCHASE_PROPS = () => ({
     iconActive: <PlusCircle />,
     onClick: (e) => {
-      router.push('/consumption/addNew')
+      router.push('/fb')
     },
   })
 

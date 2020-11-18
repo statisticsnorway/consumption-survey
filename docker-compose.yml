@@ -6,6 +6,12 @@ services:
       context: ./
       dockerfile: Dockerfile.dev
 
+  bff:
+    build:
+      context: ../consumption-bff
+    ports:
+      - 3005:3005
+
   backend:
     build:
       context: ../survey-service
