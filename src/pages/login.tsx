@@ -1,18 +1,27 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { UserContext, UserInfoType } from '../components/common/contexts';
+import { UserContext } from '../contexts';
 import { WorkspacePanel } from '../components/layout/Workspace';
 
 const Login = () => {
     const router = useRouter();
     const [userName, setUserName] = useState('');
     const [error, setError] = useState(null);
-    const {setAuthInfo} = useContext(UserContext)
+    const {isAuthenticated, login} = useContext(UserContext);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/dashboard/Dashboard');
+        }
+    }, [isAuthenticated]);
 
     const onSubmit = async (e) => {
         e.preventDefault();
 
+        await login(userName);
+
+        /*
         axios.post('/bff/login', {user: userName})
             .then(async (res) => {
                 const authInfo = await res.data;
@@ -21,11 +30,12 @@ const Login = () => {
                 } catch (err) {
                     console.log('could not update authInfo', err);
                 }
-                router.push('/fb');
+                router.push('/dashboard/Dashboard');
             })
             .catch((err) => {
                 setError(JSON.stringify(err));
             });
+        */
     }
 
     const onUserNameChange = ({target}) => {

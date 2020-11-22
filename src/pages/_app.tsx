@@ -19,7 +19,9 @@ import 'rc-time-picker/assets/index.css'
 import '../styles/globals.scss'
 import dynamic from 'next/dynamic'
 import Loader from '../components/common/Loader'
-import UserProvider from '../fb/UserProvider';
+import FireProvider from '../firebase/FireProvider';
+import UserProvider from '../firebase/UserProvider';
+import { ProtectedRoute } from '../firebase/UserProvider';
 
 interface AppContext {
     firstVisitWeb?: boolean
@@ -69,17 +71,15 @@ class MyApp extends App<AppProps, AppContext> {
         const {Component, pageProps} = this.props
         const {initComplete} = this.state
         return (
-            <UserProvider>
-                <PreferencesProvider>
-                    <AuthProvider>
-                        <AppContext.Provider value={this.state}>
-                            <Layout>
-                                <Component {...pageProps} />
-                            </Layout>
-                        </AppContext.Provider>
-                    </AuthProvider>
-                </PreferencesProvider>
-            </UserProvider>
+            <FireProvider>
+                <UserProvider>
+                    <ProtectedRoute>
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </ProtectedRoute>
+                </UserProvider>
+            </FireProvider>
         )
     }
 }
