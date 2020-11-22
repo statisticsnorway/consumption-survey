@@ -77,7 +77,7 @@ export const ProtectedRoute = ({ children }) => {
         if (!isAuthenticated && router.pathname !== '/login') {
             router.push('/login');
         }
-    }, [isLoggingIn, isAuthenticated]);
+    }, [isLoggingIn, isAuthenticated, router.pathname]);
 
     if (isAuthenticated || (router.pathname === '/login')) {
         return children;
