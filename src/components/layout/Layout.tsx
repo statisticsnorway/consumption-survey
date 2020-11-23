@@ -104,7 +104,7 @@ const Layout = (props: LayoutProps) => {
             <Workspace>
                 <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
                 {loading && <Loader/> }
-                {isPWA() && pin &&
+                {isPWA() && /* pin &&
                 (needPinAuth ?
                     <Pin
                         title="Oppgi PIN"
@@ -113,16 +113,16 @@ const Layout = (props: LayoutProps) => {
                             setNeedPinAuth(false);
                         }}
                         validatePin={check => pin === check}
-                    /> :
+                    /> : */
                     props.children
-                )}
-                {isPWA() && !pin &&
+                /* )*/}
+                {/* isPWA() && !pin &&
                 <ManagePin
                     onComplete={(newPin) => {
                         console.log('[Layout] :: newPin =>', newPin);
                         setPin(newPin);
                     }}
-                />}
+                /> */ ''}
                 {!isPWA() && props.children}
             </Workspace>
             <Footer/>

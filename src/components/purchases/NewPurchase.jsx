@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import Autocomplete from 'react-autocomplete'
-import fb from '../../fb';
 
 import workspaceStyles from '../layout/styles/workspace.module.scss';
 import styles from '../../pages/consumption/purchases.module.scss';
-import { WorkspacePanel } from '../layout/Workspace';
-import { UserContext } from '../common/contexts';
+import { FireContext, UserContext } from '../../contexts';
 
 const NewPurchase = () => {
     const [searchTerms, setSearchTerms] = useState([]);
@@ -14,9 +12,10 @@ const NewPurchase = () => {
     const [unitPrice, setUnitPrice] = useState('');
     const [items, setItems] = useState([]);
     const {userInfo} = useContext(UserContext);
+    const { firestore } = useContext(FireContext);
 
     useEffect(() => {
-        fb.firestore()
+        firestore
             .collection('searchTerms')
             .onSnapshot(snapshot => {
                 const terms = snapshot.docs.map(doc => ({
@@ -43,7 +42,7 @@ const NewPurchase = () => {
             items,
         };
 
-        fb.firestore()
+        firestore
             .collection(`/users/${userInfo.id}/purchases`)
             .add(doc)
             .then((res) => {

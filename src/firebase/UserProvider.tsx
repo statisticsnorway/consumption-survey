@@ -1,11 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
-import { UserContext, FireContext } from '../contexts';
-import Loader from '../components/common/Loader';
-import { useRouter } from 'next/router';
-
-export const useAuth = () => useContext(UserContext);
+import { UserContext } from '../contexts';
 
 const UserProvider = ({children}) => {
     const [userInfo, setUserInfo] = useState(null);
@@ -21,7 +16,10 @@ const UserProvider = ({children}) => {
             const {data: authInfo} = res;
 
             if (authInfo && authInfo.userInfo) {
-                setUserInfo(authInfo.userInfo);
+                setUserInfo({
+                    ...authInfo.userInfo,
+                    userName: authInfo.userInfo.id,
+                });
             } else {
                 console.log('Response without token!');
             }
@@ -53,19 +51,3 @@ const UserProvider = ({children}) => {
 
 export default UserProvider;
 
-export const ProtectedRoute = ({children}) => {
-    const router = useRouter();
-    const {isAuthenticated, isLoggingIn} = useContext(UserContext);
-
-    useEffect(() => {
-        if (!isAuthenticated && router.pathname !== '/login') {
-            router.push('/login');
-        }
-    }, [isLoggingIn, isAuthenticated, router.pathname]);
-
-    if (isAuthenticated || (router.pathname === '/login')) {
-        return children;
-    } else {
-        return <Loader/>;
-    }
-};

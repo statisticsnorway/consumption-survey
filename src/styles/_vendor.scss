@@ -1,7 +1,12 @@
 /* Datepicker */
 .DayPicker {
-  background-color: #FFF;
-  border: 1px solid #C3DCDC /* #62919A; $ssb-dark-3 */
+  background-color: transparent;
+  /* border: 1px solid #C3DCDC; */ /* #62919A; $ssb-dark-3 */
+  width: 100%;
+}
+
+.DayPicker-Month {
+  width: 100%;
 }
 
 .DayPicker-Day {
@@ -28,6 +33,19 @@
   font-weight: bold;
 }
 
+.DayPicker-NavButton {
+  margin-top: 0.5rem;
+}
+
+.DayPicker-Caption {
+  text-align: center;
+  background-color: #fff;
+  padding: 0.25rem;
+}
+
+.DayPicker-Weekday {
+  background-color: #fff;
+}
 
 /* PIN input */
 .pincode-input-container

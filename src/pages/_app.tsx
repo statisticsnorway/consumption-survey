@@ -18,10 +18,9 @@ import 'react-day-picker/lib/style.css'
 import 'rc-time-picker/assets/index.css'
 import '../styles/globals.scss'
 import dynamic from 'next/dynamic'
-import Loader from '../components/common/Loader'
 import FireProvider from '../firebase/FireProvider';
 import UserProvider from '../firebase/UserProvider';
-import { ProtectedRoute } from '../firebase/UserProvider';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 interface AppContext {
     firstVisitWeb?: boolean

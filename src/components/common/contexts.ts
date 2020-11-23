@@ -10,7 +10,10 @@ export type AuthContextType = {
 setPin: (pin: string) => void;
 };
 
-export const AuthContext = createContext({} as AuthContextType);
+export const AuthContext = createContext({
+    [SUPPORTED_PREFERENCES.PIN]: '1234',
+    setPin: (pin:string) => {},
+} as AuthContextType);
 
 export type PreferencesType = {
     preferences: {

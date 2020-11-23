@@ -4,9 +4,10 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: $ssb-dark-1;
+  /* background-color: $ssb-dark-1; */
+  background-color: #fff;
   height: 100vh;
-  padding: 2rem 1rem;
+  padding: 1rem;
 
   h3,
   h4 {
