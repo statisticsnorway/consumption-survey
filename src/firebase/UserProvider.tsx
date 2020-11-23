@@ -7,45 +7,29 @@ import { useRouter } from 'next/router';
 
 export const useAuth = () => useContext(UserContext);
 
-const UserProvider = ({ children }) => {
+const UserProvider = ({children}) => {
     const [userInfo, setUserInfo] = useState(null);
-    const [isLoggingIn, setIsLoggingIn] = useState(true);
-
-    useEffect(() => {
-        async function loadUserFromCookies() {
-            const token = Cookies.get('token');
-            if (token) {
-                console.log('Found token in cookies..', token);
-                // TODO: load profile info from `/profile` endpoint
-                /*
-                api.defaults.headers.Authorization = `Beader ${token}`;
-                const { data } = await api.get('/profile');
-                if (data) {
-                    setUserInfo(data);
-                }
-                */
-            }
-
-            setIsLoggingIn(false);
-        }
-
-        loadUserFromCookies();
-    }, []);
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
 
     const login = async (userName) => {
-        const { data: authInfo } = await axios.post('/bff/login', {
+        setIsLoggingIn(true);
+        const res = await axios.post('/bff/login', {
             user: userName
         });
 
-        if (authInfo) {
-            console.log('response', authInfo);
-            if (authInfo.firebaseToken) {
-                Cookies.set('token', authInfo.token, { expires: 60, secure: true });
+        if ((res.status >= 200) && (res.status < 300)) {
+            const {data: authInfo} = res;
+
+            if (authInfo && authInfo.userInfo) {
                 setUserInfo(authInfo.userInfo);
             } else {
                 console.log('Response without token!');
             }
+        } else {
+            throw new Error(JSON.stringify(res));
         }
+
+        setIsLoggingIn(false)
     };
 
     const logout = () => {
@@ -69,9 +53,9 @@ const UserProvider = ({ children }) => {
 
 export default UserProvider;
 
-export const ProtectedRoute = ({ children }) => {
+export const ProtectedRoute = ({children}) => {
     const router = useRouter();
-    const { isAuthenticated, isLoggingIn } = useContext(UserContext);
+    const {isAuthenticated, isLoggingIn} = useContext(UserContext);
 
     useEffect(() => {
         if (!isAuthenticated && router.pathname !== '/login') {
@@ -82,6 +66,6 @@ export const ProtectedRoute = ({ children }) => {
     if (isAuthenticated || (router.pathname === '/login')) {
         return children;
     } else {
-        return <Loader />;
+        return <Loader/>;
     }
 };
