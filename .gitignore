@@ -35,6 +35,9 @@ video/
 .env.production.local
 **/*.map
 
+# firebase
+**/firebase/config.js
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
