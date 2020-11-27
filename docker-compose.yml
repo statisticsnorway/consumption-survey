@@ -5,6 +5,9 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.dev
+    depends_on:
+      - backend
+      - bff
 
   bff:
     build:
@@ -15,9 +18,14 @@ services:
   backend:
     build:
       context: ../survey-service
+    ports:
+      - 8080:8080
 
   nginx:
     build: ./nginx
+    depends_on:
+      - nextjs
     ports:
       - 443:443
       - 80:80
+

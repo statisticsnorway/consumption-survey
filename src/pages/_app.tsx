@@ -21,6 +21,7 @@ import dynamic from 'next/dynamic'
 import FireProvider from '../firebase/FireProvider';
 import UserProvider from '../firebase/UserProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
+import PurchasesProvider from '../hocs/usePurchases';
 
 interface AppContext {
     firstVisitWeb?: boolean

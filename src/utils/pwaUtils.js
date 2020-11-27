@@ -7,17 +7,21 @@ export const isWorkboxActive = () =>
     isServiceWorker() && window.workbox !== undefined
 
 export const isPWA = () => {
-    console.log('Navigator: ', window.navigator);
-    console.log('window::media',
-        window.matchMedia('(display-mode: standalone)'),
-        'matches: ',
-        window.matchMedia('(display-mode: standalone)').matches);
-    console.log('referrer', document.referrer);
+    if (!isBrowser()) {
+        return false;
+    }
+
+    // console.log('Navigator: ', window.navigator);
+    // console.log('window::media',
+    //     window.matchMedia('(display-mode: standalone)'),
+    //     'matches: ',
+    //     window.matchMedia('(display-mode: standalone)').matches);
+    // console.log('referrer', document.referrer);
 
     const result = window.navigator.standalone
         || window.matchMedia('(display-mode: standalone)').matches
         || document.referrer.includes('android-app://');
 
-    console.log('isPWA', result);
+    // console.log('isPWA', result);
     return result;
 };

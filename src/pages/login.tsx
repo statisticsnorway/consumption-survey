@@ -12,7 +12,7 @@ const Login = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            router.push('/purchases');
+            router.push('/dashboard/Dashboard');
         }
     }, [isAuthenticated]);
 

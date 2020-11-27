@@ -3,31 +3,42 @@ import { useRouter } from 'next/router';
 import { withTranslation } from 'next-i18next';
 import DayPicker from 'react-day-picker'
 import { Plus, Camera, Edit, X } from 'react-feather'
-import {
-    WorkspaceContext,
-    WorkspacePanel,
-} from '../../components/layout/Workspace'
-import ConsumptionList from '../consumption'
+import PurchasesList from '../../components/purchases/PurchasesList';
 import Tabs from '../../components/blocks/tabs/Tabs';
+import FloatingButton from '../../components/common/buttons/FloatingButton'
+import usePurchases from '../../hocs/usePurchases';
+import { add, sub } from 'date-fns';
 
 import styles from './dashboard.module.scss'
 
-import FloatingButton from '../../components/common/buttons/FloatingButton'
+const today = new Date();
+const surveyStart = sub(today, { days: 7 });
+const surveyEnd = add(today, { days: 7 });
 
 const modifiers = {
     surveyPeriod: {
-        after: new Date(2020, 8, 1),
-        before: new Date(2020, 8, 16),
+        after: surveyStart,
+        before: surveyEnd,
     },
     missingStretch: {
         after: new Date(2020, 8, 10),
         before: new Date(2020, 8, 14),
     },
-}
+    surveyPeriodFirstDay: add(surveyStart, { days: 1 }),
+    surveyPeriodLastDay: sub(surveyEnd, { days: 1 }),
+};
+
+const getModifiers = (purchases) => {
+  const withEntries = purchases.map(purchase => new Date(purchase.when));
+  return {
+      ...modifiers,
+      withEntries,
+  };
+};
 
 const Dashboard = ({t}) => {
     const router = useRouter();
-    const {purchases} = useContext(WorkspaceContext)
+    const {purchases} = usePurchases();
 
     const FLOATING_BTN_OPTIONS = {
         iconResting: <Plus/>,
@@ -38,7 +49,7 @@ const Dashboard = ({t}) => {
         {
             id: 'registerNew',
             onClick: () => {
-                router.push('/purchases/addNew');
+                router.push('/purchases/addPurchase');
             },
             icon: <Edit/>,
         }, {
@@ -50,22 +61,34 @@ const Dashboard = ({t}) => {
         }
     ];
 
+    const renderDay = (day) => {
+        return (
+            <div className={styles.dashboardDiaryDay}>{day.getDate()}</div>
+        );
+    }
+
     const DASHBOARD_TABS = [
         {
             title: t('diary.title'),
             id: 'diary',
             renderTab: () => (
-                <div className={styles.dashboardDiary}>
-                    <DayPicker
-                        canChangeMonth={true}
-                        onDayClick={(d) => {
-                            console.log('Showing purchases on ', d)
-                        }}
-                        modifiers={modifiers}
-                        initialMonth={new Date()}
-                        selectedDays={purchases.map((purchase) => purchase.dateOfPurchase)}
-                    />
-                </div>
+                <>
+                    <div className={styles.dashboardDiary}>
+                        <DayPicker
+                            canChangeMonth={true}
+                            onDayClick={(d) => {
+                                console.log('Showing purchases on ', d)
+                            }}
+                            renderDay={renderDay}
+                            modifiers={getModifiers(purchases)}
+                            initialMonth={new Date()}
+                            showOutsideDays={true}
+                        />
+                    </div>
+                    <div className={styles.dashboardPurchaseList}>
+                        <PurchasesList/>
+                    </div>
+                </>
             ),
         },
     ];
@@ -78,7 +101,6 @@ const Dashboard = ({t}) => {
                 className={styles.dashboardTabs}
             >
             </Tabs>
-            <ConsumptionList consumptionList={purchases}/>
             <FloatingButton
                 mainProps={FLOATING_BTN_OPTIONS}
                 childButtonProps={FLOATING_MENU_OPTIONS}

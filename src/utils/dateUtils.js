@@ -1,4 +1,7 @@
-import moment from 'moment'
+import { format } from 'date-fns';
 
 export const simpleFormat = (date) =>
-    moment(date).locale('nb').format('DD.MM')
+    format(date, "dd.MM.YYYY")
+
+export const dateFormatMonthDate = (date) =>
+    format(date, "MMM-dd");

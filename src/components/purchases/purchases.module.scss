@@ -1,4 +1,47 @@
+@import '../../styles/common';
+
 .purchasesList {
-  margin: 1rem 0;
+  margin: 0;
   border-bottom: 1px solid #eee;
+  padding: 1rem 2rem;
+
+  .purchaseEntry {
+    background-color: #fff;
+    padding: 0.5rem 1rem;
+  }
+
+  .purchaseEntry + .purchaseEntry {
+    margin-top: 1rem;
+  }
 };
+
+.addPurchase {
+  .addPurchaseForm {
+    .lineItem {
+      display: flex;
+      justify-content: space-between;
+
+      .lineItemField + .lineItemField{
+        margin-right: 0.25rem;
+        border-width: 0 0 1px 0;
+        border-color: $ssb-green-4;
+      }
+
+      .lineItemName {
+        flex-grow: 2;
+
+        input {
+          width: 100%;
+        }
+      }
+
+      .lineItemQty {
+        width: 50px;
+      }
+
+      .lineItemPrice {
+        width: 50px;
+      }
+    }
+  }
+}

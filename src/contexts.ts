@@ -2,6 +2,7 @@ import { createContext } from 'react';
 import { FirebaseAuth } from '@firebase/auth-types';
 import { FirebaseFirestore } from '@firebase/firestore-types';
 import { FirebaseStorage } from '@firebase/storage-types';
+import { PurchaseType } from './firebase/model/Purchase';
 
 export type UserInfoType = {
     userName: string;
@@ -27,3 +28,10 @@ export type FireContextType = {
 };
 
 export const FireContext = createContext({} as FireContextType);
+
+export type PurchasesContextType = {
+    purchases: PurchaseType[];
+    addPurchase: (PurchaseType) => void;
+};
+
+export const PurchasesContext = createContext({} as PurchasesContextType);

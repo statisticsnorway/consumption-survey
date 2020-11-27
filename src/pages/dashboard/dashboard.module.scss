@@ -5,6 +5,7 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
+  /* padding-top: 1rem; */
 }
 
 .floatingAddNew {
@@ -36,7 +37,16 @@
 
 .dashboardTabs {
   border-bottom: 1px solid $ssb-dark-2;
+  margin: 0 2rem;
 }
+
 .dashboardDiary {
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboardPurchaseList {
   background-color: $ssb-dark-1;
+  padding-top: 1rem;
 }

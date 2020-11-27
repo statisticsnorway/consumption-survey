@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { UserContext } from '../contexts';
+import { FireContext, UserContext } from '../contexts';
 
 const UserProvider = ({children}) => {
+    const { auth } = useContext(FireContext);
     const [userInfo, setUserInfo] = useState(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -15,11 +16,15 @@ const UserProvider = ({children}) => {
         if ((res.status >= 200) && (res.status < 300)) {
             const {data: authInfo} = res;
 
-            if (authInfo && authInfo.userInfo) {
-                setUserInfo({
-                    ...authInfo.userInfo,
-                    userName: authInfo.userInfo.id,
-                });
+            if (authInfo && authInfo.firebaseToken && authInfo.userInfo) {
+                auth.signInWithCustomToken(authInfo.firebaseToken)
+                    .then((user) => {
+                        console.log('Successfully logged in as', user);
+                        setUserInfo({
+                            ...authInfo.userInfo,
+                            userName: authInfo.userInfo.id,
+                        });
+                    })
             } else {
                 console.log('Response without token!');
             }
