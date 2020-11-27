@@ -26,4 +26,10 @@ section {
 
 .ssb-tabs .navigation-item {
   padding: 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.25rem;
+}
+
+.ssb-tabs .navigation-item:not(.active) {
+  font-weight: normal;
 }

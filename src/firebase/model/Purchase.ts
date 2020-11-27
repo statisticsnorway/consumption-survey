@@ -1,5 +1,5 @@
 export type ItemType = {
-    name: string;
+    itemName: string;
     category?: string;
     quantity: number;
     price: number;
@@ -13,3 +13,6 @@ export type PurchaseType = {
     totalPrice: number;
 };
 
+export type PurchaseGroupByDate = {
+    readonly [date: string]: readonly PurchaseType[];
+};

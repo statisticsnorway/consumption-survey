@@ -3,7 +3,7 @@
 .purchasesList {
   margin: 0;
   border-bottom: 1px solid #eee;
-  padding: 1rem 2rem;
+  padding: 1rem 1.25rem;
 
   .purchaseEntry {
     background-color: #fff;
@@ -13,7 +13,47 @@
   .purchaseEntry + .purchaseEntry {
     margin-top: 1rem;
   }
-};
+
+  .purchaseGroup {
+    display: flex;
+    background: #fff;
+    padding: 0.5rem;
+
+    .purchaseGroupDate {
+      flex-grow: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+      justify-content: flex-start;
+      align-items: center;
+      border-right: 1px solid #eee;
+
+      .purchaseGroupDateMonth {
+        font-variant: small-caps;
+        color: #666;
+      }
+
+      .purchaseGroupDateDay {
+        colof: #333;
+        font-size: 1.25rem;
+      }
+    }
+
+    .purchaseGroupEntries {
+      flex-grow: 2;
+      padding: 0.5rem 0.5rem 0.5rem 1rem;
+
+      .purchaseGroupEntry {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .purchaseGroup + .purchaseGroup {
+    margin-top: 1rem;
+  }
+}
 
 .addPurchase {
   .addPurchaseForm {
@@ -21,7 +61,7 @@
       display: flex;
       justify-content: space-between;
 
-      .lineItemField + .lineItemField{
+      .lineItemField + .lineItemField {
         margin-right: 0.25rem;
         border-width: 0 0 1px 0;
         border-color: $ssb-green-4;
@@ -45,3 +85,5 @@
     }
   }
 }
+
+

@@ -37,11 +37,12 @@
 
 .dashboardTabs {
   border-bottom: 1px solid $ssb-dark-2;
-  margin: 0 2rem;
+  margin: 0 1.25rem;
 }
 
+.dashboardRegularExpenses,
 .dashboardDiary {
-  padding: 0 1rem;
+  padding: 0 1.25rem;
   display: flex;
   justify-content: center;
 }

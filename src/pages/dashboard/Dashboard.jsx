@@ -10,6 +10,7 @@ import usePurchases from '../../hocs/usePurchases';
 import { add, sub } from 'date-fns';
 
 import styles from './dashboard.module.scss'
+import { makeDummyComponent } from '../../utils/dummy';
 
 const today = new Date();
 const surveyStart = sub(today, { days: 7 });
@@ -90,7 +91,15 @@ const Dashboard = ({t}) => {
                     </div>
                 </>
             ),
-        },
+        }, {
+            title: 'Faste utgifter',
+            id: 'regularExpenses',
+            renderTab: () => (
+                <div className={styles.dashboardRegularExpenses}>
+                    {makeDummyComponent('Kommer Snart')}
+                </div>
+            ),
+        }
     ];
 
     return (
