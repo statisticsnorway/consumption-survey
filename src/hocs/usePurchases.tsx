@@ -38,7 +38,7 @@ const usePurchases = () => {
             .add(purchase)
     };
 
-    console.log('purchases', purchases);
+    // console.log('purchases', purchases);
     return { purchases, addPurchase };
 };
 

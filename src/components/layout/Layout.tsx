@@ -1,7 +1,8 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useIdleTimer } from 'react-idle-timer';
 import { differenceInMinutes } from 'date-fns';
+import { LayoutContext } from '../../uiContexts';
 import Header from './Header';
 import Footer from './Footer';
 import Workspace from './Workspace';
@@ -15,6 +16,7 @@ import Auth from '../auth/Auth';
 import { AuthContext } from '../common/contexts';
 import { useLoader } from '../../hocs/globalLoader';
 import Loader from '../common/Loader';
+import { useRouter } from 'next/router';
 
 export const THREE_MINUTES = 3 * 60 * 1000;
 
@@ -25,6 +27,7 @@ type LayoutProps = {
 };
 
 const Layout = (props: LayoutProps) => {
+    const router = useRouter();
     const [isOnline, setIsOnline] = useState(true);
     const {firstVisitWeb, pwaActivated} = useContext(AppContext);
     const {pin, setPin} = useContext(AuthContext);
@@ -32,6 +35,14 @@ const Layout = (props: LayoutProps) => {
     const [activeAgainAt, setActiveAgainAt] = useState(null);
     const [needPinAuth, setNeedPinAuth] = useState(true);
     const {loading} = useLoader();
+
+    const [footerContent, updateFooterContent] = useState(null);
+
+    const setFooterContent = (node: ReactNode) => {
+        console.log('Footer: updating content');
+        updateFooterContent(node);
+    };
+
 
     const {reset} = useIdleTimer({
         timeout: THREE_MINUTES,
@@ -77,9 +88,9 @@ const Layout = (props: LayoutProps) => {
         }
     }, []);
 
-    console.log('Layout', firstVisitWeb, pwaActivated);
-    console.log('Went Idle @', wentIdleAt, 'active again @', activeAgainAt);
-    console.log('----------- loading: ', loading);
+    // console.log('Layout', firstVisitWeb, pwaActivated);
+    // console.log('Went Idle @', wentIdleAt, 'active again @', activeAgainAt);
+    // console.log('----------- loading: ', loading);
 
     return (
         <html lang="no">
@@ -100,11 +111,14 @@ const Layout = (props: LayoutProps) => {
             <meta name="theme-color" content="#0b2e13"/>
         </Head>
         <div>
-            <Header siteTitle="Forbruk 2021" version="0.1" isOnline={isOnline}/>
-            <Workspace>
-                <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
-                {loading && <Loader/> }
-                {isPWA() && /* pin &&
+            <LayoutContext.Provider
+                value={{ footerContent, setFooterContent }}
+            >
+                <Header siteTitle="Forbruk 2021" version="0.1" isOnline={isOnline}/>
+                <Workspace>
+                    <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
+                    {loading && <Loader/>}
+                    {isPWA() && /* pin &&
                 (needPinAuth ?
                     <Pin
                         title="Oppgi PIN"
@@ -115,17 +129,18 @@ const Layout = (props: LayoutProps) => {
                         validatePin={check => pin === check}
                     /> : */
                     props.children
-                /* )*/}
-                {/* isPWA() && !pin &&
+                        /* )*/}
+                    {/* isPWA() && !pin &&
                 <ManagePin
                     onComplete={(newPin) => {
                         console.log('[Layout] :: newPin =>', newPin);
                         setPin(newPin);
                     }}
                 /> */ ''}
-                {!isPWA() && props.children}
-            </Workspace>
-            <Footer/>
+                    {!isPWA() && props.children}
+                </Workspace>
+                <Footer/>
+            </LayoutContext.Provider>
         </div>
         </html>
     );

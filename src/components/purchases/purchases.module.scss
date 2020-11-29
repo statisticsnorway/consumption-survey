@@ -57,33 +57,88 @@
 
 .addPurchase {
   .addPurchaseForm {
+    display: table;
+    width: 100%;
+    margin: 1rem 0;
+
     .lineItem {
-      display: flex;
-      justify-content: space-between;
+      display: table-row;
 
-      .lineItemField + .lineItemField {
-        margin-right: 0.25rem;
-        border-width: 0 0 1px 0;
-        border-color: $ssb-green-4;
-      }
 
-      .lineItemName {
-        flex-grow: 2;
+      .lineItemField {
+        display: table-cell;
+        border-bottom: 1px solid $ssb-green-2;
+        padding: 0 0.25rem 0.25rem;
 
         input {
           width: 100%;
+          border-width: 0;
         }
       }
 
-      .lineItemQty {
-        width: 50px;
+      .lineItemField + .lineItemField {
       }
 
-      .lineItemPrice {
-        width: 50px;
+      .lineItemName {
       }
+
+      .lineItemQty,
+      .lineItemPrice {
+        border-bottom: 0;
+
+        input {
+          text-align: right;
+        }
+      }
+
+      .viewMode {
+        border-bottom: 0;
+      }
+
+      .lineItemQtyView,
+      .lineItemPriceView {
+        border-bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        text-align: right;
+
+
+        div {
+          width: 100%;
+          padding: 0;
+        }
+
+        span:last-of-type {
+          text-align: left;
+          width: 1.5em;
+          padding: 0 0.125em;
+        }
+      }
+
     }
   }
+}
+
+.addPurchaseFooterTotal {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background-color: #F1F8F9;
+  color: #000;
+  font-weight: bold;
+  font-size: 1.25rem;
+
+  .addPurchaseFooterTotalText {
+  }
+
+  .addPurchaseFooterTotalSum {
+  }
+}
+
+.addPurchaseFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.25rem;
 }
 
 

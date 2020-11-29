@@ -1,7 +1,10 @@
 {
   "when" : "når (nn)",
 
-  "newPurchase": {
-    "title": "Registrer nytt kjøp"
+  "addPurchase": {
+    "title": "Ny registrering",
+    "total": "Sum",
+    "cancel": "Avbryt",
+    "save": "Lagre"
   }
 }

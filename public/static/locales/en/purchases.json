@@ -1,7 +1,10 @@
 {
   "when" : "when",
 
-  "newPurchase": {
-    "title": "Register New Purchase"
+  "addPurchase": {
+    "title": "Register New Purchase",
+    "total": "Total",
+    "cancel": "Cancel",
+    "save": "Save"
   }
 }

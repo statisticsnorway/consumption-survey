@@ -7,10 +7,10 @@ const NewPurchasePage = ({searchTerms}) => {
     const {t} = useTranslation('purchases');
 
     return (
-        <WorkspacePanel>
-            <h3>{t('newPurchase.title')}</h3>
+        <>
+            <h3>{t('addPurchase.title')}</h3>
             <NewPurchase initialSearchTerms={searchTerms}/>
-        </WorkspacePanel>
+        </>
     );
 };
 
