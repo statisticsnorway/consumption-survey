@@ -7,6 +7,9 @@
     "cancel": "Avbryt",
     "save": "Lagre",
 
+    "nameDateGroupTitle": "Endre namn og dato",
+    "purchaseNamePlaceholder": "Namn på kjøpet",
+
     "itemName": {
       "placeholder": "Velg/oppgi vare navn"
     }

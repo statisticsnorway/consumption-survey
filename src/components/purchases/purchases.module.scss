@@ -58,6 +58,46 @@
 .addPurchase {
   padding: 0.25rem 1.25rem;
 
+  .nameDateGroup {
+    margin: 1rem 0;
+    padding: 1rem 0;
+
+    .nameDateForm {
+      padding-bottom: 1rem;
+
+      .purchaseName {
+        margin-bottom: 0.5rem;
+
+        input {
+          width: 100%;
+        }
+      }
+
+      .nameHints {
+        font-size: 0.75rem;
+        display: flex;
+        width: 100%;
+
+        .nameHint, .nameHintEtc {
+          color: $ssb-green-3;
+          font-style: italic;
+          border: 0;
+          border-bottom: 1px dashed $ssb-green-3;
+          margin-right: 0.5rem;
+        }
+
+        a.nameHint + a.nameHint {
+          content: ',';
+        }
+
+        .nameHintEtc {
+          color: $ssb-dark-2;
+          border: 0;
+        }
+      }
+    }
+  }
+
   .addPurchaseFormWrapper {
     border: 1px solid $ssb-dark-5;
     padding: 0.25rem;
@@ -113,6 +153,13 @@
         input {
           text-align: right;
         }
+      }
+
+      .deleteLineItem {
+        border-bottom: 0;
+        padding-left: 0.5rem;
+        font-size: 1.5rem;
+        color: $ssb-blue-3;
       }
 
       .deleteLineItem {

@@ -4,9 +4,16 @@ import { groupBy } from 'rambda';
 import { PurchaseType, PurchaseGroupByDate } from '../../firebase/model/Purchase';
 import usePurchases from '../../hocs/usePurchases';
 import { SORT_OPTIONS, GROUP_BY_OPTIONS } from '../../utils/viewOptions';
-import { dateFormatMonthDate } from '../../utils/dateUtils';
+import {
+    DASHBOARD_DATE_GROUPING_FORMAT,
+    dateFormatMonthDate,
+    parseDate,
+    SIMPLE_DATE_FORMAT,
+    simpleFormat
+} from '../../utils/dateUtils';
 
 import styles from './purchases.module.scss';
+import { compareDesc } from 'date-fns';
 
 export type PurchasesListProps = {
     purchases: PurchaseType[];
@@ -28,7 +35,7 @@ const getGroupByFn = (groupByField) => {
 };
 
 const prepForDisplay = (date) => {
-    const [month, dt] = date.split('-');
+    const [dt, month] = date.split('.');
     return (
         <>
             <span className={styles.purchaseGroupDateMonth}>{month.toLowerCase()}</span>
@@ -63,9 +70,17 @@ const PurchasesList = ({limit = -1, orderBy = SORT_OPTIONS.DATE_DESC, groupByFie
         </div>
     );
 
+    console.log('sorted', Object.keys(groupsDisp)
+        .map(dt => parseDate(dt))
+        .sort(compareDesc));
+
     return (
         <div className={styles.purchasesList}>
-            {Object.keys(groupsDisp).map(date => {
+            {Object.keys(groupsDisp)                                    // TODO: find a simpler way to do this
+                .map(dt => parseDate(dt, DASHBOARD_DATE_GROUPING_FORMAT))
+                .sort(compareDesc)
+                .map(dt => dateFormatMonthDate(dt))
+                .map(date => {
                 return (
                     <div className={styles.purchaseGroup}>
                         <div className={styles.purchaseGroupDate}>

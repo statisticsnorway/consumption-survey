@@ -11,6 +11,7 @@
   .textfieldAdornmentPrefix,
   .textfieldAdornmentSuffix {
     color: $ssb-green-4;
+    line-height: 2rem;
   }
 
   .textfieldAdornmentPrefix {
@@ -20,11 +21,16 @@
   .textfieldInput {
     order: 2;
     flex-grow: 1;
-    padding: 0 0.5rem;
+    padding: 0;
+    display: flex;
+    border: 1px solid;
 
     input {
       border-width: 0;
       font-size: 1rem;
+      line-height: 2rem;
+      width: 100%;
+      padding: 0.25rem 0.5rem;
     }
   }
 

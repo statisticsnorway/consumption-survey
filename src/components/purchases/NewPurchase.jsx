@@ -1,21 +1,37 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, createRef } from 'react';
 import { useRouter } from 'next/router';
 import Autocomplete from 'react-autocomplete'
 import { useTranslation } from 'react-i18next';
-import { PlusCircle, MinusCircle } from 'react-feather';
+import { Edit3, PlusCircle, MinusCircle, Calendar } from 'react-feather';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import { DateUtils } from 'react-day-picker';
+import { Accordion } from '@statisticsnorway/ssb-component-library';
 import { FireContext, UserContext } from '../../contexts';
 import usePurchases from '../../hocs/usePurchases';
 import { LayoutContext } from '../../uiContexts';
-
-import styles from './purchases.module.scss';
-import footerStyles from '../layout/styles/footer.module.scss';
 import TextField, { AdornmentPosition } from '../form/TextField';
 import { FormInputViewMode } from '../form/inputConstants';
 
+import styles from './purchases.module.scss';
+import footerStyles from '../layout/styles/footer.module.scss';
+import { SIMPLE_DATE_FORMAT, simpleFormat, parseDate } from '../../utils/dateUtils';
+
+const purchaseNameHints = [
+    'Rema1000',
+    'Baker Hansen',
+    'Oslo City',
+];
+
 const NewPurchase = ({initialSearchTerms}) => {
     const router = useRouter();
+    const dayPickerRef = createRef();
+    const [dayPickerVisible, setDayPickerVisible] = useState(false);
     const {t} = useTranslation('purchases');
     const [searchTerms, setSearchTerms] = useState([]);
+
+    const [purchaseName, setPurchaseName] = useState('');
+    const [purchaseDate, setPurchaseDate] = useState(new Date());
+
     const [itemName, setItemName] = useState('');
     const [qty, setQty] = useState('');
     const [unit, setUnit] = useState('');
@@ -47,6 +63,21 @@ const NewPurchase = ({initialSearchTerms}) => {
         setUnitPrice(target.value);
     };
 
+    const onPurchaseNameChange = ({target}) => {
+        setPurchaseName(target.value);
+    };
+
+    const toggleDayPicker = () => {
+        const dayPickerComp = dayPickerRef.current;
+        if (!dayPickerComp) {
+            console.log('XXXXX daypicker comp ref not initialized correctly');
+        } else {
+            dayPickerVisible ? dayPickerComp.hideDayPicker() : dayPickerComp.showDayPicker();
+            setDayPickerVisible(!dayPickerVisible);
+        }
+    };
+
+
     const clearItemInfo = () => {
         setItemName('');
         setQty('');
@@ -66,7 +97,8 @@ const NewPurchase = ({initialSearchTerms}) => {
         e.preventDefault();
 
         const doc = {
-            when: new Date(),
+            where: purchaseName,
+            when: purchaseDate || new Date(),
             totalPrice: purchaseTotal,
             items,
         };
@@ -127,8 +159,12 @@ const NewPurchase = ({initialSearchTerms}) => {
         setUnitPrice('');
     };
 
+    const editItem = (item) => {
+
+    };
+
     const removeItem = (item) => {
-        const { idx, id } = item;
+        const {idx, id} = item;
         if (id) {
             // this item is part of an already saved purchase
             setItems(items.filter(it => it.id !== id));
@@ -145,6 +181,45 @@ const NewPurchase = ({initialSearchTerms}) => {
 
     return (
         <>
+            <Accordion header={t('addPurchase.nameDateGroupTitle')} className={styles.nameDateGroup}>
+                <div className={styles.nameDateForm}>
+                    <TextField
+                        value={purchaseName}
+                        placeholder={t('addPurchase.purchaseNamePlaceholder')}
+                        className={styles.purchaseName}
+                        onChange={(e) => {
+                            setPurchaseName(e.target.value);
+                        }}
+                    />
+
+                    <div className={styles.nameHints}>
+                        {purchaseNameHints.map(hint => (
+                            <a
+                                className={styles.nameHint}
+                                onClick={() => {
+                                    setPurchaseName(hint);
+                                }}
+                            >
+                                {hint}
+                            </a>
+                        ))}
+                        <span className={styles.nameHintEtc}>osv..</span>
+                    </div>
+
+                    <div className={styles.purchaseDateGroup}>
+                        <DayPickerInput
+                            ref={dayPickerRef}
+                            formatDate={simpleFormat}
+                            format={SIMPLE_DATE_FORMAT}
+                            parseDate={parseDate}
+                            value={purchaseDate}
+                            onDayChange={setPurchaseDate}
+                            placeHolder={`${simpleFormat(purchaseDate)}`}
+                        />
+                        <Calendar onClick={toggleDayPicker} />
+                    </div>
+                </div>
+            </Accordion>
             <div className={styles.lineItems}>
                 {items.map((row, idx) => (
                     <div className={styles.lineItem}>
@@ -169,6 +244,15 @@ const NewPurchase = ({initialSearchTerms}) => {
                                 className={styles.lineItemPriceView}
                                 style={{textAlign: 'right'}}
                                 viewMode={FormInputViewMode.VIEW}
+                            />
+                        </div>
+                        <div className={`${styles.lineItemField} ${styles.editLineItem}`}>
+                            <Edit3
+                                onClick={() => {
+                                    console.log('will remove', row);
+                                    editItem(row);
+                                }}
+                                style={{width: '1rem', height: '1rem'}}
                             />
                         </div>
                         <div className={`${styles.lineItemField} ${styles.deleteLineItem}`}>

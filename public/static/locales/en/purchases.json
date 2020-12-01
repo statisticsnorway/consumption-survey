@@ -7,6 +7,9 @@
     "cancel": "Cancel",
     "save": "Save",
 
+    "nameDateGroupTitle": "Change name and date",
+    "purchaseNamePlaceholder": "Purchase name",
+
     "itemName": {
       "placeholder": "Select/enter item name"
     }

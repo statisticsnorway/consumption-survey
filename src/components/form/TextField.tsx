@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactElement } from 'react';
+import { ChangeEvent, FocusEventHandler, ReactElement } from 'react';
 import { FormInputViewMode } from './inputConstants';
 
 import styles from './textfield.module.scss';
@@ -17,6 +17,7 @@ export type TextFieldProps = {
     className: string;
     style: object;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    onFocus: FocusEventHandler,
     inputComp: ReactElement;
     viewMode: FormInputViewMode;
 };
@@ -26,7 +27,7 @@ const TextField = ({
                        adornment = '', adornmentPosition = AdornmentPosition.Suffix,
                        className = '', style = {},
                        size = '5',
-                       onChange,
+                       onChange, onFocus = (e) => {},
                        inputComp = null,
                        value = '',
                        viewMode = FormInputViewMode.EDIT,
@@ -55,6 +56,7 @@ const TextField = ({
                         placeholder={placeholder}
                         value={value}
                         onChange={onChange}
+                        onFocus={onFocus}
                     />
                 ))}
             </div>
