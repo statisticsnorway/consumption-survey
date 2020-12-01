@@ -2,15 +2,16 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import NewPurchase from '../../components/purchases/NewPurchase';
 import { WorkspacePanel } from '../../components/layout/Workspace';
+import styles from '../../components/purchases/purchases.module.scss';
 
 const NewPurchasePage = ({searchTerms}) => {
     const {t} = useTranslation('purchases');
 
     return (
-        <>
+        <div className={styles.addPurchase}>
             <h3>{t('addPurchase.title')}</h3>
             <NewPurchase initialSearchTerms={searchTerms}/>
-        </>
+        </div>
     );
 };
 

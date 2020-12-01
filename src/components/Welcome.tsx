@@ -11,7 +11,7 @@ import Dashboard from '../pages/dashboard/Dashboard';
 import { WorkspacePanel } from './layout/Workspace';
 import GoToApp from './pwa/GoToApp';
 import { isPWA } from '../utils/pwaUtils';
-import { AppContext } from '../pages/_app';
+import { AppContext } from '../uiContexts';
 import Auth from './auth/Auth';
 
 import styles from './welcome.module.scss';

@@ -116,7 +116,7 @@ const NewPurchase = ({initialSearchTerms}) => {
         e.preventDefault();
         setItems([
             ...items,
-            {itemName, qty, unit, unitPrice}
+            {idx: items.length, itemName, qty, unit, unitPrice}
         ]);
 
         setPurchaseTotal(purchaseTotal + Number(unitPrice));
@@ -128,12 +128,24 @@ const NewPurchase = ({initialSearchTerms}) => {
     };
 
     const removeItem = (item) => {
-
+        const { idx, id } = item;
+        if (id) {
+            // this item is part of an already saved purchase
+            setItems(items.filter(it => it.id !== id));
+        } else {
+            // this item has not yet been saved
+            setItems([
+                ...items.slice(9, idx),
+                ...items.slice(idx + 1)
+            ]);
+        }
     };
 
+    console.log('--> itemx', items);
+
     return (
-        <div className={styles.addPurchase}>
-            <div className={styles.addPurchaseForm}>
+        <>
+            <div className={styles.lineItems}>
                 {items.map((row, idx) => (
                     <div className={styles.lineItem}>
                         <div className={`${styles.lineItemField} ${styles.viewMode}`}>
@@ -146,7 +158,7 @@ const NewPurchase = ({initialSearchTerms}) => {
                                 adornmentPosition={AdornmentPosition.Suffix}
                                 className={styles.lineItemQtyView}
                                 viewMode={FormInputViewMode.VIEW}
-                                style={{ textAlign: 'right' }}
+                                style={{textAlign: 'right'}}
                             />
                         </div>
                         <div className={`${styles.lineItemField} ${styles.viewMode}`}>
@@ -155,77 +167,88 @@ const NewPurchase = ({initialSearchTerms}) => {
                                 adornment="kr."
                                 adornmentPosition={AdornmentPosition.Suffix}
                                 className={styles.lineItemPriceView}
-                                style={{ textAlign: 'right' }}
+                                style={{textAlign: 'right'}}
                                 viewMode={FormInputViewMode.VIEW}
                             />
                         </div>
-                        <div className={styles.lineItemField}>
-                            <MinusCircle onClick={removeItem(row)}/>
+                        <div className={`${styles.lineItemField} ${styles.deleteLineItem}`}>
+                            <MinusCircle
+                                onClick={() => {
+                                    console.log('will remove', row);
+                                    removeItem(row);
+                                }}
+                                style={{width: '1rem', height: '1rem'}}
+                            />
                         </div>
                     </div>
                 ))}
-                <div className={styles.lineItem}>
-                    <div className={styles.lineItemField}>
-                        <Autocomplete
-                            inputProps={{placeholder: 'Vare'}}
-                            value={itemName}
-                            className={styles.lineItemName}
-                            wrapperStyle={{position: 'relative'}}
-                            onChange={(e, value) => {
-                                setItemName(value);
-                            }}
-                            items={searchTerms}
-                            renderMenu={(items, value, style) =>
-                                (items && (items.length > 0)) ? (
-                                    <div className={styles.coicopItems} children={items}/>
-                                ) : (
-                                    <></>
-                                )
-                            }
-                            shouldItemRender={(item, value) =>
-                                item.text.toLowerCase().indexOf(value.toLowerCase()) > -1
-                            }
-                            renderItem={(item, highlighted) => (
-                                <div>{item.text}</div>
-                            )}
-                            onSelect={(value, item) => {
-                                setItemName(value);
-                                setUnit(item.unit);
-                            }}
-                            getItemValue={(item) => {
-                                return item.text;
-                            }}
-                        />
-                    </div>
+            </div>
+            <div className={styles.addPurchaseFormWrapper}>
+                <div className={styles.addPurchaseForm}>
+                    <div className={styles.lineItem}>
+                        <div className={styles.lineItemField}>
+                            <Autocomplete
+                                inputProps={{placeholder: t('addPurchase.itemName.placeholder')}}
+                                value={itemName}
+                                className={styles.lineItemName}
+                                wrapperStyle={{position: 'relative'}}
+                                onChange={(e, value) => {
+                                    setItemName(value);
+                                }}
+                                items={searchTerms}
+                                renderMenu={(items, value, style) =>
+                                    (items && (items.length > 0)) ? (
+                                        <div className={styles.searchTerms} children={items}/>
+                                    ) : (
+                                        <></>
+                                    )
+                                }
+                                shouldItemRender={(item, value) =>
+                                    item.text.toLowerCase().indexOf(value.toLowerCase()) > -1
+                                }
+                                renderItem={(item, highlighted) => (
+                                    <div>{item.text}</div>
+                                )}
+                                onSelect={(value, item) => {
+                                    setItemName(value);
+                                    setUnit(item.unit);
+                                }}
+                                getItemValue={(item) => {
+                                    return item.text;
+                                }}
+                            />
+                        </div>
 
-                    <div className={styles.lineItemField}>
-                        <TextField
-                            adornment={unit}
-                            adornmentPosition={AdornmentPosition.Suffix}
-                            value={qty}
-                            onChange={onQtyChange}
-                            placeholder="1"
-                            className={styles.lineItemQty}
-                        />
-                    </div>
+                        <div className={styles.lineItemField}>
+                            <TextField
+                                adornment={unit}
+                                adornmentPosition={AdornmentPosition.Suffix}
+                                value={qty}
+                                onChange={onQtyChange}
+                                placeholder="1"
+                                className={styles.lineItemQty}
+                            />
+                        </div>
 
-                    <div className={styles.lineItemField}>
-                        <TextField
-                            adornment="kr."
-                            adornmentPosition={AdornmentPosition.Suffix}
-                            value={unitPrice}
-                            onChange={onUnitPriceChange}
-                            className={styles.lineItemPrice}
-                            placeholder="0,00"
-                        />
+                        <div className={styles.lineItemField}>
+                            <TextField
+                                adornment="kr."
+                                adornmentPosition={AdornmentPosition.Suffix}
+                                value={unitPrice}
+                                onChange={onUnitPriceChange}
+                                className={styles.lineItemPrice}
+                                placeholder="0,00"
+                            />
+                        </div>
+                        <div className={styles.lineItemField}></div>
                     </div>
-                    <div className={styles.lineItemField}></div>
                 </div>
             </div>
-            <a onClick={addItem}>
-                Legge til ny vare <PlusCircle/>
+            <a onClick={addItem} className={styles.addAnotherLink}>
+                <span>Legge til ny vare</span>
+                <PlusCircle/>
             </a>
-        </div>
+        </>
     );
 };
 

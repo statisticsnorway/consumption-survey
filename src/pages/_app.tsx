@@ -1,51 +1,48 @@
 import { createContext } from 'react'
 import App, { AppProps } from 'next/app'
+import getConfig from 'next/config';
 import Layout from '../components/layout/Layout'
 import { isPWA } from '../utils/pwaUtils'
 import { getFromCache, saveToCache } from '../hocs/swCache'
 import { appWithTranslation } from '../../i18n'
-
-const PreferencesProvider = dynamic(
-    () => import('../idb/PreferencesProvider'),
-    {ssr: false}
-)
-
-const AuthProvider = dynamic(() => import('../components/auth/AuthProvider'), {
-    ssr: false,
-})
-
-import 'react-day-picker/lib/style.css'
-import 'rc-time-picker/assets/index.css'
-import '../styles/globals.scss'
-import dynamic from 'next/dynamic'
+import { AppContext, AppContextType } from '../uiContexts';
 import FireProvider from '../firebase/FireProvider';
 import UserProvider from '../firebase/UserProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
-import PurchasesProvider from '../hocs/usePurchases';
 
-interface AppContext {
-    firstVisitWeb?: boolean
-    pwaActivated?: boolean
-}
+import '../styles/globals.scss'
+import 'react-day-picker/lib/style.css'
+import 'rc-time-picker/assets/index.css'
 
-export const AppContext = createContext({} as AppContext)
+const appConfig = getConfig();
 
-class MyApp extends App<AppProps, AppContext> {
+class MyApp extends App {
     state = {
         firstVisitWeb: true,
         pwaActivated: false,
 
         initComplete: false,
-    }
+    };
 
     static async getInitialProps(ctxt) {
+        console.log('--------------------------------------');
+        console.log('Environment Variables (_app)', appConfig);
+        console.log('--------------------------------------');
+
         return {
             ...(await App.getInitialProps(ctxt)),
         }
     }
 
     componentDidMount(): void {
-        this.pickupFromCache()
+        this.pickupFromCache();
+
+        this.setState(prevState => {
+            this.setState({
+                ...prevState,
+                envVars: appConfig,
+            });
+        })
     }
 
     pickupFromCache = async () => {
@@ -71,16 +68,18 @@ class MyApp extends App<AppProps, AppContext> {
         const {Component, pageProps} = this.props
         const {initComplete} = this.state
         return (
-            <FireProvider>
-                <UserProvider>
-                    <ProtectedRoute>
-                        <Layout>
-                            <Component {...pageProps} />
-                        </Layout>
-                    </ProtectedRoute>
-                </UserProvider>
-            </FireProvider>
-        )
+            <AppContext.Provider value={{ envVars: appConfig }}>
+                <FireProvider>
+                    <UserProvider>
+                        <ProtectedRoute>
+                            <Layout>
+                                <Component {...pageProps} />
+                            </Layout>
+                        </ProtectedRoute>
+                    </UserProvider>
+                </FireProvider>
+            </AppContext.Provider>
+        );
     }
 }
 

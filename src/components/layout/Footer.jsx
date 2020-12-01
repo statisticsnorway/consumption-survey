@@ -7,7 +7,8 @@ import { LayoutContext } from '../../uiContexts';
 import { useRouter } from 'next/router';
 
 const FOOTER_INCLUDE_PAGES = [
-    '/purchases/addPurchase'
+    '/purchases/addPurchase',
+    '/dashboard/Dashboard',
 ];
 
 const Footer = () => {

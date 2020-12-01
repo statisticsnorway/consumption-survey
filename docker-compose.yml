@@ -8,6 +8,10 @@ services:
     depends_on:
       - backend
       - bff
+    environment:
+      - FORBRUK_APP_VAR_VAR1=val1
+      - FORBRUK_APP_VAR_VAR2=val2
+      - FORBRUK_SERVER_VAR_VAR2=vals
 
   bff:
     build:

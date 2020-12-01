@@ -5,6 +5,10 @@
     "title": "Ny registrering",
     "total": "Sum",
     "cancel": "Avbryt",
-    "save": "Lagre"
+    "save": "Lagre",
+
+    "itemName": {
+      "placeholder": "Velg / oppgi varenavn"
+    }
   }
 }

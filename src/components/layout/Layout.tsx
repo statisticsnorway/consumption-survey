@@ -9,10 +9,7 @@ import Workspace from './Workspace';
 import SWHelper from '../pwa/SWHelper';
 
 import { isBrowser, isPWA } from '../../utils/pwaUtils';
-import { AppContext } from '../../pages/_app';
-import Pin from '../auth/Pin';
-import ManagePin from '../auth/ManagePin';
-import Auth from '../auth/Auth';
+import { AppContext } from '../../uiContexts';
 import { AuthContext } from '../common/contexts';
 import { useLoader } from '../../hocs/globalLoader';
 import Loader from '../common/Loader';

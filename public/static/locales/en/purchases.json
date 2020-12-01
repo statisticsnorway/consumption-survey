@@ -5,6 +5,10 @@
     "title": "Register New Purchase",
     "total": "Total",
     "cancel": "Cancel",
-    "save": "Save"
+    "save": "Save",
+
+    "itemName": {
+      "placeholder": "Select/enter item name"
+    }
   }
 }

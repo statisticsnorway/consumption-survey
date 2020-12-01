@@ -21,8 +21,9 @@
 }
 
 .DayPicker-Month {
-  width: 100%;
-  margin: 1rem 0;
+  width: 100% !important;
+  margin: 1rem 0 !important;
+  padding: 1rem !important;
 }
 
 .DayPicker-Day {
@@ -97,7 +98,7 @@ $survey-bg-color: rgba(236,254,237,.5); /* #ECFEED; */
 }
 
 .DayPicker-Caption {
-  text-align: center;
+  text-align: center !important;
   background-color: #fff;
   padding: 0.25rem;
 }
