@@ -1,5 +1,13 @@
 {
   "diary": {
-    "title": "Dagbok"
+    "title": "Min periode"
+  },
+
+  "entries": {
+    "title": "Registreringer"
+  },
+
+  "regularExpenses":{
+    "title": "Faste utgifter"
   }
 }

@@ -1,5 +1,13 @@
 {
   "diary": {
-    "title": "Diary"
+    "title": "Journal"
+  },
+
+  "entries": {
+    "title": "All entries"
+  },
+
+  "regularExpenses": {
+    "title": "Regular expenses"
   }
 }

@@ -71,7 +71,7 @@ const PurchasesList = ({limit = -1, orderBy = SORT_OPTIONS.DATE_DESC, groupByFie
     );
 
     console.log('sorted', Object.keys(groupsDisp)
-        .map(dt => parseDate(dt))
+        .map(dt => parseDate(dt, DASHBOARD_DATE_GROUPING_FORMAT))
         .sort(compareDesc));
 
     return (

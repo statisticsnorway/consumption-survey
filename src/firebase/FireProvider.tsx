@@ -6,6 +6,7 @@ import { AppContext } from '../uiContexts';
 const FireProvider = ({ children }) => {
     const [fireAuth, setFireAuth] = useState(null);
     const [firestore, setFirestore] = useState(null);
+    const [rtdb, setRtdb] = useState(null);
     const [storage, setStorage] = useState(null);
     const { envVars } = useContext(AppContext);
 
@@ -18,6 +19,7 @@ const FireProvider = ({ children }) => {
     useEffect(() => {
         setFireAuth(fb.auth());
         setFirestore(fb.firestore());
+        setRtdb(fb.database());
         setStorage(fb.storage());
     }, []);
 
@@ -25,6 +27,7 @@ const FireProvider = ({ children }) => {
         <FireContext.Provider value={{
             auth: fireAuth,
             firestore,
+            rtdb,
             storage,
         }}>
             {children}

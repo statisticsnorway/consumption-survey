@@ -22,14 +22,32 @@ section {
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  h1 {
+    font-size: 2rem;
+    padding: 1rem 1.25rem;
+    font-family: 'Roboto Condensed';
+    margin: 0;
+    background-color: $ssb-dark-1;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    padding: 0;
+    font-family: 'Roboto Condensed';
+    margin: 0;
+  }
 }
 
 .ssb-tabs .navigation-item {
   padding: 0.5rem 0;
   font-size: 1rem;
   line-height: 1.25rem;
+  font-weight: normal;
+  font-family: 'Roboto';
 }
 
-.ssb-tabs .navigation-item:not(.active) {
-  font-weight: normal;
+.ssb-tabs .navigation-item.active {
+  font-weight: bold;
 }
+

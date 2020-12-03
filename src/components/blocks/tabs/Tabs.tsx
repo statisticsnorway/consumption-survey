@@ -1,4 +1,5 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+import { DO_NOTHING } from '../../../utils/jsUtils';
 
 export type TabSpec = {
     id: string;
@@ -7,18 +8,22 @@ export type TabSpec = {
 };
 
 export type TabsProps = {
-    defaultActive: string;
+    active: string;
     tabs: TabSpec[];
+    onSelect: (tabId: string) => void,
     className: string;
     style?: object;
 };
 
-const Tabs = ({tabs, defaultActive, className = '', style = {}}: TabsProps) => {
-    const [active, setActive] = useState(defaultActive || tabs[0].id);
-
+const Tabs = ({
+                  tabs,
+                  active,
+                  onSelect = DO_NOTHING,
+                  className = '', style = {}
+              }: TabsProps) => {
     const selectTab = (e, tabId) => {
         e.preventDefault();
-        setActive(tabId);
+        onSelect(tabId);
     };
 
     return (
@@ -27,7 +32,9 @@ const Tabs = ({tabs, defaultActive, className = '', style = {}}: TabsProps) => {
                 {tabs.map(tab => (
                     <button
                         className={`navigation-item ${active === tab.id ? 'active' : ''}`}
-                        onClick={(e) => { selectTab(e, tab.id); }}
+                        onClick={(e) => {
+                            selectTab(e, tab.id);
+                        }}
                     >
                         <span>{tab.title}</span>
                     </button>

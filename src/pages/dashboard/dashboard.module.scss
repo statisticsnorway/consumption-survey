@@ -6,6 +6,7 @@
   width: 100%;
   align-items: center;
   /* padding-top: 1rem; */
+  background-color: $ssb-dark-1;
 }
 
 .floatingAddNew {
@@ -37,7 +38,8 @@
 
 .dashboardTabs {
   border-bottom: 1px solid $ssb-dark-2;
-  margin: 0 1.25rem;
+  padding: 1rem 1.25rem 0;
+  background-color: $ssb-dark-1;
 }
 
 .dashboardRegularExpenses,
@@ -45,9 +47,26 @@
   padding: 0 1.25rem;
   display: flex;
   justify-content: center;
+  background-color: #fff;
 }
 
 .dashboardPurchaseList {
-  background-color: $ssb-dark-1;
-  padding-top: 1rem;
+  padding: 0 0 1rem 0;
+
+  .dashboardPurchaseListHeader {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.25rem;
+
+    .allEntriesLink {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $ssb-green-4;
+
+      .allEntriesIcon {
+        width: 1.25rem;
+      }
+    }
+  }
 }

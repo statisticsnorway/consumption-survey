@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 import { FirebaseAuth } from '@firebase/auth-types';
 import { FirebaseFirestore } from '@firebase/firestore-types';
+import { FirebaseDatabase } from '@firebase/database-types';
 import { FirebaseStorage } from '@firebase/storage-types';
 import { PurchaseType } from './firebase/model/Purchase';
 
@@ -25,6 +26,7 @@ export type FireContextType = {
     auth: FirebaseAuth;
     firestore: FirebaseFirestore;
     storage: FirebaseStorage;
+    rtdb: FirebaseDatabase;
 };
 
 export const FireContext = createContext({} as FireContextType);

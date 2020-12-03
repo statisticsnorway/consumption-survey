@@ -15,6 +15,7 @@ import { FormInputViewMode } from '../form/inputConstants';
 import styles from './purchases.module.scss';
 import footerStyles from '../layout/styles/footer.module.scss';
 import { SIMPLE_DATE_FORMAT, simpleFormat, parseDate } from '../../utils/dateUtils';
+import useSearchTerms from '../../hocs/useSearchTerms';
 
 const purchaseNameHints = [
     'Rema1000',
@@ -27,7 +28,7 @@ const NewPurchase = ({initialSearchTerms}) => {
     const dayPickerRef = createRef();
     const [dayPickerVisible, setDayPickerVisible] = useState(false);
     const {t} = useTranslation('purchases');
-    const [searchTerms, setSearchTerms] = useState([]);
+    const { searchTerms } = useSearchTerms();
 
     const [purchaseName, setPurchaseName] = useState('');
     const [purchaseDate, setPurchaseDate] = useState(new Date());
@@ -41,19 +42,6 @@ const NewPurchase = ({initialSearchTerms}) => {
     const {setFooterContent} = useContext(LayoutContext);
     const {addPurchase} = usePurchases();
     const [purchaseTotal, setPurchaseTotal] = useState(0);
-
-    useEffect(() => {
-        firestore
-            .collection('searchTerms')
-            .onSnapshot(snapshot => {
-                const terms = snapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
-
-                setSearchTerms(terms);
-            });
-    }, []);
 
     const onQtyChange = ({target}) => {
         setQty(target.value);
