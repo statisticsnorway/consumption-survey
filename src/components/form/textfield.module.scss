@@ -1,12 +1,21 @@
 @import '../../styles/common';
 
-.textfield {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+$textfield-border-color: #333;
+$textfield-label-color: #000;
+$textfield-hint-color: $ssb-green-3;
 
-  border-bottom: 1px solid $ssb-green-3;
+.textfield {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  /* border-bottom: 1px solid $ssb-green-3; */
+
+  label {
+    margin-bottom: 0.5rem;
+    color: $textfield-label-color;
+    order: 1;
+  }
 
   .textfieldAdornmentPrefix,
   .textfieldAdornmentSuffix {
@@ -14,27 +23,53 @@
     line-height: 2rem;
   }
 
-  .textfieldAdornmentPrefix {
-    order: 1;
-  }
-
   .textfieldInput {
-    order: 2;
+    order: 3;
     flex-grow: 1;
     padding: 0;
     display: flex;
-    border: 1px solid;
+    border: 1px solid $textfield-border-color;
+
+    .textfieldAdornmentPrefix {
+      order: 1;
+    }
 
     input {
+      order: 2;
       border-width: 0;
       font-size: 1rem;
       line-height: 2rem;
       width: 100%;
       padding: 0.25rem 0.5rem;
     }
+
+    .textfieldAdornmentSuffix {
+      order: 3;
+    }
   }
 
-  .textfieldAdornmentSuffix {
-    order: 3;
+  .hints {
+    font-size: 1rem;
+    display: flex;
+    width: 100%;
+    order: 4;
+
+    .hint, .hintEtc {
+      color: $ssb-green-3 !important;
+      font-style: italic;
+      border: 0;
+      border-bottom: 1px dashed $ssb-green-3;
+      margin: 0.25rem 0.5rem 0.25rem 0;
+    }
+
+    .hint + .hint {
+      content: ',';
+      color: #333;
+    }
+
+    .hintEtc {
+      color: #333;
+      border: 0;
+    }
   }
 }

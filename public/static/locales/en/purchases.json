@@ -7,6 +7,10 @@
     "cancel": "Cancel",
     "save": "Save",
 
+    "name": {
+      "label": "Shop or type of purchase"
+    },
+
     "nameDateGroupTitle": "Change name and date",
     "purchaseNamePlaceholder": "Purchase name",
 

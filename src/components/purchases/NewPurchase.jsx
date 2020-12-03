@@ -4,23 +4,25 @@ import Autocomplete from 'react-autocomplete'
 import { useTranslation } from 'react-i18next';
 import { Edit3, PlusCircle, MinusCircle, Calendar } from 'react-feather';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { DateUtils } from 'react-day-picker';
 import { Accordion } from '@statisticsnorway/ssb-component-library';
 import { FireContext, UserContext } from '../../contexts';
 import usePurchases from '../../hocs/usePurchases';
 import { LayoutContext } from '../../uiContexts';
 import TextField, { AdornmentPosition } from '../form/TextField';
 import { FormInputViewMode } from '../form/inputConstants';
+import { SIMPLE_DATE_FORMAT, simpleFormat, parseDate, DASHBOARD_DATE_GROUPING_FORMAT } from '../../utils/dateUtils';
+import useSearchTerms from '../../hocs/useSearchTerms';
+import workspaceStyles from '../layout/styles/workspace.module.scss';
+import Modal from '../common/dialog/Modal';
 
 import styles from './purchases.module.scss';
 import footerStyles from '../layout/styles/footer.module.scss';
-import { SIMPLE_DATE_FORMAT, simpleFormat, parseDate } from '../../utils/dateUtils';
-import useSearchTerms from '../../hocs/useSearchTerms';
+import textfieldStyles from '../form/textfield.module.scss';
 
 const purchaseNameHints = [
-    'Rema1000',
-    'Baker Hansen',
-    'Oslo City',
+    'Kafé',
+    'Restaurant',
+    'Kiosk'
 ];
 
 const NewPurchase = ({initialSearchTerms}) => {
@@ -28,10 +30,15 @@ const NewPurchase = ({initialSearchTerms}) => {
     const dayPickerRef = createRef();
     const [dayPickerVisible, setDayPickerVisible] = useState(false);
     const {t} = useTranslation('purchases');
-    const { searchTerms } = useSearchTerms();
+    const {searchTerms} = useSearchTerms();
 
     const [purchaseName, setPurchaseName] = useState('');
     const [purchaseDate, setPurchaseDate] = useState(new Date());
+    const [nameDatePopupVisible, setNameDatePopupVisible] = useState(false);
+
+    const showEditNameDatePopup = () => {
+        setNameDatePopupVisible(true);
+    };
 
     const [itemName, setItemName] = useState('');
     const [qty, setQty] = useState('');
@@ -166,160 +173,194 @@ const NewPurchase = ({initialSearchTerms}) => {
     };
 
     console.log('--> itemx', items);
+    const acc = (
+        <Accordion header={t('addPurchase.nameDateGroupTitle')} className={styles.nameDateGroup}>
+        </Accordion>
+    );
 
     return (
         <>
-            <Accordion header={t('addPurchase.nameDateGroupTitle')} className={styles.nameDateGroup}>
-                <div className={styles.nameDateForm}>
-                    <TextField
-                        value={purchaseName}
-                        placeholder={t('addPurchase.purchaseNamePlaceholder')}
-                        className={styles.purchaseName}
-                        onChange={(e) => {
-                            setPurchaseName(e.target.value);
-                        }}
-                    />
-
-                    <div className={styles.nameHints}>
-                        {purchaseNameHints.map(hint => (
-                            <a
-                                className={styles.nameHint}
-                                onClick={() => {
-                                    setPurchaseName(hint);
-                                }}
-                            >
-                                {hint}
-                            </a>
-                        ))}
-                        <span className={styles.nameHintEtc}>osv..</span>
-                    </div>
-
-                    <div className={styles.purchaseDateGroup}>
-                        <DayPickerInput
-                            ref={dayPickerRef}
-                            formatDate={simpleFormat}
-                            format={SIMPLE_DATE_FORMAT}
-                            parseDate={parseDate}
-                            value={purchaseDate}
-                            onDayChange={setPurchaseDate}
-                            placeHolder={`${simpleFormat(purchaseDate)}`}
+            <Modal
+                show={nameDatePopupVisible}
+                closeText="Lagre"
+                className={styles.addPurchase}
+                onClose={() => {
+                    setNameDatePopupVisible(false);
+                }}
+                onCancel={() => {
+                    setNameDatePopupVisible(false);
+                }}
+                cancelText="Avbryt"
+            >
+                <h2>{t('addPurchase.title')}</h2>
+                <div className={styles.nameDateGroup}>
+                    <div className={styles.nameDateForm}>
+                        <TextField
+                            id="purchaseName"
+                            label={t('addPurchase.name.label')}
+                            value={purchaseName}
+                            placeholder={t('addPurchase.purchaseNamePlaceholder')}
+                            className={styles.purchaseName}
+                            onChange={(newVal) => {
+                                setPurchaseName(newVal);
+                            }}
+                            hints={purchaseNameHints}
                         />
-                        <Calendar onClick={toggleDayPicker} />
+
+                        <div className={styles.purchaseDateGroup}>
+                            <DayPickerInput
+                                ref={dayPickerRef}
+                                formatDate={simpleFormat}
+                                format={SIMPLE_DATE_FORMAT}
+                                parseDate={parseDate}
+                                value={purchaseDate}
+                                onDayChange={setPurchaseDate}
+                                placeholder={`${simpleFormat(purchaseDate)}`}
+                                keepFocus={false}
+                            />
+                            <div className={styles.purchaseDateIconWrapper}>
+                                <Calendar onClick={toggleDayPicker} className={styles.purchaseDateIcon}/>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </Accordion>
-            <div className={styles.lineItems}>
-                {items.map((row, idx) => (
-                    <div className={styles.lineItem}>
-                        <div className={`${styles.lineItemField} ${styles.viewMode}`}>
-                            {row.itemName}
-                        </div>
-                        <div className={`${styles.lineItemField} ${styles.viewMode}`}>
-                            <TextField
-                                value={row.qty}
-                                adornment={row.unit}
-                                adornmentPosition={AdornmentPosition.Suffix}
-                                className={styles.lineItemQtyView}
-                                viewMode={FormInputViewMode.VIEW}
-                                style={{textAlign: 'right'}}
-                            />
-                        </div>
-                        <div className={`${styles.lineItemField} ${styles.viewMode}`}>
-                            <TextField
-                                value={row.unitPrice}
-                                adornment="kr."
-                                adornmentPosition={AdornmentPosition.Suffix}
-                                className={styles.lineItemPriceView}
-                                style={{textAlign: 'right'}}
-                                viewMode={FormInputViewMode.VIEW}
-                            />
-                        </div>
-                        <div className={`${styles.lineItemField} ${styles.editLineItem}`}>
-                            <Edit3
-                                onClick={() => {
-                                    console.log('will remove', row);
-                                    editItem(row);
-                                }}
-                                style={{width: '1rem', height: '1rem'}}
-                            />
-                        </div>
-                        <div className={`${styles.lineItemField} ${styles.deleteLineItem}`}>
-                            <MinusCircle
-                                onClick={() => {
-                                    console.log('will remove', row);
-                                    removeItem(row);
-                                }}
-                                style={{width: '1rem', height: '1rem'}}
-                            />
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className={styles.addPurchaseFormWrapper}>
-                <div className={styles.addPurchaseForm}>
-                    <div className={styles.lineItem}>
-                        <div className={styles.lineItemField}>
-                            <Autocomplete
-                                inputProps={{placeholder: t('addPurchase.itemName.placeholder')}}
-                                value={itemName}
-                                className={styles.lineItemName}
-                                wrapperStyle={{position: 'relative'}}
-                                onChange={(e, value) => {
-                                    setItemName(value);
-                                }}
-                                items={searchTerms}
-                                renderMenu={(items, value, style) =>
-                                    (items && (items.length > 0)) ? (
-                                        <div className={styles.searchTerms} children={items}/>
-                                    ) : (
-                                        <></>
-                                    )
-                                }
-                                shouldItemRender={(item, value) =>
-                                    item.text.toLowerCase().indexOf(value.toLowerCase()) > -1
-                                }
-                                renderItem={(item, highlighted) => (
-                                    <div>{item.text}</div>
-                                )}
-                                onSelect={(value, item) => {
-                                    setItemName(value);
-                                    setUnit(item.unit);
-                                }}
-                                getItemValue={(item) => {
-                                    return item.text;
-                                }}
-                            />
-                        </div>
-
-                        <div className={styles.lineItemField}>
-                            <TextField
-                                adornment={unit}
-                                adornmentPosition={AdornmentPosition.Suffix}
-                                value={qty}
-                                onChange={onQtyChange}
-                                placeholder="1"
-                                className={styles.lineItemQty}
-                            />
-                        </div>
-
-                        <div className={styles.lineItemField}>
-                            <TextField
-                                adornment="kr."
-                                adornmentPosition={AdornmentPosition.Suffix}
-                                value={unitPrice}
-                                onChange={onUnitPriceChange}
-                                className={styles.lineItemPrice}
-                                placeholder="0,00"
-                            />
-                        </div>
-                        <div className={styles.lineItemField}></div>
+            </Modal>
+            <div className={workspaceStyles.pageHeader}>
+                <div className={workspaceStyles.leftSection}>
+                    <h1>{purchaseName || t('addPurchase.title')}</h1>
+                    <div className={styles.editMetaLink}>
+                        <a onClick={() => {
+                            showEditNameDatePopup();
+                        }}>{simpleFormat(purchaseDate)}</a>
                     </div>
                 </div>
+                <div className={workspaceStyles.rightSection}>
+                    <Edit3
+                        onClick={() => {
+                            showEditNameDatePopup();
+                        }}
+                        className={styles.editMetaLink}
+                    />
+                </div>
             </div>
-            <a onClick={addItem} className={styles.addAnotherLink}>
-                <span>Legge til ny vare</span>
-                <PlusCircle/>
-            </a>
+            <div className={styles.addPurchase}>
+                <div className={styles.lineItems}>
+                    {items.map((row, idx) => (
+                        <div className={styles.lineItem}>
+                            <div className={`${styles.lineItemField} ${styles.viewMode}`}>
+                                {row.itemName}
+                            </div>
+                            <div className={`${styles.lineItemField} ${styles.viewMode}`}>
+                                <TextField
+                                    id="purchaseQty"
+                                    value={row.qty}
+                                    adornment={row.unit}
+                                    adornmentPosition={AdornmentPosition.Suffix}
+                                    className={styles.lineItemQtyView}
+                                    viewMode={FormInputViewMode.VIEW}
+                                    style={{textAlign: 'right'}}
+                                />
+                            </div>
+                            <div className={`${styles.lineItemField} ${styles.viewMode}`}>
+                                <TextField
+                                    id="purchaseUnitPrice"
+                                    value={row.unitPrice}
+                                    adornment="kr."
+                                    adornmentPosition={AdornmentPosition.Suffix}
+                                    className={styles.lineItemPriceView}
+                                    style={{textAlign: 'right'}}
+                                    viewMode={FormInputViewMode.VIEW}
+                                />
+                            </div>
+                            <div className={`${styles.lineItemField} ${styles.editLineItem}`}>
+                                <Edit3
+                                    onClick={() => {
+                                        console.log('will remove', row);
+                                        editItem(row);
+                                    }}
+                                    style={{width: '1rem', height: '1rem'}}
+                                />
+                            </div>
+                            <div className={`${styles.lineItemField} ${styles.deleteLineItem}`}>
+                                <MinusCircle
+                                    onClick={() => {
+                                        console.log('will remove', row);
+                                        removeItem(row);
+                                    }}
+                                    style={{width: '1rem', height: '1rem'}}
+                                />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className={styles.addPurchaseFormWrapper}>
+                    <div className={styles.addPurchaseForm}>
+                        <div className={styles.lineItem}>
+                            <div className={styles.lineItemField}>
+                                <Autocomplete
+                                    inputProps={{placeholder: t('addPurchase.itemName.placeholder')}}
+                                    value={itemName}
+                                    className={styles.lineItemName}
+                                    wrapperStyle={{position: 'relative'}}
+                                    onChange={(e, value) => {
+                                        setItemName(value);
+                                    }}
+                                    items={searchTerms}
+                                    renderMenu={(items, value, style) =>
+                                        (items && (items.length > 0)) ? (
+                                            <div className={styles.searchTerms} children={items}/>
+                                        ) : (
+                                            <></>
+                                        )
+                                    }
+                                    shouldItemRender={(item, value) =>
+                                        item.text.toLowerCase().indexOf(value.toLowerCase()) > -1
+                                    }
+                                    renderItem={(item, highlighted) => (
+                                        <div>{item.text}</div>
+                                    )}
+                                    onSelect={(value, item) => {
+                                        setItemName(value);
+                                        setUnit(item.unit);
+                                    }}
+                                    getItemValue={(item) => {
+                                        return item.text;
+                                    }}
+                                />
+                            </div>
+
+                            <div className={styles.lineItemField}>
+                                <TextField
+                                    id="purchaseUnit"
+                                    adornment={unit}
+                                    adornmentPosition={AdornmentPosition.Suffix}
+                                    value={qty}
+                                    onChange={onQtyChange}
+                                    placeholder="1"
+                                    className={styles.lineItemQty}
+                                />
+                            </div>
+
+                            <div className={styles.lineItemField}>
+                                <TextField
+                                    id="purchaseUnitPirce"
+                                    adornment="kr."
+                                    adornmentPosition={AdornmentPosition.Suffix}
+                                    value={unitPrice}
+                                    onChange={onUnitPriceChange}
+                                    className={styles.lineItemPrice}
+                                    placeholder="0,00"
+                                />
+                            </div>
+                            <div className={styles.lineItemField}></div>
+                        </div>
+                    </div>
+                </div>
+                <a onClick={addItem} className={styles.addAnotherLink}>
+                    <span>Legge til ny vare</span>
+                    <PlusCircle/>
+                </a>
+            </div>
         </>
     );
 };

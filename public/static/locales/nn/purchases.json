@@ -7,6 +7,10 @@
     "cancel": "Avbryt",
     "save": "Lagre",
 
+    "name": {
+      "label": "Butikk eller type utgift"
+    },
+
     "nameDateGroupTitle": "Endre namn og dato",
     "purchaseNamePlaceholder": "Namn på kjøpet",
 

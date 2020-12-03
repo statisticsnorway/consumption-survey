@@ -58,7 +58,7 @@
   }
 }
 
-$survey-bg-color: rgba(236,254,237,.5); /* #ECFEED; */
+$survey-bg-color: rgba(236, 254, 237, .5); /* #ECFEED; */
 
 .DayPicker-Day--surveyPeriod {
   background-color: $survey-bg-color;
@@ -107,6 +107,39 @@ $survey-bg-color: rgba(236,254,237,.5); /* #ECFEED; */
   background-color: #fff;
 }
 
+
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):not(.DayPicker-Day--surveyPeriod) {
+  background-color: transparent;
+}
+
+.DayPicker-Day--selected.DayPicker-Day--surveyPeriod {
+  background-color: $survey-bg-color;
+}
+
+.DayPickerInput {
+  .DayPickerInput-OverlayWrapper {
+    color: #162327;
+    position: relative;
+
+    .DayPickerInput-Overlay {
+      position: absolute;
+      background-color: #fff;
+      padding: 0 0.5rem !important;
+      border: 1px solid #ccc;
+
+      .DayPicker-Day.DayPicker-Day--today {
+        background-color: $ssb-blue-3 !important;
+        color: #fff;
+      }
+
+      .DayPicker-Day.DayPicker-Day--selected {
+        background-color: $ssb-green-3 !important;
+        color: #fff !important;
+      }
+    }
+  }
+}
+
 /* PIN input */
 .pincode-input-container {
   background: #fff;
@@ -126,12 +159,4 @@ $survey-bg-color: rgba(236,254,237,.5); /* #ECFEED; */
     outline: none;
     box-shadow: none;
   }
-}
-
-.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):not(.DayPicker-Day--surveyPeriod) {
-  background-color: transparent;
-}
-
-.DayPicker-Day--selected.DayPicker-Day--surveyPeriod {
-  background-color: $survey-bg-color;
 }
