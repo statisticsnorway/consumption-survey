@@ -14,8 +14,12 @@
     "nameDateGroupTitle": "Change name and date",
     "purchaseNamePlaceholder": "Purchase name",
 
+    "lineItems": {
+      "title": "What have you purchased ?"
+    },
+
     "itemName": {
-      "placeholder": "Select/enter item name"
+      "placeholder": "Choose item"
     }
   }
 }

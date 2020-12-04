@@ -17,18 +17,21 @@ $textfield-hint-color: $ssb-green-3;
     order: 1;
   }
 
-  .textfieldAdornmentPrefix,
-  .textfieldAdornmentSuffix {
-    color: $ssb-green-4;
-    line-height: 2rem;
-  }
-
   .textfieldInput {
     order: 3;
     flex-grow: 1;
     padding: 0;
     display: flex;
     border: 1px solid $textfield-border-color;
+    flex-direction: row;
+
+    .textfieldAdornmentPrefix,
+    .textfieldAdornmentSuffix {
+      color: $ssb-green-4;
+      line-height: 2rem;
+      display: flex;
+      align-items: center;
+    }
 
     .textfieldAdornmentPrefix {
       order: 1;

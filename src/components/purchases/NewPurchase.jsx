@@ -1,23 +1,20 @@
 import { useState, useEffect, useContext, createRef } from 'react';
 import { useRouter } from 'next/router';
-import Autocomplete from 'react-autocomplete'
 import { useTranslation } from 'react-i18next';
 import { Edit3, PlusCircle, MinusCircle, Calendar } from 'react-feather';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Accordion } from '@statisticsnorway/ssb-component-library';
-import { FireContext, UserContext } from '../../contexts';
 import usePurchases from '../../hocs/usePurchases';
 import { LayoutContext } from '../../uiContexts';
 import TextField, { AdornmentPosition } from '../form/TextField';
 import { FormInputViewMode } from '../form/inputConstants';
 import { SIMPLE_DATE_FORMAT, simpleFormat, parseDate, DASHBOARD_DATE_GROUPING_FORMAT } from '../../utils/dateUtils';
-import useSearchTerms from '../../hocs/useSearchTerms';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
 import Modal from '../common/dialog/Modal';
 
 import styles from './purchases.module.scss';
 import footerStyles from '../layout/styles/footer.module.scss';
-import textfieldStyles from '../form/textfield.module.scss';
+import ItemMask from '../form/ItemMask';
 
 const purchaseNameHints = [
     'Kafé',
@@ -30,7 +27,6 @@ const NewPurchase = ({initialSearchTerms}) => {
     const dayPickerRef = createRef();
     const [dayPickerVisible, setDayPickerVisible] = useState(false);
     const {t} = useTranslation('purchases');
-    const {searchTerms} = useSearchTerms();
 
     const [purchaseName, setPurchaseName] = useState('');
     const [purchaseDate, setPurchaseDate] = useState(new Date());
@@ -42,24 +38,27 @@ const NewPurchase = ({initialSearchTerms}) => {
 
     const [itemName, setItemName] = useState('');
     const [qty, setQty] = useState('');
-    const [unit, setUnit] = useState('');
-    const [unitPrice, setUnitPrice] = useState('');
+    const [unit, setUnit] = useState('1');
+    const [price, setPrice] = useState('0,00');
     const [items, setItems] = useState([]);
-    const {firestore} = useContext(FireContext);
     const {setFooterContent} = useContext(LayoutContext);
     const {addPurchase} = usePurchases();
     const [purchaseTotal, setPurchaseTotal] = useState(0);
 
-    const onQtyChange = ({target}) => {
-        setQty(target.value);
+    const onQtyChange = (value) => {
+        setQty(value);
     };
 
-    const onUnitPriceChange = ({target}) => {
-        setUnitPrice(target.value);
+    const onUnitPriceChange = (value) => {
+        setPrice(value);
     };
 
-    const onPurchaseNameChange = ({target}) => {
-        setPurchaseName(target.value);
+    const onItemNameChange = (value) => {
+        setItemName(value);
+    };
+
+    const onPurchaseNameChange = (value) => {
+        setPurchaseName(value);
     };
 
     const toggleDayPicker = () => {
@@ -75,8 +74,8 @@ const NewPurchase = ({initialSearchTerms}) => {
 
     const clearItemInfo = () => {
         setItemName('');
-        setQty('');
-        setUnitPrice('');
+        setQty('1');
+        setPrice('0,00');
     };
 
     const clearItems = () => {
@@ -143,15 +142,16 @@ const NewPurchase = ({initialSearchTerms}) => {
         e.preventDefault();
         setItems([
             ...items,
-            {idx: items.length, itemName, qty, unit, unitPrice}
+            {idx: items.length, itemName, qty, units: unit, price},
         ]);
 
-        setPurchaseTotal(purchaseTotal + Number(unitPrice));
+        const [priceVal, suffix] = price.split(' kr.');
+        setPurchaseTotal(purchaseTotal + Number(priceVal));
 
         setItemName('');
         setQty('');
-        setUnit('');
-        setUnitPrice('');
+        setUnit('1');
+        setPrice('0,00');
     };
 
     const editItem = (item) => {
@@ -166,7 +166,7 @@ const NewPurchase = ({initialSearchTerms}) => {
         } else {
             // this item has not yet been saved
             setItems([
-                ...items.slice(9, idx),
+                ...items.slice(0, idx),
                 ...items.slice(idx + 1)
             ]);
         }
@@ -244,6 +244,7 @@ const NewPurchase = ({initialSearchTerms}) => {
                 </div>
             </div>
             <div className={styles.addPurchase}>
+                <span>{t('addPurchase.lineItems.title')}</span>
                 <div className={styles.lineItems}>
                     {items.map((row, idx) => (
                         <div className={styles.lineItem}>
@@ -264,7 +265,7 @@ const NewPurchase = ({initialSearchTerms}) => {
                             <div className={`${styles.lineItemField} ${styles.viewMode}`}>
                                 <TextField
                                     id="purchaseUnitPrice"
-                                    value={row.unitPrice}
+                                    value={row.price}
                                     adornment="kr."
                                     adornmentPosition={AdornmentPosition.Suffix}
                                     className={styles.lineItemPriceView}
@@ -295,65 +296,18 @@ const NewPurchase = ({initialSearchTerms}) => {
                 </div>
                 <div className={styles.addPurchaseFormWrapper}>
                     <div className={styles.addPurchaseForm}>
-                        <div className={styles.lineItem}>
-                            <div className={styles.lineItemField}>
-                                <Autocomplete
-                                    inputProps={{placeholder: t('addPurchase.itemName.placeholder')}}
-                                    value={itemName}
-                                    className={styles.lineItemName}
-                                    wrapperStyle={{position: 'relative'}}
-                                    onChange={(e, value) => {
-                                        setItemName(value);
-                                    }}
-                                    items={searchTerms}
-                                    renderMenu={(items, value, style) =>
-                                        (items && (items.length > 0)) ? (
-                                            <div className={styles.searchTerms} children={items}/>
-                                        ) : (
-                                            <></>
-                                        )
-                                    }
-                                    shouldItemRender={(item, value) =>
-                                        item.text.toLowerCase().indexOf(value.toLowerCase()) > -1
-                                    }
-                                    renderItem={(item, highlighted) => (
-                                        <div>{item.text}</div>
-                                    )}
-                                    onSelect={(value, item) => {
-                                        setItemName(value);
-                                        setUnit(item.unit);
-                                    }}
-                                    getItemValue={(item) => {
-                                        return item.text;
-                                    }}
-                                />
-                            </div>
-
-                            <div className={styles.lineItemField}>
-                                <TextField
-                                    id="purchaseUnit"
-                                    adornment={unit}
-                                    adornmentPosition={AdornmentPosition.Suffix}
-                                    value={qty}
-                                    onChange={onQtyChange}
-                                    placeholder="1"
-                                    className={styles.lineItemQty}
-                                />
-                            </div>
-
-                            <div className={styles.lineItemField}>
-                                <TextField
-                                    id="purchaseUnitPirce"
-                                    adornment="kr."
-                                    adornmentPosition={AdornmentPosition.Suffix}
-                                    value={unitPrice}
-                                    onChange={onUnitPriceChange}
-                                    className={styles.lineItemPrice}
-                                    placeholder="0,00"
-                                />
-                            </div>
-                            <div className={styles.lineItemField}></div>
-                        </div>
+                        <ItemMask
+                            name={itemName}
+                            qty={qty}
+                            price={price}
+                            units={unit}
+                            onNameChange={onItemNameChange}
+                            onQtyChange={onQtyChange}
+                            onUnitsChange={(newVal) => { setUnit(newVal); }}
+                            onPriceChange={onUnitPriceChange}
+                            onComplete={addItem}
+                            clear={clearItemInfo}
+                        />
                     </div>
                 </div>
                 <a onClick={addItem} className={styles.addAnotherLink}>

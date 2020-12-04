@@ -31,7 +31,7 @@ const usePurchases = () => {
         }
     }, []);
 
-    const addPurchase = (purchase) => {
+    const addPurchase = (purchase: PurchaseType) => {
         console.log('adding new purchase', purchase);
         return firestore
             .collection(`/users/${userInfo.userName}/purchases`)

@@ -14,8 +14,12 @@
     "nameDateGroupTitle": "Endre namn og dato",
     "purchaseNamePlaceholder": "Namn på kjøpet",
 
+    "lineItems": {
+      "title": "Hva har du kjøpt ?"
+    },
+
     "itemName": {
-      "placeholder": "Velg/oppgi vare navn"
+      "placeholder": "Vare"
     }
   }
 }

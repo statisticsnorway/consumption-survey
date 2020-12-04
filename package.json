@@ -41,6 +41,7 @@
     "react-floating-button-menu": "^2.0.8",
     "react-idle-timer": "^4.3.6",
     "react-indexed-db": "^1.0.12",
+    "react-number-format": "^4.4.1",
     "react-pin-input": "^1.0.1",
     "react-pwa-install-ios": "^1.4.0",
     "sass": "^1.26.10",

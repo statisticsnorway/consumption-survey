@@ -1,5 +1,5 @@
 export type ItemType = {
-    itemName: string;
+    name: string;
     category?: string;
     quantity: number;
     price: number;

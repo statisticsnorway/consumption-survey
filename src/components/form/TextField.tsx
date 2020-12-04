@@ -13,24 +13,25 @@ export type TextFieldProps = {
     id: string;
     value: string;
     placeholder: string;
-    size: string | number;
-    adornment: string;
-    adornmentPosition: AdornmentPosition;
-    className: string;
-    style: object;
+    size?: string | number;
+    adornment?: string;
+    adornmentPosition?: AdornmentPosition;
+    className?: string;
+    style?: object;
+    inputStyle?: object;
     onChange: (newVal: string | any) => void;
-    onFocus: FocusEventHandler,
-    inputComp: ReactElement;
-    viewMode: FormInputViewMode;
-    label: string | null | undefined;
-    hints: string[] | null;
+    onFocus?: FocusEventHandler,
+    inputComp?: ReactElement;
+    viewMode?: FormInputViewMode;
+    label?: string | null | undefined;
+    hints?: string[] | null;
 };
 
 const TextField = ({
                        id,
                        placeholder = '',
                        adornment = '', adornmentPosition = AdornmentPosition.Suffix,
-                       className = '', style = {},
+                       className = '', style = {}, inputStyle = {},
                        size = '5',
                        onChange, onFocus = DO_NOTHING,
                        inputComp = null,
@@ -53,13 +54,13 @@ const TextField = ({
         </div>
     ) : (
         <div className={`${styles.textfield} ${className}`} style={style}>
-            {(adornmentPosition === AdornmentPosition.Prefix) &&
-            <span className={styles.textfieldAdornmentPrefix}>{adornment}</span>
-            }
             {label && !inputComp &&
             <label htmlFor={`textfield-${id}`} className={styles.textFieldLabel}>{label}</label>
             }
-            <div className={styles.textfieldInput}>
+            <div className={styles.textfieldInput} style={inputStyle}>
+                {(adornmentPosition === AdornmentPosition.Prefix) &&
+                <span className={styles.textfieldAdornmentPrefix}>{adornment}</span>
+                }
                 {(inputComp ? inputComp : (
                     <input
                         id={`textfield-${id}`}
@@ -72,10 +73,10 @@ const TextField = ({
                         onFocus={onFocus}
                     />
                 ))}
+                {(adornmentPosition === AdornmentPosition.Suffix) &&
+                <span className={styles.textfieldAdornmentSuffix}>{adornment}</span>
+                }
             </div>
-            {(adornmentPosition === AdornmentPosition.Suffix) &&
-            <span className={styles.textfieldAdornmentSuffix}>{adornment}</span>
-            }
             {hints &&
             <div className={styles.hints}>
                 {hints.map(hint => (

@@ -89,7 +89,7 @@ const PurchasesList = ({limit = -1, orderBy = SORT_OPTIONS.DATE_DESC, groupByFie
                         <div className={styles.purchaseGroupEntries}>
                             {groupsDisp[date].map(p => (
                                 <div className={styles.purchaseGroupEntry}>
-                                    <span>{p.where || (p.items && p.items[0] && p.items[0].itemName) || '??'}</span>
+                                    <span>{p.where || (p.items && p.items[0] && p.items[0].name) || '??'}</span>
                                     <span>{p.totalPrice || '0,00'}</span>
                                 </div>
                             ))}
