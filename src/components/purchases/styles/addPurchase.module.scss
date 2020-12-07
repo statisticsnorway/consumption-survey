@@ -1,0 +1,64 @@
+@import '../../../styles/common';
+
+.purchaseNameDateForm {
+  .purchaseName {
+  }
+
+  .purchaseDateGroup {
+    display: flex;
+    margin-bottom: 2rem;
+
+    .purchaseDateIconWrapper {
+      line-height: 2rem;
+      padding: 0.5rem;
+      background-color: $ssb-dark-2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 0.25rem;
+
+      .purchaseDateIcon {
+        color: $ssb-green-4;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.newItemForm {
+  padding: 1.25rem;
+
+  .itemName {
+
+  }
+
+  .itemQtyGroup {
+    display: flex;
+    flex-direction: row;
+
+    .fbuFormField {
+      margin: 0;
+    }
+
+    .fbuFormField + .fbuFormField {
+      margin-left: 0.5rem !important;
+    }
+
+    .itemQty,
+    .itemKr,
+    .itemCents {
+      input {
+        text-align: right;
+      }
+    }
+  }
+
+  .itemPriceGroup {
+    display: flex;
+
+    .itemKr,
+    .itemCents {
+      text-align: right;
+    }
+  }
+}

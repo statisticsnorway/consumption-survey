@@ -2,7 +2,7 @@
   "when" : "når",
 
   "addPurchase": {
-    "title": "Ny registrering",
+    "title": "Nytt kjøp",
     "total": "Sum",
     "cancel": "Avbryt",
     "save": "Lagre",
@@ -12,14 +12,37 @@
     },
 
     "nameDateGroupTitle": "Endre navn og dato",
-    "purchaseNamePlaceholder": "Navn på kjøpet",
+    "purchaseNameLabel": "Navn på kjøpet",
+    "purchaseNameDefault": "Nytt kjøp",
+    "purchaseNamePlaceholder": "Daglivare, Kafé, Restaurant, osv..",
+    "purchaseDateLabel": "Kjøpsdato",
 
     "lineItems": {
-      "title": "Hva har du kjøpt ?"
     },
 
-    "itemName": {
-      "placeholder": "Vare"
+    "newItem": {
+      "title": "Hva har du kjøpt ?",
+      "name": {
+        "label": "Vare",
+        "placeholder": "Kjeks, Te, Fisk, osv."
+      },
+
+      "qty": {
+        "label": "Mengde",
+        "placeholder": "1, 2, ..."
+      },
+
+      "price": {
+        "kr": {
+          "label": "kr.",
+          "placeholder": "0"
+        },
+
+        "cents": {
+          "label": "øre",
+          "placeholder": "00"
+        }
+      }
     }
   }
 }

@@ -16,8 +16,11 @@ services:
   bff:
     build:
       context: ../consumption-bff
+      dockerfile: Dockerfile.dev
     ports:
       - 3005:3005
+    environment:
+      - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey.json
 
   backend:
     build:

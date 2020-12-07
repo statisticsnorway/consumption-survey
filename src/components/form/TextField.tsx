@@ -42,15 +42,15 @@ const TextField = ({
                    }: TextFieldProps) => {
     return (viewMode === FormInputViewMode.VIEW) ? (
         <div className={`${styles.textfield} ${className}`} style={style}>
-            {(adornmentPosition === AdornmentPosition.Prefix) &&
-            <span className={styles.textfieldAdornmentPrefix}>{adornment}</span>
-            }
-            <div className={styles.textfieldInput}>
+            <div className={`${styles.textfieldInput} ${styles.viewMode} ${inputStyle}`}>
+                {(adornmentPosition === AdornmentPosition.Prefix) &&
+                <span className={styles.textfieldAdornmentPrefix}>{adornment}</span>
+                }
                 <span>{value}</span>
+                {(adornmentPosition === AdornmentPosition.Suffix) &&
+                <span className={styles.textfieldAdornmentSuffix}>{adornment}</span>
+                }
             </div>
-            {(adornmentPosition === AdornmentPosition.Suffix) &&
-            <span className={styles.textfieldAdornmentSuffix}>{adornment}</span>
-            }
         </div>
     ) : (
         <div className={`${styles.textfield} ${className}`} style={style}>

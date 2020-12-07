@@ -2,7 +2,7 @@
   "when" : "when",
 
   "addPurchase": {
-    "title": "Register New Purchase",
+    "title": "New Purchase",
     "total": "Total",
     "cancel": "Cancel",
     "save": "Save",
@@ -12,14 +12,38 @@
     },
 
     "nameDateGroupTitle": "Change name and date",
-    "purchaseNamePlaceholder": "Purchase name",
+    "purchaseNameLabel": "Purchase name",
+    "purchaseNameDefault": "New Purchase",
+    "purchaseNamePlaceholder": "Groceries, Cafe, Restaurant, etc.",
+    "purchaseDateLabel": "Purchase date",
 
     "lineItems": {
-      "title": "What have you purchased ?"
     },
 
-    "itemName": {
-      "placeholder": "Choose item"
+    "newItem": {
+      "title": "What have you purchased ?",
+      "name": {
+        "label": "Item name",
+        "placeholder": "Cookies, Tea, Fish, ..."
+      },
+
+      "qty": {
+        "label": "Quantity",
+        "placeholder": "1, 2, ..."
+      },
+
+      "price": {
+        "label": "Price",
+        "kr": {
+          "label": "kr.",
+          "placeholder": "0"
+        },
+
+        "cents": {
+          "label": "cents",
+          "placeholder": "00"
+        }
+      }
     }
   }
 }

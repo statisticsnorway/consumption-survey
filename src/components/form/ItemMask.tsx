@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Autocomplete from 'react-autocomplete'
 import NumberFormat from 'react-number-format';
-import { Check, X } from 'react-feather';
+import { Check, MinusCircle, X, } from 'react-feather';
 import TextField, { AdornmentPosition } from './TextField';
 
 import styles from './itemMask.module.scss';
@@ -87,7 +87,7 @@ const ItemMask = ({
                 placeholder="1"
                 onChange={onQtyChange}
                 className={styles.qtyField}
-                inputStyle={{ border: '0' }}
+                inputStyle={{border: '0'}}
             />
             <TextField
                 id="newItem-price"
@@ -97,7 +97,7 @@ const ItemMask = ({
                 adornment="kr."
                 className={styles.priceField}
                 adornmentPosition={AdornmentPosition.Suffix}
-                inputStyle={{ border: '0' }}
+                inputStyle={{border: '0'}}
             />
 
             <span className={`${styles.itemMaskAction} ${styles.addItemIcon}`}>
@@ -107,9 +107,12 @@ const ItemMask = ({
                 }}/>
             </span>
             <span className={`${styles.itemMaskAction} ${styles.cancelItemIcon}`}>
-                <X onClick={() => {
+            <MinusCircle
+                onClick={() => {
                     clear();
-                }}/>
+                }}
+                style={{width: '1rem', height: '1rem'}}
+            />
             </span>
         </div>
     );
