@@ -8,10 +8,22 @@ body {
   font-size: 16px;
   line-height: normal; // override bootstrap global line-height style
   overflow-x: hidden; // removes horisontal scroll bar created by part preface
-  overflow-y: hidden;
+  overflow-y: scroll;
 
   padding: 0;
   margin: 0;
+}
+
+body, html {
+  height: 100%;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  height: 100%;
 }
 
 section {
@@ -22,6 +34,7 @@ section {
   display: flex;
   flex-direction: column;
   width: 100%;
+  overflow-y: auto;
 
   h1 {
     font-size: 2rem;

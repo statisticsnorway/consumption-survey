@@ -9,5 +9,10 @@
 
   "regularExpenses": {
     "title": "Faste utgifter"
+  },
+
+  "fab": {
+    "registerNew": "Nytt kjøp",
+    "scanReceipt": "Skann kvittering"
   }
 }

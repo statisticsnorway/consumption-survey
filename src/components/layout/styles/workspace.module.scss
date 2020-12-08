@@ -6,8 +6,9 @@
   align-items: stretch;
   /* background-color: $ssb-dark-1; */
   background-color: #fff;
-  height: 100vh;
-  overflow-y: scroll;
+  /* height: 100vh; */
+  overflow-y: hidden;
+  /* height: 100%; */
 
   h3,
   h4 {

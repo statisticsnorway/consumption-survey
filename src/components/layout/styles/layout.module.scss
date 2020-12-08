@@ -1,5 +1,13 @@
 @import 'src/styles/common';
 
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  height: 100%;
+}
+
 @media(max-width: 480px) {
   .header-component-wrapper.front-page {
     display: flex;

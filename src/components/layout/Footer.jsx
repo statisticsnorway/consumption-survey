@@ -12,8 +12,7 @@ const FOOTER_INCLUDE_PAGES = [
 
 const Footer = () => {
     const router = useRouter();
-    const [showFooter, setShowFooter] = useState(false);
-    const {footerContent} = useContext(LayoutContext);
+    const {showFooter, setShowFooter, footerContent} = useContext(LayoutContext);
 
     useEffect(() => {
         setShowFooter(FOOTER_INCLUDE_PAGES.includes(router.pathname));

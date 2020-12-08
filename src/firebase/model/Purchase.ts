@@ -6,7 +6,7 @@ export type ItemType = {
 };
 
 export type PurchaseType = {
-    id: string;
+    id?: string;
     where: string;
     items: ItemType[];
     when: Date;

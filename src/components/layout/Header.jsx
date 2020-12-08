@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Text } from '@statisticsnorway/ssb-component-library';
 import styles from './styles/header.module.scss';
 import Notifications from '../common/notifications/Notifications';
+import { LayoutContext } from '../../uiContexts';
 
 const HEADER_EXCLUDE_PAGES = [
 ];
@@ -10,7 +11,7 @@ const HEADER_EXCLUDE_PAGES = [
 const Header = ({siteTitle, version, isOnline}) => {
     const router = useRouter();
     const [showMenu, setShowMenu] = useState(false);
-    const [showHeader, setShowHeader] = useState(false);
+    const {showHeader, setShowHeader} = useContext(LayoutContext);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);

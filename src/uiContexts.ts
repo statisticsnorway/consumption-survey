@@ -13,6 +13,12 @@ export type AppContextType = {
 export const AppContext = createContext({} as AppContextType);
 
 export type LayoutContextType = {
+    showHeader: boolean;
+    setShowHeader: (boolean) => void;
+    showFooter: boolean;
+    setShowFooter: (boolean) => void;
+    headerContent: ReactNode;
+    setHeaderContent: (ReactNode)=> void;
     footerContent: ReactNode;
     setFooterContent: (ReactNode) => void;
 };

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 import { withTranslation } from 'next-i18next';
 import DayPicker from 'react-day-picker'
 import { ArrowRight, Plus, Camera, Edit, X } from 'react-feather'
@@ -37,8 +38,9 @@ const getModifiers = (purchases) => {
     };
 };
 
-const Dashboard = ({t}) => {
+const Dashboard = () => {
     const router = useRouter();
+    const { t } = useTranslation('dashboard');
     const [activeTab, setActiveTab] = useState('diary');
 
     const {purchases} = usePurchases();
@@ -51,12 +53,14 @@ const Dashboard = ({t}) => {
     const FLOATING_MENU_OPTIONS = [
         {
             id: 'registerNew',
+            title: t('fab.registerNew'),
             onClick: () => {
                 router.push('/purchases/addPurchase');
             },
             icon: <Edit/>,
         }, {
             id: 'scanReceipt',
+            title: t('fab.scanReceipt'),
             onClick: () => {
                 router.push('/purchases/scanReceipt');
             },
@@ -149,4 +153,4 @@ const Dashboard = ({t}) => {
     )
 };
 
-export default withTranslation('dashboard')(Dashboard);
+export default Dashboard;

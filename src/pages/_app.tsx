@@ -42,7 +42,7 @@ class MyApp extends App {
                 ...prevState,
                 envVars: appConfig,
             });
-        })
+        });
     }
 
     pickupFromCache = async () => {
