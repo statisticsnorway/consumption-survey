@@ -13,11 +13,21 @@
   touch-action: none;
 }
 
+@media(max-height:520px) {
+  .fbuModalDialog {
+    margin: 10% auto;
+  }
+}
+
 .fbuModalDialog {
   background-color: #fff;
   border-radius: 5px;
   margin: 40% auto;
   padding: 1rem;
+
+  @media(max-height:520px) {
+    margin: 10% auto;
+  }
 
   h2, h3, h4 {
     color: #333;
