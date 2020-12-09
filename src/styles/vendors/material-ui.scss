@@ -1,0 +1,27 @@
+@import '../common';
+
+.MuiFab-primary {
+  background-color: $ssb-green-4;
+
+  &:hover {
+    background-color: $ssb-green-5;
+  }
+}
+
+.MuiSpeedDialAction-fab {
+  background-color: $ssb-green-2;
+  color: $ssb-dark-5;
+
+  &:hover {
+    background-color: $ssb-green-3;
+  }
+}
+
+.MuiSpeedDialAction-staticTooltipLabel {
+  color: $ssb-dark-5;
+  background-color: white;
+  width: 7.5rem;  /* TODO: get auto to work ! */
+  text-align: right;
+  margin-right: 0.25rem !important;
+  border-radius: 1rem;
+}

@@ -1,8 +1,16 @@
 import { useState } from 'react';
 // import { FloatingMenu, MainButton, ChildButton } from 'react-floating-button-menu';
-import { SpeedDial, SpeedDialAction } from '@material-ui/lab';
+import { StylesProvider } from '@material-ui/core';
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
+import { Plus, X } from 'react-feather';
 
-const FloatingButton = ({mainProps, childButtonProps, className}) => {
+import styles from './fab.module.scss';
+
+const FloatingButton = ({
+                            mainProps,
+                            childButtonProps,
+                            className
+                        }) => {
     const [isOpen, setIsOpen] = useState(false);
     /*
     const childButtons =
@@ -24,29 +32,44 @@ const FloatingButton = ({mainProps, childButtonProps, className}) => {
      */
 
     return (
-        <SpeedDial
-            ariaLabel="fab"
-            open={isOpen}
-            onOpen={() => {
-                setIsOpen(true);
-            }}
-            onClose={() => {
-                setIsOpen(false);
-            }}
-            className={className}
-        >
-            {childButtonProps && Array.isArray(childButtonProps) &&
-            childButtonProps.map(action => (
-                <SpeedDialAction
-                    key={action.id}
-                    onClick={action.onClick}
-                    icon={action.icon}
-                    tooltipOpen
-                    tooltipTitle={action.title}
-                />
-            ))
+        <>
+            {isOpen &&
+            <div className={styles.globalOverlay}></div>
             }
-        </SpeedDial>
+            <StylesProvider injectFirst>
+                <SpeedDial
+                    ariaLabel="fab"
+                    open={isOpen}
+                    icon={<SpeedDialIcon openIcon={<X />} />}
+                    onOpen={() => {
+                        setIsOpen(true);
+                        if (typeof mainProps.onOpen === 'function') {
+                            mainProps.onOpen();
+                        }
+                    }}
+                    onClose={() => {
+                        setIsOpen(false);
+                        if (typeof mainProps.onClose === 'function') {
+                            mainProps.onClose();
+                        }
+                    }}
+                    className={className}
+                >
+                    {childButtonProps && Array.isArray(childButtonProps) &&
+                    childButtonProps.map(action => (
+                        <SpeedDialAction
+                            title={action.title}
+                            key={action.id}
+                            onClick={action.onClick}
+                            icon={action.icon}
+                            tooltipOpen
+                            tooltipTitle={action.title}
+                        />
+                    ))
+                    }
+                </SpeedDial>
+            </StylesProvider>
+        </>
     );
     /*
         < FloatingMenu
