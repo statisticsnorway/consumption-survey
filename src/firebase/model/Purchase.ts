@@ -1,8 +1,13 @@
 export type ItemType = {
     name: string;
-    category?: string;
-    quantity: number;
-    price: number;
+    qty: string;
+    units: string;
+    kr: string;
+    cents: string;
+    code?: string;
+    searchTermId?: number;
+    id?: string;
+    idx?: number;
 };
 
 export type PurchaseType = {

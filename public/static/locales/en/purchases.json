@@ -22,6 +22,7 @@
 
     "newItem": {
       "title": "What have you purchased ?",
+      "addNewTerm": "Add ",
       "name": {
         "label": "Item name",
         "placeholder": "Cookies, Tea, Fish, ..."
@@ -44,6 +45,8 @@
           "placeholder": "00"
         }
       }
-    }
+    },
+
+    "addAnotherItem": "Legge til ny"
   }
 }

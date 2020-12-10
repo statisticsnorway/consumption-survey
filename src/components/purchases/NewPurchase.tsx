@@ -1,24 +1,19 @@
 import { useState, useEffect, useContext, createRef, useRef, createContext } from 'react';
 import { useRouter } from 'next/router';
-import { TextField as MaterialInput } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { Edit3, PlusCircle, MinusCircle, Calendar } from 'react-feather';
+import { Edit3, PlusCircle } from 'react-feather';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Accordion } from '@statisticsnorway/ssb-component-library';
 import usePurchases from '../../hocs/usePurchases';
 import { LayoutContext } from '../../uiContexts';
-import TextField, { AdornmentPosition } from '../form/TextField';
-import { FormInputViewMode } from '../form/inputConstants';
-import { SIMPLE_DATE_FORMAT, simpleFormat, parseDate, DASHBOARD_DATE_GROUPING_FORMAT } from '../../utils/dateUtils';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
-import Modal from '../common/dialog/Modal';
+import PurchaseNameDateGroup from './PurchaseNameDateGroup';
+import NewItem from './NewItem';
+import ItemsTable from './ItemsTable';
+import { simpleFormat } from '../../utils/dateUtils';
 
 import styles from './purchases.module.scss';
 import footerStyles from '../layout/styles/footer.module.scss';
-import ItemMask from '../form/ItemMask';
-import PurchaseNameDateGroup from './PurchaseNameDateGroup';
-import NewItem from './NewItem';
-import { PurchasesContext } from '../../contexts';
 
 const purchaseNameHints = [
     'Kafé',
@@ -35,69 +30,27 @@ export const NewPurchasesContext = createContext({} as NewPurchasesContextType);
 
 const NewPurchase = ({initialSearchTerms}) => {
     const router = useRouter();
-    const dayPickerRef = useRef<DayPickerInput>(null);
-
     const [showNewPurchaseHeader, setShowNewPurchaseHeader] = useState(true);
-
-    const [dayPickerVisible, setDayPickerVisible] = useState(false);
     const {t} = useTranslation('purchases');
-
-    const [purchaseName, setPurchaseName] = useState('');
-    const [purchaseDate, setPurchaseDate] = useState(new Date());
     const [nameDatePopupVisible, setNameDatePopupVisible] = useState(false);
+    const [showNewItemForm, setShowNewItemForm] = useState(true);
+    const [purchaseName, setPurchaseName] = useState<string>(t('addPurchase.title'));
+    const [purchaseDate, setPurchaseDate] = useState<Date>(new Date());
 
     const showEditNameDatePopup = () => {
         setNameDatePopupVisible(true);
     };
 
-    const [itemName, setItemName] = useState('');
-    const [qty, setQty] = useState('1');
-    const [unit, setUnit] = useState('1');
-    const [price, setPrice] = useState('0,00');
     const [items, setItems] = useState([]);
-    const {showFooter, setFooterContent} = useContext(LayoutContext);
+    const {showFooter, setShowFooter, setFooterContent} = useContext(LayoutContext);
     const {addPurchase} = usePurchases();
     const [purchaseTotal, setPurchaseTotal] = useState(0);
-
-    const onQtyChange = (value) => {
-        setQty(value);
-    };
-
-    const onUnitPriceChange = (value) => {
-        setPrice(value);
-    };
-
-    const onItemNameChange = (value) => {
-        setItemName(value);
-    };
-
-    const onPurchaseNameChange = (value) => {
-        setPurchaseName(value);
-    };
-
-    const toggleDayPicker = () => {
-        const dayPickerComp = dayPickerRef.current;
-        if (!dayPickerComp) {
-            console.log('XXXXX daypicker comp ref not initialized correctly');
-        } else {
-            dayPickerVisible ? dayPickerComp.hideDayPicker() : dayPickerComp.showDayPicker();
-            setDayPickerVisible(!dayPickerVisible);
-        }
-    };
-
-
-    const clearItemInfo = () => {
-        setItemName('');
-        setQty('1');
-        setPrice('0,00');
-    };
 
     const clearItems = () => {
         setItems([]);
     };
 
     const clearAll = () => {
-        clearItemInfo();
         clearItems();
     };
 
@@ -106,10 +59,12 @@ const NewPurchase = ({initialSearchTerms}) => {
 
         const doc = {
             where: purchaseName,
-            when: purchaseDate || new Date(),
+            when: purchaseDate,
             totalPrice: purchaseTotal,
             items,
         };
+
+        console.log('saving', doc);
 
         addPurchase(doc)
             .then((res) => {
@@ -125,7 +80,7 @@ const NewPurchase = ({initialSearchTerms}) => {
         clearAll();
     };
 
-    const addPurchaseFooter = (
+    const addPurchaseFooter = () => (
         <div className={footerStyles.footerWrapper}>
             <div className={styles.addPurchaseFooterTotal}>
                 <span className={styles.addPurchaseFooterTotalText}>{t('addPurchase.total')}</span>
@@ -150,30 +105,23 @@ const NewPurchase = ({initialSearchTerms}) => {
 
     useEffect(() => {
         if (showFooter) {
-            setFooterContent(addPurchaseFooter);
+            setFooterContent(addPurchaseFooter());
         } else {
             setFooterContent(null);
         }
     }, [showFooter, purchaseTotal]);
 
-    const addItem = (e) => {
-        e.preventDefault();
+    const addItem = ({name, qty, units, kr, cents}) => {
         setItems([
             ...items,
-            {idx: items.length, itemName, qty, units: unit, price},
+            {idx: items.length, name, qty, units, kr, cents}
         ]);
 
-        const [priceVal, suffix] = price.split(' kr.');
-        setPurchaseTotal(purchaseTotal + (Number(priceVal) || 0));
-
-        setItemName('');
-        setQty('1');
-        setUnit('stk');
-        setPrice('0,00');
-    };
-
-    const editItem = (item) => {
-
+        setPurchaseTotal(purchaseTotal + (Number(`${kr}.${cents}`) || 0));
+        setShowNewItemForm(false);
+        if (!showFooter) {
+            setShowFooter(true);
+        }
     };
 
     const removeItem = (item) => {
@@ -181,18 +129,11 @@ const NewPurchase = ({initialSearchTerms}) => {
         setItems(items.filter(it =>
             it.id ? (it.id !== id) : (it.idx !== idx)));
 
-        setPurchaseTotal(purchaseTotal - (Number(item.price) || 0));
+        setPurchaseTotal(purchaseTotal - (Number(`${item.kr}.${item.cents}`) || 0));
     };
 
-    const acc = (
-        <Accordion header={t('addPurchase.nameDateGroupTitle')} className={styles.nameDateGroup}>
-        </Accordion>
-    );
-
-    const setValues = (name, date) => {
-        setPurchaseName(name);
-        setPurchaseDate(date);
-        setNameDatePopupVisible(false);
+    const onCancelAddItem = () => {
+        setShowNewItemForm(false);
     };
 
     return (
@@ -204,9 +145,12 @@ const NewPurchase = ({initialSearchTerms}) => {
             <>
                 <PurchaseNameDateGroup
                     show={nameDatePopupVisible}
-                    currName={t('addPurchase.purchaseNameDefault')}
-                    currDate={new Date()}
-                    onSubmit={setValues}
+                    onSubmit={(name, date) => {
+                        console.log('saving', name, date);
+                        setPurchaseDate(date);
+                        setPurchaseName(name);
+                        setNameDatePopupVisible(false);
+                    }}
                     onCancel={() => {
                         setNameDatePopupVisible(false);
                     }}
@@ -217,7 +161,7 @@ const NewPurchase = ({initialSearchTerms}) => {
                         <div className={styles.editMetaLink}>
                             <a onClick={() => {
                                 showEditNameDatePopup();
-                            }}>{simpleFormat(purchaseDate)}</a>
+                            }}>{simpleFormat(purchaseDate || new Date())}</a>
                         </div>
                     </div>
                     <div className={workspaceStyles.rightSection}>
@@ -231,7 +175,29 @@ const NewPurchase = ({initialSearchTerms}) => {
                 </div>
             </>
             }
-            <NewItem/>
+            <div className={styles.addPurchase}>
+                <ItemsTable
+                    items={items}
+                    onItemRemove={(item) => {
+                        console.log('will remove ', item);
+                        removeItem(item);
+                    }}
+                />
+                <NewItem
+                    show={showNewItemForm}
+                    onAddItem={addItem}
+                    onCancel={onCancelAddItem}
+                />
+                <a
+                    className={styles.addAnotherLink}
+                    onClick={() => {
+                        setShowNewItemForm(true);
+                    }}
+                >
+                    <span>{t('addPurchase.addAnotherItem')}</span>
+                    <PlusCircle width={16} height={16}/>
+                </a>
+            </div>
         </NewPurchasesContext.Provider>
     );
 };

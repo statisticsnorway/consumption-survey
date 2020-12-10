@@ -21,7 +21,7 @@
 
 .fbuModalDialog {
   background-color: #fff;
-  border-radius: 5px;
+ border-radius: 0.25rem;
   margin: 40% auto;
   padding: 1rem;
 
@@ -31,7 +31,7 @@
 
   h2, h3, h4 {
     color: #333;
-    margin: 1rem 0 0.25rem;
+    margin: 1rem 0;
     font-family: 'Roboto Condensed';
   }
 }

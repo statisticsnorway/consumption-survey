@@ -11,15 +11,15 @@ import styles from './styles/addPurchase.module.scss';
 
 export type PurchaseNameDateGroupProps = {
     show: boolean;
-    currName: string;
-    currDate: Date;
+    currName?: string;
+    currDate?: Date;
     onSubmit: (name, date) => void;
     onCancel: () => void;
 };
 
 const PurchaseNameDateGroup = ({
                                    show,
-                                   currName, currDate,
+                                   currName = '', currDate = new Date(),
                                    onSubmit,
                                    onCancel
                                }: PurchaseNameDateGroupProps) => {
@@ -27,21 +27,33 @@ const PurchaseNameDateGroup = ({
     const [name, setName] = useState(currName);
     const [date, setDate] = useState(currDate);
     const dayPickerRef = useRef(null);
+    const nameFieldRef = useRef(null);
     const [dayPickerVisible, setDayPickerVisible] = useState(false);
 
     useEffect(() => {
-        /** Initial */
-        if (!currName) {
+        /** Initial
+         if (!currName) {
             setName(t('addPurchase.'));
-        }
+        } */
 
         if (!currDate) {
+            console.log('!!!! current date reset !!!!');
             setDate(new Date());
         }
     }, []);
 
     useEffect(() => {
-        /** Changes from parent */
+        /**
+         * need a separate effect for this as the comp is inside
+         * a modal and is not mounted until required
+         */
+        if (nameFieldRef.current) {
+            nameFieldRef.current.focus();
+        }
+    }, [nameFieldRef]);
+
+    /** Changes from parent
+     useEffect(() => {
         if (currName) {
             setName(currName);
         }
@@ -49,6 +61,7 @@ const PurchaseNameDateGroup = ({
             setDate(currDate);
         }
     }, [currName, currDate]);
+         */
 
     const toggleDayPicker = () => {
         const dayPickerComp = dayPickerRef.current;
@@ -65,6 +78,7 @@ const PurchaseNameDateGroup = ({
             show={show}
             closeText={t('addPurchase.save')}
             onClose={() => {
+                console.log('sending', name, date);
                 onSubmit(name, date);
             }}
             onCancel={() => {
@@ -82,6 +96,7 @@ const PurchaseNameDateGroup = ({
                     onChange={(e) => {
                         setName(e.target.value);
                     }}
+                    inputRef={nameFieldRef}
                 />
 
                 <div className={`${formStyles.fbuFormField} ${styles.purchaseDateGroup}`}>

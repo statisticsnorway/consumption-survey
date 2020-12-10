@@ -1,9 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import { FireContext } from '../contexts';
+import { SearchTermType } from '../firebase/model/SearchTerm';
 
-const useSearchTerms = () => {
+export type AddSearchTermFn = (SearchTermType) => void;
+export type ModifySearchTermFn = (id, SearchTermType) => void;
+
+export type SearchTermsHookData = {
+    searchTerms: SearchTermType[];
+    addSearchTerm: AddSearchTermFn;
+    modifySearchTerm: ModifySearchTermFn;
+};
+
+const useSearchTerms = (): SearchTermsHookData => {
     const {firestore} = useContext(FireContext);
-    const [searchTerms, setSearchTerms] = useState([]);
+    const [searchTerms, setSearchTerms] = useState<SearchTermType[]>([]);
 
     useEffect(() => {
         console.log('Fetching search Terms');
@@ -17,7 +27,7 @@ const useSearchTerms = () => {
                         ...doc.data(),
                     }));
 
-                    setSearchTerms(searchTermRecords);
+                    setSearchTerms(searchTermRecords as SearchTermType[]);
                 });
         } catch (err) {
             console.log('unable to fetch search terms', err);
