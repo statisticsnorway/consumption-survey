@@ -47,10 +47,10 @@ const PurchaseNameDateGroup = ({
          * need a separate effect for this as the comp is inside
          * a modal and is not mounted until required
          */
-        if (nameFieldRef.current) {
+        if (show && nameFieldRef.current) {
             nameFieldRef.current.focus();
         }
-    }, [nameFieldRef]);
+    }, [show, nameFieldRef]);
 
     /** Changes from parent
      useEffect(() => {

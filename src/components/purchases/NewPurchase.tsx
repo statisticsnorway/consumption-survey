@@ -54,6 +54,10 @@ const NewPurchase = ({initialSearchTerms}) => {
         clearItems();
     };
 
+    useEffect(() => {
+        console.log('new values', purchaseDate, purchaseName);
+    }, [purchaseDate, purchaseName]);
+
     const savePurchase = (e) => {
         e.preventDefault();
 
@@ -124,6 +128,11 @@ const NewPurchase = ({initialSearchTerms}) => {
         }
     };
 
+    const updateNameAndDate = (name, date) => {
+        setPurchaseName(name);
+        setPurchaseDate(date);
+    };
+
     const removeItem = (item) => {
         const {idx, id} = item;
         setItems(items.filter(it =>
@@ -147,8 +156,7 @@ const NewPurchase = ({initialSearchTerms}) => {
                     show={nameDatePopupVisible}
                     onSubmit={(name, date) => {
                         console.log('saving', name, date);
-                        setPurchaseDate(date);
-                        setPurchaseName(name);
+                        updateNameAndDate(name, date);
                         setNameDatePopupVisible(false);
                     }}
                     onCancel={() => {
