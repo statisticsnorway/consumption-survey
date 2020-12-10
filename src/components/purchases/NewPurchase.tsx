@@ -2,10 +2,7 @@ import { useState, useEffect, useContext, createRef, useRef, createContext } fro
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { Edit3, PlusCircle } from 'react-feather';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { Accordion } from '@statisticsnorway/ssb-component-library';
 import usePurchases from '../../hocs/usePurchases';
-import { LayoutContext } from '../../uiContexts';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import NewItem from './NewItem';
@@ -42,7 +39,6 @@ const NewPurchase = ({initialSearchTerms}) => {
     };
 
     const [items, setItems] = useState([]);
-    const {showFooter, setShowFooter, setFooterContent} = useContext(LayoutContext);
     const {addPurchase} = usePurchases();
     const [purchaseTotal, setPurchaseTotal] = useState(0);
 
@@ -80,11 +76,10 @@ const NewPurchase = ({initialSearchTerms}) => {
     };
 
     const cancelPurchase = () => {
-        setFooterContent(null);
         clearAll();
     };
 
-    const addPurchaseFooter = () => (
+    const addPurchaseFooter = (
         <div className={footerStyles.footerWrapper}>
             <div className={styles.addPurchaseFooterTotal}>
                 <span className={styles.addPurchaseFooterTotalText}>{t('addPurchase.total')}</span>
@@ -107,14 +102,6 @@ const NewPurchase = ({initialSearchTerms}) => {
         </div>
     );
 
-    useEffect(() => {
-        if (showFooter) {
-            setFooterContent(addPurchaseFooter());
-        } else {
-            setFooterContent(null);
-        }
-    }, [showFooter, purchaseTotal]);
-
     const addItem = ({name, qty, units, kr, cents}) => {
         setItems([
             ...items,
@@ -123,9 +110,6 @@ const NewPurchase = ({initialSearchTerms}) => {
 
         setPurchaseTotal(purchaseTotal + (Number(`${kr}.${cents}`) || 0));
         setShowNewItemForm(false);
-        if (!showFooter) {
-            setShowFooter(true);
-        }
     };
 
     const updateNameAndDate = (name, date) => {
@@ -206,6 +190,7 @@ const NewPurchase = ({initialSearchTerms}) => {
                     <PlusCircle width={16} height={16}/>
                 </a>
             </div>
+            {addPurchaseFooter}
         </NewPurchasesContext.Provider>
     );
 };

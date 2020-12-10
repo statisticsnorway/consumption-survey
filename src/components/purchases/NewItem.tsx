@@ -44,7 +44,6 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
     const formRef = useRef(null);
     const [values, setValues] = useState<NewItemInfo>(INIT_STATE);
     const nameFieldRef = useRef(null);
-    const nameFieldRefAc = useRef(null);
     const [showPopup, setShowPopup] = useState(show);
     const {searchTerms} = useSearchTerms();
 
@@ -55,7 +54,7 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
 
     useEffect(() => {
         if (showPopup) {
-            nameFieldRefAc.current.focus();
+            nameFieldRef.current.focus();
         }
     }, [showPopup]);
 
@@ -89,6 +88,7 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
     return (
         <Modal
             show={showPopup}
+            title={t('addPurchase.newItem.title')}
             onClose={() => {
                 console.log('Verifying', values);
                 if (values.name
@@ -113,13 +113,12 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
                 }}
                 className={`${formStyles.fbuForm} ${styles.newItemForm}`}
             >
-                <h3>{t('addPurchase.newItem.title')}</h3>
                 <Autocomplete
                     options={searchTerms as SearchTermExt[]}
                     renderOption={(option: SearchTermExt) => option.text}
                     renderInput={(params) =>
                         <TextField
-                            inputRef={nameFieldRefAc}
+                            inputRef={nameFieldRef}
                             placeholder={t('addPurchase.newItem.name.placeholder')}
                             required
                             value={values.name}

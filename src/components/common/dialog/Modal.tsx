@@ -2,6 +2,7 @@ import styles from './modal.module.scss';
 
 export interface ModalProps {
     show: boolean;
+    title: string;
     onClose: () => void;
     closeText: string;
     onCancel: () => void;
@@ -11,7 +12,10 @@ export interface ModalProps {
 };
 
 const Modal: React.FC<ModalProps> = ({
-                                         show, children, onClose, closeText, onCancel, cancelText,
+                                         show,
+                                         title,
+                                         children,
+                                         onClose, closeText, onCancel, cancelText,
                                          className = '', style = {}
                                      }) => {
     if (!show) {
@@ -21,6 +25,10 @@ const Modal: React.FC<ModalProps> = ({
     return (
         <div className={styles.fbuModalOverlay} style={style}>
             <div className={`${styles.fbuModalDialog} ${className || ''}`}>
+                <div className={`${styles.fbuModalDialogHeader}`}>
+                    <h3>{title}</h3>
+                </div>
+
                 {children}
 
                 <div className={styles.fbuModalFooter}>
@@ -30,7 +38,9 @@ const Modal: React.FC<ModalProps> = ({
                     >
                         {cancelText}
                     </a>
-                    <button className={`ssb-btn primary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCloseButton}`} onClick={onClose}>
+                    <button
+                        className={`ssb-btn primary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCloseButton}`}
+                        onClick={onClose}>
                         {closeText}
                     </button>
                 </div>

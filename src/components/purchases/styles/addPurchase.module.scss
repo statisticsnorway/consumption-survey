@@ -1,12 +1,13 @@
 @import '../../../styles/common';
 
 .purchaseNameDateForm {
+  padding: 1rem;
+
   .purchaseName {
   }
 
   .purchaseDateGroup {
     display: flex;
-    margin-bottom: 2rem;
 
     .purchaseDateIconWrapper {
       line-height: 2rem;

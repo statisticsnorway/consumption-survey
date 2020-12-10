@@ -76,6 +76,7 @@ const PurchaseNameDateGroup = ({
     return (
         <Modal
             show={show}
+            title={t('addPurchase.title')}
             closeText={t('addPurchase.save')}
             onClose={() => {
                 console.log('sending', name, date);
@@ -86,7 +87,6 @@ const PurchaseNameDateGroup = ({
             }}
             cancelText={t('addPurchase.cancel')}
         >
-            <h2>{t('addPurchase.title')}</h2>
             <div className={`${formStyles.fbuForm} ${styles.purchaseNameDateForm}`}>
                 <TextField
                     value={name}

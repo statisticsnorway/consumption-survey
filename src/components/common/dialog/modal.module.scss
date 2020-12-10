@@ -13,7 +13,7 @@
   touch-action: none;
 }
 
-@media(max-height:520px) {
+@media(max-height: 520px) {
   .fbuModalDialog {
     margin: 10% auto;
   }
@@ -21,18 +21,26 @@
 
 .fbuModalDialog {
   background-color: #fff;
- border-radius: 0.25rem;
+  border-radius: 0.25rem;
   margin: 40% auto;
-  padding: 1rem;
+  padding: 0;
 
-  @media(max-height:520px) {
+  display: flex;
+  flex-direction: column;
+
+  @media(max-height: 520px) {
     margin: 10% auto;
   }
 
-  h2, h3, h4 {
-    color: #333;
-    margin: 1rem 0;
-    font-family: 'Roboto Condensed';
+  .fbuModalDialogHeader {
+    padding: 1rem;
+    background-color: $ssb-dark-2;
+    border-radius: 0.25rem;
+
+    h2, h3, h4 {
+      color: #333;
+      font-family: 'Roboto Condensed';
+    }
   }
 }
 
@@ -40,6 +48,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  padding: 0.5rem;
 
   .fbuModalActionButton + .fbuModalActionButton {
     margin-left: 1rem;
