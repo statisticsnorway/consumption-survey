@@ -168,7 +168,6 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
                     <TextField
                         placeholder={t('addPurchase.newItem.qty.placeholder')}
                         id="newItem-qty"
-                        label={t('addPurchase.newItem.qty.label')}
                         value={values.qty}
                         required
                         onChange={updateValue('qty')}
@@ -184,7 +183,13 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
                     <TextField
                         placeholder={t('addPurchase.newItem.price.kr.placeholder')}
                         id="newItem-kr"
-                        label={t('addPurchase.newItem.price.kr.label')}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    {t('addPurchase.newItem.price.kr.label')}
+                                </InputAdornment>
+                            )
+                        }}
                         value={values.kr}
                         required
                         onChange={updateValue('kr')}
@@ -195,7 +200,13 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
                     <TextField
                         placeholder={t('addPurchase.newItem.price.cents.placeholder')}
                         id="newItem-cents"
-                        label={t('addPurchase.newItem.price.cents.label')}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    {t('addPurchase.newItem.price.cents.label')}
+                                </InputAdornment>
+                            )
+                        }}
                         value={values.cents}
                         onChange={updateValue('cents')}
                         aria-described-by="cents-helper-text"

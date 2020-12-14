@@ -1,0 +1,43 @@
+.regularExpenses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 1.25rem;
+
+  .expense {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.25rem;
+    background-color: #fff;
+
+    .expenseColumn {
+    }
+
+    .name {
+      text-align: left;
+      flex: 2;
+    }
+
+    .frequency {
+      text-align: left;
+      flex: 1;
+    }
+
+    .amount {
+      text-align: right;
+      flex: 1;
+    }
+  }
+
+  .expense + .expense {
+    margin-top: 1rem;
+  }
+}
+
+.noRecords {
+  font-style: italic;
+}

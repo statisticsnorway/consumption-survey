@@ -12,6 +12,7 @@ import { add, sub } from 'date-fns';
 
 import styles from './dashboard.module.scss'
 import { makeDummyComponent } from '../../utils/dummy';
+import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
 
 const today = new Date();
 const surveyStart = sub(today, {days: 7});
@@ -128,7 +129,7 @@ const Dashboard = () => {
                 <>
                     <h1>{t('regularExpenses.title')}</h1>
                     <div className={styles.dashboardRegularExpenses}>
-                        {makeDummyComponent('Kommer Snart')}
+                        <RegularExpensesList/>
                     </div>
                 </>
             ),

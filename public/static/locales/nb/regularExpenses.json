@@ -1,0 +1,13 @@
+{
+  "noRecords": "Ingen utgifter registrert",
+
+  "frequency": {
+    "DAILY": "Daglig",
+    "WEEKLY": "Ukentlig",
+    "MONTHLY": "Månedlig",
+    "BI_MONTHLY": "Hver 2.mnd",
+    "QUARTERLY": "Hver 3.mnd",
+    "HALF_YEARLY": "Hver 6.mnd",
+    "YEARLY": "Årlig"
+  }
+}

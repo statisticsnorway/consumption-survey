@@ -44,7 +44,6 @@
   min-height: 3rem;
 }
 
-.dashboardRegularExpenses,
 .dashboardDiary {
   padding: 0 1.25rem;
   display: flex;
@@ -71,4 +70,14 @@
       }
     }
   }
+}
+
+.dashboardRegularExpenses {
+  padding: 0 1.25rem;
+  background-color: $ssb-dark-1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
 }
