@@ -64,3 +64,8 @@ section {
   font-weight: bold;
 }
 
+.floatingAddExpense {
+  .MuiFab-primary {
+    background-color: $ssb-blue-3;
+  }
+}

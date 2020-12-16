@@ -7,4 +7,5 @@ module.exports = new NextI18Next({
     otherLanguages: ['nn', 'en'],
     localeSubpaths,
     localePath: path.resolve('./public/static/locales'),
-})
+});
+

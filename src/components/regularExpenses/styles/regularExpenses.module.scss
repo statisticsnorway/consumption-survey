@@ -1,3 +1,5 @@
+@import '../../../styles/common';
+
 .regularExpenses {
   display: flex;
   flex-direction: column;
@@ -11,8 +13,21 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding: 1.25rem;
+    padding: 0.5rem 1rem;
     background-color: #fff;
+
+    .expenseHeaderRow {
+      border-bottom: $ssb-dark-2;
+    }
+
+    .expenseColumnHeader {
+      color: $ssb-dark-3;
+      font-weight: bold;
+
+      .frequencyIcon {
+        color: $ssb-dark-3;
+      }
+    }
 
     .expenseColumn {
     }
@@ -24,7 +39,19 @@
 
     .frequency {
       text-align: left;
+      color: $ssb-dark-3;
+
       flex: 1;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      text-align: left;
+
+      .frequencyIcon {
+        text-align: right;
+      }
     }
 
     .amount {
@@ -34,7 +61,36 @@
   }
 
   .expense + .expense {
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
+  }
+}
+
+.addExpenseForm {
+  padding: 1.25rem;
+
+  .frequencyAmountGroup {
+    display: flex;
+    flex-direction: row;
+
+    .addExpenseFrequency {
+      flex: 2;
+    }
+
+    .addExpenseKr {
+      flex: 1;
+
+      input {
+        text-align: right;
+      }
+    }
+
+    .addExpenseCents {
+      flex: 1;
+
+      input {
+        text-align: right;
+      }
+    }
   }
 }
 

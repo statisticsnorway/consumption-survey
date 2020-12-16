@@ -1,4 +1,5 @@
 export enum ExpenseFrequency {
+    NONE = 'NONE',
     DAILY = 'DAILY',
     WEEKLY = 'WEEKLY',
     MONTHLY = 'MONTHLY',
@@ -9,8 +10,9 @@ export enum ExpenseFrequency {
 }
 
 export type RegularExpenseType = {
-  id?: string;
-  name: string;
-  frequency: ExpenseFrequency;
-  amount: number,
+    id?: string;
+    name: string;
+    frequency: ExpenseFrequency;
+    kr: Number;
+    cents: Number;
 };

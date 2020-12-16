@@ -1,9 +1,9 @@
 import { createContext } from 'react';
+import { PurchaseType } from './firebase/model/Purchase';
 import { FirebaseAuth } from '@firebase/auth-types';
 import { FirebaseFirestore } from '@firebase/firestore-types';
-import { FirebaseDatabase } from '@firebase/database-types';
 import { FirebaseStorage } from '@firebase/storage-types';
-import { PurchaseType } from './firebase/model/Purchase';
+import { FirebaseDatabase } from '@firebase/database-types';
 
 export type UserInfoType = {
     userName: string;

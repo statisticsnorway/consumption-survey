@@ -1,46 +1,55 @@
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 // import { FloatingMenu, MainButton, ChildButton } from 'react-floating-button-menu';
 import { StylesProvider } from '@material-ui/core';
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
-import { Plus, X } from 'react-feather';
+import { Edit, Plus, X } from 'react-feather';
 
 import styles from './fab.module.scss';
+import { DO_NOTHING } from '../../../utils/jsUtils';
+
+export type MainButtonProps = {
+    title?: string;
+    iconResting: ReactNode;
+    iconActive?: ReactNode;
+    onOpen?: () => void;
+    onClose?: () => void;
+    onClick?: () => void;
+};
+
+export type ChildMenuProps = {
+    id: string;
+    title: string;
+    onClick: () => void;
+    icon: ReactNode;
+};
+
+export type FloatingButtonProps = {
+    mainProps: MainButtonProps;
+    childButtonProps?: ChildMenuProps;
+    className?: string;
+    bgOverlay?: boolean;
+}
 
 const FloatingButton = ({
                             mainProps,
                             childButtonProps,
-                            className
-                        }) => {
+                            className,
+                            bgOverlay = true
+                        }: FloatingButtonProps) => {
     const [isOpen, setIsOpen] = useState(false);
-    /*
-    const childButtons =
-        childButtonProps && Array.isArray(childButtonProps)
-        && childButtonProps.map((btnProps) => (
-            <ChildButton
-                icon={btnProps.icon}
-                onClick={(e) => {
-                    btnProps.onClick(e);
-                    setIsOpen(false);
-                }}
-                spacing={15}
-                size={40}
-                style={{margin: '1rem'}}
-                className={`li--${btnProps.id}`}
-            />
-        )) || [];
-
-     */
 
     return (
         <>
-            {isOpen &&
+            {isOpen && bgOverlay &&
             <div className={styles.globalOverlay}></div>
             }
             <StylesProvider injectFirst>
                 <SpeedDial
                     ariaLabel="fab"
                     open={isOpen}
-                    icon={<SpeedDialIcon openIcon={<X />} />}
+                    title={mainProps.title || ''}
+                    icon={<SpeedDialIcon openIcon={mainProps.iconActive}/>}
+                    onClick={(typeof mainProps.onClick === 'function') ? mainProps.onClick : DO_NOTHING}
                     onOpen={() => {
                         setIsOpen(true);
                         if (typeof mainProps.onOpen === 'function') {

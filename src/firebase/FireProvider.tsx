@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
+import firebase from 'firebase';
 import fb from './init';
 import { FireContext } from '../contexts';
 import { AppContext } from '../uiContexts';
@@ -22,6 +23,23 @@ const FireProvider = ({ children }) => {
         setRtdb(fb.database());
         setStorage(fb.storage());
     }, []);
+
+    useEffect(() => {
+        if (fireAuth) {
+            // TODO: get FirebaseAuth import working
+            fb.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+                .then((res) => {
+                    console.log('[AUTH]: enabled persistence', res);
+                })
+        }
+
+        if (firestore) {
+            firestore.enablePersistence()
+                .then((res) => {
+                    console.log('[Store]: enabled persistence', res);
+                })
+        }
+    }, [fireAuth, firestore]);
 
     return (
         <FireContext.Provider value={{

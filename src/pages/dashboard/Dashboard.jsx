@@ -109,6 +109,11 @@ const Dashboard = () => {
                         </div>
                         <PurchasesList/>
                     </div>
+                    <FloatingButton
+                        mainProps={FLOATING_BTN_OPTIONS}
+                        childButtonProps={FLOATING_MENU_OPTIONS}
+                        className={styles.floatingAddNew}
+                    />
                 </>
             ),
         }, {
@@ -145,11 +150,6 @@ const Dashboard = () => {
                 onSelect={(tabId) => { setActiveTab(tabId); }}
             >
             </Tabs>
-            <FloatingButton
-                mainProps={FLOATING_BTN_OPTIONS}
-                childButtonProps={FLOATING_MENU_OPTIONS}
-                className={styles.floatingAddNew}
-            />
         </div>
     )
 };

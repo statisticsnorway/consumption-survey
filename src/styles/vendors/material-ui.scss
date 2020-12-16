@@ -26,3 +26,9 @@
   margin-right: 0.25rem !important;
   border-radius: 1rem;
 }
+
+.muiPadBottom {
+  .MuiInput-formControl {
+    padding-bottom: 3px !important;
+  }
+}

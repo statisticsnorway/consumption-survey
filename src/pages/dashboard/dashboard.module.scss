@@ -10,7 +10,8 @@
   background-color: $ssb-dark-1;
 }
 
-.floatingAddNew {
+.floatingAddNew,
+.floatingAddExpense {
   position: absolute !important;
   right: 2.5rem;
   bottom: 5rem;
