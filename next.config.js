@@ -32,17 +32,29 @@ const offlineOpts = {
 };
 */
 
+const extractEnvVars = (vars, prefix) =>
+  Object.keys(vars)
+      .filter(name => name.startsWith(prefix))
+      .reduce((acc, name) => ({
+          ...acc,
+          [name]: vars[name]
+      }), {});
+
 runtimeCaching[0].handler = 'CacheFirst';
 const nextConfig = {
     rewrites: async () => nextI18NextRewrites(localeSubpaths),
-    publicRuntimeConfig: {
-        localeSubpaths,
-    },
     pwa: {
         dest: 'public',
         register: false,            // we will be registering our own SW
         skipWaiting: false,         // we will register SW as soon as it is installed
         runtimeCaching
+    },
+    serverRuntimeConfig: {
+        serverEnvVars: extractEnvVars(process.env, 'FORBRUK_SERVER_VAR_')
+    },
+    publicRuntimeConfig: {
+        localeSubpaths,
+        envVars: extractEnvVars(process.env, 'FORBRUK_APP_VAR_')
     }
 };
 

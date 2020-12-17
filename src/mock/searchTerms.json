@@ -1,0 +1,84 @@
+[
+  {
+    "id": 2512,
+    "code": "01.1.8.3",
+    "text": "tyttebærsyltetøy"
+  },
+  {
+    "id": "19",
+    "code": "01.1.2.5",
+    "text": "salami"
+  },
+  {
+    "id": "2513",
+    "text": "riskorn",
+    "code": "01.1.1.1"
+  },
+  {
+    "id": "3MIevTKEWdS0WosBYleA",
+    "text": "Akvarellblokk",
+    "category": "13.1.1.0",
+    "units": "stk"
+  },
+  {
+    "id": "77jyZuuwLoJB8B3HPgJF",
+    "text": "Kaffe",
+    "units": "stk",
+    "category": "04.1.1.1"
+  },
+  {
+    "id": "FxMskoxHSAhGhh4nlYX4",
+    "code": "01.1.1.1",
+    "text": "banan"
+  },
+  {
+    "id": "GA7uvBESAU8jMl7ETHa0",
+    "units": "stk",
+    "category": "03.1.1",
+    "text": "Te"
+  },
+  {
+    "id": "N5jTsHVfYdoP21mf90da",
+    "category": "15.2.1.1",
+    "text": "Tusj"
+  },
+  {
+    "id": "T7zxjxPbc3Bgy6Aqn6A6",
+    "category": "03.2.1.1",
+    "text": "Frisør"
+  },
+  {
+    "id": "aYqLOkEVV1rD5Bgb7LBb",
+    "text": "Kjeks",
+    "category": "12.1.1.3"
+  },
+  {
+    "id": "fxzdnT4e9IBlebirTxjT",
+    "code": "01.1.1.3",
+    "units": "kg",
+    "text": "banan"
+  },
+  {
+    "id": "nFiXx8wo9ie5KIXQKuWI",
+    "category": "03.1.1",
+    "units": "ltr",
+    "text": "Melk"
+  },
+  {
+    "id": "oVXb9mHpZ1riaDF4tiLC",
+    "text": "Fisk",
+    "units": "kg",
+    "category": "03.1.2"
+  },
+  {
+    "id": "paOvPuSOHcE9NNNU2juO",
+    "text": "Olivenolje",
+    "category": "03.1.1",
+    "units": "ltr"
+  },
+  {
+    "id": "yFN4GrE3cUfpRUWndrW6",
+    "category": "01.1.1.1",
+    "text": "Massasje"
+  }
+]

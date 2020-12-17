@@ -1,0 +1,20 @@
+{
+  "noRecords": "No expenses registered",
+
+  "header": {
+    "name": "Name",
+    "frequency": "Repeats",
+    "amount": "Amount"
+  },
+
+  "frequency": {
+    "NONE": "",
+    "DAILY": "daily",
+    "WEEKLY": "weekly",
+    "MONTHLY": "monthly",
+    "BI_MONTHLY": "2. month",
+    "QUARTERLY": "3. month",
+    "HALF_YEARLY": "6. month",
+    "YEARLY": "year"
+  }
+}

@@ -10,7 +10,10 @@ export type AuthContextType = {
 setPin: (pin: string) => void;
 };
 
-export const AuthContext = createContext({} as AuthContextType);
+export const AuthContext = createContext({
+    [SUPPORTED_PREFERENCES.PIN]: '1234',
+    setPin: (pin:string) => {},
+} as AuthContextType);
 
 export type PreferencesType = {
     preferences: {
@@ -21,3 +24,22 @@ export type PreferencesType = {
 };
 
 export const PreferencesContext = createContext({} as PreferencesType);
+
+export type UserInfoType = {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+}
+
+export type UserContextType = {
+    token: string;
+    userInfo: UserInfoType;
+    expiresAt: Date;
+
+    isLoggedIn: () => Boolean;
+    setAuthInfo: (token: string, userInfo: object, expiresAt: Date) => void;
+    logout: () => void;
+};
+
+export const UserContext = createContext({} as UserContextType);

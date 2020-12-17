@@ -1,0 +1,258 @@
+@import '../../styles/common';
+
+.purchasesList {
+  margin: 0;
+  border-bottom: 1px solid #eee;
+  padding: 1rem 1.25rem;
+
+  .purchaseEntry {
+    background-color: #fff;
+    padding: 0.5rem 1rem;
+  }
+
+  .purchaseEntry + .purchaseEntry {
+    margin-top: 1rem;
+  }
+
+  .purchaseGroup {
+    display: flex;
+    background: #fff;
+    padding: 0.5rem;
+
+    .purchaseGroupDate {
+      flex-grow: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+      justify-content: flex-start;
+      align-items: center;
+      border-right: 1px solid #eee;
+
+      .purchaseGroupDateMonth {
+        font-variant: small-caps;
+        color: #666;
+      }
+
+      .purchaseGroupDateDay {
+        colof: #333;
+        font-size: 1.25rem;
+      }
+    }
+
+    .purchaseGroupEntries {
+      flex-grow: 2;
+      padding: 0.5rem 0.5rem 0.5rem 1rem;
+
+      .purchaseGroupEntry {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .purchaseGroup + .purchaseGroup {
+    margin-top: 1rem;
+  }
+}
+
+.editMetaLink {
+  color: $ssb-green-4;
+  display: flex;
+  align-items: center;
+  font-family: "Roboto Condensed";
+  font-size: 1.25rem;
+}
+
+.addPurchase {
+  padding: 1.25rem 1.25rem 1.5rem;
+
+  .nameDateGroup {
+    margin: 0.25rem 0 0;
+    padding: 1rem 0;
+
+    .nameDateForm {
+      padding-bottom: 1rem;
+
+      .purchaseName {
+        margin-bottom: 0.5rem;
+
+        input {
+          width: 100%;
+        }
+      }
+
+      .purchaseDateGroup {
+        color: #333;
+        display: flex;
+
+        .purchaseDateIconWrapper {
+          line-height: 2rem;
+          padding: 0.5rem;
+          background-color: $ssb-dark-2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 0.25rem;
+
+          .purchaseDateIcon {
+            color: $ssb-green-4;
+            font-size: 1rem;
+          }
+        }
+      }
+
+      input {
+        line-height: 2rem;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+.addPurchaseFormWrapper {
+  border: 1px solid $ssb-dark-5;
+  padding: 0.25rem;
+  margin: 2rem 0;
+}
+
+.lineItems,
+.addPurchaseForm {
+  display: table;
+  width: 100%;
+  margin: 0;
+
+  .lineItem {
+    display: table-row;
+
+    .lineItemField {
+      display: table-cell;
+      border-bottom: 1px solid $ssb-green-2;
+      padding: 0 0.25rem 0.25rem;
+      vertical-align: middle;
+
+      input {
+        width: 100%;
+        border-width: 0;
+        font-size: 1rem;
+
+        input:focus {
+          border: 0;
+        }
+      }
+    }
+
+    .searchTerms {
+      position: absolute;
+      z-index: 100;
+      left: 0;
+      top: 1.5rem;
+      background: #fff;
+      border: 1px solid #0b2e13;
+      padding: 0.5rem;
+    }
+
+    .lineItemField + .lineItemField {
+    }
+
+    .lineItemName {
+    }
+
+    .lineItemQty,
+    .lineItemPrice {
+      border-bottom: 0;
+
+      input {
+        text-align: right;
+      }
+    }
+
+    .deleteLineItem {
+      border-bottom: 0;
+      padding-left: 0.5rem;
+      font-size: 1.5rem;
+      color: $ssb-blue-3;
+    }
+
+    .deleteLineItem {
+      border-bottom: 0;
+      padding-left: 0.5rem;
+      font-size: 1.5rem;
+      color: red;
+    }
+
+    .viewMode {
+      padding: 0.5rem 0;
+    }
+
+    .lineItemQtyView,
+    .lineItemPriceView {
+      border-bottom: 0;
+      display: flex;
+      justify-content: space-between;
+      text-align: right;
+
+
+      div {
+        width: 100%;
+        padding: 0;
+      }
+
+      span:last-of-type {
+        text-align: left;
+        width: 1.5em;
+        padding: 0 0.125em;
+      }
+    }
+
+  }
+}
+
+.lineItems {
+  .lineItemField {
+    padding: 0.5rem 0;
+    border-width: 1px;
+  }
+}
+
+.addAnotherLink {
+  display: flex;
+  color: $ssb-green-4;
+  align-items: center;
+
+  span {
+    margin-right: 0.5rem;
+  }
+}
+
+.addPurchaseFooterTotal {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background-color: #fff;
+  color: #000;
+  font-weight: bold;
+  font-size: 1.25rem;
+
+  border-top: 1px solid $ssb-dark-2;
+
+  .addPurchaseFooterTotalText {
+  }
+
+  .addPurchaseFooterTotalSum {
+  }
+}
+
+.addPurchaseFooter {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background-color: $ssb-dark-1;
+  height: 2.5rem;
+
+  .addPurchaseCancel,
+  .addPurchaseSave {
+    height: 2rem;
+  }
+}
+
+

@@ -5,13 +5,34 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile.dev
+    depends_on:
+      - backend
+      - bff
+    environment:
+      - FORBRUK_APP_VAR_VAR1=val1
+      - FORBRUK_APP_VAR_VAR2=val2
+      - FORBRUK_SERVER_VAR_VAR2=vals
+
+  bff:
+    build:
+      context: ../consumption-bff
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3005:3005
+    environment:
+      - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey.json
 
   backend:
     build:
       context: ../survey-service
+    ports:
+      - 8080:8080
 
   nginx:
     build: ./nginx
+    depends_on:
+      - nextjs
     ports:
       - 443:443
       - 80:80
+

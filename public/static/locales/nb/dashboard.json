@@ -1,0 +1,18 @@
+{
+  "diary": {
+    "title": "Min periode"
+  },
+
+  "entries": {
+    "title": "Registreringer"
+  },
+
+  "regularExpenses": {
+    "title": "Faste utgifter"
+  },
+
+  "fab": {
+    "registerNew": "Nytt kjøp",
+    "scanReceipt": "Skann kvittering"
+  }
+}

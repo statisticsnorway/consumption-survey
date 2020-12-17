@@ -1,0 +1,20 @@
+{
+  "noRecords": "Ingen utgifter registrert",
+
+  "header": {
+    "name": "Type utgift",
+    "frequency": "Gjentas",
+    "amount": "Beløp"
+  },
+
+  "frequency": {
+    "NONE": "",
+    "DAILY": "dag",
+    "WEEKLY": "uke",
+    "MONTHLY": "mnd",
+    "BI_MONTHLY": "2.mnd",
+    "QUARTERLY": "3.mnd",
+    "HALF_YEARLY": "6.mnd",
+    "YEARLY": "år"
+  }
+}

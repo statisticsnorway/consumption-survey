@@ -7,3 +7,7 @@ export const LANGUAGES = {
   nb: 'Bokmål',
   nn: 'Nynorsk',
 };
+
+// Functions
+export const DO_NOTHING = () => {};
+export const IDENTITY_FN = x => x;

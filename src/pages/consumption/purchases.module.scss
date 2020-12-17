@@ -5,8 +5,8 @@
 
   .submitButton {
     color: #fff;
-    background-color: #00824D;
-    border-color: #00824D;
+    background-color: #00824d;
+    border-color: #00824d;
     border-radius: 4px;
     line-height: 1.5rem;
   }
@@ -17,7 +17,14 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
+
+  .marginTop10 {
+    margin-top: 10px;
+  }
+  .marginBottom10 {
+    margin-bottom: 10px;
+  }
 
   label {
     margin: 1rem 0 0.25rem;
@@ -26,18 +33,28 @@
   }
 
   input {
-    border: 1px solid #1A9D49;
+    border: 1px solid #1a9d49;
     border-radius: 4px;
     line-height: 2rem;
+  }
+  .timeInput {
+    input {
+      width: 50%;
+      border: 0;
+      font-size: 1.2rem;
+      padding: 0;
+      line-height: 0;
+      color: black;
+    }
   }
 }
 
 .floatingAddNew .li--manual-entry {
-  background-color: #1D9DE2 !important;
+  background-color: #1d9de2 !important;
 }
 
 .floatingAddNew .li--barcode {
-  background-color: #A3136C !important;
+  background-color: #a3136c !important;
 }
 
 .formActions {
@@ -61,8 +78,8 @@
   }
 }
 .submitNewItemButton {
-  background-color: #00824D;
-  border-color: #00824D;
+  background-color: #00824d;
+  border-color: #00824d;
   border-radius: 4px;
   line-height: 1.5rem;
   color: #fff;
@@ -94,4 +111,23 @@
 
 .coicopItemName:nth-child(even) {
   background-color: #eee;
+}
+.purchaseTable {
+  table {
+    width: 100%;
+    border: 0;
+  }
+  td {
+    padding: 1rem;
+    border: 0;
+  }
+  tr {
+    border: 0;
+  }
+  tr:nth-child(odd) {
+    background-color: lightgrey;
+  }
+  tr:nth-child(even) {
+    background-color: white;
+  }
 }

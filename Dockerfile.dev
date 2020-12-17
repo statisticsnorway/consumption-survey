@@ -4,7 +4,7 @@ FROM node:12-alpine as build-stage
 
 WORKDIR /app
 
-COPY package*.json /app/
+COPY package*.json tsconfig.json /app/
 RUN npm install
 
 RUN npx next telemetry disable

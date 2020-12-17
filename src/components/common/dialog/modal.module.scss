@@ -6,18 +6,64 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(39, 66, 71, 0.9);
   padding: 1rem;
   color: #fff;
+  z-index: 100;
+  touch-action: none;
+}
+
+@media(max-height: 520px) {
+  .fbuModalDialog {
+    margin: 10% auto;
+  }
 }
 
 .fbuModalDialog {
   background-color: #fff;
-  color: red;
-  border-radius: 5px;
-  margin: 0 auto;
-  padding: 30px;
-  width: 80%;
+  border-radius: 0.25rem;
+  margin: 40% auto;
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  @media(max-height: 520px) {
+    margin: 10% auto;
+  }
+
+  .fbuModalDialogHeader {
+    padding: 1rem;
+    background-color: $ssb-dark-2;
+    border-radius: 0.25rem;
+
+    h2, h3, h4 {
+      color: #333;
+      font-family: 'Roboto Condensed';
+    }
+  }
+}
+
+.fbuModalFooter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem;
+
+  .fbuModalActionButton + .fbuModalActionButton {
+    margin-left: 1rem;
+  }
+
+  .fbuModalCloseButton {
+    line-height: 1rem;
+    font-size: 1rem;
+  }
+
+  .fbuModalCancelButton {
+    font-size: 1rem;
+    color: $ssb-red-2;
+    line-height: 1rem;
+  }
 }
 
 .snackbar {

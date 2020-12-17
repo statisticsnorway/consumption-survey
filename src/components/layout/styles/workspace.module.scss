@@ -4,19 +4,49 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 1rem;
-  background-color: $ssb-dark-1;
-  height: 100vh;
+  /* background-color: $ssb-dark-1; */
+  background-color: #fff;
+  /* height: 100vh; */
+  overflow-y: hidden;
+  height: 100%;
 
-  h3, h4 {
+  h3,
+  h4 {
     display: inline-block;
     margin: 0;
+    background-color: transparent;
+  }
+
+  .pageHeader {
+    background-color: $ssb-dark-1;
+    display: flex;
+    justify-content: space-between;
+    padding: 1.25rem;
+
+    h1 {
+      font-size: 2rem;
+      padding: 0;
+      font-family: 'Roboto Condensed';
+      margin: 0;
+      background-color: $ssb-dark-1;
+    }
+
+    .leftSection {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .rightSection {
+      display: flex;
+      align-items: center;
+    }
   }
 
   .workspacePanel {
     padding: 1rem;
     margin-bottom: 1rem;
-    border: 1px solid #C3DCDC;
+    border: 1px solid #c3dcdc;
     background-color: #ffffff;
   }
 

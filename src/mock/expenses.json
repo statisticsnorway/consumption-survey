@@ -1,0 +1,23 @@
+[
+  {
+    "id": "C9lYYOxZOtu2ZYPWiTYT",
+    "frequency": "MONTHLY",
+    "kr": "469",
+    "name": "Bredbånd",
+    "cents": "00"
+  },
+  {
+    "id": "UQEXWKECoaGWVylJBYh5",
+    "cents": 79,
+    "name": "Strøm",
+    "frequency": "MONTHLY",
+    "kr": 630
+  },
+  {
+    "id": "Vh3FKCrwYbvgdKgnxwm0",
+    "cents": 50,
+    "kr": 129,
+    "frequency": "WEEKLY",
+    "name": "dil og dal"
+  }
+]

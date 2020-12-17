@@ -1,33 +1,22 @@
-import { createContext } from 'react';
-import App, { AppProps } from 'next/app';
-import Layout from '../components/layout/Layout';
-import { isPWA } from '../utils/pwaUtils';
-import { getFromCache, saveToCache } from '../hocs/swCache';
-import { appWithTranslation } from '../../i18n';
+import { createContext } from 'react'
+import App, { AppProps } from 'next/app'
+import getConfig from 'next/config';
+import Layout from '../components/layout/Layout'
+import { isPWA } from '../utils/pwaUtils'
+import { getFromCache, saveToCache } from '../hocs/swCache'
+import { appWithTranslation } from '../../i18n'
+import { AppContext, AppContextType } from '../uiContexts';
+import FireProvider from '../firebase/FireProvider';
+import UserProvider from '../firebase/UserProvider';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 
-const PreferencesProvider = dynamic(
-    () => import('../idb/PreferencesProvider'),
-    {ssr: false}
-);
+import '../styles/globals.scss'
+import 'react-day-picker/lib/style.css'
+import 'rc-time-picker/assets/index.css'
 
-const AuthProvider = dynamic(
-    () => import('../components/auth/AuthProvider'),
-    {ssr: false}
-);
+const appConfig = getConfig();
 
-import 'react-day-picker/lib/style.css';
-import '../styles/globals.scss';
-import dynamic from 'next/dynamic';
-import Loader from '../components/common/Loader';
-
-interface AppContext {
-    firstVisitWeb?: boolean;
-    pwaActivated?: boolean;
-};
-
-export const AppContext = createContext({} as AppContext);
-
-class MyApp extends App<AppProps, AppContext> {
+class MyApp extends App {
     state = {
         firstVisitWeb: true,
         pwaActivated: false,
@@ -35,50 +24,78 @@ class MyApp extends App<AppProps, AppContext> {
         initComplete: false,
     };
 
-    static async getInitialProps (ctxt) {
+    static async getInitialProps(ctxt) {
+        console.log('--------------------------------------');
+        console.log('Environment Variables (_app)', appConfig);
+        console.log('--------------------------------------');
+
         return {
-            ...await App.getInitialProps(ctxt)
+            ...(await App.getInitialProps(ctxt)),
         }
-    };
+    }
 
     componentDidMount(): void {
         this.pickupFromCache();
+
+        this.setState(prevState => {
+            this.setState({
+                ...prevState,
+                envVars: appConfig,
+            });
+        });
     }
 
     pickupFromCache = async () => {
-        const firstVisitWebFlag = !await getFromCache('firstVisitWeb');
-        const firstVisitWeb = Boolean(firstVisitWebFlag);
+        const firstVisitWebFlag = !(await getFromCache('firstVisitWeb'))
+        const firstVisitWeb = Boolean(firstVisitWebFlag)
 
         if (firstVisitWeb) {
-            await saveToCache('firstVisitWeb', 'false');
+            await saveToCache('firstVisitWeb', 'false')
         }
 
-        const pwaActivatedFlag
-            = isPWA() ? await saveToCache('pwaActivated', 'true') : false;
+        const pwaActivatedFlag = isPWA()
+            ? await saveToCache('pwaActivated', 'true')
+            : false
 
-        const pwaActivated = Boolean(pwaActivatedFlag);
+        const pwaActivated = Boolean(pwaActivatedFlag)
 
-        const newState = {firstVisitWeb, pwaActivated};
-        console.log(`${new Date()} : setState called with `, newState);
-        this.setState(newState);
-    }
+        const newState = {firstVisitWeb, pwaActivated}
+        console.log(`${new Date()} : setState called with `, newState)
+        this.setState(newState)
+    };
 
-    render() {
-        const {Component, pageProps} = this.props;
-        const {initComplete} = this.state;
-        return (
-            <PreferencesProvider>
-                <AuthProvider>
-                    <AppContext.Provider value={this.state}>
+    /*
+    const corr = (
+        <AppContext.Provider value={{ envVars: appConfig }}>
+            <FireProvider>
+                <UserProvider>
+                    <ProtectedRoute>
                         <Layout>
                             <Component {...pageProps} />
                         </Layout>
-                    </AppContext.Provider>
-                </AuthProvider>
-            </PreferencesProvider>
+                    </ProtectedRoute>
+                </UserProvider>
+            </FireProvider>
+        </AppContext.Provider>
+    );
+    */
+
+    render() {
+        const {Component, pageProps} = this.props
+        const {initComplete} = this.state
+        return (
+            <AppContext.Provider value={{envVars: appConfig}}>
+                <UserProvider>
+                    <ProtectedRoute>
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </ProtectedRoute>
+                </UserProvider>
+            </AppContext.Provider>
         );
     }
-};
+}
 
 /*
 const MyApp = ({Component, pageProps}) => {
@@ -90,5 +107,4 @@ const MyApp = ({Component, pageProps}) => {
 };
 */
 
-export default appWithTranslation(MyApp);
-
+export default appWithTranslation(MyApp)
