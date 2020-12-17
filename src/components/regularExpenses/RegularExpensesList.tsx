@@ -1,20 +1,32 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, RotateCw, X } from 'react-feather';
-import { ExpenseFrequency } from '../../firebase/model/RegularExpense';
-import AddExpense from './AddExpense';
+import { Plus, Edit3, RotateCw, X } from 'react-feather';
+import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
+import AddEditExpense, { ExpenseInfo } from './AddEditExpense';
 import FloatingButton from '../common/buttons/FloatingButton';
 import useExpenses from '../../hocs/useExpenses';
 
 import dashboardStyles from '../../pages/dashboard/dashboard.module.scss';
 import styles from './styles/regularExpenses.module.scss';
+import exp from 'constants';
 
 export type RegularExpensesProps = {};
 
+export const convert = ({name, frequency, kr, cents}: ExpenseInfo): RegularExpenseType => {
+    return {
+        name,
+        frequency,
+        kr: parseInt(kr),
+        cents: parseInt(cents)
+    };
+};
+
 const RegularExpensesList = ({}: RegularExpensesProps) => {
     const {t} = useTranslation('regularExpenses');
-    const {expenses, addExpense} = useExpenses();
+    const {expenses, addExpense, editExpense} = useExpenses();
     const [showAddExpense, setShowAddExpense] = useState(false);
+
+    const [expenseForEdit, setExpenseForEdit] = useState(null);
 
     const FLOATING_BTN_OPTIONS = {
         title: t('addExpense.title'),
@@ -33,8 +45,9 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                     <RotateCw width={16} height={16} className={styles.frequencyIcon}/>
                 </div>
                 <div className={`${styles.expenseColumnHeader} ${styles.amount}`}>{t('header.amount')}</div>
+                <div className={`${styles.expenseColumnHeader} ${styles.editExpense}`}></div>
             </div>
-            {expenses.map((expense) => (
+            {expenses.map((expense, idx) => (
                 <div className={styles.expense} key={expense.id}>
                     <div className={`${styles.expenseColumn} ${styles.name}`}>{expense.name}</div>
                     <div className={`${styles.expenseColumn} ${styles.frequency}`}>
@@ -46,6 +59,17 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                     <div className={`${styles.expenseColumn} ${styles.amount}`}>
                         {`${expense.kr},${expense.cents}`}
                     </div>
+                    <div className={`${styles.expenseColumn} ${styles.editExpense}`}>
+                        <Edit3
+                            width={16}
+                            height={16}
+                            onClick={() => {
+                                console.log('Should init editing of', expense);
+                                setExpenseForEdit(expense);
+                                setShowAddExpense(true);
+                            }}
+                        />
+                    </div>
                 </div>
             ))}
         </div>
@@ -56,19 +80,26 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
     return (
         <>
             {expensesComp}
-            <AddExpense
+            <AddEditExpense
+                expense={expenseForEdit}
                 show={showAddExpense}
-                onSubmit={({ name, frequency, kr, cents}) => {
-                    addExpense({
-                        name,
-                        frequency,
-                        kr: parseInt(kr),
-                        cents: parseInt(cents)
-                    })
-                        .then(res => {
-                            console.log('added new expense');
-                            setShowAddExpense(false);
-                        });
+                onSubmit={(newValues: ExpenseInfo) => {
+                    if (expenseForEdit) {
+                        editExpense(expenseForEdit.id, convert(newValues))
+                            .then((res) => {
+                                console.log('regular expense updated');
+                                setShowAddExpense(false);
+                            })
+                            .catch((err) => {
+                                console.log('regular expense update failed');
+                            });
+                    } else {
+                        addExpense(convert(newValues))
+                            .then(res => {
+                                console.log('added new expense');
+                                setShowAddExpense(false);
+                            });
+                    }
                 }}
                 onCancel={() => {
                     setShowAddExpense(false);

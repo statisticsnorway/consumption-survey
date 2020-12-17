@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ExpenseFrequency } from '../../firebase/model/RegularExpense';
+import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
 import Modal from '../common/dialog/Modal';
 
 import formStyles from '../form/form.module.scss';
@@ -22,6 +22,7 @@ const INIT_STATE: ExpenseInfo = {
 };
 
 export type AddExpenseProps = {
+    expense?: ExpenseInfo;
     show: boolean;
     onSubmit: (expense: ExpenseInfo) => void;
     onCancel: () => void;
@@ -34,7 +35,7 @@ const FREQUENCY_OPTIONS = (t) => Object.keys(ExpenseFrequency)
         </MenuItem>
     ))
 
-const AddExpense = ({show, onSubmit, onCancel}: AddExpenseProps) => {
+const AddEditExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps) => {
     const {t} = useTranslation('regularExpenses');
     const [values, setValues] = useState(INIT_STATE);
     const nameFieldRef = useRef(null);
@@ -42,6 +43,12 @@ const AddExpense = ({show, onSubmit, onCancel}: AddExpenseProps) => {
     const clear = () => {
         setValues(INIT_STATE);
     };
+
+    useEffect(() => {
+        if (expense) {
+            setValues(expense);
+        }
+    }, [expense]);
 
     useEffect(() => {
         if (show && nameFieldRef.current) {
@@ -111,4 +118,4 @@ const AddExpense = ({show, onSubmit, onCancel}: AddExpenseProps) => {
     );
 };
 
-export default AddExpense;
+export default AddEditExpense;

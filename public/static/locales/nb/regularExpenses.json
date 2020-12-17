@@ -24,7 +24,7 @@
     "cancel": "Avbryt",
 
     "nameLabel": "Type utgift",
-    "namePlaceholser": "Strøm, Kabel TV, osv.",
+    "namePlaceholder": "Strøm, Kabel, Telia, osv.",
 
     "frequencyLabel": "Gjentas",
     "frequencyPlaceholder": "Velg en",
