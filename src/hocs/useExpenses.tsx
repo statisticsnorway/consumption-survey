@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { FireContext, UserContext } from '../contexts';
 import { RegularExpenseType } from '../firebase/model/RegularExpense';
+import exp from 'constants';
 
 const useExpenses = () => {
     const {firestore} = useContext(FireContext);
@@ -20,6 +21,7 @@ const useExpenses = () => {
                 });
 
                 setExpenses(expenseRecords);
+                console.log('EXPENSES', JSON.stringify(expenseRecords));
             })
     }, []);
 

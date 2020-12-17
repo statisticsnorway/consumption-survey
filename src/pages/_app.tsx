@@ -62,22 +62,36 @@ class MyApp extends App {
         const newState = {firstVisitWeb, pwaActivated}
         console.log(`${new Date()} : setState called with `, newState)
         this.setState(newState)
-    }
+    };
+
+    /*
+    const corr = (
+        <AppContext.Provider value={{ envVars: appConfig }}>
+            <FireProvider>
+                <UserProvider>
+                    <ProtectedRoute>
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </ProtectedRoute>
+                </UserProvider>
+            </FireProvider>
+        </AppContext.Provider>
+    );
+    */
 
     render() {
         const {Component, pageProps} = this.props
         const {initComplete} = this.state
         return (
-            <AppContext.Provider value={{ envVars: appConfig }}>
-                <FireProvider>
-                    <UserProvider>
-                        <ProtectedRoute>
-                            <Layout>
-                                <Component {...pageProps} />
-                            </Layout>
-                        </ProtectedRoute>
-                    </UserProvider>
-                </FireProvider>
+            <AppContext.Provider value={{envVars: appConfig}}>
+                <UserProvider>
+                    <ProtectedRoute>
+                        <Layout>
+                            <Component {...pageProps} />
+                        </Layout>
+                    </ProtectedRoute>
+                </UserProvider>
             </AppContext.Provider>
         );
     }

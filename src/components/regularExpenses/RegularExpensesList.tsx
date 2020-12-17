@@ -4,7 +4,8 @@ import { Plus, Edit3, RotateCw, X } from 'react-feather';
 import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
 import AddEditExpense, { ExpenseInfo } from './AddEditExpense';
 import FloatingButton from '../common/buttons/FloatingButton';
-import useExpenses from '../../hocs/useExpenses';
+// import useExpenses from '../../hocs/useExpenses';
+import useExpenses from '../../mock/useExpenses';
 
 import dashboardStyles from '../../pages/dashboard/dashboard.module.scss';
 import styles from './styles/regularExpenses.module.scss';

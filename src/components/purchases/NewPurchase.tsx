@@ -2,7 +2,8 @@ import { useState, useEffect, useContext, createRef, useRef, createContext } fro
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { Edit3, PlusCircle } from 'react-feather';
-import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../hocs/usePurchases';
+import usePurchases from '../../mock/usePurchases';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import NewItem from './NewItem';

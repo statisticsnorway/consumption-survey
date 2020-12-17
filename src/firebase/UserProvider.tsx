@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { FireContext, UserContext } from '../contexts';
+// import { FireContext, UserContext } from '../contexts';
+import { UserContext } from '../contexts';
 import { i18n } from '../../i18n';
 
 export enum CommunicationPreference {
@@ -17,11 +18,27 @@ export type UserPreferences = {
 }
 
 const UserProvider = ({children}) => {
-    const { auth, firestore } = useContext(FireContext);
+    // const { auth, firestore } = useContext(FireContext);
     const [userInfo, setUserInfo] = useState(null);
     const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
 
+    const login = async (userName) => {
+        console.log('Mock loggin in user', userName);
+        setIsLoggingIn(true);
+        setUserPreferences({
+            language: 'nb',
+            communicationPreferences: [],
+            pin: '1234'
+        });
+
+        setUserInfo({
+            userName,
+            email: `${userName}@ssb.no`,
+        });
+    };
+
+    /*
     const login = async (userName) => {
         setIsLoggingIn(true);
         const res = await axios.post('/bff/login', {
@@ -82,6 +99,7 @@ const UserProvider = ({children}) => {
             });
         }
     }, [auth]);
+     */
 
     useEffect(() => {
         if (userPreferences) {
@@ -92,9 +110,12 @@ const UserProvider = ({children}) => {
         }
     }, [userPreferences]);
 
+
     const logout = () => {
         setUserInfo(null);
     };
+
+    console.log('User Provider', !!userInfo);
 
     return (
         <UserContext.Provider

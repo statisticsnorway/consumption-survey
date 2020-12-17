@@ -25,6 +25,7 @@ const usePurchases = () => {
                     });
 
                     setPurchases(purchaseRecords);
+                    console.log("Purchases", JSON.stringify(purchaseRecords));
                 });
         } catch (err) {
             console.log('unable to fetch purchases', err);

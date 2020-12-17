@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { groupBy } from 'rambda';
 import { PurchaseType, PurchaseGroupByDate } from '../../firebase/model/Purchase';
-import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../hocs/usePurchases';
+import usePurchases from '../../mock/usePurchases';
 import { SORT_OPTIONS, GROUP_BY_OPTIONS } from '../../utils/viewOptions';
 import {
     DASHBOARD_DATE_GROUPING_FORMAT,

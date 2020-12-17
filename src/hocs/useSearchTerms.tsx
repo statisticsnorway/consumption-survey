@@ -28,6 +28,7 @@ const useSearchTerms = (): SearchTermsHookData => {
                     }));
 
                     setSearchTerms(searchTermRecords as SearchTermType[]);
+                    console.log('SEARCH_TERMS', JSON.stringify(searchTermRecords));
                 });
         } catch (err) {
             console.log('unable to fetch search terms', err);

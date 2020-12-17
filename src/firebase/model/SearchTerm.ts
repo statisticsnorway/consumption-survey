@@ -1,5 +1,5 @@
 export type SearchTermType = {
     id: string | number;
-    code: string;
+    code?: string;
     text: string;
 };

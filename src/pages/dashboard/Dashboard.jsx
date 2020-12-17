@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { withTranslation } from 'next-i18next';
 import DayPicker from 'react-day-picker'
 import { ArrowRight, Plus, Camera, Edit, X } from 'react-feather'
 import PurchasesList from '../../components/purchases/PurchasesList';
 import Tabs from '../../components/blocks/tabs/Tabs';
 import FloatingButton from '../../components/common/buttons/FloatingButton'
-import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../hocs/usePurchases';
+import usePurchases from '../../mock/usePurchases';
 import { add, sub } from 'date-fns';
 
 import styles from './dashboard.module.scss'

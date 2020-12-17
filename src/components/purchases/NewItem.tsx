@@ -2,7 +2,8 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
-import useSearchTerms from '../../hocs/useSearchTerms';
+// import useSearchTerms from '../../hocs/useSearchTerms';
+import useSearchTerms from '../../mock/useSesarchTerms';
 
 import formStyles from '../form/form.module.scss';
 import styles from './styles/addPurchase.module.scss';

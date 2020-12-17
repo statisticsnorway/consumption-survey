@@ -5,7 +5,8 @@ import { Check, MinusCircle, X, } from 'react-feather';
 import TextField, { AdornmentPosition } from './TextField';
 
 import styles from './itemMask.module.scss';
-import useSearchTerms from '../../hocs/useSearchTerms';
+// import useSearchTerms from '../../hocs/useSearchTerms';
+import useSearchTerms from '../../mock/useSesarchTerms';
 
 type ItemMaskProps = {
     name: string;
