@@ -6,7 +6,7 @@
     "dev": "node_modules/.bin/next dev",
     "build": "node_modules/.bin/next build",
     "start:dev": "node_modules/.bin/next start",
-    "start": "node_modules/.bin/next start"
+    "start": "node_modules/.bin/next start -p 80"
   },
   "dependencies": {
     "@date-io/date-fns": "^2.10.6",
