@@ -1,112 +1,120 @@
-[
-  {
-    "id": "9jBx2KXLx1zA4CuOeY4r",
-    "when": "2020-12-09T11:00:00.000Z",
-    "where": "Kiosk",
-    "totalPrice": 20,
-    "items": [
-      {
-        "kr": "20",
-        "units": "stk",
-        "name": "Te",
-        "cents": "00",
-        "qty": "1",
-        "idx": 0
-      }
-    ],
-    "whenRaw": "063743108400.000000000"
-  },
-  {
-    "id": "ERlHmtl7BC47FWPacmSo",
-    "items": [
-      {
-        "units": "stk",
-        "name": "salami",
-        "kr": "30",
-        "idx": 0,
-        "qty": "1",
-        "cents": "00"
-      }
-    ],
-    "when": "2020-12-09T11:00:00.000Z",
-    "where": "kafé",
-    "totalPrice": 30,
-    "whenRaw": "063743108400.000000000"
-  },
-  {
-    "id": "Luo000IrkW1IZjmM257U",
-    "items": [
-      {
-        "qty": "1",
-        "kr": "049",
-        "idx": 0,
-        "units": "stk",
-        "name": "cappucino",
-        "cents": "00"
-      }
-    ],
-    "where": "Baker Hansen",
-    "when": "2020-12-11T09:39:49.307Z",
-    "totalPrice": 49,
-    "whenRaw": "063743276389.307000000"
-  },
-  {
-    "id": "RJbUbnBxVJFHg5oMuPyW",
-    "where": "kiosk",
-    "when": "2020-12-10T11:00:00.000Z",
-    "totalPrice": 70,
-    "items": [
-      {
-        "units": "stk",
-        "kr": "30",
-        "name": "Kaffe",
-        "qty": "1",
-        "cents": "00",
-        "idx": 0
-      },
-      {
-        "idx": 1,
-        "units": "stk",
-        "kr": "40",
-        "name": "Kake",
-        "cents": "00",
-        "qty": "1"
-      }
-    ],
-    "whenRaw": "063743194800.000000000"
-  },
-  {
-    "id": "bLpP5xKekFf4OMEa9M0f",
-    "when": "2020-12-07T11:00:00.000Z",
-    "totalPrice": 19.9,
-    "items": [
-      {
-        "idx": 0,
-        "qty": "1",
-        "units": "stk",
-        "kr": "19",
-        "cents": "90",
-        "name": "Kaffe"
-      }
-    ],
-    "where": "kiosk",
-    "whenRaw": "063742935600.000000000"
-  },
-  {
-    "id": "uc1TxYR53uVHsW8DriGU",
-    "when": "2020-12-11T09:25:43.270Z",
-    "items": [
-      {
-        "cents": "00",
-        "qty": "1",
-        "name": "salami",
-        "units": "stk",
-        "idx": 0,
-        "kr": "99"
-      }
-    ],
-    "where": "Nytt kjøp",
-    "totalPrice": 99,
-    "whenRaw": "063743275543.270000000"
-  }
-]
+{
+  "07.12.2020": [
+    {
+      "id": "bLpP5xKekFf4OMEa9M0f",
+      "when": "2020-12-07T11:00:00.000Z",
+      "totalPrice": 19.9,
+      "items": [
+        {
+          "idx": 0,
+          "qty": "1",
+          "units": "stk",
+          "kr": "19",
+          "cents": "90",
+          "name": "Kaffe"
+        }
+      ],
+      "where": "kiosk",
+      "whenRaw": "063742935600.000000000"
+    }
+  ],
+  "09.12.2020": [
+    {
+      "id": "9jBx2KXLx1zA4CuOeY4r",
+      "when": "2020-12-09T11:00:00.000Z",
+      "where": "Kiosk",
+      "totalPrice": 20,
+      "items": [
+        {
+          "kr": "20",
+          "units": "stk",
+          "name": "Te",
+          "cents": "00",
+          "qty": "1",
+          "idx": 0
+        }
+      ],
+      "whenRaw": "063743108400.000000000"
+    },
+    {
+      "id": "ERlHmtl7BC47FWPacmSo",
+      "items": [
+        {
+          "units": "stk",
+          "name": "salami",
+          "kr": "30",
+          "idx": 0,
+          "qty": "1",
+          "cents": "00"
+        }
+      ],
+      "when": "2020-12-09T11:00:00.000Z",
+      "where": "kafé",
+      "totalPrice": 30,
+      "whenRaw": "063743108400.000000000"
+    }
+  ],
+  "10.12.2020": [
+    {
+      "id": "RJbUbnBxVJFHg5oMuPyW",
+      "where": "kiosk",
+      "when": "2020-12-10T11:00:00.000Z",
+      "totalPrice": 70,
+      "items": [
+        {
+          "units": "stk",
+          "kr": "30",
+          "name": "Kaffe",
+          "qty": "1",
+          "cents": "00",
+          "idx": 0
+        },
+        {
+          "idx": 1,
+          "units": "stk",
+          "kr": "40",
+          "name": "Kake",
+          "cents": "00",
+          "qty": "1"
+        }
+      ],
+      "whenRaw": "063743194800.000000000"
+    }
+  ],
+  "11.12.2020": [
+    {
+      "id": "Luo000IrkW1IZjmM257U",
+      "items": [
+        {
+          "qty": "1",
+          "kr": "049",
+          "idx": 0,
+          "units": "stk",
+          "name": "cappucino",
+          "cents": "00"
+        }
+      ],
+      "where": "Baker Hansen",
+      "when": "2020-12-11T09:39:49.307Z",
+      "totalPrice": 49,
+      "whenRaw": "063743276389.307000000"
+    },
+    {
+      "id": "uc1TxYR53uVHsW8DriGU",
+      "when": "2020-12-11T09:25:43.270Z",
+      "items": [
+        {
+          "cents": "00",
+          "qty": "1",
+          "name": "salami",
+          "units": "stk",
+          "idx": 0,
+          "kr": "99"
+        }
+      ],
+      "where": "Nytt kjøp",
+      "totalPrice": 99,
+      "whenRaw": "063743275543.270000000"
+    }
+  ]
+}

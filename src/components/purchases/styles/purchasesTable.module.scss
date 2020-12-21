@@ -1,0 +1,29 @@
+.purchasesTable {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  .purchaseRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .purchaseName {
+      flex: 2;
+      order: 1;
+    }
+
+    .purchaseAmount {
+      flex: 1;
+      order: 2;
+    }
+
+    .purchaseDetailsIcon {
+      flex: 0;
+      order: 3;
+      width: 3rem;
+    }
+  }
+}
