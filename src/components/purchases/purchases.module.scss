@@ -48,6 +48,20 @@
         justify-content: space-between;
       }
     }
+
+    .dateNav {
+      flex-grow: 0;
+      width: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+
+      color: $ssb-green-3;
+      border-left: 1px solid #eee;
+      margin-left: 0.5rem;
+      padding-left: 0.5rem;
+    }
   }
 
   .purchaseGroup + .purchaseGroup {

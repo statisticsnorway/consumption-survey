@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChevronRight } from 'react-feather';
 import { groupBy } from 'rambda';
 import { PurchaseType, PurchaseGroupByDate } from '../../firebase/model/Purchase';
 // import usePurchases from '../../hocs/usePurchases';
@@ -15,6 +16,7 @@ import {
 
 import styles from './purchases.module.scss';
 import { compareDesc } from 'date-fns';
+import { krCents } from '../../utils/jsUtils';
 
 export type PurchasesListProps = {
     purchases: PurchaseType[];
@@ -75,6 +77,10 @@ const PurchasesList = ({limit = -1, orderBy = SORT_OPTIONS.DATE_DESC, groupByFie
         .map(dt => parseDate(dt, DASHBOARD_DATE_GROUPING_FORMAT))
         .sort(compareDesc));
 
+    const showDateEntries = (date) => {
+        console.log('Showing date entries for', date);
+    };
+
     return (
         <div className={styles.purchasesList}>
             {Object.keys(groupsDisp)                                    // TODO: find a simpler way to do this
@@ -91,9 +97,12 @@ const PurchasesList = ({limit = -1, orderBy = SORT_OPTIONS.DATE_DESC, groupByFie
                             {groupsDisp[date].map(p => (
                                 <div className={styles.purchaseGroupEntry}>
                                     <span>{p.where || (p.items && p.items[0] && p.items[0].name) || '??'}</span>
-                                    <span>{p.totalPrice || '0,00'}</span>
+                                    <span>{krCents(Number(p.totalPrice || 0))}</span>
                                 </div>
                             ))}
+                        </div>
+                        <div className={styles.dateNav}>
+                            <ChevronRight width={20} height={20} onClick={() => { showDateEntries(date); }} />
                         </div>
                     </div>
                 );
