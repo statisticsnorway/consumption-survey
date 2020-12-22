@@ -8,6 +8,8 @@ import styles from './dashboard.module.scss';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
 import usePurchases from '../../mock/usePurchases';
+import SimpleBarChart from '../../components/common/charts/SimpleBarChart';
+import { PurchaseType } from '../../firebase/model/Purchase';
 
 const today = new Date();
 const surveyStart = sub(today, {days: 7});
@@ -34,7 +36,7 @@ const modifiers = {
 const HomeTab = ({onDayClick, setActiveTab}) => {
     const {t} = useTranslation('dashboard');
     const router = useRouter();
-    const {purchases} = usePurchases();
+    const {purchases, purchasesByDate} = usePurchases();
 
     const FLOATING_MENU_OPTIONS = [
         {
@@ -68,6 +70,21 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
         );
     };
 
+    const chartData = Object.keys(purchasesByDate)
+        .map(name => ({
+                name,
+                y: purchasesByDate[name]
+                    .reduce((acc, p) => acc + Number(p.totalPrice), 0)
+            }));
+
+    const chart = (
+        <SimpleBarChart
+            data={chartData}
+            seriesName="Forbruk"
+            className={styles.dashboardChart}
+        />
+    );
+
     return (
         <>
             <h1>{t('diary.title')}</h1>
@@ -94,6 +111,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                         <ArrowRight className={styles.allEntriesIcon}/>
                     </a>
                 </div>
+                {chart}
                 <PurchasesList/>
             </div>
             <FloatingButton
