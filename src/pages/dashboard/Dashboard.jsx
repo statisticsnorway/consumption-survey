@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import DayPicker from 'react-day-picker'
 import { ArrowRight, Plus, Camera, Edit, X } from 'react-feather'
@@ -13,145 +14,78 @@ import { add, sub } from 'date-fns';
 import styles from './dashboard.module.scss'
 import { makeDummyComponent } from '../../utils/dummy';
 import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
+import { simpleFormat } from '../../utils/dateUtils';
+import PurchasesByDate from '../../components/purchases/PurchasesByDate';
+import Loader from '../../components/common/Loader';
 
-const today = new Date();
-const surveyStart = sub(today, {days: 7});
-const surveyEnd = add(today, {days: 7});
-
-const modifiers = {
-    surveyPeriod: {
-        after: surveyStart,
-        before: surveyEnd,
-    },
-    missingStretch: {
-        after: new Date(2020, 8, 10),
-        before: new Date(2020, 8, 14),
-    },
-    surveyPeriodFirstDay: add(surveyStart, {days: 1}),
-    surveyPeriodLastDay: sub(surveyEnd, {days: 1}),
-};
-
-const getModifiers = (purchases) => {
-    const withEntries = purchases.map(purchase => new Date(purchase.when));
-    return {
-        ...modifiers,
-        withEntries,
-    };
-};
+import HomeTab from './HomeTab';
+import EntriesTab from './EntriesTab';
 
 const Dashboard = () => {
-    const router = useRouter();
-    const { t } = useTranslation('dashboard');
+    const {t} = useTranslation('dashboard');
     const [activeTab, setActiveTab] = useState('diary');
+    const [selectedDate, setSelectedDate] = useState(null);
 
-    const {purchases} = usePurchases();
+    const showPurchasesByDate = (d) => {
+        console.log('Showing purchases on ', d)
+        const dtSimple = simpleFormat(d);
+        console.log('Should navigate to', dtSimple);
 
-    const FLOATING_BTN_OPTIONS = {
-        iconResting: <Plus/>,
-        iconActive: <X/>,
+        setSelectedDate(dtSimple);
+        setActiveTab('entries');
+
+        // router.push(`/purchases/purchasesByDate?date=${dtSimple}`);
     };
-
-    const FLOATING_MENU_OPTIONS = [
-        {
-            id: 'registerNew',
-            title: t('fab.registerNew'),
-            onClick: () => {
-                router.push('/purchases/addPurchase');
-            },
-            icon: <Edit/>,
-        }, {
-            id: 'scanReceipt',
-            title: t('fab.scanReceipt'),
-            onClick: () => {
-                router.push('/purchases/scanReceipt');
-            },
-            icon: <Camera/>,
-        }
-    ];
-
-    const renderDay = (day) => {
-        return (
-            <div className={styles.dashboardDiaryDay}>{day.getDate()}</div>
-        );
-    }
-
-    const DASHBOARD_TABS = [
-        {
-            title: t('diary.title'),
-            id: 'diary',
-            renderTab: () => (
-                <>
-                    <h1>{t('diary.title')}</h1>
-                    <div className={styles.dashboardDiary}>
-                        <DayPicker
-                            canChangeMonth={true}
-                            onDayClick={(d) => {
-                                console.log('Showing purchases on ', d)
-                            }}
-                            renderDay={renderDay}
-                            modifiers={getModifiers(purchases)}
-                            initialMonth={new Date()}
-                            showOutsideDays={true}
-                        />
-                    </div>
-                    <div className={styles.dashboardPurchaseList}>
-                        <div className={styles.dashboardPurchaseListHeader}>
-                            <h3>Siste registreringer</h3>
-                            <a
-                                className={styles.allEntriesLink}
-                                onClick={() => {
-                                    setActiveTab('entries');
-                                }}
-                            >
-                                <span>Se alle</span>
-                                <ArrowRight className={styles.allEntriesIcon}/>
-                            </a>
-                        </div>
-                        <PurchasesList/>
-                    </div>
-                    <FloatingButton
-                        mainProps={FLOATING_BTN_OPTIONS}
-                        childButtonProps={FLOATING_MENU_OPTIONS}
-                        className={styles.floatingAddNew}
-                    />
-                </>
-            ),
-        }, {
-            title: t('entries.title'),
-            id: 'entries',
-            renderTab: () => (
-                <>
-                    <h1>{t('entries.title')}</h1>
-                    <div className={styles.entries}>
-                        <PurchasesList/>
-                    </div>
-                </>
-            ),
-        }, {
-            title: t('regularExpenses.title'),
-            id: 'regularExpenses',
-            renderTab: () => (
-                <>
-                    <h1>{t('regularExpenses.title')}</h1>
-                    <div className={styles.dashboardRegularExpenses}>
-                        <RegularExpensesList/>
-                    </div>
-                </>
-            ),
-        }
-    ];
 
     return (
         <div className={styles.dashboard}>
             <Tabs
-                tabs={DASHBOARD_TABS}
+                tabs={[
+                    {
+                        title: t('diary.title'),
+                        id: 'diary',
+                        renderTab: (
+                            <HomeTab
+                                onDayClick={showPurchasesByDate}
+                                setActiveTab={setActiveTab}
+                            />
+                        ),
+                    },
+                    {
+                        title: t('entries.title'),
+                        id: 'entries',
+                        renderTab: (
+                            <EntriesTab
+                                dateSelection={selectedDate}
+                                deselectDate={() => {
+                                    console.log('should reset date');
+                                    setSelectedDate(null);
+                                }}
+                                selectDate={setSelectedDate}
+                            />
+                        ),
+                    }, {
+                        title: t('regularExpenses.title'),
+                        id: 'regularExpenses',
+                        renderTab: (
+                            <>
+                                <h1>{t('regularExpenses.title')}</h1>
+                                <div className={styles.dashboardRegularExpenses}>
+                                    <RegularExpensesList/>
+                                </div>
+                            </>
+                        ),
+                    }
+                ]}
                 active={activeTab}
                 className={styles.dashboardTabs}
-                onSelect={(tabId) => { setActiveTab(tabId); }}
+                onSelect={(tabId) => {
+                    setActiveTab(tabId);
+                }}
             >
             </Tabs>
         </div>
-    )
+    );
 };
 
 export default Dashboard;

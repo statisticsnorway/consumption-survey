@@ -4,7 +4,7 @@ import { DO_NOTHING } from '../../../utils/jsUtils';
 export type TabSpec = {
     id: string;
     title: string;
-    renderTab: () => ReactNode;
+    renderTab: ReactNode | (() => ReactNode);
 };
 
 export type TabsProps = {
@@ -21,10 +21,20 @@ const Tabs = ({
                   onSelect = DO_NOTHING,
                   className = '', style = {}
               }: TabsProps) => {
+    const [tabContent, setTabContent] = useState<ReactNode>();
+
     const selectTab = (e, tabId) => {
         e.preventDefault();
         onSelect(tabId);
     };
+
+    useEffect(() => {
+        const activeTab = tabs
+                .find(tab => tab.id === active);
+        setTabContent(
+            (typeof activeTab.renderTab === 'function') ? activeTab.renderTab() : activeTab.renderTab
+        );
+    }, [active, tabs]);
 
     return (
         <div className={`ssb-tabs-wrapper`}>
@@ -41,10 +51,7 @@ const Tabs = ({
                 ))}
             </div>
             <div className={`ssb-tabs-content`}>
-                {tabs
-                    .find(tab => tab.id === active)
-                    .renderTab()
-                }
+                {tabContent}
             </div>
         </div>
     );

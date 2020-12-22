@@ -1,29 +1,95 @@
-.purchasesTable {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+@import '../../../styles/common';
 
-  .purchaseRow {
+.purchasesTableContainer {
+  padding: 1.25rem;
+  background-color: $ssb-dark-1;
+  height: 100%;
+
+  .purchasesTableHeader {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 0.5rem;
+
+    .navTitleGroup {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        color: $ssb-green-4;
+      }
+
+      h1 {
+        font-size: 2rem;
+        padding: 0.5rem 1.25rem 1rem;
+        font-family: Roboto Condensed;
+        margin: 0;
+      }
+    }
+
+    .navItem {
+      color: $ssb-green-4;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5rem;
+
+      .navIcon {
+      }
+    }
+
+
+  }
+
+  .purchasesTable {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
 
-    .purchaseName {
-      flex: 2;
-      order: 1;
+    padding: 0 1.25rem;
+
+    .purchaseRow {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      width: 100%;
+      padding: 1rem;
+      background-color: #fff;
+
+      .purchaseName {
+        flex: 2;
+        order: 1;
+      }
+
+      .purchaseAmount {
+        flex: 1;
+        order: 2;
+
+        text-align: right;
+      }
+
+      .purchaseDetailsIcon {
+        flex: 0;
+        order: 3;
+        width: 3rem;
+
+        padding-left: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
     }
 
-    .purchaseAmount {
-      flex: 1;
-      order: 2;
-    }
-
-    .purchaseDetailsIcon {
-      flex: 0;
-      order: 3;
-      width: 3rem;
+    .purchaseRow + .purchaseRow {
+      margin-top: 1rem;
     }
   }
 }

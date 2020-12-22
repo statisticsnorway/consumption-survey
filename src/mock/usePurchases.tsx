@@ -5,11 +5,9 @@ import PURCHASES_MOCK from './purchases.json';
 
 const usePurchases = () => {
     const [purchases, setPurchases] = useState([]);
-    const [purchasesByDate, setPurchasesByDate] = useState({});
+    const [purchasesByDate, setPurchasesByDate] = useState(PURCHASES_MOCK);
 
     useEffect(() => {
-        setPurchasesByDate(PURCHASES_MOCK);
-
         setPurchases(
             Object.keys(PURCHASES_MOCK)
                 .reduce((acc, key) => {
