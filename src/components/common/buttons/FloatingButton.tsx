@@ -25,7 +25,7 @@ export type ChildMenuProps = {
 
 export type FloatingButtonProps = {
     mainProps: MainButtonProps;
-    childButtonProps?: ChildMenuProps;
+    childButtonProps?: ChildMenuProps[];
     className?: string;
     bgOverlay?: boolean;
 }

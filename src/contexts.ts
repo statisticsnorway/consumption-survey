@@ -5,11 +5,17 @@ import { FirebaseFirestore } from '@firebase/firestore-types';
 import { FirebaseStorage } from '@firebase/storage-types';
 import { FirebaseDatabase } from '@firebase/database-types';
 
+export type SurveyInfo = {
+    journalStart: Date;
+    journalEnd: Date;
+};
+
 export type UserInfoType = {
     userName: string;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     email: string;
+    surveyInfo: SurveyInfo;
 };
 
 export type UserContextType = {

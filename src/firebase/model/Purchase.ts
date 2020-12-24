@@ -18,6 +18,10 @@ export type PurchaseType = {
     totalPrice: number;
 };
 
+export type PurchasesByDate = {
+    [date: string]: PurchaseType[];
+};
+
 export type PurchaseGroupByDate = {
     readonly [date: string]: readonly PurchaseType[];
 };
