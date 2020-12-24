@@ -16,4 +16,4 @@ export const IDENTITY_FN = x => x;
 export const NOK = new Intl.NumberFormat('no-NO', { style: 'currency', currency: 'NOK' });
 
 export const krCents = (amt) =>
-    NOK.format(amt).replace('NOK', '');
+    NOK.format(amt).replace('NOK', '').replace('kr', '');

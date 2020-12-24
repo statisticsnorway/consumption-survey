@@ -18,7 +18,11 @@ export type SimpleBarChartProps = {
     type?: BarChartType;
     data: PlotData[];
     seriesName: string;
+    xLabel?: string;
     yLabel?: string;
+    xTitle?: string;
+    yTitle?: string;
+    yLabelFormatter?: () => string;
     drillDown?: DrillDownData[];
     className?: string;
 };
@@ -28,6 +32,11 @@ const SimpleBarChart = ({
                             seriesName,
                             data,
                             drillDown,
+                            xLabel,
+                            yLabel,
+                            xTitle,
+                            yTitle,
+                            yLabelFormatter,
                             className
                         }: SimpleBarChartProps) => {
     const plotOptions = {
@@ -35,15 +44,19 @@ const SimpleBarChart = ({
             borderWidth: 0,
             dataLabels: {
                 enabled: true,
-                format: `{point.y:.2f} kr`
+                formatter: (typeof yLabelFormatter === 'function') ?
+                    yLabelFormatter :
+                    function () {
+                        return this.y;
+                    }
             }
         }
     };
 
     const series = [
         {
-            name: seriesName,
-            colorByPoint: true,
+            name: yLabel,
+            colorByPoint: false,
             data,
         }
     ];
@@ -55,6 +68,10 @@ const SimpleBarChart = ({
         title: seriesName,
         xAxis: {
             type: 'category',
+            title: xTitle || '',
+        },
+        yAxis: {
+            title: yTitle || '',
         },
         series,
         plotOptions,
@@ -65,7 +82,7 @@ const SimpleBarChart = ({
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}
-                containerProps={{ style: { height: '100%' }}}
+                containerProps={{style: {height: '100%'}}}
             />
         </div>
     );

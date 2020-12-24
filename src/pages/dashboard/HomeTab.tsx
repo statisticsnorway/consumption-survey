@@ -70,21 +70,6 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
         );
     };
 
-    const chartData = Object.keys(purchasesByDate)
-        .map(name => ({
-                name,
-                y: purchasesByDate[name]
-                    .reduce((acc, p) => acc + Number(p.totalPrice), 0)
-            }));
-
-    const chart = (
-        <SimpleBarChart
-            data={chartData}
-            seriesName="Forbruk"
-            className={styles.dashboardChart}
-        />
-    );
-
     return (
         <>
             <h1>{t('diary.title')}</h1>
@@ -111,7 +96,6 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                         <ArrowRight className={styles.allEntriesIcon}/>
                     </a>
                 </div>
-                {chart}
                 <PurchasesList/>
             </div>
             <FloatingButton

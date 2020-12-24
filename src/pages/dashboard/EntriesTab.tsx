@@ -4,6 +4,7 @@ import PurchasesList from '../../components/purchases/PurchasesList';
 import PurchasesByDate from '../../components/purchases/PurchasesByDate';
 import usePurchases from '../../mock/usePurchases';
 import { useEffect, useState } from 'react';
+import ConsumptionChart from '../../components/purchases/ConsumptionChart';
 
 const EntriesTab = ({dateSelection, selectDate, deselectDate}) => {
     const {t} = useTranslation('dashboard');
@@ -26,6 +27,7 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate}) => {
             ) : (
                 <>
                     <h1>{t('entries.title')}</h1>
+                    <ConsumptionChart />
                     <div className={styles.entries}>
                         <PurchasesList/>
                     </div>

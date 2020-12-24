@@ -1,8 +1,9 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 // import { FireContext, UserContext } from '../contexts';
-import { UserContext } from '../contexts';
+import { SurveyInfo, UserContext, UserInfoType } from '../contexts';
 import { i18n } from '../../i18n';
+import { add, sub } from 'date-fns';
 
 export enum CommunicationPreference {
     EMAIL = 'EMAIL',
@@ -11,15 +12,24 @@ export enum CommunicationPreference {
     PHONE = 'PHONE',
 };
 
+
+
 export type UserPreferences = {
     language: string;
     communicationPreferences: CommunicationPreference[];
     pin: string;
 }
 
+const TODAY = new Date();
+
+const DUMMY_SURVEY_INFO: SurveyInfo = {
+    journalStart:  sub(TODAY, { days: 7 }),
+    journalEnd: add(TODAY, { days: 7 }),
+}
+
 const UserProvider = ({children}) => {
     // const { auth, firestore } = useContext(FireContext);
-    const [userInfo, setUserInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState<UserInfoType>(null);
     const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -29,12 +39,13 @@ const UserProvider = ({children}) => {
         setUserPreferences({
             language: 'nb',
             communicationPreferences: [],
-            pin: '1234'
+            pin: '1234',
         });
 
         setUserInfo({
             userName,
             email: `${userName}@ssb.no`,
+            surveyInfo: DUMMY_SURVEY_INFO,
         });
     };
 
