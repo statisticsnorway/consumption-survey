@@ -14,7 +14,7 @@
     "@material-ui/lab": "4.0.0-alpha.57",
     "@material-ui/pickers": "^3.2.10",
     "@pwabuilder/pwainstall": "^1.6.6",
-    "@statisticsnorway/ssb-component-library": "^2.0.29",
+    "@statisticsnorway/ssb-component-library": "^2.0.37",
     "@firebase/auth-types": "^0.10.1",
     "@firebase/database-types": "^0.6.1",
     "@firebase/firestore-types": "^2.0.0",
