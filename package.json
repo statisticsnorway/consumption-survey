@@ -24,7 +24,7 @@
     "axios": "^0.20.0",
     "axios-hooks": "^2.1.0",
     "date-fns": "^2.16.1",
-    "firebase": "^8.0.1",
+    "firebase": "^8.1.1",
     "idb": "^5.0.6",
     "js-cookie": "^2.2.1",
     "moment": "^2.27.0",
