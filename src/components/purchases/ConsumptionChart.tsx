@@ -50,7 +50,7 @@ const ConsumptionChart = () => {
         <SimpleBarChart
             data={chartData}
             seriesName="Min Periode"
-            yTitle="Forbruk"
+            yTitle="Forbruk i surveyperioden"
             xTitle="Min Periode"
             yLabelFormatter={yLabelFormatter}
             className={styles.consumptionChart}
