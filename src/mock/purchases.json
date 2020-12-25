@@ -1,8 +1,8 @@
 {
-  "17.12.2020": [
+  "18.12.2020": [
     {
       "id": "bLpP5xKekFf4OMEa9M0f",
-      "when": "2020-12-17T11:00:00.000Z",
+      "when": "2020-12-18T11:00:00.000Z",
       "totalPrice": 19.9,
       "items": [
         {
@@ -23,7 +23,7 @@
       "id": "9jBx2KXLx1zA4CuOeY4r",
       "when": "2020-12-19T11:00:00.000Z",
       "where": "Kiosk",
-      "totalPrice": 20,
+      "totalPrice": 120,
       "items": [
         {
           "kr": "20",
@@ -81,7 +81,7 @@
       "whenRaw": "063743194800.000000000"
     }
   ],
-  "21.12.2020": [
+  "23.12.2020": [
     {
       "id": "Luo000IrkW1IZjmM257U",
       "items": [
@@ -95,13 +95,13 @@
         }
       ],
       "where": "Baker Hansen",
-      "when": "2020-12-21T09:39:49.307Z",
+      "when": "2020-12-23T09:39:49.307Z",
       "totalPrice": 49,
       "whenRaw": "063743276389.307000000"
     },
     {
       "id": "uc1TxYR53uVHsW8DriGU",
-      "when": "2020-12-21T09:25:43.270Z",
+      "when": "2020-12-23T09:25:43.270Z",
       "items": [
         {
           "cents": "00",

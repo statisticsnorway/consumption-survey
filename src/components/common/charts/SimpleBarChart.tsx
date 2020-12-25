@@ -55,7 +55,7 @@ const SimpleBarChart = ({
 
     const series = [
         {
-            name: yLabel,
+            name: yTitle,
             colorByPoint: false,
             data,
         }
