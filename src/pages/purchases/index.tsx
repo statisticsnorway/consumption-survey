@@ -9,7 +9,6 @@ const Purchases = () => {
         <>
             <h3>Firebase PoC</h3>
             <WorkspacePanel>
-                <PurchasesList />
             </WorkspacePanel>
         </>
     );

@@ -14,7 +14,7 @@ import { add, sub } from 'date-fns';
 import styles from './dashboard.module.scss'
 import { makeDummyComponent } from '../../utils/dummy';
 import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
-import { simpleFormat } from '../../utils/dateUtils';
+import { parseDate, simpleFormat } from '../../utils/dateUtils';
 import PurchasesByDate from '../../components/purchases/PurchasesByDate';
 import Loader from '../../components/common/Loader';
 
@@ -61,7 +61,7 @@ const Dashboard = () => {
                                     console.log('should reset date');
                                     setSelectedDate(null);
                                 }}
-                                selectDate={setSelectedDate}
+                                selectDate={showPurchasesByDate}
                             />
                         ),
                     }, {

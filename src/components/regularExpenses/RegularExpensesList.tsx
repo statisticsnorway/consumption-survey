@@ -49,7 +49,15 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                 <div className={`${styles.expenseColumnHeader} ${styles.editExpense}`}></div>
             </div>
             {expenses.map((expense, idx) => (
-                <div className={styles.expense} key={expense.id}>
+                <div
+                    className={styles.expense}
+                    key={expense.id}
+                    onClick={() => {
+                        console.log('Should init editing of', expense);
+                        setExpenseForEdit(expense);
+                        setShowAddExpense(true);
+                    }}
+                >
                     <div className={`${styles.expenseColumn} ${styles.name}`}>{expense.name}</div>
                     <div className={`${styles.expenseColumn} ${styles.frequency}`}>
                         {(expense.frequency === ExpenseFrequency.NONE) ?

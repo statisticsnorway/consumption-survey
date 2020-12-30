@@ -35,18 +35,25 @@ const INIT_STATE: NewItemInfo = {
 };
 
 export type NewItemProps = {
+    itemInfo?: NewItemInfo;
     show: boolean;
     onAddItem: (item: NewItemInfo) => void;
     onCancel: () => void;
 };
 
-const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
+const NewItem = ({itemInfo, show, onAddItem, onCancel}: NewItemProps) => {
     const {t} = useTranslation('purchases');
     const formRef = useRef(null);
     const [values, setValues] = useState<NewItemInfo>(INIT_STATE);
     const nameFieldRef = useRef(null);
     const [showPopup, setShowPopup] = useState(show);
     const {searchTerms} = useSearchTerms();
+
+    useEffect(() => {
+        if (itemInfo) {
+            setValues(itemInfo);
+        }
+    }, [itemInfo]);
 
     useEffect(() => {
         setShowPopup(show);

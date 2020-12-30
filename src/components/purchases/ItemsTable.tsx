@@ -5,10 +5,11 @@ import styles from './styles/itemsTable.module.scss';
 
 export type ItemsTableProps = {
     items: ItemType[];
+    onItemClick: (item) => void;
     onItemRemove: (item: ItemType) => void;
 };
 
-const ItemsTable = ({items, onItemRemove}: ItemsTableProps) => {
+const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
     return (
         <table className={styles.itemsTable}>
             <thead>
@@ -21,7 +22,7 @@ const ItemsTable = ({items, onItemRemove}: ItemsTableProps) => {
             </thead>
             <tbody>
             {items.map((item) => (
-                <tr key={item.id || item.idx}>
+                <tr key={item.id || item.idx} onClick={onItemClick}>
                     <td className={styles.name}>{item.name}</td>
                     <td className={styles.qty}>{item.qty}</td>
                     <td className={styles.units}>{item.units}</td>

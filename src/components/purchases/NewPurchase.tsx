@@ -6,7 +6,7 @@ import { Edit3, PlusCircle } from 'react-feather';
 import usePurchases from '../../mock/usePurchases';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
-import NewItem from './NewItem';
+import NewItem, { NewItemInfo } from './NewItem';
 import ItemsTable from './ItemsTable';
 import { simpleFormat } from '../../utils/dateUtils';
 
@@ -34,6 +34,7 @@ const NewPurchase = ({initialSearchTerms}) => {
     const [showNewItemForm, setShowNewItemForm] = useState(true);
     const [purchaseName, setPurchaseName] = useState<string>(t('addPurchase.title'));
     const [purchaseDate, setPurchaseDate] = useState<Date>(new Date());
+    const [itemForEdit, setItemForEdit] = useState<NewItemInfo>(null);
 
     const showEditNameDatePopup = () => {
         setNameDatePopupVisible(true);
@@ -175,8 +176,12 @@ const NewPurchase = ({initialSearchTerms}) => {
                         console.log('will remove ', item);
                         removeItem(item);
                     }}
+                    onItemClick={(item) => {
+                        setItemForEdit(item);
+                    }}
                 />
                 <NewItem
+                    itemInfo={itemForEdit}
                     show={showNewItemForm}
                     onAddItem={addItem}
                     onCancel={onCancelAddItem}

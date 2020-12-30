@@ -96,7 +96,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                         <ArrowRight className={styles.allEntriesIcon}/>
                     </a>
                 </div>
-                <PurchasesList/>
+                <PurchasesList onDayClick={onDayClick} />
             </div>
             <FloatingButton
                 mainProps={FLOATING_BTN_OPTIONS}

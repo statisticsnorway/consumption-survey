@@ -1,46 +1,18 @@
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'react-feather';
-import { groupBy } from 'rambda';
-import { PurchaseType, PurchaseGroupByDate } from '../../firebase/model/Purchase';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
-import { SORT_OPTIONS, GROUP_BY_OPTIONS } from '../../utils/viewOptions';
-import {
-    DASHBOARD_DATE_GROUPING_FORMAT,
-    dateFormatMonthDate,
-    parseDate,
-    SIMPLE_DATE_FORMAT,
-    simpleFormat
-} from '../../utils/dateUtils';
+import { krCents } from '../../utils/jsUtils';
 
 import styles from './purchases.module.scss';
-import { compareDesc } from 'date-fns';
-import { krCents } from '../../utils/jsUtils';
-import { useRouter } from 'next/router';
-
-export type PurchasesListProps = {
-    purchases: PurchaseType[];
-};
-
-const PURCHASE_DATE_COMPARATOR = (p1, p2) =>
-    (p1.whenRaw <= p2.whenRaw) ? -1 : 1;
-
-const getPurchaseDate = (p: PurchaseType): string =>
-    dateFormatMonthDate(new Date(p.when));
-
-const getGroupByFn = (groupByField) => {
-    switch (groupByField) {
-        case GROUP_BY_OPTIONS.DATE:
-            return (purchase: PurchaseType) => getPurchaseDate(purchase);
-        default:
-            return (purchase: PurchaseType) => purchase.id;
-    }
-};
+import { DASHBOARD_DATE_GROUPING_FORMAT, parseDate, simpleFormat } from '../../utils/dateUtils';
 
 const prepForDisplay = (date) => {
-    const [dt, month] = date.split('.');
+    const [dt, month] =
+        simpleFormat(parseDate(date), DASHBOARD_DATE_GROUPING_FORMAT)
+            .split('.');
+
     return (
         <>
             <span className={styles.purchaseGroupDateMonth}>{month.toLowerCase()}</span>
@@ -49,58 +21,26 @@ const prepForDisplay = (date) => {
     );
 };
 
-const PurchasesList = ({limit = -1, orderBy = SORT_OPTIONS.DATE_DESC, groupByField = GROUP_BY_OPTIONS.DATE}) => {
-    const router = useRouter();
-    const {purchases} = usePurchases();
+export type PurchasesListProps = {
+    onDayClick: (date: string | Date) => void;
+};
+
+const PurchasesList = ({onDayClick}) => {
     const {t} = useTranslation('purchases');
-    const [groupsDisp, setGroupsDisp] = useState({} as PurchaseGroupByDate);
-
-    useEffect(() => {
-        const groupByFn = getGroupByFn(groupByField);
-        const groups = groupBy(groupByFn)(purchases);
-        console.log('groups', groups);
-        setGroupsDisp(groups);
-    }, [orderBy, groupByField, purchases]);
-
-    const purchasesDisp = (
-        <div className={styles.purchasesList}>
-            {purchases.map(purchase => {
-                return (
-                    <div className={styles.purchaseEntry}>
-                        <p>id: {purchase.id}</p>
-                        <p>{t('when')}: {purchase.when}</p>
-                        <p>#items: {purchase.items.length}</p>
-                    </div>
-                );
-            })}
-        </div>
-    );
-
-    console.log('sorted', Object.keys(groupsDisp)
-        .map(dt => parseDate(dt, DASHBOARD_DATE_GROUPING_FORMAT))
-        .sort(compareDesc));
-
-    const showDateEntries = (date) => {
-        console.log('Showing date entries for', date);
-        router.push(`/purchases/purchasesByDate/${date}`);
-    };
+    const {purchasesByDate} = usePurchases();
 
     return (
         <div className={styles.purchasesList}>
-            {Object.keys(groupsDisp)                                    // TODO: find a simpler way to do this
-                .map(dt => parseDate(dt, DASHBOARD_DATE_GROUPING_FORMAT))
-                .sort(compareDesc)
-                .map(dt => dateFormatMonthDate(dt))
-                .map(date => {
-                    const dtSimple = simpleFormat(parseDate(date, DASHBOARD_DATE_GROUPING_FORMAT));
-
+            {Object.keys(purchasesByDate)
+                .map((dateOfPurchase) => {
+                    const purchases = purchasesByDate[dateOfPurchase];
                     return (
                         <div className={styles.purchaseGroup}>
                             <div className={styles.purchaseGroupDate}>
-                                {prepForDisplay(date)}
+                                {prepForDisplay(dateOfPurchase)}
                             </div>
                             <div className={styles.purchaseGroupEntries}>
-                                {groupsDisp[date].map(p => (
+                                {purchases.map(p => (
                                     <div className={styles.purchaseGroupEntry}>
                                         <span>{p.where || (p.items && p.items[0] && p.items[0].name) || '??'}</span>
                                         <span>{krCents(Number(p.totalPrice || 0))}</span>
@@ -108,13 +48,19 @@ const PurchasesList = ({limit = -1, orderBy = SORT_OPTIONS.DATE_DESC, groupByFie
                                 ))}
                             </div>
                             <div className={styles.dateNav}>
-                                <Link href={`/purchases/purchasesByDate?date=${dtSimple}`}>
-                                    <ChevronRight width={20} height={20}/>
-                                </Link>
+                                <ChevronRight
+                                    width={20}
+                                    height={20}
+                                    onClick={() => {
+                                        console.log('chev-rt', dateOfPurchase, parseDate(dateOfPurchase));
+                                        onDayClick(parseDate(dateOfPurchase));
+                                    }}
+                                />
                             </div>
                         </div>
                     );
-                })}
+                })
+            }
         </div>
     );
 };

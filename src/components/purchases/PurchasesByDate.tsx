@@ -17,26 +17,34 @@ export type PurchasesByDateProps = {
 const PurchasesByDate = ({date, purchases, selectDate, deselectDate }) => {
     console.log('listing purchases', date, purchases);
     const dt = parseDate(date, SIMPLE_DATE_FORMAT);
-    const prev = simpleFormat(sub(dt, {days: 1}));
-    const next = simpleFormat(add(dt, {days: 1}));
+    const prevDate = sub(dt, { days: 1 });
+    const nextDate = add(dt, { days: 1 });
 
     return (
         <div className={styles.purchasesTableContainer}>
             <div className={styles.purchasesTableHeader}>
-                <a onClick={() => { selectDate(prev); }}>
+                <a onClick={() => { selectDate(prevDate); }}>
                     <div className={styles.navItem}>
-                        <ChevronsLeft width={20} height={20} className={styles.navIcon}/>
-                        {prev}
+                        <ChevronsLeft
+                            width={20}
+                            height={20}
+                            className={styles.navIcon}
+                        />
+                        {simpleFormat(prevDate)}
                     </div>
                 </a>
                 <div className={styles.navTitleGroup}>
                     <a onClick={deselectDate}>Se alle</a>
                     <h1>{date}</h1>
                 </div>
-                <a onClick={() => { selectDate(prev); }}>
+                <a onClick={() => { selectDate(nextDate); }}>
                     <div className={styles.navItem}>
-                        {next}
-                        <ChevronsRight width={20} height={20} className={styles.navIcon}/>
+                        {simpleFormat(nextDate)}
+                        <ChevronsRight
+                            width={20}
+                            height={20}
+                            className={styles.navIcon}
+                        />
                     </div>
                 </a>
             </div>
