@@ -20,6 +20,9 @@ const PurchasesByDate = ({date, purchases, selectDate, deselectDate }) => {
     const prevDate = sub(dt, { days: 1 });
     const nextDate = add(dt, { days: 1 });
 
+    const prevDateShort = simpleFormat(prevDate).split('.', 2).join('.');
+    const nextDateShort = simpleFormat(nextDate).split('.', 2).join('.');
+
     return (
         <div className={styles.purchasesTableContainer}>
             <div className={styles.purchasesTableHeader}>
@@ -30,7 +33,7 @@ const PurchasesByDate = ({date, purchases, selectDate, deselectDate }) => {
                             height={20}
                             className={styles.navIcon}
                         />
-                        {simpleFormat(prevDate)}
+                        {prevDateShort}
                     </div>
                 </a>
                 <div className={styles.navTitleGroup}>
@@ -39,7 +42,7 @@ const PurchasesByDate = ({date, purchases, selectDate, deselectDate }) => {
                 </div>
                 <a onClick={() => { selectDate(nextDate); }}>
                     <div className={styles.navItem}>
-                        {simpleFormat(nextDate)}
+                        {nextDateShort}
                         <ChevronsRight
                             width={20}
                             height={20}
