@@ -22,7 +22,7 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
             </thead>
             <tbody>
             {items.map((item) => (
-                <tr key={item.id || item.idx} onClick={onItemClick}>
+                <tr key={item.id || item.idx} onClick={() => { onItemClick(item); }}>
                     <td className={styles.name}>{item.name}</td>
                     <td className={styles.qty}>{item.qty}</td>
                     <td className={styles.units}>{item.units}</td>

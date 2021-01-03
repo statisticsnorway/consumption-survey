@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { Edit3, PlusCircle } from 'react-feather';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
-import workspaceStyles from '../layout/styles/workspace.module.scss';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import NewItem, { NewItemInfo } from './NewItem';
 import ItemsTable from './ItemsTable';
@@ -12,6 +11,7 @@ import { simpleFormat } from '../../utils/dateUtils';
 
 import styles from './purchases.module.scss';
 import footerStyles from '../layout/styles/footer.module.scss';
+import workspaceStyles from '../layout/styles/workspace.module.scss';
 
 const purchaseNameHints = [
     'Kafé',

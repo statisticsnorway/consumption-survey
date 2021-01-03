@@ -1,8 +1,9 @@
 import { useTranslation } from 'react-i18next';
-import { ChevronDown } from 'react-feather';
+import { ChevronRight } from 'react-feather';
 import { PurchaseType } from '../../firebase/model/Purchase';
 
 import styles from './styles/purchasesTable.module.scss';
+import { useRouter } from 'next/router';
 
 export type PurchasesTableProps = {
     purchases: PurchaseType[];
@@ -10,6 +11,7 @@ export type PurchasesTableProps = {
 
 const PurchasesTable = ({ purchases }: PurchasesTableProps) => {
     const {t} = useTranslation('purchases');
+    const router = useRouter();
 
     if (!purchases || !Array.isArray(purchases) || (purchases.length < 1)) {
         return (
@@ -24,7 +26,13 @@ const PurchasesTable = ({ purchases }: PurchasesTableProps) => {
                     <div className={styles.purchaseName}>{purchase.where}</div>
                     <div className={styles.purchaseAmount}>{purchase.totalPrice}</div>
                     <div className={styles.purchaseDetailsIcon}>
-                        <ChevronDown width={20} height={20} />
+                        <ChevronRight
+                            width={20}
+                            height={20}
+                            onClick={() => {
+                                router.push(`/purchases/editPurchase?purchaseId=${purchase.id}`);
+                            }}
+                        />
                     </div>
                 </div>
             ))}

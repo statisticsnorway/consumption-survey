@@ -55,11 +55,20 @@ const usePurchases = () => {
 
         return firestore
             .collection(`/users/${userInfo.userName}/purchases/${dt}/entries`)
-            .add(purchase)
+            .add(purchase);
+    };
+
+    const editPurchase = (id: string, newValues: PurchaseType) => {
+        console.log('editing', id);
+        const dt = simpleFormat(newValues.when);
+
+        return firestore
+            .doc(`/users/${userInfo.userName}/purchases/${dt}/entries/${id}`)
+            .set(newValues);
     };
 
     // console.log('purchases', purchases);
-    return {purchases, addPurchase};
+    return {purchases, addPurchase, editPurchase};
 };
 
 export default usePurchases;
