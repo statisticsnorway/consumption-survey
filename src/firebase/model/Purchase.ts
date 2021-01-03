@@ -14,8 +14,15 @@ export type PurchaseType = {
     id?: string;
     where: string;
     items: ItemType[];
-    when: Date;
+    when: string;
     totalPrice: number;
+};
+
+export const INIT_PURCHASE = {
+    where: '',
+    items: [],
+    when: new Date().toISOString(),
+    totalPrice: 0,
 };
 
 export type PurchasesByDate = {

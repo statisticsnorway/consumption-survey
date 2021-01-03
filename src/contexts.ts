@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { PurchaseType } from './firebase/model/Purchase';
+import { PurchaseType, PurchasesByDate } from './firebase/model/Purchase';
 import { FirebaseAuth } from '@firebase/auth-types';
 import { FirebaseFirestore } from '@firebase/firestore-types';
 import { FirebaseStorage } from '@firebase/storage-types';
@@ -39,7 +39,9 @@ export const FireContext = createContext({} as FireContextType);
 
 export type PurchasesContextType = {
     purchases: PurchaseType[];
-    addPurchase: (PurchaseType) => void;
+    setPurchases: (purchases: PurchaseType[]) => void;
+    purchasesByDate: PurchasesByDate;
+    setPurchasesByDate: (PurchasesByDate) => void;
 };
 
 export const PurchasesContext = createContext({} as PurchasesContextType);

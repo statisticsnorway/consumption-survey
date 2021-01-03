@@ -4,17 +4,18 @@ import { TextField, InputAdornment } from '@material-ui/core';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 // import useSearchTerms from '../../hocs/useSearchTerms';
 import useSearchTerms from '../../mock/useSesarchTerms';
+import Modal from '../common/dialog/Modal';
+import { SearchTermType } from '../../firebase/model/SearchTerm';
 
 import formStyles from '../form/form.module.scss';
 import styles from './styles/addPurchase.module.scss';
-import Modal from '../common/dialog/Modal';
-import { SearchTermType } from '../../firebase/model/SearchTerm';
 
 type SearchTermExt = SearchTermType & { inputValue?: string };
 
 const filter = createFilterOptions<SearchTermExt>();
 
 export type NewItemInfo = {
+    idx: number;
     name: string;
     qty: string;
     units: string;
@@ -25,6 +26,7 @@ export type NewItemInfo = {
 };
 
 const INIT_STATE: NewItemInfo = {
+    idx: -1,
     name: '',
     qty: '1',
     units: 'stk',
@@ -35,18 +37,25 @@ const INIT_STATE: NewItemInfo = {
 };
 
 export type NewItemProps = {
+    itemInfo?: NewItemInfo;
     show: boolean;
     onAddItem: (item: NewItemInfo) => void;
     onCancel: () => void;
 };
 
-const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
+const NewItem = ({itemInfo, show, onAddItem, onCancel}: NewItemProps) => {
     const {t} = useTranslation('purchases');
     const formRef = useRef(null);
     const [values, setValues] = useState<NewItemInfo>(INIT_STATE);
     const nameFieldRef = useRef(null);
     const [showPopup, setShowPopup] = useState(show);
     const {searchTerms} = useSearchTerms();
+
+    useEffect(() => {
+        if (itemInfo) {
+            setValues(itemInfo);
+        }
+    }, [itemInfo]);
 
     useEffect(() => {
         setShowPopup(show);
@@ -115,19 +124,23 @@ const NewItem = ({show, onAddItem, onCancel}: NewItemProps) => {
                 className={`${formStyles.fbuForm} ${styles.newItemForm}`}
             >
                 <Autocomplete
+                    inputValue={values.name}
                     options={searchTerms as SearchTermExt[]}
                     renderOption={(option: SearchTermExt) => option.text}
-                    renderInput={(params) =>
-                        <TextField
-                            inputRef={nameFieldRef}
-                            placeholder={t('addPurchase.newItem.name.placeholder')}
-                            required
-                            value={values.name}
-                            onChange={updateValue('name')}
-                            {...params}
-                            label={t('addPurchase.newItem.name.label')}
-                            className={`${formStyles.fbuFormField} ${styles.itemName}`}
-                        />
+                    renderInput={(params) => {
+                        return (
+                            <TextField
+                                inputRef={nameFieldRef}
+                                placeholder={t('addPurchase.newItem.name.placeholder')}
+                                required
+                                value={values.name}
+                                onChange={updateValue('name')}
+                                {...params}
+                                label={t('addPurchase.newItem.name.label')}
+                                className={`${formStyles.fbuFormField} ${styles.itemName}`}
+                            />
+                        );
+                    }
                     }
                     onChange={(evt, newValue) => {
                         setValues({

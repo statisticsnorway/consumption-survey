@@ -52,8 +52,8 @@ const PurchaseNameDateGroup = ({
         }
     }, [show, nameFieldRef]);
 
-    /** Changes from parent
-     useEffect(() => {
+    /** Changes from parent */
+    useEffect(() => {
         if (currName) {
             setName(currName);
         }
@@ -61,7 +61,6 @@ const PurchaseNameDateGroup = ({
             setDate(currDate);
         }
     }, [currName, currDate]);
-         */
 
     const toggleDayPicker = () => {
         const dayPickerComp = dayPickerRef.current;

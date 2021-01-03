@@ -72,7 +72,7 @@ const AddEditExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps) =>
             }}
             closeText={t('addExpense.save')}
             onCancel={() => {
-                clear();
+                if (!expense) { clear(); }
                 onCancel();
             }}
             cancelText={t('addExpense.cancel')}

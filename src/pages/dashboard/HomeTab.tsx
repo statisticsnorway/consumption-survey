@@ -8,8 +8,6 @@ import styles from './dashboard.module.scss';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
 import usePurchases from '../../mock/usePurchases';
-import SimpleBarChart from '../../components/common/charts/SimpleBarChart';
-import { PurchaseType } from '../../firebase/model/Purchase';
 
 const today = new Date();
 const surveyStart = sub(today, {days: 7});
@@ -43,7 +41,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
             id: 'registerNew',
             title: t('fab.registerNew'),
             onClick: () => {
-                router.push('/purchases/addPurchase');
+                router.push('/purchases/editPurchase');
             },
             icon: <Edit/>,
         }, {
@@ -96,7 +94,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                         <ArrowRight className={styles.allEntriesIcon}/>
                     </a>
                 </div>
-                <PurchasesList/>
+                <PurchasesList onDayClick={onDayClick} />
             </div>
             <FloatingButton
                 mainProps={FLOATING_BTN_OPTIONS}

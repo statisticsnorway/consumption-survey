@@ -13,6 +13,7 @@ import ProtectedRoute from '../components/auth/ProtectedRoute';
 import '../styles/globals.scss'
 import 'react-day-picker/lib/style.css'
 import 'rc-time-picker/assets/index.css'
+import PurchasesProvider from '../mock/PurchasesProvider';
 
 const appConfig = getConfig();
 
@@ -87,9 +88,11 @@ class MyApp extends App {
             <AppContext.Provider value={{envVars: appConfig}}>
                 <UserProvider>
                     <ProtectedRoute>
-                        <Layout>
-                            <Component {...pageProps} />
-                        </Layout>
+                        <PurchasesProvider>
+                            <Layout>
+                                <Component {...pageProps} />
+                            </Layout>
+                        </PurchasesProvider>
                     </ProtectedRoute>
                 </UserProvider>
             </AppContext.Provider>
