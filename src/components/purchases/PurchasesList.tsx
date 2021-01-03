@@ -6,7 +6,7 @@ import usePurchases from '../../mock/usePurchases';
 import { krCents } from '../../utils/jsUtils';
 
 import styles from './purchases.module.scss';
-import { DASHBOARD_DATE_GROUPING_FORMAT, parseDate, simpleFormat } from '../../utils/dateUtils';
+import { DASHBOARD_DATE_GROUPING_FORMAT, dateComparator, parseDate, simpleFormat } from '../../utils/dateUtils';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -32,6 +32,7 @@ const PurchasesList = ({onDayClick}) => {
     return (
         <div className={styles.purchasesList}>
             {Object.keys(purchasesByDate)
+                .sort(dateComparator)
                 .map((dateOfPurchase) => {
                     const purchases = purchasesByDate[dateOfPurchase];
                     return (

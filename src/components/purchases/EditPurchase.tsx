@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Edit3, PlusCircle } from 'react-feather';
-import { ItemType, PurchaseType } from '../../firebase/model/Purchase';
+import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purchase';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
 import { simpleFormat } from '../../utils/dateUtils';
@@ -33,8 +33,12 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const [showAddItemForm, setShowAddItemForm] = useState(false);
 
     useEffect(() => {
-        if (purchases && purchaseId) {
-            setPurchase(purchases.find(p => p.id === purchaseId));
+        if (purchases) {
+            if (purchaseId) {
+                setPurchase(purchases.find(p => p.id === purchaseId));
+            } else {
+                setPurchase(INIT_PURCHASE)
+            }
         }
     }, [purchases]);
 

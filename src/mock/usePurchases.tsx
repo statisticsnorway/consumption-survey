@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { PurchaseType } from '../firebase/model/Purchase';
-
-import PURCHASES_MOCK from './purchases.json';
 import { simpleFormat } from '../utils/dateUtils';
 import { PurchasesContext } from '../contexts';
+import uuid from 'uuid';
 
 const usePurchases = () => {
     const {
@@ -11,14 +10,23 @@ const usePurchases = () => {
         purchasesByDate, setPurchasesByDate,
     } = useContext(PurchasesContext);
 
-
-
     const addPurchase = (purchase: PurchaseType) => {
         console.log('adding new purchase', purchase);
+        const id = uuid();
         setPurchases([
             ...purchases,
-            purchase
+            {
+                id,
+                ...purchase,
+            },
         ]);
+
+        setPurchasesByDate({
+            ...purchasesByDate,
+            [simpleFormat(new Date(purchase.when))]: [
+                { id, ...purchase }
+            ],
+        });
 
         return Promise.resolve();
     };
