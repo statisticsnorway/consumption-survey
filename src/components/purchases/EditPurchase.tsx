@@ -30,7 +30,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
     const [nameDatePopupVisible, setNameDatePopupVisible] = useState(false);
     const [showEditItemForm, setShowEditItemForm] = useState(false);
-    const [showAddItemForm, setShowAddItemForm] = useState(true);
+    const [showAddItemForm, setShowAddItemForm] = useState(purchaseId ? false : true);
 
     useEffect(() => {
         if (purchases) {
