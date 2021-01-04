@@ -30,7 +30,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
     const [nameDatePopupVisible, setNameDatePopupVisible] = useState(false);
     const [showEditItemForm, setShowEditItemForm] = useState(false);
-    const [showAddItemForm, setShowAddItemForm] = useState(false);
+    const [showAddItemForm, setShowAddItemForm] = useState(true);
 
     useEffect(() => {
         if (purchases) {
@@ -170,6 +170,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
     const cancelPurchase = () => {
         clearAll();
+        router.push(`/dashboard/Dashboard`);
     };
 
     const savePurchase = (e) => {

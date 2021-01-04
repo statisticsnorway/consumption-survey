@@ -124,7 +124,7 @@ const Layout = (props: LayoutProps) => {
                     footerContent, setFooterContent,
                 }}
             >
-                {showHeader && <Header siteTitle="Forbruk 2021" version="0.1" isOnline={isOnline}/>}
+                {showHeader && <Header siteTitle="Forbruk 2021" version="0.9" isOnline={isOnline}/>}
                 <Workspace>
                     <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
                     {loading && <Loader/>}
