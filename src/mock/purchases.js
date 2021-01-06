@@ -1,8 +1,20 @@
-{
-  "18.12.2020": [
+import { add, sub } from 'date-fns';
+import { parseDate, simpleFormat } from '../utils/dateUtils';
+import { DUMMY_SURVEY_INFO } from '../firebase/UserProvider';
+
+const makeDay = (offset) =>
+    simpleFormat(add(DUMMY_SURVEY_INFO.journalStart, { days: offset }));
+
+const day1 = makeDay(2);
+const day2 = makeDay(3);
+const day3 = makeDay(6);
+const day4 = makeDay(11);
+
+const purchasesData = {
+  [day1]: [
     {
       "id": "bLpP5xKekFf4OMEa9M0f",
-      "when": "2020-12-18T11:00:00.000Z",
+      "when": parseDate(day1).toISOString(),
       "totalPrice": 19.9,
       "items": [
         {
@@ -18,10 +30,10 @@
       "whenRaw": "063742935600.000000000"
     }
   ],
-  "19.12.2020": [
+  [day2]: [
     {
       "id": "9jBx2KXLx1zA4CuOeY4r",
-      "when": "2020-12-19T11:00:00.000Z",
+      "when": parseDate(day2).toISOString(),
       "where": "Kiosk",
       "totalPrice": 120,
       "items": [
@@ -48,17 +60,17 @@
           "cents": "00"
         }
       ],
-      "when": "2020-12-19T11:00:00.000Z",
+      "when": parseDate(day2).toISOString(),
       "where": "kafé",
       "totalPrice": 30,
       "whenRaw": "063743108400.000000000"
     }
   ],
-  "20.12.2020": [
+  [day3]: [
     {
       "id": "RJbUbnBxVJFHg5oMuPyW",
       "where": "kiosk",
-      "when": "2020-12-20T11:00:00.000Z",
+      "when": parseDate(day3).toISOString(),
       "totalPrice": 70,
       "items": [
         {
@@ -81,7 +93,7 @@
       "whenRaw": "063743194800.000000000"
     }
   ],
-  "23.12.2020": [
+  [day4]: [
     {
       "id": "Luo000IrkW1IZjmM257U",
       "items": [
@@ -95,13 +107,13 @@
         }
       ],
       "where": "Baker Hansen",
-      "when": "2020-12-23T09:39:49.307Z",
+      "when": parseDate(day4).toISOString(),
       "totalPrice": 49,
       "whenRaw": "063743276389.307000000"
     },
     {
       "id": "uc1TxYR53uVHsW8DriGU",
-      "when": "2020-12-23T09:25:43.270Z",
+      "when": parseDate(day4).toISOString(),
       "items": [
         {
           "cents": "00",
@@ -117,4 +129,6 @@
       "whenRaw": "063743275543.270000000"
     }
   ]
-}
+};
+
+export default purchasesData;
