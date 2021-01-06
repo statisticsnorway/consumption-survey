@@ -62,6 +62,7 @@
       width: 100%;
       padding: 1rem;
       background-color: #fff;
+      color: #000;
 
       .purchaseName {
         flex: 2;
@@ -85,6 +86,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+
+        color: $ssb-green-4;
       }
     }
 

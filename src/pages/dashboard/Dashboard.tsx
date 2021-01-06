@@ -23,18 +23,37 @@ import EntriesTab from './EntriesTab';
 
 const Dashboard = () => {
     const {t} = useTranslation('dashboard');
-    const [activeTab, setActiveTab] = useState('diary');
-    const [selectedDate, setSelectedDate] = useState(null);
+    const router = useRouter();
+
+    const pathActiveTab = router.query.selectedTab as string;
+    const pathSelectedDate = router.query.selectedDate as string;
+
+    const [activeTab, setActiveTab] = useState(pathActiveTab || 'diary');
+    const [selectedDate, setSelectedDate] = useState(pathSelectedDate || null);
+
+    console.log('query', router.query.selectedTab, router.query.selectedDate);
+
+    useEffect(() => {
+        if (router.query.selectedTab) {
+            setActiveTab(router.query.selectedTab as string);
+
+            if (router.query.selectedDate) {
+                setSelectedDate(router.query.selectedDate as string);
+            }
+        } else {
+            setActiveTab('diary');
+        }
+    }, [router.pathname, router.query]);
 
     const showPurchasesByDate = (d) => {
         console.log('Showing purchases on ', d)
         const dtSimple = simpleFormat(d);
         console.log('Should navigate to', dtSimple);
 
-        setSelectedDate(dtSimple);
-        setActiveTab('entries');
+        // setSelectedDate(dtSimple);
+        // setActiveTab('entries');
 
-        // router.push(`/purchases/purchasesByDate?date=${dtSimple}`);
+        router.push(`/dashboard/Dashboard?selectedTab=entries&selectedDate=${dtSimple}`);
     };
 
     return (

@@ -29,7 +29,7 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate}) => {
                     <h1>{t('entries.title')}</h1>
                     <ConsumptionChart />
                     <div className={styles.entries}>
-                        <PurchasesList onDayClick={selectDate}/>
+                        <PurchasesList />
                     </div>
                 </>
             )

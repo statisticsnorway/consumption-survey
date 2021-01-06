@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PurchasesContext } from '../contexts';
 import { PurchasesByDate, PurchaseType } from '../firebase/model/Purchase';
-import PURCHASES_MOCK from './purchases.json';
+import PURCHASES_MOCK from './purchases';
 
 const PurchasesProvider = ({ children }) => {
     const [purchases, setPurchases] = useState<PurchaseType[]>([]);

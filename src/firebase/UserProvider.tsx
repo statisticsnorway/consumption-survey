@@ -22,7 +22,7 @@ export type UserPreferences = {
 
 const TODAY = new Date();
 
-const DUMMY_SURVEY_INFO: SurveyInfo = {
+export const DUMMY_SURVEY_INFO: SurveyInfo = {
     journalStart:  sub(TODAY, { days: 7 }),
     journalEnd: add(TODAY, { days: 7 }),
 }
