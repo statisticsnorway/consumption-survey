@@ -13,13 +13,15 @@ export type TabsProps = {
     onSelect: (tabId: string) => void,
     className: string;
     style?: object;
+    children: ReactNode;
 };
 
 const Tabs = ({
                   tabs,
                   active,
                   onSelect = DO_NOTHING,
-                  className = '', style = {}
+                  className = '', style = {},
+                  children = null,
               }: TabsProps) => {
     const [tabContent, setTabContent] = useState<ReactNode>();
 
@@ -30,10 +32,13 @@ const Tabs = ({
 
     useEffect(() => {
         const activeTab = tabs
-                .find(tab => tab.id === active);
-        setTabContent(
-            (typeof activeTab.renderTab === 'function') ? activeTab.renderTab() : activeTab.renderTab
-        );
+            .find(tab => tab.id === active);
+
+        if (activeTab) {
+            setTabContent(
+                (typeof activeTab.renderTab === 'function') ? activeTab.renderTab() : activeTab.renderTab
+            );
+        }
     }, [active, tabs]);
 
     return (
@@ -52,6 +57,7 @@ const Tabs = ({
             </div>
             <div className={`ssb-tabs-content`}>
                 {tabContent}
+                {children}
             </div>
         </div>
     );

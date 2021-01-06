@@ -1,13 +1,16 @@
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
 import DayPicker from 'react-day-picker';
 import { ArrowRight, Camera, Edit, Plus, X } from 'react-feather';
 import PurchasesList from '../../components/purchases/PurchasesList';
 import FloatingButton from '../../components/common/buttons/FloatingButton';
-
-import styles from './dashboard.module.scss';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
 import usePurchases from '../../mock/usePurchases';
+import { DASHBOARD_TABS, makeDashboardPath, TABS_PARAMS } from '../../uiConfig';
+import { simpleFormat } from '../../utils/dateUtils';
+
+import styles from './dashboard.module.scss';
 
 const today = new Date();
 const surveyStart = sub(today, {days: 7});
@@ -34,7 +37,7 @@ const modifiers = {
 const HomeTab = ({onDayClick, setActiveTab}) => {
     const {t} = useTranslation('dashboard');
     const router = useRouter();
-    const {purchases, purchasesByDate} = usePurchases();
+    const {purchases} = usePurchases();
 
     const FLOATING_MENU_OPTIONS = [
         {
@@ -64,7 +67,13 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
 
     const renderDay = (day) => {
         return (
-            <div className={styles.dashboardDiaryDay}>{day.getDate()}</div>
+            <Link
+                href={makeDashboardPath(DASHBOARD_TABS.ENTRIES, {
+                    [TABS_PARAMS.SELECTED_DATE]: simpleFormat(day)
+                })}
+            >
+                <a className={styles.dashboardDiaryDay}>{day.getDate()}</a>
+            </Link>
         );
     };
 
@@ -74,7 +83,6 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
             <div className={styles.dashboardDiary}>
                 <DayPicker
                     canChangeMonth={true}
-                    onDayClick={onDayClick}
                     renderDay={renderDay}
                     modifiers={getModifiers(purchases)}
                     initialMonth={new Date()}
@@ -94,7 +102,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                         <ArrowRight className={styles.allEntriesIcon}/>
                     </a>
                 </div>
-                <PurchasesList onDayClick={onDayClick} />
+                <PurchasesList/>
             </div>
             <FloatingButton
                 mainProps={FLOATING_BTN_OPTIONS}
