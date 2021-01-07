@@ -16,5 +16,23 @@
     "QUARTERLY": "3. month",
     "HALF_YEARLY": "6. month",
     "YEARLY": "year"
+  },
+
+  "addExpense": {
+    "title": "New regular expense",
+    "save": "Save",
+    "cancel": "Cancel",
+
+    "nameLabel": "Type of expenditure",
+    "namePlaceholder": "Electricity, Cable, Mobile, etc.",
+
+    "frequencyLabel": "Repeats",
+    "frequencyPlaceholder": "Choose one",
+
+    "krLabel": "kr.",
+    "krPlaceholder": "0",
+
+    "centsLabel": "øre",
+    "centsPlaceholder": "00"
   }
 }

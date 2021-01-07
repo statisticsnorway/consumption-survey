@@ -10,6 +10,9 @@ export type ItemsTableProps = {
 };
 
 const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
+    const renderCell = (item, cellStyle, cellContent) =>
+        <td className={cellStyle} onClick={() => onItemClick(item)}>{cellContent}</td>;
+
     return (
         <table className={styles.itemsTable}>
             <thead>
@@ -22,11 +25,10 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
             </thead>
             <tbody>
             {items.map((item) => (
-                <tr key={item.id || item.idx} onClick={() => { onItemClick(item); }}>
-                    <td className={styles.name}>{item.name}</td>
-                    <td className={styles.qty}>{item.qty}</td>
-                    <td className={styles.units}>{item.units}</td>
-                    <td className={styles.price}>{`${item.kr},${item.cents}`}</td>
+                <tr key={item.id || item.idx}>
+                    {renderCell(item, styles.name, item.name)}
+                    {renderCell(item, styles.units, item.units)}
+                    {renderCell(item, styles.price, `${item.kr},${item.cents}`)}
                     <td className={styles.action}>
                         <MinusCircle
                             width={16} height={16}

@@ -25,8 +25,8 @@
       "title": "Hva har du kjøpt ?",
       "addNewTerm": "Legge til",
       "name": {
-        "label": "Vare",
-        "placeholder": "Kjeks, Te, Fisk, osv."
+        "label": "Vare eller Tjeneste",
+        "placeholder": "Kjeks, Fisk, Tannlege, osv."
       },
 
       "qty": {
