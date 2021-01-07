@@ -9,5 +9,10 @@
 
   "regularExpenses": {
     "title": "Regular expenses"
+  },
+
+  "recent": {
+    "title": "Last purchase",
+    "allLink": "See All"
   }
 }

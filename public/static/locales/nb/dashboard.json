@@ -14,5 +14,10 @@
   "fab": {
     "registerNew": "Nytt kjøp",
     "scanReceipt": "Skann kvittering"
+  },
+
+  "recent": {
+    "title": "Siste kjøp",
+    "allLink": "Se Alle"
   }
 }

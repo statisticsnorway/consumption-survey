@@ -14,7 +14,7 @@ type SearchTermExt = SearchTermType & { inputValue?: string };
 
 const filter = createFilterOptions<SearchTermExt>();
 
-export type NewItemInfo = {
+export type ItemInfo = {
     idx: number;
     name: string;
     qty: string;
@@ -25,7 +25,7 @@ export type NewItemInfo = {
     searchTermId?: number;
 };
 
-const INIT_STATE: NewItemInfo = {
+const INIT_STATE: ItemInfo = {
     idx: -1,
     name: '',
     qty: '1',
@@ -36,17 +36,17 @@ const INIT_STATE: NewItemInfo = {
     searchTermId: undefined,
 };
 
-export type NewItemProps = {
-    itemInfo?: NewItemInfo;
+export type EditItemProps = {
+    itemInfo?: ItemInfo;
     show: boolean;
-    onAddItem: (item: NewItemInfo) => void;
+    onAddItem: (item: ItemInfo) => void;
     onCancel: () => void;
 };
 
-const NewItem = ({itemInfo, show, onAddItem, onCancel}: NewItemProps) => {
+const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
     const {t} = useTranslation('purchases');
     const formRef = useRef(null);
-    const [values, setValues] = useState<NewItemInfo>(INIT_STATE);
+    const [values, setValues] = useState<ItemInfo>(INIT_STATE);
     const nameFieldRef = useRef(null);
     const [showPopup, setShowPopup] = useState(show);
     const {searchTerms} = useSearchTerms();
@@ -68,7 +68,7 @@ const NewItem = ({itemInfo, show, onAddItem, onCancel}: NewItemProps) => {
         }
     }, [showPopup]);
 
-    const updateValue = (val: keyof NewItemInfo) => (e: ChangeEvent<HTMLInputElement>) => {
+    const updateValue = (val: keyof ItemInfo) => (e: ChangeEvent<HTMLInputElement>) => {
         setValues({
             ...values,
             [val]: e.target.value,
@@ -94,6 +94,23 @@ const NewItem = ({itemInfo, show, onAddItem, onCancel}: NewItemProps) => {
             units: units || values.units,
         };
     };
+
+    const qtyField = (
+        <TextField
+            placeholder={t('addPurchase.newItem.qty.placeholder')}
+            id="newItem-qty"
+            value={values.qty}
+            required
+            onChange={updateValue('qty')}
+            aria-described-by="qty-helper-text"
+            InputProps={{
+                startAdornment: (
+                    <InputAdornment position="start">stk</InputAdornment>
+                )
+            }}
+            className={`${formStyles.fbuFormField} ${styles.itemQty}`}
+        />
+    );
 
     return (
         <Modal
@@ -180,21 +197,6 @@ const NewItem = ({itemInfo, show, onAddItem, onCancel}: NewItemProps) => {
 
                 <div className={`${formStyles.fbuFormGroup} ${styles.itemQtyGroup}`}>
                     <TextField
-                        placeholder={t('addPurchase.newItem.qty.placeholder')}
-                        id="newItem-qty"
-                        value={values.qty}
-                        required
-                        onChange={updateValue('qty')}
-                        aria-described-by="qty-helper-text"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">stk</InputAdornment>
-                            )
-                        }}
-                        className={`${formStyles.fbuFormField} ${styles.itemQty}`}
-                    />
-
-                    <TextField
                         placeholder={t('addPurchase.newItem.price.kr.placeholder')}
                         id="newItem-kr"
                         InputProps={{
@@ -232,4 +234,4 @@ const NewItem = ({itemInfo, show, onAddItem, onCancel}: NewItemProps) => {
     );
 };
 
-export default NewItem;
+export default EditItem;

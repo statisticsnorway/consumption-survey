@@ -16,11 +16,6 @@ const today = new Date();
 const surveyStart = sub(today, {days: 7});
 const surveyEnd = add(today, {days: 7});
 
-const FLOATING_BTN_OPTIONS = {
-    iconResting: <Plus/>,
-    iconActive: <X/>,
-};
-
 const modifiers = {
     surveyPeriod: {
         after: surveyStart,
@@ -34,28 +29,35 @@ const modifiers = {
     surveyPeriodLastDay: sub(surveyEnd, {days: 1}),
 };
 
+export const FLOATING_BTN_OPTIONS = {
+    iconResting: <Plus/>,
+    iconActive: <X/>,
+};
+
+export const FLOATING_MENU_OPTIONS = (t, router) => [
+    {
+        id: 'registerNew',
+        title: t('fab.registerNew'),
+        onClick: () => {
+            router.push('/purchases/editPurchase');
+        },
+        icon: <Edit/>,
+    }, {
+        id: 'scanReceipt',
+        title: t('fab.scanReceipt'),
+        onClick: () => {
+            router.push('/purchases/scanReceipt');
+        },
+        icon: <Camera/>,
+    }
+];
+
 const HomeTab = ({onDayClick, setActiveTab}) => {
     const {t} = useTranslation('dashboard');
     const router = useRouter();
     const {purchases} = usePurchases();
 
-    const FLOATING_MENU_OPTIONS = [
-        {
-            id: 'registerNew',
-            title: t('fab.registerNew'),
-            onClick: () => {
-                router.push('/purchases/editPurchase');
-            },
-            icon: <Edit/>,
-        }, {
-            id: 'scanReceipt',
-            title: t('fab.scanReceipt'),
-            onClick: () => {
-                router.push('/purchases/scanReceipt');
-            },
-            icon: <Camera/>,
-        }
-    ];
+
 
     const getModifiers = (purchases) => {
         const withEntries = purchases.map(purchase => new Date(purchase.when));
@@ -91,22 +93,22 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
             </div>
             <div className={styles.dashboardPurchaseList}>
                 <div className={styles.dashboardPurchaseListHeader}>
-                    <h3>Siste registreringer</h3>
+                    <h3>{t('recent.title')}</h3>
                     <a
                         className={styles.allEntriesLink}
                         onClick={() => {
                             setActiveTab('entries');
                         }}
                     >
-                        <span>Se alle</span>
+                        <span>{t('recent.allLink')}</span>
                         <ArrowRight className={styles.allEntriesIcon}/>
                     </a>
                 </div>
-                <PurchasesList/>
+                <PurchasesList limit={1}/>
             </div>
             <FloatingButton
                 mainProps={FLOATING_BTN_OPTIONS}
-                childButtonProps={FLOATING_MENU_OPTIONS}
+                childButtonProps={FLOATING_MENU_OPTIONS(t, router)}
                 className={styles.floatingAddNew}
             />
         </>

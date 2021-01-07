@@ -4,9 +4,9 @@ import { Edit3, PlusCircle } from 'react-feather';
 import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purchase';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
-import { simpleFormat } from '../../utils/dateUtils';
+import { parseDate, simpleFormat } from '../../utils/dateUtils';
 import ItemsTable from './ItemsTable';
-import NewItem, { NewItemInfo } from './NewItem';
+import EditItem, { ItemInfo } from './EditItem';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import { useRouter } from 'next/router';
 import { krCents } from '../../utils/jsUtils';
@@ -17,13 +17,14 @@ import workspaceStyles from '../layout/styles/workspace.module.scss';
 
 export type EditPurchaseProps = {
     purchaseId: string;
+    onDate: string;
 };
 
-const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
+const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const {purchases, editPurchase, addPurchase} = usePurchases();
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>();
-    const [itemForEdit, setItemForEdit] = useState<NewItemInfo>(null);
+    const [itemForEdit, setItemForEdit] = useState<ItemInfo>(null);
 
     const {t} = useTranslation('purchases');
     const router = useRouter();
@@ -37,7 +38,10 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             if (purchaseId) {
                 setPurchase(purchases.find(p => p.id === purchaseId));
             } else {
-                setPurchase(INIT_PURCHASE)
+                setPurchase({
+                    ...INIT_PURCHASE,
+                    when: onDate ? parseDate(onDate).toISOString() : INIT_PURCHASE.when,
+                });
             }
         }
     }, [purchases]);
@@ -238,7 +242,9 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     <h1>{values.where || t('addPurchase.title')}</h1>
                     <div className={styles.editMetaLink}>
                         <a
-                            onClick={() => { showEditNameDatePopup(); }}
+                            onClick={() => {
+                                showEditNameDatePopup();
+                            }}
                         >
                             {simpleFormat(values.when ? new Date(values.when) : new Date())}
                         </a>
@@ -266,13 +272,13 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         setShowEditItemForm(true);
                     }}
                 />
-                <NewItem
+                <EditItem
                     itemInfo={null}
                     show={showAddItemForm}
                     onAddItem={addItem}
                     onCancel={onCancelAddItem}
                 />
-                <NewItem
+                <EditItem
                     itemInfo={itemForEdit}
                     show={showEditItemForm}
                     onAddItem={updateItem}

@@ -9,5 +9,10 @@
 
   "regularExpenses":{
     "title": "Faste utgifter"
+  },
+
+  "recent": {
+    "title": "Siste kjøp",
+    "allLink": "Se Alle"
   }
 }

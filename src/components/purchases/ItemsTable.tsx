@@ -13,12 +13,16 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
     const renderCell = (item, cellStyle, cellContent) =>
         <td className={cellStyle} onClick={() => onItemClick(item)}>{cellContent}</td>;
 
+    /*
+    <th className={`${styles.qtyUnits} header`} colSpan={2}>Mengde</th>
+                    {renderCell(item, styles.units, item.units)}
+     */
+
     return (
         <table className={styles.itemsTable}>
             <thead>
             <tr>
                 <th className={`${styles.name} header`}>Vare</th>
-                <th className={`${styles.qtyUnits} header`} colSpan={2}>Mengde</th>
                 <th className={`${styles.price} header`}>Pris</th>
                 <th className={`${styles.action}`}></th>
             </tr>
@@ -27,7 +31,6 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
             {items.map((item) => (
                 <tr key={item.id || item.idx}>
                     {renderCell(item, styles.name, item.name)}
-                    {renderCell(item, styles.units, item.units)}
                     {renderCell(item, styles.price, `${item.kr},${item.cents}`)}
                     <td className={styles.action}>
                         <MinusCircle
