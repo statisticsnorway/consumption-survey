@@ -32,3 +32,7 @@
     padding-bottom: 3px !important;
   }
 }
+
+.MuiInput-underline:before {
+  border-bottom-width: 0px !important;
+}

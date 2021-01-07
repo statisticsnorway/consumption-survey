@@ -24,8 +24,8 @@
       "title": "What have you purchased ?",
       "addNewTerm": "Add ",
       "name": {
-        "label": "Item name",
-        "placeholder": "Cookies, Tea, Fish, ..."
+        "label": "Product or service",
+        "placeholder": "Cookies, Fish, Dentist, etc."
       },
 
       "qty": {

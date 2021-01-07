@@ -29,8 +29,21 @@
 .newItemForm {
   padding: 1.25rem;
 
-  .itemName {
+  .itemNamePriceGroup {
+    display: flex;
+    flex-direction: row;
 
+    .itemName {
+      flex: 2 1;
+    }
+
+    .itemKrCents {
+      flex: 1 0;
+
+      input {
+        text-align: right;
+      }
+    }
   }
 
   .itemQtyGroup {
@@ -47,7 +60,8 @@
 
     .itemQty,
     .itemKr,
-    .itemCents {
+    .itemCents,
+    .itemKrCents{
       input {
         text-align: right;
       }

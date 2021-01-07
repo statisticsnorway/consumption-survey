@@ -25,14 +25,18 @@ const prepForDisplay = (date) => {
 const purchaseDatePath = (date) =>
     makeDashboardPath(DASHBOARD_TABS.ENTRIES, { [TABS_PARAMS.SELECTED_DATE]: date });
 
-const PurchasesList = ({}) => {
+const PurchasesList = ({ limit = -1 }) => {
     const {t} = useTranslation('purchases');
     const {purchasesByDate} = usePurchases();
 
+    const sorted = Object.keys(purchasesByDate)
+        .sort(dateComparator);
+
+    const datesForDisplay = (limit > 0) ? sorted.slice(0, limit) : sorted;
+
     return (
         <div className={styles.purchasesList}>
-            {Object.keys(purchasesByDate)
-                .sort(dateComparator)
+            {datesForDisplay
                 .map((dateOfPurchase) => {
                     const purchases = purchasesByDate[dateOfPurchase];
                     return (

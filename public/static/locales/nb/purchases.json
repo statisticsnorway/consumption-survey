@@ -22,11 +22,11 @@
     },
 
     "newItem": {
-      "title": "Hva har du kjøpt ?",
+      "title": "Ny vare eller tjeneste",
       "addNewTerm": "Legge til",
       "name": {
-        "label": "Vare",
-        "placeholder": "Kjeks, Te, Fisk, osv."
+        "label": "Jeg har kjøpt",
+        "placeholder": "Vare eller tjeneste"
       },
 
       "qty": {
@@ -37,12 +37,12 @@
       "price": {
         "kr": {
           "label": "kr.",
-          "placeholder": "0"
+          "placeholder": "kr"
         },
 
         "cents": {
           "label": "øre",
-          "placeholder": "00"
+          "placeholder": "øre"
         }
       }
     },

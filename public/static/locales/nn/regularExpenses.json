@@ -16,5 +16,23 @@
     "QUARTERLY": "3.mnd",
     "HALF_YEARLY": "6.mnd",
     "YEARLY": "år"
+  },
+
+  "addExpense": {
+    "title": "Ny fast utgift",
+    "save": "Lagre",
+    "cancel": "Avbryt",
+
+    "nameLabel": "Type utgift",
+    "namePlaceholder": "Strøm, Kabel, Mobil, osv.",
+
+    "frequencyLabel": "Gjentas",
+    "frequencyPlaceholder": "Velg en",
+
+    "krLabel": "kr.",
+    "krPlaceholder": "0",
+
+    "centsLabel": "øre",
+    "centsPlaceholder": "00"
   }
 }
