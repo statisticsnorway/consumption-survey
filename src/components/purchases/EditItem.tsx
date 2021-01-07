@@ -9,6 +9,7 @@ import { SearchTermType } from '../../firebase/model/SearchTerm';
 
 import formStyles from '../form/form.module.scss';
 import styles from './styles/addPurchase.module.scss';
+import NumberFormat from 'react-number-format';
 
 type SearchTermExt = SearchTermType & { inputValue?: string };
 
@@ -21,6 +22,7 @@ export type ItemInfo = {
     units: string;
     kr: string;
     cents: string;
+    krCents?: string;
     code?: string;
     searchTermId?: number;
 };
@@ -43,11 +45,45 @@ export type EditItemProps = {
     onCancel: () => void;
 };
 
+interface NumberFormatCustomProps {
+    inputRef: (instance: NumberFormat | null) => void;
+    onChange: (event: { target: { name: string; value: string } }) => void;
+    name: string;
+}
+
+function NumberFormatCustom(props: NumberFormatCustomProps) {
+    const {inputRef, onChange, ...other} = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value,
+                    },
+                });
+            }}
+            isNumericString
+            thousandSeparator="."
+            decimalSeparator=","
+            decimalScale={2}
+            type="tel"
+        />
+    );
+}
+
 const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
     const {t} = useTranslation('purchases');
     const formRef = useRef(null);
     const [values, setValues] = useState<ItemInfo>(INIT_STATE);
     const nameFieldRef = useRef(null);
+    const krFieldRef = useRef(null);
+    const centsFieldRef = useRef(null);
+    const krCentsFieldRef = useRef(null);
+
     const [showPopup, setShowPopup] = useState(show);
     const {searchTerms} = useSearchTerms();
 
@@ -140,93 +176,73 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                 }}
                 className={`${formStyles.fbuForm} ${styles.newItemForm}`}
             >
-                <Autocomplete
-                    inputValue={values.name}
-                    options={searchTerms as SearchTermExt[]}
-                    renderOption={(option: SearchTermExt) => option.text}
-                    renderInput={(params) => {
-                        return (
-                            <TextField
-                                inputRef={nameFieldRef}
-                                placeholder={t('addPurchase.newItem.name.placeholder')}
-                                required
-                                value={values.name}
-                                onChange={updateValue('name')}
-                                {...params}
-                                label={t('addPurchase.newItem.name.label')}
-                                className={`${formStyles.fbuFormField} ${styles.itemName}`}
-                            />
-                        );
-                    }
-                    }
-                    onChange={(evt, newValue) => {
-                        setValues({
-                            ...values,
-                            ...extractValFromAutoComplete(evt, newValue),
-                        })
-                    }}
-                    filterOptions={(options, params) => {
-                        const filtered = filter(options, params) as SearchTermExt[];
-
-                        if (params.inputValue !== '') {
-                            filtered.push({
-                                inputValue: params.inputValue,
-                                text: `${t('addPurchase.newItem.addNewTerm')} "${params.inputValue}"`,
-                                id: null,
-                                code: null,
+                <div className={`${formStyles.fbuFormGroup} ${styles.itemNamePriceGroup}`}>
+                    <Autocomplete
+                        inputValue={values.name}
+                        options={searchTerms as SearchTermExt[]}
+                        renderOption={(option: SearchTermExt) => option.text}
+                        renderInput={(params) => {
+                            return (
+                                <TextField
+                                    inputRef={nameFieldRef}
+                                    placeholder={t('addPurchase.newItem.name.placeholder')}
+                                    required
+                                    value={values.name}
+                                    onChange={updateValue('name')}
+                                    {...params}
+                                    className={`${formStyles.fbuFormField} ${styles.itemName}`}
+                                />
+                            );
+                        }
+                        }
+                        onChange={(evt, newValue) => {
+                            setValues({
+                                ...values,
+                                ...extractValFromAutoComplete(evt, newValue),
                             });
-                        }
 
-                        return filtered;
-                    }}
-                    getOptionLabel={(option) => {
-                        if (typeof option === 'string') {
-                            return option;
-                        } else if (option.inputValue) {
-                            return option.inputValue;
-                        }
-
-                        return option.text;
-                    }}
-                    selectOnFocus
-                    handleHomeEndKeys
-                    id="newItem-auto"
-                    freeSolo
-                    className={`${formStyles.fbuFormField}`}
-                />
-
-                <div className={`${formStyles.fbuFormGroup} ${styles.itemQtyGroup}`}>
-                    <TextField
-                        placeholder={t('addPurchase.newItem.price.kr.placeholder')}
-                        id="newItem-kr"
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    {t('addPurchase.newItem.price.kr.label')}
-                                </InputAdornment>
-                            )
+                            krCentsFieldRef.current.focus();
                         }}
-                        value={values.kr}
-                        required
-                        onChange={updateValue('kr')}
-                        aria-described-by="kr-helper-text"
-                        className={`${formStyles.fbuFormField} ${styles.itemKr}`}
+                        filterOptions={(options, params) => {
+                            const filtered = filter(options, params) as SearchTermExt[];
+
+                            if (params.inputValue !== '') {
+                                filtered.push({
+                                    inputValue: params.inputValue,
+                                    text: `${t('addPurchase.newItem.addNewTerm')} "${params.inputValue}"`,
+                                    id: null,
+                                    code: null,
+                                });
+                            }
+
+                            return filtered;
+                        }}
+                        getOptionLabel={(option) => {
+                            if (typeof option === 'string') {
+                                return option;
+                            } else if (option.inputValue) {
+                                return option.inputValue;
+                            }
+
+                            return option.text;
+                        }}
+                        selectOnFocus
+                        handleHomeEndKeys
+                        id="newItem-auto"
+                        freeSolo
+                        className={`${formStyles.fbuFormField} ${styles.itemName}`}
                     />
 
                     <TextField
-                        placeholder={t('addPurchase.newItem.price.cents.placeholder')}
-                        id="newItem-cents"
+                        placeholder={'1,00'}
+                        id={'newItem-price'}
+                        inputRef={krCentsFieldRef}
+                        value={values.krCents}
+                        onChange={updateValue('krCents')}
+                        className={`${formStyles.fbuFormField} ${styles.itemKrCents}`}
                         InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    {t('addPurchase.newItem.price.cents.label')}
-                                </InputAdornment>
-                            )
+                            inputComponent: NumberFormatCustom as any,
                         }}
-                        value={values.cents}
-                        onChange={updateValue('cents')}
-                        aria-described-by="cents-helper-text"
-                        className={`${formStyles.fbuFormField} ${styles.itemCents}`}
                     />
                 </div>
             </div>
