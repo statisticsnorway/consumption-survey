@@ -7,8 +7,8 @@ const makeDay = (offset) =>
 
 const day1 = makeDay(2);
 const day2 = makeDay(3);
-const day3 = makeDay(6);
-const day4 = makeDay(11);
+const day3 = makeDay(5);
+const day4 = makeDay(6);
 
 const purchasesData = {
   [day1]: [

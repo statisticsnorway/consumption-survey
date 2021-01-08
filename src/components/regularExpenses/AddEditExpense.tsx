@@ -6,25 +6,18 @@ import Modal from '../common/dialog/Modal';
 import formStyles from '../form/form.module.scss';
 import styles from './styles/regularExpenses.module.scss';
 import { TextField, MenuItem } from '@material-ui/core';
+import NorwegianCurrencyFormat from '../common/NorwegianCurrencyFormat';
 
-export type ExpenseInfo = {
-    name: string;
-    frequency: ExpenseFrequency;
-    kr: string;
-    cents: string;
-}
-
-const INIT_STATE: ExpenseInfo = {
+const INIT_STATE: RegularExpenseType = {
     name: '',
     frequency: ExpenseFrequency.NONE,
-    kr: '0',
-    cents: '00',
+    amount: '',
 };
 
 export type AddExpenseProps = {
-    expense?: ExpenseInfo;
+    expense?: RegularExpenseType;
     show: boolean;
-    onSubmit: (expense: ExpenseInfo) => void;
+    onSubmit: (expense: RegularExpenseType) => void;
     onCancel: () => void;
 }
 
@@ -56,7 +49,7 @@ const AddEditExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps) =>
         }
     }, [show, nameFieldRef]);
 
-    const updateValue = (key: keyof ExpenseInfo) => (e: ChangeEvent<HTMLInputElement>) => {
+    const updateValue = (key: keyof RegularExpenseType) => (e: ChangeEvent<HTMLInputElement>) => {
         setValues({
             ...values,
             [key]: e.target.value,
@@ -69,49 +62,48 @@ const AddEditExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps) =>
             title={t('addExpense.title')}
             onClose={() => {
                 onSubmit(values);
+                clear();
             }}
             closeText={t('addExpense.save')}
             onCancel={() => {
-                if (!expense) { clear(); }
+                if (!expense) {
+                    clear();
+                }
                 onCancel();
             }}
             cancelText={t('addExpense.cancel')}
         >
             <div className={`${formStyles.fbuForm} ${styles.addExpenseForm}`}>
-                <TextField
-                    value={values.name}
-                    label={t('addExpense.nameLabel')}
-                    placeholder={t('addExpense.namePlaceholder')}
-                    className={`${formStyles.fbuFormField} ${styles.expenseName}`}
-                    onChange={updateValue('name')}
-                    inputRef={nameFieldRef}
-                />
+                <div className={`${formStyles.fbuFormGroup} ${styles.nameAmountGroup}`}>
+                    <TextField
+                        value={values.name}
+                        placeholder={t('addExpense.namePlaceholder')}
+                        className={`${formStyles.fbuFormField} ${styles.expenseName}`}
+                        onChange={updateValue('name')}
+                        inputRef={nameFieldRef}
+                    />
+                    <TextField
+                        value={values.amount}
+                        placeholder={t('addExpense.krCentsPlaceholder')}
+                        className={`${formStyles.fbuFormField} ${styles.addExpenseKrCents}`}
+                        onChange={updateValue('amount')}
+                        InputProps={{
+                            inputComponent: NorwegianCurrencyFormat as any,
+                        }}
+                    />
+                </div>
 
                 <div className={`${formStyles.fbuFormGroup} ${styles.frequencyAmountGroup}`}>
                     <TextField
                         value={values.frequency}
                         select
                         onChange={updateValue('frequency')}
-                        label={t('addExpense.frequencyLabel')}
                         placeholder={t('addExpense.frequencyPlaceholder')}
                         className={`${formStyles.fbuFormField} ${styles.addExpenseFrequency} muiPadBottom`}
                     >
                         {FREQUENCY_OPTIONS(t)}
                     </TextField>
-                    <TextField
-                        value={values.kr}
-                        label={t('addExpense.krLabel')}
-                        placeholder={t('addExpense.krPlaceholder')}
-                        className={`${formStyles.fbuFormField} ${styles.addExpenseKr}`}
-                        onChange={updateValue('kr')}
-                    />
-                    <TextField
-                        value={values.cents}
-                        label={t('addExpense.centsLabel')}
-                        placeholder={t('addExpense.centsPlaceholder')}
-                        className={`${formStyles.fbuFormField} ${styles.addExpenseCents}`}
-                        onChange={updateValue('cents')}
-                    />
+
                 </div>
             </div>
         </Modal>

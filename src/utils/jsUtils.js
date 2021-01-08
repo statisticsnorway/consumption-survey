@@ -1,3 +1,5 @@
+import NumberFormat from "react-number-format";
+
 export const hasKey = (obj, key) => {
   return obj && key && obj.hasOwnProperty(key);
 };
@@ -17,3 +19,7 @@ export const NOK = new Intl.NumberFormat('no-NO', { style: 'currency', currency:
 
 export const krCents = (amt) =>
     NOK.format(amt).replace('NOK', '').replace('kr', '');
+
+// string
+export const notEmptyString = (str) =>
+    str && str !== '';

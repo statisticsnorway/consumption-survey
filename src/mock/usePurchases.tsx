@@ -3,6 +3,7 @@ import { PurchaseType } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
 import { PurchasesContext } from '../contexts';
 import uuid from 'uuid';
+import { notEmptyString } from '../utils/jsUtils';
 
 const usePurchases = () => {
     const {
@@ -18,6 +19,7 @@ const usePurchases = () => {
             {
                 id,
                 ...purchase,
+                where: notEmptyString(purchase.where) ? purchase.where : 'Nytt kjøp'
             },
         ]);
 

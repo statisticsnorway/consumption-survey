@@ -33,6 +33,9 @@
     "krPlaceholder": "0",
 
     "centsLabel": "øre",
-    "centsPlaceholder": "00"
+    "centsPlaceholder": "00",
+
+    "krCentsLabel": "Amount",
+    "krCentsPlaceholder": "0,00"
   }
 }

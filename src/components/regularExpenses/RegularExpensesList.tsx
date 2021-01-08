@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Edit3, RotateCw, X } from 'react-feather';
 import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
-import AddEditExpense, { ExpenseInfo } from './AddEditExpense';
+import AddEditExpense  from './AddEditExpense';
 import FloatingButton from '../common/buttons/FloatingButton';
 // import useExpenses from '../../hocs/useExpenses';
 import useExpenses from '../../mock/useExpenses';
@@ -10,15 +10,15 @@ import useExpenses from '../../mock/useExpenses';
 import dashboardStyles from '../../pages/dashboard/dashboard.module.scss';
 import styles from './styles/regularExpenses.module.scss';
 import exp from 'constants';
+import { krCents } from '../../utils/jsUtils';
 
 export type RegularExpensesProps = {};
 
-export const convert = ({name, frequency, kr, cents}: ExpenseInfo): RegularExpenseType => {
+export const convert = ({name, frequency, amount}): RegularExpenseType => {
     return {
         name,
         frequency,
-        kr: parseInt(kr),
-        cents: parseInt(cents)
+        amount,
     };
 };
 
@@ -48,7 +48,7 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                 <div className={`${styles.expenseColumnHeader} ${styles.amount}`}>{t('header.amount')}</div>
                 <div className={`${styles.expenseColumnHeader} ${styles.editExpense}`}></div>
             </div>
-            {expenses.map((expense, idx) => (
+            {expenses.map((expense: RegularExpenseType) => (
                 <div
                     className={styles.expense}
                     key={expense.id}
@@ -66,7 +66,7 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                         }
                     </div>
                     <div className={`${styles.expenseColumn} ${styles.amount}`}>
-                        {`${expense.kr},${expense.cents}`}
+                        {krCents(expense.amount)}
                     </div>
                     <div className={`${styles.expenseColumn} ${styles.editExpense}`}>
                         <Edit3
@@ -92,7 +92,7 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
             <AddEditExpense
                 expense={expenseForEdit}
                 show={showAddExpense}
-                onSubmit={(newValues: ExpenseInfo) => {
+                onSubmit={(newValues: RegularExpenseType) => {
                     if (expenseForEdit) {
                         editExpense(expenseForEdit.id, convert(newValues))
                             .then((res) => {

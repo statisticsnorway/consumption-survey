@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'react-feather';
 import { PurchaseType } from '../../firebase/model/Purchase';
+import { getPurchaseName } from './PurchasesList';
 
 import styles from './styles/purchasesTable.module.scss';
 import { krCents } from '../../utils/jsUtils';
@@ -24,7 +25,7 @@ const PurchasesTable = ({purchases}: PurchasesTableProps) => {
             {purchases.map(purchase => (
                 <Link href={`/purchases/editPurchase?purchaseId=${purchase.id}`}>
                     <a className={styles.purchaseRow}>
-                        <div className={styles.purchaseName}>{purchase.where}</div>
+                        <div className={styles.purchaseName}>{getPurchaseName(purchase)}</div>
                         <div className={styles.purchaseAmount}>{krCents(Number(purchase.totalPrice))}</div>
                         <div className={styles.purchaseDetailsIcon}>
                             <ChevronRight

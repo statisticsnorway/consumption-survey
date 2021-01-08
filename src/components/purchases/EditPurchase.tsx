@@ -24,7 +24,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const {purchases, editPurchase, addPurchase} = usePurchases();
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>();
-    const [itemForEdit, setItemForEdit] = useState<ItemInfo>(null);
+    const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
 
     const {t} = useTranslation('purchases');
     const router = useRouter();
@@ -107,25 +107,25 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         });
     };
 
-    const addItem = ({id, idx, name, qty, units, kr, cents}) => {
+    const addItem = ({id, idx, name, qty, units, kr, cents, krCents}) => {
         const {items, totalPrice} = values;
 
         setValues({
             ...values,
             items: [
                 ...items,
-                {idx: items.length, name, qty, units, kr, cents},
+                {idx: items.length, name, qty, units, kr, cents, krCents},
             ],
-            totalPrice: (totalPrice + (Number(`${kr}.${cents}`))),
+            totalPrice: (totalPrice + (Number(krCents))),
         });
 
         setShowAddItemForm(false);
     };
 
-    const updateItem = ({idx, name, qty, units, kr, cents}) => {
+    const updateItem = ({idx, name, qty, units, kr, cents, krCents}) => {
         console.log('updating', idx, name, qty);
         const {items} = values;
-        const changed = items.find(item => (item.idx === idx));
+        const oldItem = items.find(item => (item.idx === idx));
         const other = items.filter(item => (item.idx !== idx));
 
         setValues({
@@ -138,12 +138,13 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     qty,
                     units,
                     kr,
-                    cents
+                    cents,
+                    krCents,
                 }
             ],
             totalPrice: values.totalPrice
-                - Number(`${changed.kr}.${changed.cents}`)
-                + Number(`${kr}.${cents}`),
+                - Number(oldItem.krCents)
+                + Number(krCents),
         });
 
         setShowEditItemForm(false);
@@ -156,7 +157,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             ...values,
             items: items.filter(it =>
                 it.id ? (it.id !== id) : (it.idx !== idx)),
-            totalPrice: (totalPrice - Number(`${item.kr}.${item.cents}`)),
+            totalPrice: (totalPrice - Number(item.krCents)),
         });
     };
 

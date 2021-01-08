@@ -6,10 +6,11 @@ import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 import useSearchTerms from '../../mock/useSesarchTerms';
 import Modal from '../common/dialog/Modal';
 import { SearchTermType } from '../../firebase/model/SearchTerm';
+import { ItemType } from '../../firebase/model/Purchase';
+import NorwegianCurrencyFormat from '../common/NorwegianCurrencyFormat';
 
 import formStyles from '../form/form.module.scss';
 import styles from './styles/addPurchase.module.scss';
-import NumberFormat from 'react-number-format';
 
 type SearchTermExt = SearchTermType & { inputValue?: string };
 
@@ -27,58 +28,29 @@ export type ItemInfo = {
     searchTermId?: number;
 };
 
-const INIT_STATE: ItemInfo = {
+const INIT_STATE: ItemType = {
     idx: -1,
     name: '',
     qty: '1',
     units: 'stk',
     kr: '0',
     cents: '00',
+    krCents: '',
     code: undefined,
     searchTermId: undefined,
 };
 
 export type EditItemProps = {
-    itemInfo?: ItemInfo;
+    itemInfo?: ItemType;
     show: boolean;
-    onAddItem: (item: ItemInfo) => void;
+    onAddItem: (item: ItemType) => void;
     onCancel: () => void;
 };
-
-interface NumberFormatCustomProps {
-    inputRef: (instance: NumberFormat | null) => void;
-    onChange: (event: { target: { name: string; value: string } }) => void;
-    name: string;
-}
-
-function NumberFormatCustom(props: NumberFormatCustomProps) {
-    const {inputRef, onChange, ...other} = props;
-
-    return (
-        <NumberFormat
-            {...other}
-            getInputRef={inputRef}
-            onValueChange={(values) => {
-                onChange({
-                    target: {
-                        name: props.name,
-                        value: values.value,
-                    },
-                });
-            }}
-            isNumericString
-            thousandSeparator="."
-            decimalSeparator=","
-            decimalScale={2}
-            type="tel"
-        />
-    );
-}
 
 const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
     const {t} = useTranslation('purchases');
     const formRef = useRef(null);
-    const [values, setValues] = useState<ItemInfo>(INIT_STATE);
+    const [values, setValues] = useState<ItemType>(INIT_STATE);
     const nameFieldRef = useRef(null);
     const krFieldRef = useRef(null);
     const centsFieldRef = useRef(null);
@@ -104,7 +76,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
         }
     }, [showPopup]);
 
-    const updateValue = (val: keyof ItemInfo) => (e: ChangeEvent<HTMLInputElement>) => {
+    const updateValue = (val: keyof ItemType) => (e: ChangeEvent<HTMLInputElement>) => {
         setValues({
             ...values,
             [val]: e.target.value,
@@ -241,7 +213,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                         onChange={updateValue('krCents')}
                         className={`${formStyles.fbuFormField} ${styles.itemKrCents}`}
                         InputProps={{
-                            inputComponent: NumberFormatCustom as any,
+                            inputComponent: NorwegianCurrencyFormat as any,
                         }}
                     />
                 </div>

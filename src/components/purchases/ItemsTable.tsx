@@ -31,7 +31,7 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
             {items.map((item) => (
                 <tr key={item.id || item.idx}>
                     {renderCell(item, styles.name, item.name)}
-                    {renderCell(item, styles.price, `${item.kr},${item.cents}`)}
+                    {renderCell(item, styles.price, `${item.krCents}`)}
                     <td className={styles.action}>
                         <MinusCircle
                             width={16} height={16}

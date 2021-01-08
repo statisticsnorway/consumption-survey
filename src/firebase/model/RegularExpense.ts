@@ -13,6 +13,5 @@ export type RegularExpenseType = {
     id?: string;
     name: string;
     frequency: ExpenseFrequency;
-    kr: Number;
-    cents: Number;
+    amount: string;
 };
