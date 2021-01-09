@@ -6,7 +6,7 @@ import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purc
 import usePurchases from '../../mock/usePurchases';
 import { parseDate, simpleFormat } from '../../utils/dateUtils';
 import ItemsTable from './ItemsTable';
-import EditItem, { ItemInfo } from './EditItem';
+import EditItem from './EditItem';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import { useRouter } from 'next/router';
 import { krCents } from '../../utils/jsUtils';
@@ -107,22 +107,22 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         });
     };
 
-    const addItem = ({id, idx, name, qty, units, kr, cents, krCents}) => {
+    const addItem = ({id, idx, name, qty, units, amount}) => {
         const {items, totalPrice} = values;
 
         setValues({
             ...values,
             items: [
                 ...items,
-                {idx: items.length, name, qty, units, kr, cents, krCents},
+                {idx: items.length, name, qty, units, amount},
             ],
-            totalPrice: (totalPrice + (Number(krCents))),
+            totalPrice: (totalPrice + (Number(amount))),
         });
 
         setShowAddItemForm(false);
     };
 
-    const updateItem = ({idx, name, qty, units, kr, cents, krCents}) => {
+    const updateItem = ({idx, name, qty, units, amount}) => {
         console.log('updating', idx, name, qty);
         const {items} = values;
         const oldItem = items.find(item => (item.idx === idx));
@@ -137,14 +137,12 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     name,
                     qty,
                     units,
-                    kr,
-                    cents,
-                    krCents,
+                    amount,
                 }
             ],
             totalPrice: values.totalPrice
-                - Number(oldItem.krCents)
-                + Number(krCents),
+                - Number(oldItem.amount)
+                + Number(amount),
         });
 
         setShowEditItemForm(false);
@@ -157,7 +155,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             ...values,
             items: items.filter(it =>
                 it.id ? (it.id !== id) : (it.idx !== idx)),
-            totalPrice: (totalPrice - Number(item.krCents)),
+            totalPrice: (totalPrice - Number(item.amount)),
         });
     };
 

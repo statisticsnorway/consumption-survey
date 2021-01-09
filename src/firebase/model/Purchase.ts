@@ -2,9 +2,7 @@ export type ItemType = {
     name: string;
     qty: string;
     units: string;
-    kr: string;
-    cents: string;
-    krCents: string;
+    amount: string;
     code?: string;
     searchTermId?: number;
     id?: string;

@@ -16,26 +16,12 @@ type SearchTermExt = SearchTermType & { inputValue?: string };
 
 const filter = createFilterOptions<SearchTermExt>();
 
-export type ItemInfo = {
-    idx: number;
-    name: string;
-    qty: string;
-    units: string;
-    kr: string;
-    cents: string;
-    krCents?: string;
-    code?: string;
-    searchTermId?: number;
-};
-
 const INIT_STATE: ItemType = {
     idx: -1,
     name: '',
     qty: '1',
     units: 'stk',
-    kr: '0',
-    cents: '00',
-    krCents: '',
+    amount: '',
     code: undefined,
     searchTermId: undefined,
 };
@@ -54,7 +40,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
     const nameFieldRef = useRef(null);
     const krFieldRef = useRef(null);
     const centsFieldRef = useRef(null);
-    const krCentsFieldRef = useRef(null);
+    const amountFieldRef = useRef(null);
 
     const [showPopup, setShowPopup] = useState(show);
     const {searchTerms} = useSearchTerms();
@@ -128,8 +114,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                 console.log('Verifying', values);
                 if (values.name
                     && (Number(values.qty) !== NaN) && (Number(values.qty) >= 1)
-                    && (Number(values.kr) !== NaN) && (Number(values.kr) >= 0)
-                    && (values.cents ? Number(values.cents) !== NaN : true)) {
+                    && (Number(values.amount) !== NaN) && (Number(values.amount) >= 0)) {
                     onAddItem(values);
                     setShowPopup(false);
                     setValues(INIT_STATE);
@@ -173,7 +158,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                                 ...extractValFromAutoComplete(evt, newValue),
                             });
 
-                            krCentsFieldRef.current.focus();
+                            amountFieldRef.current.focus();
                         }}
                         filterOptions={(options, params) => {
                             const filtered = filter(options, params) as SearchTermExt[];
@@ -208,9 +193,9 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                     <TextField
                         placeholder={'1,00'}
                         id={'newItem-price'}
-                        inputRef={krCentsFieldRef}
-                        value={values.krCents}
-                        onChange={updateValue('krCents')}
+                        inputRef={amountFieldRef}
+                        value={values.amount}
+                        onChange={updateValue('amount')}
                         className={`${formStyles.fbuFormField} ${styles.itemKrCents}`}
                         InputProps={{
                             inputComponent: NorwegianCurrencyFormat as any,

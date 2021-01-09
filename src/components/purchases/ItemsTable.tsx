@@ -2,6 +2,7 @@ import { MinusCircle } from 'react-feather';
 import { ItemType } from '../../firebase/model/Purchase';
 
 import styles from './styles/itemsTable.module.scss';
+import { krCents } from '../../utils/jsUtils';
 
 export type ItemsTableProps = {
     items: ItemType[];
@@ -31,7 +32,7 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
             {items.map((item) => (
                 <tr key={item.id || item.idx}>
                     {renderCell(item, styles.name, item.name)}
-                    {renderCell(item, styles.price, `${item.krCents}`)}
+                    {renderCell(item, styles.price, krCents(item.amount))}
                     <td className={styles.action}>
                         <MinusCircle
                             width={16} height={16}
