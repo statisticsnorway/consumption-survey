@@ -108,6 +108,7 @@ const PurchaseNameDateGroup = ({
                         onDayChange={setDate}
                         placeholder={`${simpleFormat(date)}`}
                         keepFocus={false}
+                        inputProps={{ readOnly: true }}
                     />
                     <div className={styles.purchaseDateIconWrapper}>
                         <Calendar onClick={toggleDayPicker} className={styles.purchaseDateIcon}/>
