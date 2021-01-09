@@ -26,7 +26,9 @@ const NorwegianCurrencyFormat = (props: NorwegianCurrencyFormatProps) => {
             decimalSeparator=","
             decimalScale={2}
             fixedDecimalScale
-            type="numeric"
+            type="tel"
+            inputMode="decimal"
+            pattern="[0-9],*"
         />
     );
 };
