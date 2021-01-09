@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'react-feather';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
-import { krCents } from '../../utils/jsUtils';
+import { krCents, notEmptyString } from '../../utils/jsUtils';
 import { DASHBOARD_DATE_GROUPING_FORMAT, dateComparator, parseDate, simpleFormat } from '../../utils/dateUtils';
 import { DASHBOARD_TABS, PATHS, TABS_PARAMS, makeDashboardPath } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
+import { useEffect, useState } from 'react';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -22,17 +23,33 @@ const prepForDisplay = (date) => {
     );
 };
 
-const purchaseDatePath = (date) =>
-    makeDashboardPath(DASHBOARD_TABS.ENTRIES, { [TABS_PARAMS.SELECTED_DATE]: date });
+export const purchaseDatePath = (date) =>
+    makeDashboardPath(DASHBOARD_TABS.ENTRIES, {[TABS_PARAMS.SELECTED_DATE]: date});
 
-const PurchasesList = ({ limit = -1 }) => {
+export const getPurchaseName = (purchase) => {
+    return notEmptyString(purchase.where) ? (
+        <span>{purchase.where}</span>
+    ) : (
+        <span className={styles.temporaryPurchaseName}>
+            ({(purchase.items && purchase.items[0] && purchase.items[0].name) || '??'})
+        </span>
+    );
+}
+
+const PurchasesList = ({limit = -1}) => {
     const {t} = useTranslation('purchases');
     const {purchasesByDate} = usePurchases();
+    const [sorted, setSorted] = useState([]);
+    const [datesForDisplay, setDatesForDisplay] = useState([]);
 
-    const sorted = Object.keys(purchasesByDate)
-        .sort(dateComparator);
+    useEffect(() => {
+        setSorted(Object.keys(purchasesByDate)
+            .sort(dateComparator));
+    }, [purchasesByDate]);
 
-    const datesForDisplay = (limit > 0) ? sorted.slice(0, limit) : sorted;
+    useEffect(() => {
+        setDatesForDisplay((limit > 0) ? sorted.slice(0, limit) : sorted);
+    }, [sorted]);
 
     return (
         <div className={styles.purchasesList}>
@@ -48,7 +65,7 @@ const PurchasesList = ({ limit = -1 }) => {
                                 <div className={styles.purchaseGroupEntries}>
                                     {purchases.map(p => (
                                         <div className={styles.purchaseGroupEntry}>
-                                            <span>{p.where || (p.items && p.items[0] && p.items[0].name) || '??'}</span>
+                                            {getPurchaseName(p)}
                                             <span>{krCents(Number(p.totalPrice || 0))}</span>
                                         </div>
                                     ))}

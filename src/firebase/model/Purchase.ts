@@ -4,6 +4,7 @@ export type ItemType = {
     units: string;
     kr: string;
     cents: string;
+    krCents: string;
     code?: string;
     searchTermId?: number;
     id?: string;

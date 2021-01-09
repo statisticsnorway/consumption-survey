@@ -83,6 +83,24 @@
 .addExpenseForm {
   padding: 1.25rem;
 
+  .nameAmountGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .expenseName {
+      flex: 2 1;
+    }
+
+    .addExpenseKrCents {
+      flex: 1;
+
+      input {
+        text-align: right;
+      }
+    }
+  }
+
   .frequencyAmountGroup {
     display: flex;
     flex-direction: row;
@@ -92,14 +110,6 @@
     }
 
     .addExpenseKr {
-      flex: 1;
-
-      input {
-        text-align: right;
-      }
-    }
-
-    .addExpenseCents {
       flex: 1;
 
       input {
