@@ -64,7 +64,7 @@
       align-items: center;
 
       width: 100%;
-      padding: 0;
+      padding: 1rem 0;
       background-color: #fff;
       color: #000;
 
@@ -96,7 +96,6 @@
     }
 
     .purchaseRow + .purchaseRow {
-      margin-top: 1rem;
       border-top: 1px solid $ssb-dark-2;
     }
   }
