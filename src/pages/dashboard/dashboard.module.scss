@@ -7,7 +7,8 @@
   height: 100%;
   align-items: stretch;
   /* padding-top: 1rem; */
-  background-color: $ssb-dark-1;
+  /* background-color: $ssb-dark-1; */
+  margin: 0 auto;
 }
 
 .floatingAddNew,
@@ -39,14 +40,14 @@
 }
 
 .dashboardTabs {
-  border-bottom: 1px solid $ssb-dark-2;
-  padding: 1rem 1.25rem 0;
-  background-color: $ssb-dark-1;
-  min-height: 3rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .dashboardDiary {
-  padding: 0 1.25rem;
+  padding: 0;
   display: flex;
   justify-content: center;
   background-color: #fff;
@@ -58,7 +59,7 @@
   .dashboardPurchaseListHeader {
     display: flex;
     justify-content: space-between;
-    padding: 1.25rem;
+    padding: 0;
 
     .allEntriesLink {
       display: flex;
@@ -74,8 +75,7 @@
 }
 
 .dashboardRegularExpenses {
-  padding: 0 1.25rem;
-  background-color: $ssb-dark-1;
+  padding: 0;
 
   display: flex;
   flex-direction: column;

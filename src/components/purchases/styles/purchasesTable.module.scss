@@ -2,7 +2,7 @@
 
 .purchasesTableContainer {
   padding: 1.25rem;
-  background-color: $ssb-dark-1;
+  /* background-color: $ssb-dark-1; */
   height: 100%;
 
   .purchasesTableHeader {
@@ -51,7 +51,11 @@
     justify-content: flex-start;
     align-items: center;
 
-    padding: 0 1.25rem;
+    padding: 0;
+
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: $ssb-dark-2;
 
     .purchaseRow {
       display: flex;
@@ -60,7 +64,7 @@
       align-items: center;
 
       width: 100%;
-      padding: 1rem;
+      padding: 0;
       background-color: #fff;
       color: #000;
 
@@ -93,6 +97,7 @@
 
     .purchaseRow + .purchaseRow {
       margin-top: 1rem;
+      border-top: 1px solid $ssb-dark-2;
     }
   }
 }

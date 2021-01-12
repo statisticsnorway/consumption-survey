@@ -12,6 +12,7 @@ export const DASHBOARD_TABS = {
     HOME: 'diary',
     ENTRIES: 'entries',
     REGULAR_EXPENSES: 'regularExpenses',
+    OTHER: 'otherExpenses',
 };
 
 export const makeDashboardPath = (selectedTab, additionalParams) => {

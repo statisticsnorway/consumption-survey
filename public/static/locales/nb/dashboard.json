@@ -19,5 +19,11 @@
   "recent": {
     "title": "Siste kjøp",
     "allLink": "Se Alle"
+  },
+
+  "status": {
+    "DONE": "Ferdig",
+    "IN_PROGRESS": "Påbegynt",
+    "INIT": "Ikke startet"
   }
 }
