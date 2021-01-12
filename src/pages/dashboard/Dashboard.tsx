@@ -1,25 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import DayPicker from 'react-day-picker'
-import { ArrowRight, Plus, Camera, Edit, X } from 'react-feather'
-import PurchasesList from '../../components/purchases/PurchasesList';
-import Tabs from '../../components/blocks/tabs/Tabs';
-import FloatingButton from '../../components/common/buttons/FloatingButton'
+import { Calendar, CheckSquare, CreditCard, RotateCw, List } from 'react-feather';
+import Tabs, { TabRenderOption } from '../../components/blocks/tabs/Tabs';
 // import usePurchases from '../../hocs/usePurchases';
-import usePurchases from '../../mock/usePurchases';
-import { add, sub } from 'date-fns';
+import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
+import { simpleFormat } from '../../utils/dateUtils';
 
 import styles from './dashboard.module.scss'
-import { makeDummyComponent } from '../../utils/dummy';
-import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
-import { parseDate, simpleFormat } from '../../utils/dateUtils';
-import PurchasesByDate from '../../components/purchases/PurchasesByDate';
-import Loader from '../../components/common/Loader';
 
 import HomeTab from './HomeTab';
 import EntriesTab from './EntriesTab';
+import { makeDummyComponent } from '../../utils/dummy';
 
 const Dashboard = () => {
     const {t} = useTranslation('dashboard');
@@ -58,7 +50,7 @@ const Dashboard = () => {
 
     return (
         <div className={styles.dashboard}>
-            <Tabs
+            <Tabs renderTabAs={TabRenderOption.ICON}
                 tabs={[
                     {
                         title: t('diary.title'),
@@ -69,6 +61,7 @@ const Dashboard = () => {
                                 setActiveTab={setActiveTab}
                             />
                         ),
+                        icon: <Calendar height={20} width={20} />,
                     },
                     {
                         title: t('entries.title'),
@@ -83,6 +76,7 @@ const Dashboard = () => {
                                 selectDate={showPurchasesByDate}
                             />
                         ),
+                        icon: <CreditCard height={20} width={20} />,
                     }, {
                         title: t('regularExpenses.title'),
                         id: 'regularExpenses',
@@ -94,6 +88,12 @@ const Dashboard = () => {
                                 </div>
                             </>
                         ),
+                        icon: <RotateCw height={20} width={20} />,
+                    }, {
+                        title: 'Andre utgifter',
+                        id: 'otherExpenses',
+                        renderTab: makeDummyComponent('Andre utgifter'),
+                        icon: <List width={20} height={20} />,
                     }
                 ]}
                 active={activeTab}

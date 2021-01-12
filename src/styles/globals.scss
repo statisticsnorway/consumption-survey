@@ -37,11 +37,10 @@ section {
   overflow-y: auto;
 
   h1 {
-    font-size: 2rem;
-    padding: 1rem 1.25rem;
+    font-size: 2.5rem;
+    padding: 1rem 0;
     font-family: 'Roboto Condensed';
     margin: 0;
-    background-color: $ssb-dark-1;
   }
 
   h3 {
@@ -53,19 +52,74 @@ section {
 }
 
 .ssb-tabs .navigation-item {
-  padding: 0.5rem 0;
   font-size: 1rem;
   line-height: 1.25rem;
   font-weight: normal;
   font-family: 'Roboto';
+
+  padding: 0 0 1rem;
 }
 
 .ssb-tabs .navigation-item.active {
   font-weight: bold;
 }
 
+.ssb-tabs-content {
+  padding: 1rem 0;
+}
+
 .floatingAddExpense {
   .MuiFab-primary {
     background-color: $ssb-blue-3;
   }
+}
+
+.section-nav {
+  display: flex;
+  flex-direction: column;
+
+  margin: 1rem 0;
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: $ssb-dark-2;
+
+  .section-nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    padding: 1rem 0;
+
+    .title {
+      font-weight: bold;
+    }
+
+    .link {
+      color: $ssb-green-4;
+    }
+  }
+
+  .section-nav-item + .section-nav-item {
+    border-top: 1px solid $ssb-dark-2;
+  }
+}
+
+.ssb-tag {
+  border-width: 0;
+}
+
+.ssb-tag.DONE {
+  background-color: $ssb-green-4;
+  color: #fff;
+}
+
+.ssb-tag.IN_PROGRESS {
+  background-color: $ssb-blue-3;
+  color: #fff;
+}
+
+.ssb-tag.INIT {
+  background-color: $ssb-dark-2;
+  color: $ssb-dark-4;
 }

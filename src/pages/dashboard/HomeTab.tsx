@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import DayPicker from 'react-day-picker';
 import { ArrowRight, Camera, Edit, Plus, X } from 'react-feather';
+import { Tag } from '@statisticsnorway/ssb-component-library';
 import PurchasesList from '../../components/purchases/PurchasesList';
 import FloatingButton from '../../components/common/buttons/FloatingButton';
 import { add, sub } from 'date-fns';
@@ -57,8 +58,6 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
     const router = useRouter();
     const {purchases} = usePurchases();
 
-
-
     const getModifiers = (purchases) => {
         const withEntries = purchases.map(purchase => new Date(purchase.when));
         return {
@@ -79,6 +78,40 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
         );
     };
 
+    const getStatus = (id) => {
+        switch (id) {
+            case DASHBOARD_TABS.ENTRIES:
+                return 'IN_PROGRESS';
+            case DASHBOARD_TABS.REGULAR_EXPENSES:
+                return 'DONE';
+            case DASHBOARD_TABS.OTHER:
+                return 'INIT';
+        }
+    };
+
+    const makeSectionNav = (ids) => {
+        return (
+            <div className="section-nav">
+                {ids.map(id => {
+                    const status = getStatus(id);
+                    return (
+                        <div className="section-nav-item" onClick={() => setActiveTab(id)}>
+                            <span className="title">{t(`${id}.title`)}</span>
+                            <Tag className={status}>{t(`status.${status}`)}</Tag>
+                            <ArrowRight width={20} height={20} className="link"/>
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    };
+
+    const sectionNav = makeSectionNav([
+        DASHBOARD_TABS.ENTRIES,
+        DASHBOARD_TABS.REGULAR_EXPENSES,
+        DASHBOARD_TABS.OTHER,
+    ]);
+
     return (
         <>
             <h1>{t('diary.title')}</h1>
@@ -91,6 +124,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                     showOutsideDays={true}
                 />
             </div>
+            {sectionNav}
             <div className={styles.dashboardPurchaseList}>
                 <div className={styles.dashboardPurchaseListHeader}>
                     <h3>{t('recent.title')}</h3>
