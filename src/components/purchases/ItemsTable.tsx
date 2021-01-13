@@ -8,9 +8,10 @@ export type ItemsTableProps = {
     items: ItemType[];
     onItemClick: (item) => void;
     onItemRemove: (item: ItemType) => void;
+    showTotalRow?: boolean;
 };
 
-const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
+const ItemsTable = ({items, onItemClick, onItemRemove, showTotalRow = true}: ItemsTableProps) => {
     const renderCell = (item, cellStyle, cellContent) =>
         <td className={cellStyle} onClick={() => onItemClick(item)}>{cellContent}</td>;
 
@@ -18,6 +19,8 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
     <th className={`${styles.qtyUnits} header`} colSpan={2}>Mengde</th>
                     {renderCell(item, styles.units, item.units)}
      */
+
+    const total = items.reduce((acc, item) => acc + Number(item.amount), 0);
 
     return (
         <table className={styles.itemsTable}>
@@ -42,6 +45,17 @@ const ItemsTable = ({items, onItemClick, onItemRemove}: ItemsTableProps) => {
                     </td>
                 </tr>
             ))}
+            {showTotalRow &&
+                <tr key="total" className={styles.totalRow}>
+                    <td>
+                        Sum
+                    </td>
+                    <td className={styles.total}>
+                        {krCents(total)}
+                    </td>
+                    <td></td>
+                </tr>
+            }
             </tbody>
         </table>
     );

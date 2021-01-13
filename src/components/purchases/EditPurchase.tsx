@@ -198,7 +198,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         clearAll();
     };
 
-    const addPurchaseFooter = values ? (
+    const addPurchaseFooter = null; /* values ? (
         <div className={footerStyles.footerWrapper}>
             <div className={styles.addPurchaseFooterTotal}>
                 <span className={styles.addPurchaseFooterTotalText}>{t('addPurchase.total')}</span>
@@ -219,7 +219,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 </button>
             </div>
         </div>
-    ) : null;
+    ) : null; */
 
     return values ? (
         <>
