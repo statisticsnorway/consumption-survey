@@ -163,7 +163,8 @@
     }
 
     .menuIcon {
-      color: $ssb-green-4;
+      /* color: $ssb-green-4; */
+      color: #aaa;
     }
 
   }
@@ -213,6 +214,7 @@
     font-size: 20px;
     font-weight: normal;
     margin-right: 0.5rem;
+    color: #aaa;
   }
 
   @media #{$mobile} {

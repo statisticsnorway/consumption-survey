@@ -35,7 +35,7 @@ const Header = ({siteTitle, version, isOnline}) => {
                 <div className={styles.logoAndTitle}>
                     <div className={styles.homeNav}>
                         <div className={styles.logoFull}>
-                            <img src="/icons/maskable_icon-96x96.png" alt="SSB Logo"/>
+                            <img src="/icons/ssb-logo-min.png" alt="SSB Logo"/>
                         </div>
                     </div>
                     <div className={styles.siteTitle}>{siteTitle}</div>
