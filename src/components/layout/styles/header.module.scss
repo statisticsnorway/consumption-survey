@@ -116,21 +116,21 @@
           font-size: 24px;
         }
       }
+    }
 
-      .actionLink {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .actionLink {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-        color: $ssb-green-4;
+      color: $ssb-green-4;
 
-        .actionIcon {
-          margin: 0 0.25rem;
-        }
+      .actionIcon {
+        margin: 0 0.25rem;
+      }
 
-        .text {
+      .text {
 
-        }
       }
     }
 
@@ -146,9 +146,9 @@
   }
 
   .rightSection {
-    align-items: center;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     position: relative;
 
     .links {
@@ -164,7 +164,6 @@
 
     .menuIcon {
       color: $ssb-green-4;
-      margin-bottom: 4px;
     }
 
   }
@@ -212,8 +211,8 @@
   .menuLabel {
     @include roboto;
     font-size: 20px;
-    font-weight: bold;
-    margin-right: 8px;
+    font-weight: normal;
+    margin-right: 0.5rem;
   }
 
   @media #{$mobile} {

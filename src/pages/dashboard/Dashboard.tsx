@@ -61,7 +61,7 @@ const Dashboard = () => {
                                 setActiveTab={setActiveTab}
                             />
                         ),
-                        icon: <Calendar height={20} width={20} />,
+                        icon: <Calendar height={24} width={24} />,
                     },
                     {
                         title: t('entries.title'),
@@ -76,7 +76,7 @@ const Dashboard = () => {
                                 selectDate={showPurchasesByDate}
                             />
                         ),
-                        icon: <CreditCard height={20} width={20} />,
+                        icon: <CreditCard height={24} width={24} />,
                     }, {
                         title: t('regularExpenses.title'),
                         id: 'regularExpenses',
@@ -88,12 +88,12 @@ const Dashboard = () => {
                                 </div>
                             </>
                         ),
-                        icon: <RotateCw height={20} width={20} />,
+                        icon: <RotateCw height={24} width={24} />,
                     }, {
                         title: 'Andre utgifter',
                         id: 'otherExpenses',
                         renderTab: makeDummyComponent('Andre utgifter'),
-                        icon: <List width={20} height={20} />,
+                        icon: <List width={24} height={24} />,
                     }
                 ]}
                 active={activeTab}

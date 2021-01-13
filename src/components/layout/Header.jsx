@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { Menu } from 'react-feather';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@statisticsnorway/ssb-component-library';
-import styles from './styles/header.module.scss';
 import Notifications from '../common/notifications/Notifications';
 import { LayoutContext } from '../../uiContexts';
+
+import styles from './styles/header.module.scss';
 
 const HEADER_EXCLUDE_PAGES = [];
 
@@ -13,10 +16,18 @@ const PAGES_WITH_CUSTOM_HEADER = [
 
 const Header = ({siteTitle, version, isOnline}) => {
     const router = useRouter();
+    const {t} =  useTranslation('common');
     const [showMenu, setShowMenu] = useState(false);
     const [headerCmp, setHeaderCmp] = useState(null);
 
     const {showHeader, setShowHeader, headerContent} = useContext(LayoutContext);
+
+    const MENU = (
+        <>
+            <span className={styles.menuLabel}>{t('menu.label')}</span>
+            <Menu width={20} height={20} className={styles.menuIcon} />
+        </>
+    );
 
     const DEFAULT_HEADER = (
         <div className={styles.headerComponentWrapper}>
@@ -33,7 +44,7 @@ const Header = ({siteTitle, version, isOnline}) => {
                 </div>
             </div>
             <div className={styles.rightSection}>
-                <Notifications showBadge={isOnline} isOnline={isOnline}/>
+                {MENU}
             </div>
         </div>
     );

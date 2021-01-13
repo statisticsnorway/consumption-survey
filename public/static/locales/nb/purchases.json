@@ -1,6 +1,7 @@
 {
   "when" : "når",
   "noRecords": "Ingen registreringer",
+  "back": "Tilbake",
 
   "addPurchase": {
     "title": "Nytt kjøp",

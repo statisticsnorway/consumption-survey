@@ -60,8 +60,13 @@ section {
   padding: 0 0 1rem;
 }
 
+.ssb-tabs .navigation-item:not(:last-of-type) {
+  margin-right: 2rem;
+}
+
 .ssb-tabs .navigation-item.active {
   font-weight: bold;
+  color: $ssb-green-4;
 }
 
 .ssb-tabs-content {
