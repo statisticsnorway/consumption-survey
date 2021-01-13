@@ -116,6 +116,22 @@
           font-size: 24px;
         }
       }
+
+      .actionLink {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        color: $ssb-green-4;
+
+        .actionIcon {
+          margin: 0 0.25rem;
+        }
+
+        .text {
+
+        }
+      }
     }
 
     @media #{$mobile} {
@@ -134,8 +150,6 @@
     display: flex;
     justify-content: space-between;
     position: relative;
-
-    display: none;
 
     .links {
       align-items: center;

@@ -45,7 +45,7 @@ const ItemsTable = ({items, onItemClick, onItemRemove, showTotalRow = true}: Ite
                     </td>
                 </tr>
             ))}
-            {showTotalRow &&
+            {showTotalRow && (items.length > 0) &&
                 <tr key="total" className={styles.totalRow}>
                     <td>
                         Sum
