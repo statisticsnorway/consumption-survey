@@ -6,7 +6,7 @@
 
   th, td {
     border-bottom: 1px solid $ssb-dark-2;
-    padding: 0.5rem;
+    padding: 0.5rem 0;
   }
 
   th {
@@ -29,8 +29,20 @@
   .action {
     text-align: center;
     width: 1.5rem;
+    margin: 0;
+    padding: 0.25rem 0 0 0.25rem;
   }
 
+  .totalRow {
+    td {
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+
+    .total {
+      text-align: right;
+    }
+  }
 }
 
 .actionIcon {

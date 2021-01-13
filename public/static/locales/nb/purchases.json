@@ -1,6 +1,7 @@
 {
   "when" : "når",
   "noRecords": "Ingen registreringer",
+  "back": "Tilbake",
 
   "addPurchase": {
     "title": "Nytt kjøp",
@@ -47,6 +48,6 @@
       }
     },
 
-    "addAnotherItem": "Legge til ny"
+    "addAnotherItem": "Legge til ny vare eller tjeneste"
   }
 }

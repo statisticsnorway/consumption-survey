@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Edit3, PlusCircle } from 'react-feather';
+import { Edit3, PlusCircle, ArrowLeft } from 'react-feather';
 import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purchase';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
@@ -9,11 +9,11 @@ import ItemsTable from './ItemsTable';
 import EditItem from './EditItem';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import { useRouter } from 'next/router';
-import { krCents } from '../../utils/jsUtils';
 
 import styles from './purchases.module.scss';
-import footerStyles from '../layout/styles/footer.module.scss';
+import headerStyles from '../layout/styles/header.module.scss';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
+import { LayoutContext } from '../../uiContexts';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -25,6 +25,9 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>();
     const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
+
+    const {setHeaderContent} = useContext(LayoutContext);
+    const [editPurchaseHeader, setEditPurchaseHeader] = useState<ReactNode>();
 
     const {t} = useTranslation('purchases');
     const router = useRouter();
@@ -68,36 +71,9 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             });
     };
 
-    const cancelEditPurchase = () => {
-        // navigate to dashboard;
-    };
-
     const onCancelAddItem = () => {
         setShowAddItemForm(false);
     };
-
-    const editPurchaseFooter = values ? (
-        <div className={footerStyles.footerWrapper}>
-            <div className={styles.addPurchaseFooterTotal}>
-                <span className={styles.addPurchaseFooterTotalText}>{t('addPurchase.total')}</span>
-                <span className={styles.addPurchaseFooterTotalSum}>{values.totalPrice}</span>
-            </div>
-            <div className={styles.addPurchaseFooter}>
-                <button
-                    className={`ssb-btn secondary-btn ${styles.addPurchaseCancel}`}
-                    onClick={cancelEditPurchase}
-                >
-                    {t('addPurchase.cancel')}
-                </button>
-                <button
-                    className={`ssb-btn primary-btn ${styles.addPurchaseSave}`}
-                    onClick={saveChanges}
-                >
-                    {t('addPurchase.save')}
-                </button>
-            </div>
-        </div>
-    ) : null;
 
     const updateNameAndDate = (name, date) => {
         setValues({
@@ -171,8 +147,13 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         setValues(null);
     };
 
-    const cancelPurchase = () => {
+    const cleanup = () => {
+        setHeaderContent(null);
         clearAll();
+    };
+
+    const onSuccessfulEdit = () => {
+        cleanup();
         router.push(`/dashboard/Dashboard`);
     };
 
@@ -185,41 +166,55 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             editPurchase(purchaseId, values)
                 .then((res) => {
                     console.log('purchase updated', res);
-                    router.push(`/dashboard/Dashboard`);
+                    onSuccessfulEdit();
                 });
         } else {
             addPurchase(values)
                 .then((res) => {
                     console.log('item added', res);
-                    router.push('/dashboard/Dashboard');
+                    onSuccessfulEdit();
                 });
         }
-
-        clearAll();
     };
 
-    const addPurchaseFooter = values ? (
-        <div className={footerStyles.footerWrapper}>
-            <div className={styles.addPurchaseFooterTotal}>
-                <span className={styles.addPurchaseFooterTotalText}>{t('addPurchase.total')}</span>
-                <span className={styles.addPurchaseFooterTotalSum}>{krCents(Number(values.totalPrice || 0))}</span>
-            </div>
-            <div className={styles.addPurchaseFooter}>
-                <button
-                    className={`ssb-btn secondary-btn ${styles.addPurchaseCancel}`}
-                    onClick={cancelPurchase}
-                >
-                    {t('addPurchase.cancel')}
-                </button>
-                <button
-                    className={`ssb-btn primary-btn ${styles.addPurchaseSave}`}
-                    onClick={savePurchase}
-                >
-                    {t('addPurchase.save')}
-                </button>
-            </div>
-        </div>
-    ) : null;
+    useEffect(() => {
+        if (values && Array.isArray(values.items)) {
+            const nrItems = values.items.length;
+
+            const btnText = nrItems === 0 ? 'Lagre' : `(${nrItems} vare${nrItems > 1 ? 'r' : ''})`;
+            setEditPurchaseHeader(
+                <div className={headerStyles.headerComponentWrapper}>
+                    <div className={headerStyles.leftSection}>
+                        <a
+                            className={headerStyles.actionLink}
+                            onClick={() => {
+                                cleanup();
+                                router.back();
+                            }}
+                        >
+                            <ArrowLeft width={16} height={16} className={headerStyles.actionIcon}/>
+                            <span className={styles.linkText}>{t('back')}</span>
+                        </a>
+                    </div>
+                    <div className={headerStyles.rightSection}>
+                        <button
+                            className={`ssb-btn primary-btn ${styles.addPurchaseSave}`}
+                            onClick={savePurchase}
+                            disabled={nrItems === 0}
+                        >
+                            {t('addPurchase.save')} {btnText}
+                        </button>
+                    </div>
+                </div>
+            );
+        } else {
+            setEditPurchaseHeader(null);
+        }
+    }, [values]);
+
+    useEffect(() => {
+        setHeaderContent(editPurchaseHeader);
+    }, [editPurchaseHeader]);
 
     return values ? (
         <>
@@ -289,11 +284,10 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                         setShowAddItemForm(true);
                     }}
                 >
-                    <span>{t('addPurchase.addAnotherItem')}</span>
                     <PlusCircle width={16} height={16}/>
+                    <span>{t('addPurchase.addAnotherItem')}</span>
                 </a>
             </div>
-            {addPurchaseFooter}
         </>
     ) : null;
 };

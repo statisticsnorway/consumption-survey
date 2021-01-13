@@ -84,7 +84,7 @@
 }
 
 .addPurchase {
-  padding: 1.25rem 1.25rem 1.5rem;
+  padding: 1.25rem 0;
 
   .nameDateGroup {
     margin: 0.25rem 0 0;
@@ -238,10 +238,10 @@
   display: flex;
   color: $ssb-green-4;
   align-items: center;
-  padding-left: 0.75rem;
+  padding-left: 0.125rem;
 
   span {
-    margin-right: 0.5rem;
+    margin-left: 0.5rem;
   }
 }
 
