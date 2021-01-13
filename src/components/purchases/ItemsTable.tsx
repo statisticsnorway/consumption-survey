@@ -23,7 +23,7 @@ const ItemsTable = ({items, onItemClick, onItemRemove, showTotalRow = true}: Ite
     const total = items.reduce((acc, item) => acc + Number(item.amount), 0);
 
     return (
-        <table className={styles.itemsTable}>
+        <table className={styles.itemsTable} cellSpacing={0} cellPadding={0}>
             <thead>
             <tr>
                 <th className={`${styles.name} header`}>Vare</th>

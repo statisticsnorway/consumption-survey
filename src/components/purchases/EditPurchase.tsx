@@ -255,6 +255,15 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             </div>
 
             <div className={styles.addPurchase}>
+                <a
+                    className={styles.addAnotherLink}
+                    onClick={() => {
+                        setShowAddItemForm(true);
+                    }}
+                >
+                    <PlusCircle width={16} height={16}/>
+                    <span>{t('addPurchase.addAnotherItem')}</span>
+                </a>
                 <ItemsTable
                     items={values.items}
                     onItemRemove={(item) => {
@@ -278,15 +287,6 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     onAddItem={updateItem}
                     onCancel={onCancelEditItem}
                 />
-                <a
-                    className={styles.addAnotherLink}
-                    onClick={() => {
-                        setShowAddItemForm(true);
-                    }}
-                >
-                    <PlusCircle width={16} height={16}/>
-                    <span>{t('addPurchase.addAnotherItem')}</span>
-                </a>
             </div>
         </>
     ) : null;
