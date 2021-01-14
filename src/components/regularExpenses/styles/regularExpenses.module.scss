@@ -81,7 +81,7 @@
 }
 
 .addExpenseForm {
-  padding: 1.25rem;
+  padding: 1.25rem 0;
 
   .nameAmountGroup {
     display: flex;
@@ -107,6 +107,7 @@
 
     .addExpenseFrequency {
       flex: 2;
+      padding-left: 0.5rem;
     }
 
     .addExpenseKr {

@@ -3,24 +3,33 @@ import { ItemType } from '../../firebase/model/Purchase';
 
 import styles from './styles/itemsTable.module.scss';
 import { krCents } from '../../utils/jsUtils';
+import NumberStepper from '../common/stepper/NumberStepper';
 
 export type ItemsTableProps = {
     items: ItemType[];
     onItemClick: (item) => void;
-    onItemRemove: (item: ItemType) => void;
+    onItemUpdate: (item: ItemType, newQty: number) => void;
     showTotalRow?: boolean;
 };
 
-const ItemsTable = ({items, onItemClick, onItemRemove, showTotalRow = true}: ItemsTableProps) => {
+const ItemsTable = ({items, onItemClick, onItemUpdate, showTotalRow = true}: ItemsTableProps) => {
     const renderCell = (item, cellStyle, cellContent) =>
         <td className={cellStyle} onClick={() => onItemClick(item)}>{cellContent}</td>;
 
     /*
     <th className={`${styles.qtyUnits} header`} colSpan={2}>Mengde</th>
                     {renderCell(item, styles.units, item.units)}
+
+                    <td className={styles.action}>
+                        <MinusCircle
+                            width={16} height={16}
+                            className={styles.actionIcon}
+                            onClick={() => { onItemRemove(item); }}
+                        />
+                    </td>
      */
 
-    const total = items.reduce((acc, item) => acc + Number(item.amount), 0);
+    const total = items.reduce((acc, item) => acc + (Number(item.amount) * Number(item.qty)), 0);
 
     return (
         <table className={styles.itemsTable} cellSpacing={0} cellPadding={0}>
@@ -36,12 +45,10 @@ const ItemsTable = ({items, onItemClick, onItemRemove, showTotalRow = true}: Ite
                 <tr key={item.id || item.idx}>
                     {renderCell(item, styles.name, item.name)}
                     {renderCell(item, styles.price, krCents(item.amount))}
-                    <td className={styles.action}>
-                        <MinusCircle
-                            width={16} height={16}
-                            className={styles.actionIcon}
-                            onClick={() => { onItemRemove(item); }}
-                        />
+                    <td>
+                        <NumberStepper initialValue={1} onChange={(newValue) => {
+                            onItemUpdate(item, newValue);
+                        }} />
                     </td>
                 </tr>
             ))}

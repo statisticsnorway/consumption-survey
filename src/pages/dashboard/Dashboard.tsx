@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { Calendar, CheckSquare, CreditCard, RotateCw, List } from 'react-feather';
+import { Calendar, ShoppingCart, RotateCw, List } from 'react-feather';
 import Tabs, { TabRenderOption } from '../../components/blocks/tabs/Tabs';
 // import usePurchases from '../../hocs/usePurchases';
 import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
 import { simpleFormat } from '../../utils/dateUtils';
+import { MiscExpenses } from '../../components/common/icons/index';
 
 import styles from './dashboard.module.scss'
 
@@ -76,7 +77,7 @@ const Dashboard = () => {
                                 selectDate={showPurchasesByDate}
                             />
                         ),
-                        icon: <CreditCard height={24} width={24} />,
+                        icon: <ShoppingCart height={24} width={24} />,
                     }, {
                         title: t('regularExpenses.title'),
                         id: 'regularExpenses',
@@ -93,7 +94,7 @@ const Dashboard = () => {
                         title: 'Andre utgifter',
                         id: 'otherExpenses',
                         renderTab: makeDummyComponent('Andre utgifter'),
-                        icon: <List width={24} height={24} />,
+                        icon: <MiscExpenses width={24} height={24} />,
                     }
                 ]}
                 active={activeTab}
