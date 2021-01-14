@@ -266,9 +266,23 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 </a>
                 <ItemsTable
                     items={values.items}
-                    onItemRemove={(item) => {
-                        console.log('will remove', item);
-                        removeItem(item);
+                    onItemUpdate={(item, newQty) => {
+                        const itemsUpd = values.items.map(i => {
+                            const match = (x) =>
+                                x.id ? x.id === item.id : x.idx === item.idx;
+
+                            return match(i) ? { ...i, qty: `${newQty}` } : i;
+                        });
+
+                        setValues({
+                            ...values,
+                            items: itemsUpd,
+                        });
+
+                        if (newQty === 0) {
+                            console.log('item will be removed');
+                            // removeItem(item);
+                        }
                     }}
                     onItemClick={(item) => {
                         setItemForEdit(item);

@@ -1,0 +1,35 @@
+@import '../../../styles/common';
+
+.numberStepper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 1rem;
+
+  & > * {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  .disabled {
+    color: $ssb-dark-2 !important;
+  }
+
+  .decrement {
+    order: 1;
+    color: $ssb-green-4;
+  }
+
+  .currValue {
+    order: 2;
+    color: $ssb-dark-5;
+    margin: 0 0.5rem;
+  }
+
+  .increment {
+    order: 3;
+    color: $ssb-green-4;
+  }
+}
