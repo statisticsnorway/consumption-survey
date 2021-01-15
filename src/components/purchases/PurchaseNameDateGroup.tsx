@@ -21,6 +21,11 @@ const dayPickerInputClassNames = {
     container: styles.dayPickerInput,
     overlayWrapper: styles.dayPickerOverlayWrapper,
     overlay: styles.dayPickerOverlay,
+
+    day: styles.dayPickerDay,
+    caption: styles.dayPickerCaption,
+    selected: styles.dayPickerSelected,
+    today: styles.dayPickerToday,
 };
 
 const PurchaseNameDateGroup = ({

@@ -192,7 +192,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         if (values && Array.isArray(values.items)) {
             const nrItems = values.items.length;
 
-            const btnText = nrItems === 0 ? 'Lagre' : `(${nrItems} vare${nrItems > 1 ? 'r' : ''})`;
+            const btnText = nrItems === 0 ? '' : `(${nrItems} vare${nrItems > 1 ? 'r' : ''})`;
             setEditPurchaseHeader(
                 <div className={headerStyles.headerComponentWrapper}>
                     <div className={headerStyles.leftSection}>

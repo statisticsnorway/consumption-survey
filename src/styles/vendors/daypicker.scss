@@ -114,7 +114,7 @@ $survey-bg-color: rgba(236, 254, 237, .5); /* #ECFEED; */
 
 
 .DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):not(.DayPicker-Day--surveyPeriod) {
-  background-color: transparent;
+  /* background-color: transparent; */
 }
 
 .DayPicker-Day--selected.DayPicker-Day--surveyPeriod {
