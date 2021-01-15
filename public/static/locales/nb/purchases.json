@@ -10,12 +10,12 @@
     "save": "Lagre",
 
     "name": {
-      "label": "Butikk eller type utgift"
+      "label": "Butikk eller type tjeneste"
     },
 
-    "nameDateGroupTitle": "Endre navn og dato",
+    "nameDateGroupTitle": "Hvor har du handlet ?",
     "purchaseNameLabel": "Navn på kjøpet",
-    "purchaseNameDefault": "Nytt kjøp",
+    "purchaseNameDefault": "Register ny",
     "purchaseNamePlaceholder": "Daglivare, Kafé, Restaurant, osv..",
     "purchaseDateLabel": "Kjøpsdato",
 

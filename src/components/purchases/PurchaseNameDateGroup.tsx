@@ -17,6 +17,12 @@ export type PurchaseNameDateGroupProps = {
     onCancel: () => void;
 };
 
+const dayPickerInputClassNames = {
+    container: styles.dayPickerInput,
+    overlayWrapper: styles.dayPickerOverlayWrapper,
+    overlay: styles.dayPickerOverlay,
+};
+
 const PurchaseNameDateGroup = ({
                                    show,
                                    currName = '', currDate = new Date(),
@@ -75,7 +81,7 @@ const PurchaseNameDateGroup = ({
     return (
         <Modal
             show={show}
-            title={t('addPurchase.title')}
+            title={t('addPurchase.nameDateGroupTitle')}
             closeText={t('addPurchase.save')}
             onClose={() => {
                 console.log('sending', name, date);
@@ -87,16 +93,17 @@ const PurchaseNameDateGroup = ({
             cancelText={t('addPurchase.cancel')}
         >
             <div className={`${formStyles.fbuForm} ${styles.purchaseNameDateForm}`}>
-                <TextField
-                    value={name}
-                    label={t('addPurchase.purchaseNameLabel')}
-                    placeholder={t('addPurchase.purchaseNamePlaceholder')}
-                    className={`${formStyles.fbuFormField} ${styles.purchaseName}`}
-                    onChange={(e) => {
-                        setName(e.target.value);
-                    }}
-                    inputRef={nameFieldRef}
-                />
+                <div className={`${formStyles.fbuFormGroup} ${styles.purchaseName}`}>
+                    <TextField
+                        value={name}
+                        placeholder={t('addPurchase.purchaseNamePlaceholder')}
+                        className={formStyles.fbuFormField}
+                        onChange={(e) => {
+                            setName(e.target.value);
+                        }}
+                        inputRef={nameFieldRef}
+                    />
+                </div>
 
                 <div className={`${formStyles.fbuFormField} ${styles.purchaseDateGroup}`}>
                     <DayPickerInput
@@ -108,7 +115,8 @@ const PurchaseNameDateGroup = ({
                         onDayChange={setDate}
                         placeholder={`${simpleFormat(date)}`}
                         keepFocus={false}
-                        inputProps={{ readOnly: true }}
+                        inputProps={{readOnly: true}}
+                        classNames={dayPickerInputClassNames}
                     />
                     <div className={styles.purchaseDateIconWrapper}>
                         <Calendar onClick={toggleDayPicker} className={styles.purchaseDateIcon}/>

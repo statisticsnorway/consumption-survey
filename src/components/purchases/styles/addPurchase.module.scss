@@ -1,22 +1,48 @@
 @import '../../../styles/common';
 
 .purchaseNameDateForm {
-  padding: 1rem;
+  padding: 1rem 0;
 
   .purchaseName {
+    display: flex;
+    flex-direction: column;
   }
 
   .purchaseDateGroup {
     display: flex;
+    padding: 0;
+    justify-content: space-between;
+
+    .dayPickerInput {
+      position: relative;
+      width: 100% !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    .dayPickerOverlay {
+      padding: 0.5rem;
+    }
+
+    .dayPickerOverlayWrapper {
+      background-color: #fff;
+      position: absolute;
+      top: 3.5rem;
+    }
+
+    * + * {
+      margin-left: 1rem;
+    }
 
     .purchaseDateIconWrapper {
       line-height: 2rem;
-      padding: 0.5rem;
-      background-color: $ssb-dark-2;
+      padding: 0.75rem;
+      background-color: $ssb-dark-1;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 0.25rem;
+
+      flex: 0;
 
       .purchaseDateIcon {
         color: $ssb-green-4;

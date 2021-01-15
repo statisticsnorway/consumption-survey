@@ -36,6 +36,8 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const [showEditItemForm, setShowEditItemForm] = useState(false);
     const [showAddItemForm, setShowAddItemForm] = useState(purchaseId ? false : true);
 
+    const [isSaving, setIsSaving] = useState(false);
+
     useEffect(() => {
         if (purchases) {
             if (purchaseId) {
@@ -157,23 +159,32 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         router.push(`/dashboard/Dashboard`);
     };
 
-    const savePurchase = (e) => {
-        e.preventDefault();
-
+    const doSave = (where, when) => {
         console.log('saving', values);
 
+        const complete = { ...values, when, where };
+
         if (purchaseId) {
-            editPurchase(purchaseId, values)
+            editPurchase(purchaseId, complete)
                 .then((res) => {
                     console.log('purchase updated', res);
                     onSuccessfulEdit();
                 });
         } else {
-            addPurchase(values)
+            addPurchase(complete)
                 .then((res) => {
                     console.log('item added', res);
                     onSuccessfulEdit();
                 });
+        }
+    };
+
+    const savePurchase = () => {
+        if (!values.where) {
+            setIsSaving(true)
+            setNameDatePopupVisible(true);
+        } else {
+            doSave(values.where, values.when);
         }
     };
 
@@ -199,7 +210,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     <div className={headerStyles.rightSection}>
                         <button
                             className={`ssb-btn primary-btn ${styles.addPurchaseSave}`}
-                            onClick={savePurchase}
+                            onClick={(e) => { e.preventDefault(); savePurchase(); }}
                             disabled={nrItems === 0}
                         >
                             {t('addPurchase.save')} {btnText}
@@ -224,8 +235,15 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 show={nameDatePopupVisible}
                 onSubmit={(name, date) => {
                     console.log('saving', name, date);
-                    updateNameAndDate(name, date);
-                    setNameDatePopupVisible(false);
+
+                    if (isSaving) {
+                        console.log('Should save purchase too', isSaving);
+                        setIsSaving(false);
+                        doSave(name, date);
+                    } else {
+                        updateNameAndDate(name, date);
+                        setNameDatePopupVisible(false);
+                    }
                 }}
                 onCancel={() => {
                     setNameDatePopupVisible(false);
@@ -271,7 +289,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                             const match = (x) =>
                                 x.id ? x.id === item.id : x.idx === item.idx;
 
-                            return match(i) ? { ...i, qty: `${newQty}` } : i;
+                            return match(i) ? {...i, qty: `${newQty}`} : i;
                         });
 
                         setValues({

@@ -33,10 +33,14 @@
     margin: 0;
 
     padding: 0.5rem 0.25rem;
-    border: 2px solid $ssb-green-4;
+    border: 1px solid $ssb-dark-5;
 
     .fbuFormField + .fbuFormField {
       margin: 0 0 0 0.5rem !important;
+    }
+
+    &:focus {
+      border: 2px solid $ssb-green-4;
     }
   }
 }
