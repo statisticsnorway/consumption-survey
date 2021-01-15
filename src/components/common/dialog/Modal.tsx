@@ -27,17 +27,17 @@ const Modal: React.FC<ModalProps> = ({
             <div className={`${styles.fbuModalDialog} ${className || ''}`}>
                 <div className={`${styles.fbuModalDialogHeader}`}>
                     <h3>{title}</h3>
-                    <a
-                        onClick={onCancel}
-                        className={`${styles.fbuModalActionButton} ${styles.fbuModalCancelButton}`}
-                    >
-                        {cancelText}
-                    </a>
                 </div>
 
                 {children}
 
                 <div className={styles.fbuModalFooter}>
+                    <button
+                        onClick={onCancel}
+                        className={`ssb-btn secondary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCancelButton}`}
+                    >
+                        {cancelText}
+                    </button>
                     <button
                         className={`ssb-btn primary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCloseButton}`}
                         onClick={onClose}>

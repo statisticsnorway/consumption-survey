@@ -30,6 +30,8 @@ const ItemsTable = ({items, onItemClick, onItemUpdate, showTotalRow = true}: Ite
      */
 
     const total = items.reduce((acc, item) => acc + (Number(item.amount) * Number(item.qty)), 0);
+    const nrItems = items.length;
+    const nrItemsText = nrItems === 0 ? '' : `${nrItems} vare${nrItems > 1 ? 'r' : ''}`;
 
     return (
         <table className={styles.itemsTable} cellSpacing={0} cellPadding={0}>
@@ -48,11 +50,17 @@ const ItemsTable = ({items, onItemClick, onItemUpdate, showTotalRow = true}: Ite
                     <td>
                         <NumberStepper initialValue={1} onChange={(newValue) => {
                             onItemUpdate(item, newValue);
-                        }} />
+                        }}/>
                     </td>
                 </tr>
             ))}
             {showTotalRow && (items.length > 0) &&
+            <>
+                <tr key="spacer" className={styles.spacer}>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
                 <tr key="total" className={styles.totalRow}>
                     <td>
                         Sum
@@ -60,8 +68,11 @@ const ItemsTable = ({items, onItemClick, onItemUpdate, showTotalRow = true}: Ite
                     <td className={styles.total}>
                         {krCents(total)}
                     </td>
-                    <td></td>
+                    <td className={styles.nrItems}>
+                        {nrItemsText}
+                    </td>
                 </tr>
+            </>
             }
             </tbody>
         </table>

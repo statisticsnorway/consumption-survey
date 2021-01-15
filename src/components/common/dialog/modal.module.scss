@@ -47,13 +47,6 @@
       color: #333;
       font-family: 'Roboto Condensed';
     }
-
-    .fbuModalCancelButton {
-      font-size: 1rem;
-      color: $ssb-green-4;
-      font-family: 'Open Sans';
-      font-weight: normal;
-    }
   }
 }
 
@@ -62,18 +55,29 @@
   justify-content: center;
   align-items: center;
   padding: 0;
+  margin-top: 1.25rem;
 
-  .fbuModalActionButton + .fbuModalActionButton {
-    /* margin-left: 1rem; */
-  }
-
-  .fbuModalCloseButton {
+  .fbuModalActionButton {
     flex: 1 1;
     line-height: 1rem;
     font-size: 1rem;
 
     display: flex;
     justify-content: center;
+
+    font-family: 'Open Sans';
+    font-weight: normal;
+  }
+
+  .fbuModalActionButton + .fbuModalActionButton {
+    margin-left: 1.25rem;
+  }
+
+  .fbuModalCloseButton {
+
+  }
+
+  .fbuModalCancelButton {
   }
 }
 

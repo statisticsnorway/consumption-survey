@@ -33,6 +33,10 @@
     padding: 0.25rem 0 0 0.25rem;
   }
 
+  .spacer {
+    line-height: 1.25rem;
+  }
+
   .totalRow {
     td {
       font-weight: bold;
@@ -42,6 +46,12 @@
     }
 
     .total {
+      text-align: right;
+    }
+
+    .nrItems {
+      font-size: 1rem;
+      color: $ssb-dark-3;
       text-align: right;
     }
   }
