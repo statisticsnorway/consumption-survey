@@ -292,9 +292,13 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                             return match(i) ? {...i, qty: `${newQty}`} : i;
                         });
 
+                        const totalPrice = itemsUpd.reduce((acc, item) =>
+                            acc + (Number(item.amount) * Number(item.qty)), 0);
+
                         setValues({
                             ...values,
                             items: itemsUpd,
+                            totalPrice,
                         });
 
                         if (newQty === 0) {
