@@ -1,7 +1,6 @@
 @import '../../../styles/common';
 
 .purchasesTableContainer {
-  padding: 1.25rem;
   /* background-color: $ssb-dark-1; */
   height: 100%;
 
@@ -10,7 +9,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 0 0.5rem;
+    padding: 0rem;
 
     .navTitleGroup {
       display: flex;
@@ -71,6 +70,11 @@
       .purchaseName {
         flex: 2;
         order: 1;
+
+        span {
+          font-weight: bold;
+          font-family: Roboto;
+        }
       }
 
       .purchaseAmount {
