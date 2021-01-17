@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Edit3, RotateCw, X } from 'react-feather';
 import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
-import AddEditExpense  from './AddEditExpense';
+import AddEditExpense from './AddEditExpense';
 import FloatingButton from '../common/buttons/FloatingButton';
 // import useExpenses from '../../hocs/useExpenses';
 import useExpenses from '../../mock/useExpenses';
@@ -14,8 +14,10 @@ import { krCents } from '../../utils/jsUtils';
 
 export type RegularExpensesProps = {};
 
-export const convert = ({name, frequency, amount}): RegularExpenseType => {
+export const convert = (values: RegularExpenseType) => {
+    const {id, amount, frequency, name} = values;
     return {
+        id,
         name,
         frequency,
         amount,
@@ -38,16 +40,16 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
         }
     };
 
+    const tableHeader = (
+        <div className={`${styles.expense} ${styles.expenseHeaderRow}`} key="expensesHeader">
+            <div className={`${styles.expenseColumnHeader} ${styles.name}`}>{t('header.name')}</div>
+            <div className={`${styles.expenseColumnHeader} ${styles.amount}`}>{t('header.amount')}</div>
+            <div className={`${styles.expenseColumnHeader} ${styles.editExpense}`}></div>
+        </div>
+    );
+
     const expensesComp = (Array.isArray(expenses) && expenses.length > 0) ? (
         <div className={styles.regularExpenses}>
-            <div className={`${styles.expense} ${styles.expenseHeaderRow}`} key="expensesHeader">
-                <div className={`${styles.expenseColumnHeader} ${styles.name}`}>{t('header.name')}</div>
-                <div className={`${styles.expenseColumnHeader} ${styles.frequency}`}>
-                    <RotateCw width={16} height={16} className={styles.frequencyIcon}/>
-                </div>
-                <div className={`${styles.expenseColumnHeader} ${styles.amount}`}>{t('header.amount')}</div>
-                <div className={`${styles.expenseColumnHeader} ${styles.editExpense}`}></div>
-            </div>
             {expenses.map((expense: RegularExpenseType) => (
                 <div
                     className={styles.expense}
@@ -58,12 +60,14 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                         setShowAddExpense(true);
                     }}
                 >
-                    <div className={`${styles.expenseColumn} ${styles.name}`}>{expense.name}</div>
-                    <div className={`${styles.expenseColumn} ${styles.frequency}`}>
-                        {(expense.frequency === ExpenseFrequency.NONE) ?
-                            '' :
-                            t(`frequency.${expense.frequency}`)
-                        }
+                    <div className={`${styles.expenseColumn} ${styles.nameFrequency}`}>
+                        <span className={styles.name}>{expense.name}</span>
+                        <span className={styles.frequency}>
+                            {(expense.frequency === ExpenseFrequency.NONE) ?
+                                '' :
+                                t(`frequency.${expense.frequency}`)
+                            }
+                        </span>
                     </div>
                     <div className={`${styles.expenseColumn} ${styles.amount}`}>
                         {krCents(expense.amount)}

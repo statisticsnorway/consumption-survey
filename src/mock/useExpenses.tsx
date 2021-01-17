@@ -22,12 +22,7 @@ const useExpenses = () => {
 
     const editExpense = (id: string, newValues: RegularExpenseType) => {
         console.log(`Updating ${id} with `, newValues);
-        const others = expenses.filter(exp => exp.id !== id);
-        setExpenses([
-            ...others,
-            newValues,
-        ]);
-
+        setExpenses(expenses.map(exp => (exp.id === id) ? newValues : exp));
         return Promise.resolve();
     };
 

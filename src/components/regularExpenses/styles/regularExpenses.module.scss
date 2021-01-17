@@ -12,8 +12,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
-    padding: 0.5rem 1rem;
+    padding: 1.25rem 1rem;
     background-color: #fff;
 
     .expenseHeaderRow {
@@ -36,27 +37,35 @@
     .expenseColumn {
     }
 
-    .name {
-      text-align: left;
-      flex: 2;
-    }
-
-    .frequency {
-      text-align: left;
-      color: $ssb-dark-3;
-
-      flex: 1;
-
+    .nameFrequency {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      text-align: left;
+      flex-direction: column;
+      flex: 2;
 
-      .frequencyIcon {
-        text-align: right;
+      .name {
+        font-weight: bold;
+        font-family: Roboto;
+      }
+
+      .frequency {
+        text-align: left;
+        color: $ssb-dark-3;
+
+        flex: 1;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+
+        .frequencyIcon {
+          text-align: right;
+        }
       }
     }
+
+
 
     .amount {
       text-align: right;
