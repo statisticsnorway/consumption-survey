@@ -11,6 +11,10 @@
     "title": "Faste utgifter"
   },
 
+  "tasks": {
+    "title": "Oppgaver"
+  },
+
   "recent": {
     "title": "Siste kjøp",
     "allLink": "Se Alle"

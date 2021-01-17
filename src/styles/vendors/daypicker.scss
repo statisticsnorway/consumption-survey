@@ -26,6 +26,14 @@
   padding: 1rem !important;
 }
 
+.DayPicker-Caption {
+  div {
+    font-weight: bold;
+    font-family: "Roboto Condensed";
+    color: $ssb-dark-3;
+  }
+}
+
 .DayPicker-Day {
   border-radius: 0px !important;
   text-align: center;
@@ -33,12 +41,14 @@
   div, a {
     padding: 0.25rem;
     border-radius: 50%;
-    font-size: 0.95rem;
     width: 1.25rem;
+    line-height: 1.25rem;
     display: inline-block;
     margin: 0 auto;
 
-    color: #000;
+    color: $ssb-dark-3;
+    font-size: 1rem;
+    font-family: "Open Sans";
   }
 }
 
@@ -61,11 +71,16 @@
   }
 }
 
-$survey-bg-color: rgba(236, 254, 237, .5); /* #ECFEED; */
+$survey-bg-color: $ssb-dark-1; /* rgba(236, 254, 237, .5); // #ECFEED; */
 
 .DayPicker-Day--surveyPeriod,
 .DayPicker-Day--surveyPeriod {
   background-color: $survey-bg-color;
+
+  a, div {
+    color: #000;
+    font-weight: bold;
+  }
 }
 
 .DayPicker-Day--withEntries {
@@ -74,6 +89,8 @@ $survey-bg-color: rgba(236, 254, 237, .5); /* #ECFEED; */
   a, div {
     background-color: $ssb-green-3 !important;
     color: white !important;
+    font-weight: bold;
+    font-family: "Roboto Condensed";
   }
 }
 
@@ -108,8 +125,12 @@ $survey-bg-color: rgba(236, 254, 237, .5); /* #ECFEED; */
   padding: 0.25rem;
 }
 
+.DayPicker-Week {
+  border-bottom: 0.375rem solid #fff;
+}
+
 .DayPicker-Weekday {
-  background-color: #fff;
+  background-color: $ssb-dark-1;
 }
 
 

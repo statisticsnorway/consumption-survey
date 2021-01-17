@@ -94,7 +94,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 ...items,
                 {idx: items.length, name, qty, units, amount},
             ],
-            totalPrice: (totalPrice + (Number(amount))),
+            totalPrice: (totalPrice + (Number(amount) * Number(qty))),
         });
 
         setShowAddItemForm(false);
@@ -119,8 +119,8 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 }
             ],
             totalPrice: values.totalPrice
-                - Number(oldItem.amount)
-                + Number(amount),
+                - (Number(oldItem.amount) * Number(oldItem.qty))
+                + (Number(amount) * Number(qty)),
         });
 
         setShowEditItemForm(false);
@@ -133,7 +133,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             ...values,
             items: items.filter(it =>
                 it.id ? (it.id !== id) : (it.idx !== idx)),
-            totalPrice: (totalPrice - Number(item.amount)),
+            totalPrice: (totalPrice - (Number(item.amount) * Number(item.qty))),
         });
     };
 
@@ -292,14 +292,18 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                             return match(i) ? {...i, qty: `${newQty}`} : i;
                         });
 
+                        const totalPrice = itemsUpd.reduce((acc, item) =>
+                            acc + (Number(item.amount) * Number(item.qty)), 0);
+
                         setValues({
                             ...values,
                             items: itemsUpd,
+                            totalPrice,
                         });
 
                         if (newQty === 0) {
                             console.log('item will be removed');
-                            // removeItem(item);
+                            removeItem(item);
                         }
                     }}
                     onItemClick={(item) => {

@@ -48,7 +48,7 @@ const ItemsTable = ({items, onItemClick, onItemUpdate, showTotalRow = true}: Ite
                     {renderCell(item, styles.name, item.name)}
                     {renderCell(item, styles.price, krCents(item.amount))}
                     <td>
-                        <NumberStepper initialValue={1} onChange={(newValue) => {
+                        <NumberStepper initialValue={Number(item.qty)} onChange={(newValue) => {
                             onItemUpdate(item, newValue);
                         }}/>
                     </td>
