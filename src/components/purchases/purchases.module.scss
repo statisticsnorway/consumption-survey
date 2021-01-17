@@ -47,6 +47,16 @@
       .purchaseGroupEntry {
         display: flex;
         justify-content: space-between;
+
+        .purchaseEntryName {
+          font-weight: bold;
+          font-family: Roboto;
+        }
+
+        .purchaseEntryTotal {
+          font-weight: normal;
+          font-family: "Open Sans";
+        }
       }
     }
 

@@ -37,10 +37,16 @@ section {
   overflow-y: auto;
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     padding: 1rem 0;
     font-family: 'Roboto Condensed';
     margin: 0;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    padding: 1rem 0;
+    font-family: "Roboto Condensed";
   }
 
   h3 {
@@ -57,7 +63,7 @@ section {
   font-weight: normal;
   font-family: 'Roboto';
 
-  padding: 0 0 1rem;
+  padding: 0.25rem 0.25rem 1rem;
 }
 
 .ssb-tabs .navigation-item:not(:last-of-type) {

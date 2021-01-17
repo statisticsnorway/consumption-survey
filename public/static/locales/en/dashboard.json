@@ -11,6 +11,10 @@
     "title": "Regular expenses"
   },
 
+  "tasks": {
+    "title": "Tasks"
+  },
+
   "recent": {
     "title": "Last purchase",
     "allLink": "See All"

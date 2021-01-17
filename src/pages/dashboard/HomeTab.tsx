@@ -91,18 +91,21 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
 
     const makeSectionNav = (ids) => {
         return (
-            <div className="section-nav">
-                {ids.map(id => {
-                    const status = getStatus(id);
-                    return (
-                        <div className="section-nav-item" onClick={() => setActiveTab(id)}>
-                            <span className="title">{t(`${id}.title`)}</span>
-                            <Tag className={status}>{t(`status.${status}`)}</Tag>
-                            <ArrowRight width={20} height={20} className="link"/>
-                        </div>
-                    );
-                })}
-            </div>
+            <>
+                <h2>{t('tasks.title')}</h2>
+                <div className="section-nav">
+                    {ids.map(id => {
+                        const status = getStatus(id);
+                        return (
+                            <div className="section-nav-item" onClick={() => setActiveTab(id)}>
+                                <span className="title">{t(`${id}.title`)}</span>
+                                <Tag className={status}>{t(`status.${status}`)}</Tag>
+                                <ArrowRight width={20} height={20} className="link"/>
+                            </div>
+                        );
+                    })}
+                </div>
+            </>
         );
     };
 

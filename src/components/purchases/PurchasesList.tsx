@@ -4,7 +4,7 @@ import { ChevronRight } from 'react-feather';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
 import { krCents, notEmptyString } from '../../utils/jsUtils';
-import { DASHBOARD_DATE_GROUPING_FORMAT, dateComparator, parseDate, simpleFormat } from '../../utils/dateUtils';
+import { DASHBOARD_DATE_GROUPING_FORMAT, dateComparator, parseDate, simpleFormat, dateFormatDayDate } from '../../utils/dateUtils';
 import { DASHBOARD_TABS, PATHS, TABS_PARAMS, makeDashboardPath } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
@@ -18,6 +18,19 @@ const prepForDisplay = (date) => {
     return (
         <>
             <span className={styles.purchaseGroupDateMonth}>{month.toLowerCase()}</span>
+            <span className={styles.purchaseGroupDateDay}>{dt}</span>
+        </>
+    );
+};
+
+const listDayDate = (date) => {
+    const [dt, day] =
+        dateFormatDayDate(parseDate(date))
+            .split('.');
+
+    return (
+        <>
+            <span className={styles.purchaseGroupDateMonth}>{day.toLowerCase()}</span>
             <span className={styles.purchaseGroupDateDay}>{dt}</span>
         </>
     );
@@ -60,13 +73,13 @@ const PurchasesList = ({limit = -1}) => {
                         <Link href={purchaseDatePath(dateOfPurchase)}>
                             <a className={styles.purchaseGroup}>
                                 <div className={styles.purchaseGroupDate}>
-                                    {prepForDisplay(dateOfPurchase)}
+                                    {listDayDate(dateOfPurchase)}
                                 </div>
                                 <div className={styles.purchaseGroupEntries}>
                                     {purchases.map(p => (
                                         <div className={styles.purchaseGroupEntry}>
-                                            {getPurchaseName(p)}
-                                            <span>{krCents(Number(p.totalPrice || 0))}</span>
+                                            <span className={styles.purchaseEntryName}>{getPurchaseName(p)}</span>
+                                            <span className={styles.purchaseEntryTotal}>{krCents(Number(p.totalPrice || 0))}</span>
                                         </div>
                                     ))}
                                 </div>
