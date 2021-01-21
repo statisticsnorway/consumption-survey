@@ -62,4 +62,10 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .error {
+    padding: 1rem;
+    background-color: $ssb-red-1;
+    color: $ssb-red-4;
+  }
 }

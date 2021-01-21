@@ -49,5 +49,21 @@
     },
 
     "addAnotherItem": "Legge til ny vare eller tjeneste"
+  },
+
+  "deleteItem": {
+    "title": "Slett vare ?",
+    "text": "Er du sikker på at du vil slette",
+    "textWarning": "Denne operasjonen kan ikke angres",
+    "confirmText": "Ja, gjør det",
+    "cancelText": "Nei, ikke slett"
+  },
+
+  "deletePurchase": {
+    "title": "Slett registreringen",
+    "text": "Er du sikker på at du vil slette registreringen",
+    "textWarning": "Denne operasjonen kan ikke angres",
+    "confirmText": "Ja, gjør det",
+    "cancelText": "Nei, ikke slett"
   }
 }

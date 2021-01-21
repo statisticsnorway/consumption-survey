@@ -121,3 +121,28 @@
     }
   }
 }
+
+
+.deletePurchase {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: #000;
+
+  .deletePurchaseText {
+    .textPrefix {
+      color: #000;
+    }
+
+    .textInfo {
+      color: $ssb-green-4;
+      font-weight: 700;
+      margin: 0 0 0 0.25rem;
+    }
+  }
+
+  .deleteWarning {
+    color: $ssb-red-4;
+    margin: 1rem 0;
+  }
+}

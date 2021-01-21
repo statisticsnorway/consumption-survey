@@ -60,8 +60,23 @@ const usePurchases = () => {
         return Promise.resolve();
     };
 
+    const deletePurchase = (purchase) => {
+        setPurchases(purchases.filter(p => p.id === purchase.id));
+
+        const delDt = simpleFormat(new Date(purchase.when));
+        const otherPurchases = purchasesByDate[delDt]
+            .filter(p => p.id !== purchase.id);
+
+        setPurchasesByDate({
+            ...purchasesByDate,
+            [delDt]: otherPurchases,
+        });
+
+        return Promise.resolve();
+    };
+
     // console.log('purchases', purchases);
-    return {purchases, purchasesByDate, addPurchase, editPurchase};
+    return {purchases, purchasesByDate, addPurchase, editPurchase, deletePurchase};
 };
 
 export default usePurchases;

@@ -8,7 +8,7 @@ import FloatingButton from '../../components/common/buttons/FloatingButton';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
 import usePurchases from '../../mock/usePurchases';
-import { DASHBOARD_TABS, makeDashboardPath, TABS_PARAMS } from '../../uiConfig';
+import { DASHBOARD_TABS, PATHS } from '../../uiConfig';
 import { simpleFormat, MONTHS, DAYS_FULL, DAYS_SHORT } from '../../utils/dateUtils';
 
 import styles from './dashboard.module.scss';
@@ -68,11 +68,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
 
     const renderDay = (day) => {
         return (
-            <Link
-                href={makeDashboardPath(DASHBOARD_TABS.ENTRIES, {
-                    [TABS_PARAMS.SELECTED_DATE]: simpleFormat(day)
-                })}
-            >
+            <Link href={PATHS.EDIT_PURCHASE}>
                 <a className={styles.dashboardDiaryDay}>{day.getDate()}</a>
             </Link>
         );
