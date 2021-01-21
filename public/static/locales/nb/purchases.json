@@ -3,6 +3,10 @@
   "noRecords": "Ingen registreringer",
   "back": "Tilbake",
 
+  "error": {
+    "purchaseNotFound": "Registreringen kan ikke finnes"
+  },
+
   "addPurchase": {
     "title": "Registrer ny",
     "total": "Sum",
