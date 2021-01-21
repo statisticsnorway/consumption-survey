@@ -4,6 +4,7 @@ import { ItemType } from '../../firebase/model/Purchase';
 import styles from './styles/itemsTable.module.scss';
 import { krCents } from '../../utils/jsUtils';
 import NumberStepper from '../common/stepper/NumberStepper';
+import { useTranslation } from 'react-i18next';
 
 export type ItemsTableProps = {
     items: ItemType[];
@@ -13,6 +14,7 @@ export type ItemsTableProps = {
 };
 
 const ItemsTable = ({items, onItemClick, onItemUpdate, showTotalRow = true}: ItemsTableProps) => {
+    const {t} = useTranslation('purchases');
     const renderCell = (item, cellStyle, cellContent) =>
         <td className={cellStyle} onClick={() => onItemClick(item)}>{cellContent}</td>;
 
@@ -48,9 +50,21 @@ const ItemsTable = ({items, onItemClick, onItemUpdate, showTotalRow = true}: Ite
                     {renderCell(item, styles.name, item.name)}
                     {renderCell(item, styles.price, krCents(item.amount))}
                     <td>
-                        <NumberStepper initialValue={Number(item.qty)} onChange={(newValue) => {
-                            onItemUpdate(item, newValue);
-                        }}/>
+                        <NumberStepper
+                            initialValue={Number(item.qty)}
+                            onChange={(newValue) => {
+                                onItemUpdate(item, newValue);
+                            }}
+                            min={1}
+                            deleteConfirmProps={{
+                                title: t('deleteItem.title'),
+                                text: t('deleteItem.text'),
+                                entityInfo: `${item.name} (${item.qty} stk)`,
+                                textWarning: t('deleteItem.textWarning'),
+                                confirmText: t('deleteItem.confirmText'),
+                                cancelText: t('deleteItem.cancelText'),
+                            }}
+                        />
                     </td>
                 </tr>
             ))}

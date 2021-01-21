@@ -22,3 +22,11 @@ export const makeDashboardPath = (selectedTab, additionalParams) => {
   return `${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${selectedTab}${queryStr}`;
 };
 
+export type DeleteConfirmProps = {
+    title: string;
+    text: string;
+    entityInfo: string;
+    textWarning: string;
+    confirmText: string;
+    cancelText: string;
+};

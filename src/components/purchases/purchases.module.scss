@@ -80,6 +80,25 @@
   }
 }
 
+.deletePurchaseContainer {
+  margin: 3.75rem 0;
+
+  display: flex;
+  flex-direction: column;
+
+  .deletePurchase {
+    color: $ssb-red-4;
+    border-color: $ssb-red-4;
+    display: flex;
+    justify-content: center;
+
+    &:hover {
+      background-color: $ssb-red-4;
+      color: #fff;
+    }
+  }
+}
+
 .temporaryPurchaseName {
   font-style: italic;
   color: $ssb-dark-3;

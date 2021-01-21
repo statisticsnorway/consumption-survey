@@ -9,11 +9,14 @@ import ItemsTable from './ItemsTable';
 import EditItem from './EditItem';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import { useRouter } from 'next/router';
+import { LayoutContext } from '../../uiContexts';
+import DeleteItemDialog from './support/DeleteItemDialog';
+import DeletePurchaseDialog from './support/DeletePurchaseDialog';
+import { PATHS } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
 import headerStyles from '../layout/styles/header.module.scss';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
-import { LayoutContext } from '../../uiContexts';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -21,10 +24,12 @@ export type EditPurchaseProps = {
 };
 
 const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
-    const {purchases, editPurchase, addPurchase} = usePurchases();
+    const {purchases, editPurchase, addPurchase, deletePurchase} = usePurchases();
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>();
     const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
+
+    const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>();
 
     const {setHeaderContent} = useContext(LayoutContext);
     const [editPurchaseHeader, setEditPurchaseHeader] = useState<ReactNode>();
@@ -36,12 +41,19 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const [showEditItemForm, setShowEditItemForm] = useState(false);
     const [showAddItemForm, setShowAddItemForm] = useState(purchaseId ? false : true);
 
+    const [error, setError] = useState<string>();
+
     const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if (purchases) {
             if (purchaseId) {
-                setPurchase(purchases.find(p => p.id === purchaseId));
+                const match = purchases.find(p => p.id === purchaseId);
+                if (!match) {
+                    setError(`${t('error.purchaseNotFound')} ${purchaseId}`);
+                } else {
+                    setPurchase(match);
+                }
             } else {
                 setPurchase({
                     ...INIT_PURCHASE,
@@ -162,7 +174,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const doSave = (where, when) => {
         console.log('saving', values);
 
-        const complete = { ...values, when, where };
+        const complete = {...values, when, where};
 
         if (purchaseId) {
             editPurchase(purchaseId, complete)
@@ -210,7 +222,10 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     <div className={headerStyles.rightSection}>
                         <button
                             className={`ssb-btn primary-btn ${styles.addPurchaseSave}`}
-                            onClick={(e) => { e.preventDefault(); savePurchase(); }}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                savePurchase();
+                            }}
                             disabled={nrItems === 0}
                         >
                             {t('addPurchase.save')} {btnText}
@@ -226,6 +241,18 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     useEffect(() => {
         setHeaderContent(editPurchaseHeader);
     }, [editPurchaseHeader]);
+
+    const clearPurchaseDelete = () => {
+        setShowPurchaseDeleteConfirm(false);
+    };
+
+    if (error) {
+        return (
+            <div className={workspaceStyles.error}>
+                {error}
+            </div>
+        );
+    }
 
     return values ? (
         <>
@@ -285,25 +312,25 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 <ItemsTable
                     items={values.items}
                     onItemUpdate={(item, newQty) => {
-                        const itemsUpd = values.items.map(i => {
-                            const match = (x) =>
-                                x.id ? x.id === item.id : x.idx === item.idx;
-
-                            return match(i) ? {...i, qty: `${newQty}`} : i;
-                        });
-
-                        const totalPrice = itemsUpd.reduce((acc, item) =>
-                            acc + (Number(item.amount) * Number(item.qty)), 0);
-
-                        setValues({
-                            ...values,
-                            items: itemsUpd,
-                            totalPrice,
-                        });
-
                         if (newQty === 0) {
                             console.log('item will be removed');
                             removeItem(item);
+                        } else {
+                            const itemsUpd = values.items.map(i => {
+                                const match = (x) =>
+                                    x.id ? x.id === item.id : x.idx === item.idx;
+
+                                return match(i) ? {...i, qty: `${newQty}`} : i;
+                            });
+
+                            const totalPrice = itemsUpd.reduce((acc, item) =>
+                                acc + (Number(item.amount) * Number(item.qty)), 0);
+
+                            setValues({
+                                ...values,
+                                items: itemsUpd,
+                                totalPrice,
+                            });
                         }
                     }}
                     onItemClick={(item) => {
@@ -311,6 +338,16 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                         setShowEditItemForm(true);
                     }}
                 />
+                <div className={styles.deletePurchaseContainer}>
+                    <button
+                        className={`ssb-btn secondary-btn ${styles.deletePurchase}`}
+                        onClick={() => {
+                            setShowPurchaseDeleteConfirm(true);
+                        }}
+                    >
+                        {t('deletePurchase.title')}
+                    </button>
+                </div>
                 <EditItem
                     itemInfo={null}
                     show={showAddItemForm}
@@ -322,6 +359,19 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     show={showEditItemForm}
                     onAddItem={updateItem}
                     onCancel={onCancelEditItem}
+                />
+                <DeletePurchaseDialog
+                    purchase={purchase}
+                    show={showPurchaseDeleteConfirm}
+                    onConfirm={() => {
+                        deletePurchase(purchase)
+                            .then(res => {
+                                console.log('Purchase deleted', purchase);
+                                clearPurchaseDelete();
+                                router.push(PATHS.DASHBOARD);
+                            });
+                    }}
+                    onCancel={clearPurchaseDelete}
                 />
             </div>
         </>
