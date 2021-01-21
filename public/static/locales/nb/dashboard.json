@@ -11,6 +11,10 @@
     "title": "Faste utgifter"
   },
 
+  "otherExpenses": {
+    "title": "Andre utgifter"
+  },
+
   "tasks": {
     "title": "Oppgaver"
   },
