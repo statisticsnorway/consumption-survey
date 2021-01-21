@@ -48,7 +48,12 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     useEffect(() => {
         if (purchases) {
             if (purchaseId) {
-                const match = purchases.find(p => p.id === purchaseId);
+                const match = purchases.find(p => {
+                    console.log(p.id, ' =? ', purchaseId);
+                    return p.id === purchaseId;
+                });
+                console.log(purchases);
+                console.log(match);
                 if (!match) {
                     setError(`${t('error.purchaseNotFound')} ${purchaseId}`);
                 } else {

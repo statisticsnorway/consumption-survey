@@ -61,7 +61,7 @@ const usePurchases = () => {
     };
 
     const deletePurchase = (purchase) => {
-        setPurchases(purchases.filter(p => p.id === purchase.id));
+        setPurchases(purchases.filter(p => p.id !== purchase.id));
 
         const delDt = simpleFormat(new Date(purchase.when));
         const otherPurchases = purchasesByDate[delDt]

@@ -1,6 +1,10 @@
 {
   "when" : "when",
 
+  "error": {
+    "purchaseNotFound": "Purchase not found"
+  },
+
   "addPurchase": {
     "title": "New Purchase",
     "total": "Total",
