@@ -1,6 +1,41 @@
 import { format, parse, compareDesc } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb'
 
+export const MONTHS = [
+    'Januar',
+    'Februar',
+    'Mars',
+    'April',
+    'May',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+];
+
+export const DAYS_FULL = [
+    'Søndag',
+    'Mandag',
+    'Tirsdag',
+    'Onsdag',
+    'Torsdag',
+    'Fredag',
+    'Lørdag',
+];
+
+export const DAYS_SHORT = [
+    'S',
+    'M',
+    'T',
+    'O',
+    'T',
+    'F',
+    'L',
+];
+
 export const SIMPLE_DATE_FORMAT = "dd.MM.yyyy";
 export const DASHBOARD_DATE_GROUPING_FORMAT = "dd.MMM.yyyy";
 export const DASHBOARD_DAY_DATE_FORMAT = "dd.eee.yyyy";

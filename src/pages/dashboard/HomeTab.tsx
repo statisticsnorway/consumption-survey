@@ -9,7 +9,7 @@ import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
 import usePurchases from '../../mock/usePurchases';
 import { DASHBOARD_TABS, makeDashboardPath, TABS_PARAMS } from '../../uiConfig';
-import { simpleFormat } from '../../utils/dateUtils';
+import { simpleFormat, MONTHS, DAYS_FULL, DAYS_SHORT } from '../../utils/dateUtils';
 
 import styles from './dashboard.module.scss';
 
@@ -125,7 +125,10 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                     modifiers={getModifiers(purchases)}
                     initialMonth={new Date()}
                     showOutsideDays={true}
-                    locale="nb"
+                    months={MONTHS}
+                    weekdaysLong={DAYS_FULL}
+                    weekdaysShort={DAYS_SHORT}
+                    firstDayOfWeek={1}
                 />
             </div>
             {sectionNav}

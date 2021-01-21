@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import Modal from '../common/dialog/Modal';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
-import { parseDate, SIMPLE_DATE_FORMAT, simpleFormat } from '../../utils/dateUtils';
+import { DAYS_FULL, DAYS_SHORT, MONTHS, parseDate, SIMPLE_DATE_FORMAT, simpleFormat } from '../../utils/dateUtils';
 import { Calendar } from 'react-feather';
 
 import formStyles from '../form/form.module.scss';
@@ -122,6 +122,12 @@ const PurchaseNameDateGroup = ({
                         keepFocus={false}
                         inputProps={{readOnly: true}}
                         classNames={dayPickerInputClassNames}
+                        dayPickerProps={{
+                            months: MONTHS,
+                            weekdaysLong: DAYS_FULL,
+                            weekdaysShort: DAYS_SHORT,
+                            firstDayOfWeek: 1
+                        }}
                     />
                     <div className={styles.purchaseDateIconWrapper}>
                         <Calendar onClick={toggleDayPicker} className={styles.purchaseDateIcon}/>
