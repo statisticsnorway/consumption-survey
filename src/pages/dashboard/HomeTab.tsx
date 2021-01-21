@@ -125,6 +125,7 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                     modifiers={getModifiers(purchases)}
                     initialMonth={new Date()}
                     showOutsideDays={true}
+                    locale="nb"
                 />
             </div>
             {sectionNav}

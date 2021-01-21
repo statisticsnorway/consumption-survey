@@ -11,6 +11,10 @@
     "title": "Regular expenses"
   },
 
+  "otherExpenses": {
+    "title": "Other expenses"
+  },
+
   "tasks": {
     "title": "Tasks"
   },
