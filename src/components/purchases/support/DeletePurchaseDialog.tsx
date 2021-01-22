@@ -4,6 +4,7 @@ import Modal from '../../common/dialog/Modal';
 import { useTranslation } from 'react-i18next';
 
 import styles from '../styles/addPurchase.module.scss';
+import DeleteConfirmDialog from '../../common/dialog/DeleteConfirmDialog';
 
 export type DeletePurchaseDialogProps = {
     purchase: PurchaseType;
@@ -22,22 +23,15 @@ const DeletePurchaseDialog = ({purchase, show, onConfirm, onCancel}: DeletePurch
     }, [show]);
 
     return (
-        <Modal show={showPopup}
-               title={`${t('deletePurchase.title')} ?`}
-               onClose={onConfirm}
-               closeText={t('deletePurchase.confirmText')}
-               onCancel={onCancel} cancelText={t('deletePurchase.cancelText')}
-        >
-            <div className={styles.deletePurchase}>
-                <div className={styles.deletePurchaseText}>
-                    <span className={styles.textPrefix}>{t('deletePurchase.text')}</span>
-                    <span className={styles.textInfo}>{purchase.where}</span> ?
-                </div>
-                <span className={styles.deleteWarning}>
-                    {t('deletePurchase.textWarning')}
-                </span>
-            </div>
-        </Modal>
+        <DeleteConfirmDialog
+            show={showPopup}
+            onConfirm={onConfirm}
+            confirmText={t('deletePurchase.confirmText')}
+            onCancel={onCancel} cancelText={t('deletePurchase.cancelText')}
+            leadingText={t('deletePurchase.text')}
+            warningText={t('deletePurchase.textWarning')}
+            info={purchase.where}
+        />
     );
 };
 

@@ -135,3 +135,20 @@ section {
   background-color: $ssb-dark-2;
   color: $ssb-dark-4;
 }
+
+.ssb-accordion {
+  .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-text {
+      font-size: 1rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  .accordion-body {
+    padding: 0 1rem;
+  }
+}

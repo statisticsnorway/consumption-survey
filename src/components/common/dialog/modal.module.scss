@@ -48,6 +48,19 @@
       font-family: 'Roboto Condensed';
     }
   }
+
+  .fbuDeleteConfirmLeadingText,
+  .fbuDeleteConfirmWarning {
+    color: #000;
+    font-weight: normal;
+    text-align: center;
+  }
+
+  .fbuDeleteConfirmInfo {
+    font-weight: 700;
+    color: $ssb-green-4;
+    text-align: center;
+  }
 }
 
 .fbuModalFooter {
@@ -77,7 +90,22 @@
 
   }
 
-  .fbuModalCancelButton {
+  .fbuModalCancelButton, .fbuDeleteConfirmCancelButton {
+  }
+
+  .fbuDeleteConfirmFooter {
+    border-top: 1px solid $ssb-dark-2;
+    padding-top: 1rem;
+  }
+
+  .fbuDeleteConfirmCloseButton {
+    color: $ssb-red-4;
+    border-color: $ssb-red-4;
+
+    &:hover {
+      background-color: $ssb-red-4;
+      color: #fff;
+    }
   }
 }
 

@@ -58,8 +58,23 @@
     }
 
     .deleteTextSuffix {
-      color: $ssb-red-4;
+      /* color: $ssb-red-4; */
       margin: 1rem 0;
     }
   }
+}
+
+.deleteConfirmButton {
+  background-color: #fff;
+  border-color: $ssb-red-4;
+  color: $ssb-red-4;
+
+  &:hover {
+    background-color: $ssb-red-4;
+    color: #fff;
+  }
+}
+
+.deleteCancelButton {
+
 }

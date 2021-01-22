@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { Calendar, ShoppingCart, RotateCw, List } from 'react-feather';
-import Tabs, { TabRenderOption } from '../../components/blocks/tabs/Tabs';
+import Tabs, { TabRenderOption } from '../../components/common/blocks/tabs/Tabs';
 // import usePurchases from '../../hocs/usePurchases';
 import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
 import { simpleFormat } from '../../utils/dateUtils';
@@ -10,9 +10,11 @@ import { MiscExpenses } from '../../components/common/icons/index';
 
 import styles from './dashboard.module.scss'
 
-import HomeTab from './HomeTab';
-import EntriesTab from './EntriesTab';
+import HomeTab from '../../components/dashboard/HomeTab';
+import EntriesTab from '../../components/dashboard/EntriesTab';
 import { makeDummyComponent } from '../../utils/dummy';
+import Link from 'next/link';
+import { PATHS } from '../../uiConfig';
 
 const Dashboard = () => {
     const {t} = useTranslation('dashboard');
@@ -49,6 +51,15 @@ const Dashboard = () => {
         router.push(`/dashboard/Dashboard?selectedTab=entries&selectedDate=${dtSimple}`);
     };
 
+
+    const onDayClick = (day) => {
+        return (
+            <Link href={PATHS.EDIT_PURCHASE}>
+                <a className={styles.dashboardDiaryDay}>{day.getDate()}</a>
+            </Link>
+        );
+    };
+
     return (
         <div className={styles.dashboard}>
             <Tabs renderTabAs={TabRenderOption.ICON}
@@ -57,10 +68,7 @@ const Dashboard = () => {
                         title: t('diary.title'),
                         id: 'diary',
                         renderTab: (
-                            <HomeTab
-                                onDayClick={showPurchasesByDate}
-                                setActiveTab={setActiveTab}
-                            />
+                            <HomeTab setActiveTab={setActiveTab} onDayClick={onDayClick} />
                         ),
                         icon: <Calendar height={24} width={24} />,
                     },
@@ -75,6 +83,7 @@ const Dashboard = () => {
                                     setSelectedDate(null);
                                 }}
                                 selectDate={showPurchasesByDate}
+                                onDayClick={onDayClick}
                             />
                         ),
                         icon: <ShoppingCart height={24} width={24} />,

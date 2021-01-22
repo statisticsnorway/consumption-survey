@@ -5,6 +5,7 @@ import { DeleteConfirmProps } from '../../../uiConfig';
 import Modal from '../dialog/Modal';
 
 import styles from './number-stepper.module.scss';
+import DeleteConfirmDialog from '../dialog/DeleteConfirmDialog';
 
 export type NumberStepperProps = {
     onChange: (newValue: number) => void;
@@ -57,21 +58,16 @@ const NumberStepper = ({
     return (
         <div className={`${styles.numberStepper} ${className}`}>
             {showDeleteConfirm &&
-            <Modal show={showDeleteConfirm}
-                   title={deleteConfirmProps.title}
-                   onClose={onDeleteConfirm}
-                   onCancel={onDeleteCancel}
-                   closeText={deleteConfirmProps.confirmText}
-                   cancelText={deleteConfirmProps.cancelText}
-            >
-                <div className={styles.deleteDialog}>
-                    <div className={styles.deleteText}>
-                        <span className={styles.deleteTextPrefix}>{deleteConfirmProps.text}</span>
-                        <span className={styles.deleteInfo}>{deleteConfirmProps.entityInfo}</span> ?
-                    </div>
-                    <span className={styles.deleteTextSuffix}>{deleteConfirmProps.textWarning}</span>
-                </div>
-            </Modal>
+            <DeleteConfirmDialog
+                show={showDeleteConfirm}
+                onConfirm={onDeleteConfirm}
+                onCancel={onDeleteCancel}
+                leadingText={deleteConfirmProps.text}
+                warningText={deleteConfirmProps.textWarning}
+                info={deleteConfirmProps.entityInfo}
+                confirmText={deleteConfirmProps.confirmText}
+                cancelText={deleteConfirmProps.cancelText}
+            />
             }
             <div className={`${styles.decrement} ${currValue === min ? styles.danger : ''}`}>
                 <MinusCircle

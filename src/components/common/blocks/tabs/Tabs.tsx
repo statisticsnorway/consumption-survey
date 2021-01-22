@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Circle, HelpCircle } from 'react-feather';
-import { DO_NOTHING } from '../../../utils/jsUtils';
+import { DO_NOTHING } from '../../../../utils/jsUtils';
 
 export type TabSpec = {
     id: string;

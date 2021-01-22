@@ -106,10 +106,30 @@
 
 .editMetaLink {
   color: $ssb-green-4;
+  font-size: 1.25rem;
+}
+
+.editMetaIcon {
   display: flex;
   align-items: center;
   font-family: "Roboto Condensed";
-  font-size: 1.25rem;
+}
+
+.editMetaIcon + .editMetaIcon {
+  margin-left: 1rem;
+}
+
+.editPurchaseIcon {
+  color: $ssb-green-4;
+}
+.deletePurchaseIcon {
+  color: $ssb-red-4;
+}
+
+.purchaseMeta {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .addPurchase {

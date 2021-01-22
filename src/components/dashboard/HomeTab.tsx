@@ -1,34 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
-import DayPicker from 'react-day-picker';
+import { useRouter } from 'next/router';
 import { ArrowRight, Camera, Edit, Plus, X } from 'react-feather';
 import { Tag } from '@statisticsnorway/ssb-component-library';
-import PurchasesList from '../../components/purchases/PurchasesList';
-import FloatingButton from '../../components/common/buttons/FloatingButton';
-import { add, sub } from 'date-fns';
-import { useRouter } from 'next/router';
+import PurchasesList from '../purchases/PurchasesList';
 import usePurchases from '../../mock/usePurchases';
-import { DASHBOARD_TABS, PATHS } from '../../uiConfig';
-import { simpleFormat, MONTHS, DAYS_FULL, DAYS_SHORT } from '../../utils/dateUtils';
+import { DASHBOARD_TABS, PATHS, getModifiers, surveyStart, surveyEnd } from '../../uiConfig';
+import { simpleFormat } from '../../utils/dateUtils';
+import DiaryViz from './DiaryViz';
 
-import styles from './dashboard.module.scss';
-
-const today = new Date();
-const surveyStart = sub(today, {days: 7});
-const surveyEnd = add(today, {days: 7});
-
-const modifiers = {
-    surveyPeriod: {
-        after: surveyStart,
-        before: surveyEnd,
-    },
-    missingStretch: {
-        after: new Date(2020, 8, 10),
-        before: new Date(2020, 8, 14),
-    },
-    surveyPeriodFirstDay: add(surveyStart, {days: 1}),
-    surveyPeriodLastDay: sub(surveyEnd, {days: 1}),
-};
+import styles from '../../pages/dashboard/dashboard.module.scss';
 
 export const FLOATING_BTN_OPTIONS = {
     iconResting: <Plus/>,
@@ -53,26 +34,12 @@ export const FLOATING_MENU_OPTIONS = (t, router) => [
     }
 ];
 
-const HomeTab = ({onDayClick, setActiveTab}) => {
+const HomeTab = ({setActiveTab, onDayClick}) => {
     const {t} = useTranslation('dashboard');
     const router = useRouter();
     const {purchases} = usePurchases();
 
-    const getModifiers = (purchases) => {
-        const withEntries = purchases.map(purchase => new Date(purchase.when));
-        return {
-            ...modifiers,
-            withEntries,
-        };
-    };
 
-    const renderDay = (day) => {
-        return (
-            <Link href={PATHS.EDIT_PURCHASE}>
-                <a className={styles.dashboardDiaryDay}>{day.getDate()}</a>
-            </Link>
-        );
-    };
 
     const getStatus = (id) => {
         switch (id) {
@@ -114,19 +81,13 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
     return (
         <>
             <h1>{t('diary.title')}</h1>
-            <div className={styles.dashboardDiary}>
-                <DayPicker
-                    canChangeMonth={true}
-                    renderDay={renderDay}
-                    modifiers={getModifiers(purchases)}
-                    initialMonth={new Date()}
-                    showOutsideDays={true}
-                    months={MONTHS}
-                    weekdaysLong={DAYS_FULL}
-                    weekdaysShort={DAYS_SHORT}
-                    firstDayOfWeek={1}
-                />
-            </div>
+            <DiaryViz
+                renderDay={onDayClick}
+                modifiers={getModifiers(purchases)}
+                className={styles.dashboardDiary}
+                surveyStart={simpleFormat(surveyStart)}
+                surveyEnd={simpleFormat(surveyEnd)}
+            />
             {sectionNav}
             <div className={styles.dashboardPurchaseList}>
                 <div className={styles.dashboardPurchaseListHeader}>

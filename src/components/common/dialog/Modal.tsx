@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({
                                          title,
                                          children,
                                          onClose, closeText, onCancel, cancelText,
-                                         className = '', style = {}
+                                         className = '', style = {},
                                      }) => {
     if (!show) {
         return null;

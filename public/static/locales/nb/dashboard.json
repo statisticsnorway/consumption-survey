@@ -1,6 +1,7 @@
 {
   "diary": {
-    "title": "Føringsperiode"
+    "title": "Føringsperiode",
+    "openHeader": "Skjul føringsperiode"
   },
 
   "entries": {
