@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { Calendar, ShoppingCart, RotateCw, List } from 'react-feather';
+import { Home, Calendar, ShoppingCart, RotateCw, List } from 'react-feather';
 import Tabs, { TabRenderOption } from '../../components/common/blocks/tabs/Tabs';
 // import usePurchases from '../../hocs/usePurchases';
 import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
 import { simpleFormat } from '../../utils/dateUtils';
-import { MiscExpenses } from '../../components/common/icons/index';
+import { MiscExpenses, Expenses } from '../../components/common/icons/index';
 
 import styles from './dashboard.module.scss'
 
@@ -70,7 +70,7 @@ const Dashboard = () => {
                         renderTab: (
                             <HomeTab setActiveTab={setActiveTab} onDayClick={onDayClick} />
                         ),
-                        icon: <Calendar height={24} width={24} />,
+                        icon: <Home width={24} height={24} />
                     },
                     {
                         title: t('entries.title'),

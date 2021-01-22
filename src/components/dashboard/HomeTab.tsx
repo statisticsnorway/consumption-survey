@@ -40,7 +40,6 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
     const {purchases} = usePurchases();
 
 
-
     const getStatus = (id) => {
         switch (id) {
             case DASHBOARD_TABS.ENTRIES:
@@ -55,14 +54,16 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
     const makeSectionNav = (ids) => {
         return (
             <>
-                <h2>{t('tasks.title')}</h2>
+                <h1>{t('tasks.title')}</h1>
                 <div className="section-nav">
                     {ids.map(id => {
                         const status = getStatus(id);
                         return (
                             <div className="section-nav-item" onClick={() => setActiveTab(id)}>
-                                <span className="title">{t(`${id}.title`)}</span>
-                                <Tag className={status}>{t(`status.${status}`)}</Tag>
+                                <div className="titleAndStatus">
+                                    <h3 className="title">{t(`${id}.title`)}</h3>
+                                    <span className={`status status-${status}`}>{t(`status.${status}`)}</span>
+                                </div>
                                 <ArrowRight width={20} height={20} className="link"/>
                             </div>
                         );
@@ -80,7 +81,6 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
 
     return (
         <>
-            <h1>{t('diary.title')}</h1>
             <DiaryViz
                 renderDay={onDayClick}
                 modifiers={getModifiers(purchases)}

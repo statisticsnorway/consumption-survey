@@ -104,9 +104,9 @@
   color: $ssb-dark-3;
 }
 
-.editMetaLink {
-  color: $ssb-green-4;
-  font-size: 1.25rem;
+.purchaseDate {
+  font-size: 1.75rem;
+  font-family: "Roboto Condensed"
 }
 
 .editMetaIcon {
@@ -133,8 +133,6 @@
 }
 
 .addPurchase {
-  padding: 1.25rem 0;
-
   .nameDateGroup {
     margin: 0.25rem 0 0;
     padding: 1rem 0;

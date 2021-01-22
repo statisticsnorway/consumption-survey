@@ -9,13 +9,9 @@
 
   "frequency": {
     "NONE": "",
-    "DAILY": "daglig",
-    "WEEKLY": "ukentlig",
-    "MONTHLY": "månedlig",
-    "BI_MONTHLY": "hver 2. mnd",
-    "QUARTERLY": "hver 3.mnd",
-    "HALF_YEARLY": "hver 6.mnd",
-    "YEARLY": "årlig"
+    "MONTHLY": "Månedlig",
+    "QUARTERLY": "Kvartal",
+    "YEARLY": "Årlig"
   },
 
   "addExpense": {
@@ -37,5 +33,13 @@
 
     "krCentsLabel": "Beløp",
     "krCentsPlaceholder": "0,00"
+  },
+
+  "deleteExpense": {
+    "title": "Slett fast utgift",
+    "text": "Er du sikker på at du vil slette fast utgift",
+    "textWarning": "Denne operasjonen kan ikke angres",
+    "confirmText": "Slett",
+    "cancelText": "Nei"
   }
 }

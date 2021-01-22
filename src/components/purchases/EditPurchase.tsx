@@ -289,7 +289,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             <div className={workspaceStyles.pageHeader}>
                 <div className={workspaceStyles.leftSection}>
                     <h1>{values.where || t('addPurchase.title')}</h1>
-                    <div className={styles.editMetaLink}>
+                    <div className={styles.purchaseDate}>
                         {simpleFormat(values.when ? new Date(values.when) : new Date())}
                     </div>
                 </div>
