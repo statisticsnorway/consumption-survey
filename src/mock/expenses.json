@@ -8,12 +8,12 @@
   {
     "id": "UQEXWKECoaGWVylJBYh5",
     "name": "Strøm",
-    "frequency": "MONTHLY",
+    "frequency": "QUARTERLY",
     "amount": "59.90"
   },
   {
     "id": "Vh3FKCrwYbvgdKgnxwm0",
-    "frequency": "WEEKLY",
+    "frequency": "YEARLY",
     "name": "dil og dal",
     "amount": "129.99"
   }

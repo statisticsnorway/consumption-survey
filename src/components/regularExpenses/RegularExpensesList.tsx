@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Edit3, RotateCw, X } from 'react-feather';
+import { Plus, MinusCircle, RotateCw, X } from 'react-feather';
 import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
 import AddEditExpense from './AddEditExpense';
 import FloatingButton from '../common/buttons/FloatingButton';
 // import useExpenses from '../../hocs/useExpenses';
 import useExpenses from '../../mock/useExpenses';
+import { krCents } from '../../utils/jsUtils';
+import DeleteConfirmDialog from '../common/dialog/DeleteConfirmDialog';
 
 import dashboardStyles from '../../pages/dashboard/dashboard.module.scss';
 import styles from './styles/regularExpenses.module.scss';
-import exp from 'constants';
-import { krCents } from '../../utils/jsUtils';
 
 export type RegularExpensesProps = {};
 
@@ -26,10 +26,19 @@ export const convert = (values: RegularExpenseType) => {
 
 const RegularExpensesList = ({}: RegularExpensesProps) => {
     const {t} = useTranslation('regularExpenses');
-    const {expenses, addExpense, editExpense} = useExpenses();
+    const {expenses, addExpense, editExpense, deleteExpense} = useExpenses();
     const [showAddExpense, setShowAddExpense] = useState(false);
 
     const [expenseForEdit, setExpenseForEdit] = useState(null);
+    const [expenseForDelete, setExpenseForDelete] = useState(null);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+    const [expensesComp, setExpensesComp] = useState<ReactNode>();
+
+    const onDelete = (exp) => {
+        setExpenseForDelete(exp);
+        setShowDeleteConfirm(true);
+    };
 
     const FLOATING_BTN_OPTIONS = {
         title: t('addExpense.title'),
@@ -40,6 +49,60 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
         }
     };
 
+    useEffect(() => {
+        console.log('new list', expenses);
+        const comp = (Array.isArray(expenses) && expenses.length > 0) ? (
+            <div className={styles.regularExpenses}>
+                {expenses.map((expense: RegularExpenseType) => (
+                    <div
+                        className={styles.expense}
+                        key={expense.id}
+                    >
+                        <div
+                            className={`${styles.expenseColumn} ${styles.nameFrequency}`}
+                            onClick={() => {
+                                setExpenseForEdit(expense);
+                                setShowAddExpense(true);
+                            }}
+                        >
+                            <span className={styles.name}>{expense.name}</span>
+                            <span className={styles.frequency}>
+                            {(expense.frequency === ExpenseFrequency.NONE) ?
+                                '' :
+                                t(`frequency.${expense.frequency}`)
+                            }
+                        </span>
+                        </div>
+                        <div
+                            className={`${styles.expenseColumn} ${styles.amount}`}
+                            onClick={() => {
+                                setExpenseForEdit(expense);
+                                setShowAddExpense(true);
+                            }}
+                        >
+                            {krCents(expense.amount)}
+                        </div>
+                        <div
+                            className={`${styles.expenseColumn} ${styles.deleteExpense}`}
+                            onClick={() => {
+                                onDelete(expense);
+                            }}
+                        >
+                            <MinusCircle
+                                width={20}
+                                height={20}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <span className={styles.noRecords}>{t('regularExpenses.noRecords')}</span>
+        );
+
+        setExpensesComp(comp);
+    }, [expenses]);
+
     const tableHeader = (
         <div className={`${styles.expense} ${styles.expenseHeaderRow}`} key="expensesHeader">
             <div className={`${styles.expenseColumnHeader} ${styles.name}`}>{t('header.name')}</div>
@@ -48,47 +111,10 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
         </div>
     );
 
-    const expensesComp = (Array.isArray(expenses) && expenses.length > 0) ? (
-        <div className={styles.regularExpenses}>
-            {expenses.map((expense: RegularExpenseType) => (
-                <div
-                    className={styles.expense}
-                    key={expense.id}
-                    onClick={() => {
-                        console.log('Should init editing of', expense);
-                        setExpenseForEdit(expense);
-                        setShowAddExpense(true);
-                    }}
-                >
-                    <div className={`${styles.expenseColumn} ${styles.nameFrequency}`}>
-                        <span className={styles.name}>{expense.name}</span>
-                        <span className={styles.frequency}>
-                            {(expense.frequency === ExpenseFrequency.NONE) ?
-                                '' :
-                                t(`frequency.${expense.frequency}`)
-                            }
-                        </span>
-                    </div>
-                    <div className={`${styles.expenseColumn} ${styles.amount}`}>
-                        {krCents(expense.amount)}
-                    </div>
-                    <div className={`${styles.expenseColumn} ${styles.editExpense}`}>
-                        <Edit3
-                            width={16}
-                            height={16}
-                            onClick={() => {
-                                console.log('Should init editing of', expense);
-                                setExpenseForEdit(expense);
-                                setShowAddExpense(true);
-                            }}
-                        />
-                    </div>
-                </div>
-            ))}
-        </div>
-    ) : (
-        <span className={styles.noRecords}>{t('regularExpenses.noRecords')}</span>
-    );
+    const clearDelete = () => {
+        setExpenseForDelete(null);
+        setShowDeleteConfirm(false);
+    };
 
     return (
         <>
@@ -123,6 +149,23 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                 mainProps={FLOATING_BTN_OPTIONS}
                 className={`${dashboardStyles.floatingAddExpense} floatingAddExpense`}
                 bgOverlay={false}
+            />
+            }
+            {expenseForDelete &&
+            <DeleteConfirmDialog
+                show={showDeleteConfirm}
+                leadingText={t('deleteExpense.text')}
+                warningText={t('deleteExpense.textWarning')}
+                info={expenseForDelete.name}
+                onCancel={clearDelete}
+                onConfirm={() => {
+                    deleteExpense(expenseForDelete.id).then(res => {
+                        console.log('Expense deleted');
+                    });
+                    clearDelete();
+                }}
+                cancelText={t('deleteExpense.cancelText')}
+                confirmText={t('deleteExpense.confirmText')}
             />
             }
         </>

@@ -14,8 +14,10 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 1.25rem 1rem;
+    padding: 1.25rem 0;
     background-color: #fff;
+
+    cursor: pointer;
 
     .expenseHeaderRow {
       border-bottom: $ssb-dark-2;
@@ -32,9 +34,12 @@
       .editExpense {
         width: 1.25rem;
       }
+
+
     }
 
     .expenseColumn {
+      display: flex;
     }
 
     .nameFrequency {
@@ -50,6 +55,7 @@
       .frequency {
         text-align: left;
         color: $ssb-dark-3;
+        font-weight: 400;
 
         flex: 1;
 
@@ -68,7 +74,7 @@
 
 
     .amount {
-      text-align: right;
+      justify-content: flex-end;
       flex: 1;
     }
 
@@ -82,10 +88,18 @@
         cursor: pointer;
       }
     }
+
+    .deleteExpense {
+      width: 1.25rem;
+      color: $ssb-red-4;
+      margin-left: 1rem;
+    }
   }
 
+  .expense:last-of-type,
   .expense + .expense {
     /* margin-top: 1rem; */
+    border-top: 1px solid $ssb-dark-2;
   }
 }
 

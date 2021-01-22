@@ -22,6 +22,7 @@
     "purchaseNameDefault": "Register ny",
     "purchaseNamePlaceholder": "Daglivare, Kafé, Restaurant, osv..",
     "purchaseDateLabel": "Kjøpsdato",
+    "changeNameAndDate": "Endre navn og dato",
 
     "lineItems": {
     },
@@ -59,15 +60,15 @@
     "title": "Slett vare ?",
     "text": "Er du sikker på at du vil slette",
     "textWarning": "Denne operasjonen kan ikke angres",
-    "confirmText": "Ja, gjør det",
-    "cancelText": "Nei, ikke slett"
+    "confirmText": "Slett",
+    "cancelText": "Nei"
   },
 
   "deletePurchase": {
     "title": "Slett registreringen",
-    "text": "Er du sikker på at du vil slette registreringen",
+    "text": "Er du sikker på at du vil slette hele registreringen",
     "textWarning": "Denne operasjonen kan ikke angres",
-    "confirmText": "Ja, gjør det",
-    "cancelText": "Nei, ikke slett"
+    "confirmText": "Slett",
+    "cancelText": "Nei"
   }
 }

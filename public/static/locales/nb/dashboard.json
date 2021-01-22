@@ -1,6 +1,7 @@
 {
   "diary": {
-    "title": "Føringsperiode"
+    "title": "Føringsperiode",
+    "openHeader": "Skjul føringsperiode"
   },
 
   "entries": {
@@ -16,7 +17,7 @@
   },
 
   "tasks": {
-    "title": "Oppgaver"
+    "title": "Mine Oppgaver"
   },
 
   "fab": {

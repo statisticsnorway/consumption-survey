@@ -1,6 +1,6 @@
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Edit3, PlusCircle, ArrowLeft } from 'react-feather';
+import { Edit3, PlusCircle, ArrowLeft, Trash2 } from 'react-feather';
 import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purchase';
 // import usePurchases from '../../hocs/usePurchases';
 import usePurchases from '../../mock/usePurchases';
@@ -17,6 +17,7 @@ import { PATHS } from '../../uiConfig';
 import styles from './purchases.module.scss';
 import headerStyles from '../layout/styles/header.module.scss';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
+import ActionsPopup from '../common/dialog/ActionsPopup';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -28,6 +29,8 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>();
     const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
+    const [isDirty, setIsDirty] = useState<boolean>();
+    const [init, setInit] = useState<boolean>(true);
 
     const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>();
 
@@ -71,24 +74,9 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     useEffect(() => {
         if (purchase) {
             setValues(purchase);
+            setInit(false);
         }
     }, [purchase]);
-
-    const updateValue = key => (e) => {
-        setValues({
-            ...values,
-            [key]: e.target.value
-        });
-    };
-
-    const saveChanges = (e) => {
-        e.preventDefault();
-
-        editPurchase(purchaseId, values)
-            .then((res) => {
-                console.log('purchase updated', res);
-            });
-    };
 
     const onCancelAddItem = () => {
         setShowAddItemForm(false);
@@ -207,9 +195,14 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
 
     useEffect(() => {
         if (values && Array.isArray(values.items)) {
+            if (!init) {
+                setIsDirty(true);
+            }
+
             const nrItems = values.items.length;
 
-            const btnText = nrItems === 0 ? '' : `(${nrItems} vare${nrItems > 1 ? 'r' : ''})`;
+            const disabled = (nrItems === 0) || (purchaseId && !isDirty);
+
             setEditPurchaseHeader(
                 <div className={headerStyles.headerComponentWrapper}>
                     <div className={headerStyles.leftSection}>
@@ -231,9 +224,9 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                                 e.preventDefault();
                                 savePurchase();
                             }}
-                            disabled={nrItems === 0}
+                            disabled={disabled}
                         >
-                            {t('addPurchase.save')} {btnText}
+                            {t('addPurchase.save')}
                         </button>
                     </div>
                 </div>
@@ -258,6 +251,18 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             </div>
         );
     }
+
+    const editMeta = () => (
+        <div className={styles.editMetaLink}>
+            <a
+                onClick={() => {
+                    showEditNameDatePopup();
+                }}
+            >
+                {simpleFormat(values.when ? new Date(values.when) : new Date())}
+            </a>
+        </div>
+    );
 
     return values ? (
         <>
@@ -284,23 +289,25 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             <div className={workspaceStyles.pageHeader}>
                 <div className={workspaceStyles.leftSection}>
                     <h1>{values.where || t('addPurchase.title')}</h1>
-                    <div className={styles.editMetaLink}>
-                        <a
-                            onClick={() => {
-                                showEditNameDatePopup();
-                            }}
-                        >
-                            {simpleFormat(values.when ? new Date(values.when) : new Date())}
-                        </a>
+                    <div className={styles.purchaseDate}>
+                        {simpleFormat(values.when ? new Date(values.when) : new Date())}
                     </div>
                 </div>
                 <div className={workspaceStyles.rightSection}>
                     <Edit3
-                        className={styles.editMetaLink}
+                        className={`${styles.editMetaIcon} ${styles.editPurchaseIcon}`}
                         onClick={() => {
                             showEditNameDatePopup();
                         }}
                     />
+                    {purchaseId &&
+                    <Trash2
+                        className={`${styles.editMetaIcon} ${styles.deletePurchaseIcon}`}
+                        onClick={() => {
+                            setShowPurchaseDeleteConfirm(true);
+                        }}
+                    />
+                    }
                 </div>
             </div>
 
@@ -343,16 +350,6 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                         setShowEditItemForm(true);
                     }}
                 />
-                <div className={styles.deletePurchaseContainer}>
-                    <button
-                        className={`ssb-btn secondary-btn ${styles.deletePurchase}`}
-                        onClick={() => {
-                            setShowPurchaseDeleteConfirm(true);
-                        }}
-                    >
-                        {t('deletePurchase.title')}
-                    </button>
-                </div>
                 <EditItem
                     itemInfo={null}
                     show={showAddItemForm}
@@ -365,6 +362,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     onAddItem={updateItem}
                     onCancel={onCancelEditItem}
                 />
+                {purchaseId &&
                 <DeletePurchaseDialog
                     purchase={purchase}
                     show={showPurchaseDeleteConfirm}
@@ -378,6 +376,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     }}
                     onCancel={clearPurchaseDelete}
                 />
+                }
             </div>
         </>
     ) : null;

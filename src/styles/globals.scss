@@ -38,22 +38,24 @@ section {
 
   h1 {
     font-size: 2.75rem;
-    padding: 1rem 0;
+    padding: 0;
     font-family: 'Roboto Condensed';
-    margin: 0;
+    margin: 3.75rem 0;
   }
 
   h2 {
-    font-size: 1.75rem;
-    padding: 1rem 0;
+    font-size: 2.75rem;
+    margin: 1rem 0;
+    font-weight: 700;
     font-family: "Roboto Condensed";
+    line-height: 3.5rem;
   }
 
   h3 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     padding: 0;
     font-family: 'Roboto Condensed';
-    margin: 0;
+    margin: 0.5rem 0;
   }
 }
 
@@ -90,9 +92,6 @@ section {
   flex-direction: column;
 
   margin: 1rem 0;
-  border-width: 1px 0;
-  border-style: solid;
-  border-color: $ssb-dark-2;
 
   .section-nav-item {
     display: flex;
@@ -100,19 +99,47 @@ section {
     align-items: center;
     cursor: pointer;
 
-    padding: 1rem 0;
+    padding: 1rem 0.5rem;
+    border: 1px solid $ssb-dark-2;
+    border-bottom: 2px solid $ssb-green-4;
 
-    .title {
-      font-weight: bold;
+    .titleAndStatus {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      .title {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        font-size: 1.25rem;
+        font-family: "Roboto";
+      }
+
+      .status {
+        font-family: "Open Sans";
+        font-size: 1rem;
+      }
+
+      .status-DONE {
+        color: $ssb-green-4;
+      }
+
+      .status-IN_PROGRESS {
+        color: $ssb-purple-3;
+      }
+
+      .status-INIT {
+        color: $ssb-dark-4;
+      }
     }
-
     .link {
       color: $ssb-green-4;
     }
   }
 
   .section-nav-item + .section-nav-item {
-    border-top: 1px solid $ssb-dark-2;
+    margin-top: 1rem;
   }
 }
 
@@ -134,4 +161,21 @@ section {
 .ssb-tag.INIT {
   background-color: $ssb-dark-2;
   color: $ssb-dark-4;
+}
+
+.ssb-accordion {
+  .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-text {
+      font-size: 1rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  .accordion-body {
+    padding: 0 1rem;
+  }
 }

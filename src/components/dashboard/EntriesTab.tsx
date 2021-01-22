@@ -1,19 +1,22 @@
 import { useTranslation } from 'react-i18next';
-import styles from './dashboard.module.scss';
-import PurchasesList from '../../components/purchases/PurchasesList';
-import PurchasesByDate from '../../components/purchases/PurchasesByDate';
-import usePurchases from '../../mock/usePurchases';
-import { useEffect, useState } from 'react';
-import ConsumptionChart from '../../components/purchases/ConsumptionChart';
-import FloatingButton, { ChildMenuProps } from '../../components/common/buttons/FloatingButton';
-import { FLOATING_BTN_OPTIONS, FLOATING_MENU_OPTIONS } from './HomeTab';
 import { useRouter } from 'next/router';
 import { Camera, Edit } from 'react-feather';
+import styles from '../../pages/dashboard/dashboard.module.scss';
+import PurchasesList from '../purchases/PurchasesList';
+import PurchasesByDate from '../purchases/PurchasesByDate';
+import usePurchases from '../../mock/usePurchases';
+import { useEffect, useState } from 'react';
+import ConsumptionChart from '../purchases/ConsumptionChart';
+import FloatingButton, { ChildMenuProps } from '../common/buttons/FloatingButton';
+import DiaryViz from './DiaryViz';
+import { getModifiers, surveyEnd, surveyStart } from '../../uiConfig';
+import { FLOATING_BTN_OPTIONS } from './HomeTab';
+import { simpleFormat } from '../../utils/dateUtils';
 
-const EntriesTab = ({dateSelection, selectDate, deselectDate}) => {
+const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
     const {t} = useTranslation('dashboard');
     const router = useRouter();
-    const {purchasesByDate} = usePurchases();
+    const {purchases, purchasesByDate} = usePurchases();
 
     const [entriesComp, setEntriesComp] = useState(null);
     const [floatingMenuOptions, setFloatingMenuOptions] = useState<ChildMenuProps[]>();
@@ -42,20 +45,27 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate}) => {
     }, [dateSelection]);
 
         useEffect(() => {
-        const purchases = dateSelection ? purchasesByDate[dateSelection] : null;
+        const purchasesDisp = dateSelection ? purchasesByDate[dateSelection] : purchases;
         console.log('should show', purchases);
 
         setEntriesComp(
             dateSelection ? (
                 <PurchasesByDate
                     date={dateSelection}
-                    purchases={purchases}
+                    purchases={purchasesDisp}
                     deselectDate={deselectDate}
                     selectDate={selectDate}
                 />
             ) : (
                 <>
                     <h1>{t('entries.title')}</h1>
+                    <DiaryViz
+                        renderDay={onDayClick}
+                        modifiers={getModifiers(purchases)}
+                        surveyStart={simpleFormat(surveyStart)}
+                        surveyEnd={simpleFormat(surveyEnd)}
+                        className={styles.dashboardDiary}
+                    />
                     <ConsumptionChart/>
                     <div className={styles.entries}>
                         <PurchasesList/>

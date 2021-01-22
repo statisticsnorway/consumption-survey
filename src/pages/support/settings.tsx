@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { RadioGroup } from '@statisticsnorway/ssb-component-library';
 import { i18n, withTranslation } from '../../../i18n';
-import SettingsPanel from '../../components/blocks/SettingsPanel';
+import SettingsPanel from '../../components/common/blocks/SettingsPanel';
 import { WorkspacePanel } from '../../components/layout/Workspace';
 import { LANGUAGES } from '../../utils/jsUtils';
 import { useLoader } from '../../hocs/globalLoader';
