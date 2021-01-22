@@ -21,7 +21,7 @@
     "@firebase/storage-types": "^0.3.13",
     "@webdeb/next-styles": "^1.1.0",
     "@zeit/next-source-maps": "^0.0.3",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "axios-hooks": "^2.1.0",
     "date-fns": "^2.16.1",
     "firebase": "^8.0.1",
