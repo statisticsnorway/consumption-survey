@@ -143,11 +143,6 @@ const HomeTab = ({onDayClick, setActiveTab}) => {
                 </div>
                 <PurchasesList limit={1}/>
             </div>
-            <FloatingButton
-                mainProps={FLOATING_BTN_OPTIONS}
-                childButtonProps={FLOATING_MENU_OPTIONS(t, router)}
-                className={styles.floatingAddNew}
-            />
         </>
     );
 };
