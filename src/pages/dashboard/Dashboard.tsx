@@ -53,8 +53,9 @@ const Dashboard = () => {
 
 
     const onDayClick = (day) => {
+        const url = `${PATHS.EDIT_PURCHASE}?onDate=${simpleFormat(day)}`;
         return (
-            <Link href={PATHS.EDIT_PURCHASE}>
+            <Link href={url}>
                 <a className={styles.dashboardDiaryDay}>{day.getDate()}</a>
             </Link>
         );
