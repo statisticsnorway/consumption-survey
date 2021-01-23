@@ -15,6 +15,7 @@ export type PurchaseType = {
     items: ItemType[];
     when: string;
     totalPrice: number;
+    registeredTime: string;
 };
 
 export const INIT_PURCHASE = {

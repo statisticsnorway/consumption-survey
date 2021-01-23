@@ -102,7 +102,6 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
                         <ArrowRight className={styles.allEntriesIcon}/>
                     </a>
                 </div>
-                <PurchasesList limit={1}/>
             </div>
         </>
     );

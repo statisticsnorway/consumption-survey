@@ -10,4 +10,5 @@ export type RegularExpenseType = {
     name: string;
     frequency: ExpenseFrequency;
     amount: string;
+    registeredTime: string;
 };
