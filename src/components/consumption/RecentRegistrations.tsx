@@ -10,11 +10,12 @@ import { dateFormatDayDate, parseDate, simpleFormat } from '../../utils/dateUtil
 
 import styles from './registrations.module.scss';
 import { krCents } from '../../utils/jsUtils';
-import { PATHS } from '../../uiConfig';
+import { DASHBOARD_TABS, PATHS } from '../../uiConfig';
 import { useRouter } from 'next/router';
 
 export type RecentRegistrationsProps = {
     limit: number;
+    setActiveTab: (tabId) => void;
 };
 
 export type WithRegisteredTime = object & {
@@ -43,7 +44,7 @@ const dateDisp = (date) => {
     );
 };
 
-const RecentRegistrations = ({limit = 5}: RecentRegistrationsProps) => {
+const RecentRegistrations = ({limit = 5, setActiveTab }: RecentRegistrationsProps) => {
     const router = useRouter();
     const {purchases} = usePurchases();
     const {expenses} = useExpenses();
@@ -65,7 +66,7 @@ const RecentRegistrations = ({limit = 5}: RecentRegistrationsProps) => {
         if (isPurchase(reg)) {
             router.push(`${PATHS.EDIT_PURCHASE}?purchaseId=${reg.id}`);
         } else {
-            console.log('handle regular expense');
+            setActiveTab(DASHBOARD_TABS.REGULAR_EXPENSES);
         }
     };
 

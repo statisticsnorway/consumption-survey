@@ -27,7 +27,7 @@ const Accordion = ({title, open = false, children, className = '', onClick = DO_
         <div className={`ssb-accordion ${className}`}>
             <div
                 className={`accordion-header ${isOpen ? 'open' : 'closed'}`}
-                onClick={() => { onClick(!isOpen); }}
+                onClick={() => { (onClick === DO_NOTHING) ? setIsOpen(!isOpen) : onClick(!isOpen); }}
             >
                 <div className="header-text">{title}</div>
                 {isOpen ?

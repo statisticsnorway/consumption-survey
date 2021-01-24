@@ -8,4 +8,4 @@ const WelcomeNoSSR = dynamic(
 export default function Home() {
     console.log('Home', WelcomeNoSSR);
     return <WelcomeNoSSR />
-}
+};

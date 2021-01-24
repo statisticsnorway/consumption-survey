@@ -11,6 +11,8 @@ import DiaryViz from './DiaryViz';
 
 import styles from '../../pages/dashboard/dashboard.module.scss';
 import RecentRegistrations from '../consumption/RecentRegistrations';
+import useExpenses from '../../mock/useExpenses';
+import { ReactNode, useEffect, useState } from 'react';
 
 export const FLOATING_BTN_OPTIONS = {
     iconResting: <Plus/>,
@@ -37,18 +39,37 @@ export const FLOATING_MENU_OPTIONS = (t, router) => [
 
 const HomeTab = ({setActiveTab, onDayClick}) => {
     const {t} = useTranslation('dashboard');
-    const router = useRouter();
     const {purchases} = usePurchases();
+    const {expenses} = useExpenses();
 
+    const [sectionNav, setSectionNav] = useState<ReactNode>();
+
+    useEffect(() => {
+        if (purchases && expenses) {
+            setSectionNav(makeSectionNav([
+                DASHBOARD_TABS.ENTRIES,
+                DASHBOARD_TABS.REGULAR_EXPENSES,
+                DASHBOARD_TABS.OTHER,
+            ]));
+        }
+    }, [purchases, expenses]);
 
     const getStatus = (id) => {
-        switch (id) {
-            case DASHBOARD_TABS.ENTRIES:
-                return 'IN_PROGRESS';
-            case DASHBOARD_TABS.REGULAR_EXPENSES:
-                return 'DONE';
-            case DASHBOARD_TABS.OTHER:
-                return 'INIT';
+        const count = () => {
+            switch (id) {
+                case DASHBOARD_TABS.ENTRIES :
+                    return purchases.length;
+                case DASHBOARD_TABS.REGULAR_EXPENSES:
+                    return expenses.length;
+                default:
+                    return -1;
+            }
+        };
+
+        if (count() > 0) {
+            return 'IN_PROGRESS';
+        } else {
+            return 'INIT';
         }
     };
 
@@ -74,12 +95,6 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
         );
     };
 
-    const sectionNav = makeSectionNav([
-        DASHBOARD_TABS.ENTRIES,
-        DASHBOARD_TABS.REGULAR_EXPENSES,
-        DASHBOARD_TABS.OTHER,
-    ]);
-
     return (
         <>
             <DiaryViz
@@ -92,7 +107,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
             {sectionNav}
             <>
                 <h2>{t('recent.title')}</h2>
-                <RecentRegistrations limit={5}/>
+                <RecentRegistrations limit={5} setActiveTab={setActiveTab}/>
             </>
         </>
     );
