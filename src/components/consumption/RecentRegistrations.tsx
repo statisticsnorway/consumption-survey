@@ -12,6 +12,7 @@ import styles from './registrations.module.scss';
 import { krCents } from '../../utils/jsUtils';
 import { DASHBOARD_TABS, PATHS } from '../../uiConfig';
 import { useRouter } from 'next/router';
+import NoRecords from '../common/blocks/NoRecords';
 
 export type RecentRegistrationsProps = {
     limit: number;
@@ -70,7 +71,7 @@ const RecentRegistrations = ({limit = 5, setActiveTab }: RecentRegistrationsProp
         }
     };
 
-    return (
+    return (recents.length > 1) ? (
         <div className={styles.regList}>
             {recents
                 .map((reg: PurchaseType | RegularExpenseType) => {
@@ -93,7 +94,10 @@ const RecentRegistrations = ({limit = 5, setActiveTab }: RecentRegistrationsProp
                         </div>
                     );
                 })}
-        </div>);
+        </div>
+    ) : (
+        <NoRecords singularText="kjøp og utgift" pluralText="kjøp og utgifter" showAddNew={false}/>
+    );
 };
 
 export default RecentRegistrations;

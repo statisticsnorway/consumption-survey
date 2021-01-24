@@ -5,5 +5,12 @@
 
   "links": {
     "back": "Tilbake"
+  },
+
+  "noRecords": {
+    "prefix": "Her kommer",
+    "suffix": "du registrerer.",
+    "addNewPrefix": "Legg inn",
+    "addNewSuffix": "med (+) knappen under for å starte."
   }
 }

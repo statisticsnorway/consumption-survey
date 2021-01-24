@@ -103,7 +103,14 @@ const Dashboard = () => {
                     }, {
                         title: 'Andre utgifter',
                         id: 'otherExpenses',
-                        renderTab: makeDummyComponent('Andre utgifter'),
+                        renderTab: (
+                            <>
+                                <h1>{t('otherExpenses.title')}</h1>
+                                <div className={styles.dashboardRegularExpenses}>
+                                    Kommer snart ...
+                                </div>
+                            </>
+                        ),
                         icon: <MiscExpenses width={24} height={24} />,
                     }
                 ]}

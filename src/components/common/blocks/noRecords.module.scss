@@ -1,0 +1,17 @@
+@import '../../../styles/common';
+
+.noRecords {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .noRecordsText,
+  .addNew {
+    font-family: "Open Sans";
+    font-size: 1rem;
+    color: $ssb-dark-3;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+}
