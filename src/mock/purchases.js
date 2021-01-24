@@ -130,4 +130,5 @@ const purchasesData = {
     ]
 };
 
-export default purchasesData;
+// export default purchasesData;
+export default [];

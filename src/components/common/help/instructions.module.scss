@@ -1,0 +1,50 @@
+@import '../../../styles/common';
+
+.instructions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  .instructionStep {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .stepNr {
+      order: 1;
+      flex-grow: 0;
+      margin-right: 1.25rem;
+      color: $ssb-blue-3;
+
+      font-family: "Roboto";
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .text {
+      order: 2;
+      flex: 1 1;
+      font-family: "Open Sans";
+      font-size: 1rem;
+    }
+
+    .figure {
+      order: 3;
+      flex-grow: 0;
+      margin-left: 1.25rem;
+      width: 55px !important;
+
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .instructionStep + .instructionStep {
+    margin-top: 1.25rem;
+  }
+
+  .instructionStep:last-of-type {
+    margin-bottom: 1.25rem;
+  }
+}

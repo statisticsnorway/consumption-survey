@@ -37,6 +37,9 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
     const {t} = useTranslation('purchases');
     const formRef = useRef(null);
     const [values, setValues] = useState<ItemType>(INIT_STATE);
+
+    const [errors, setErrors] = useState<ItemType>({} as ItemType);
+
     const nameFieldRef = useRef(null);
     const krFieldRef = useRef(null);
     const centsFieldRef = useRef(null);
@@ -112,12 +115,21 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
             title={t('addPurchase.newItem.title')}
             onClose={() => {
                 console.log('Verifying', values);
+
                 if (values.name
                     && (Number(values.qty) !== NaN) && (Number(values.qty) >= 1)
-                    && (Number(values.amount) !== NaN) && (Number(values.amount) >= 0)) {
+                    && (Number(values.amount) !== NaN) && (Number(values.amount) > 0)) {
                     onAddItem(values);
                     setShowPopup(false);
                     setValues(INIT_STATE);
+
+                    setErrors({} as ItemType);
+                } else {
+                    setErrors({
+                        ...errors,
+                        name: values.name ? null : 'error',
+                        amount: values.amount ? null : 'error',
+                    });
                 }
             }}
             closeText={t('addPurchase.save')}
@@ -148,6 +160,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                                     onChange={updateValue('name')}
                                     {...params}
                                     className={`${formStyles.fbuFormField} ${styles.itemName}`}
+                                    error={errors['name'] === 'error'}
                                 />
                             );
                         }
@@ -200,6 +213,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                         InputProps={{
                             inputComponent: NorwegianCurrencyFormat as any,
                         }}
+                        error={errors['amount'] === 'error'}
                     />
                 </div>
             </div>

@@ -11,6 +11,7 @@ import DeleteConfirmDialog from '../common/dialog/DeleteConfirmDialog';
 
 import dashboardStyles from '../../pages/dashboard/dashboard.module.scss';
 import styles from './styles/regularExpenses.module.scss';
+import NoRecords from '../common/blocks/NoRecords';
 
 export type RegularExpensesProps = {};
 
@@ -97,7 +98,7 @@ const RegularExpensesList = ({}: RegularExpensesProps) => {
                 ))}
             </div>
         ) : (
-            <span className={styles.noRecords}>{t('regularExpenses.noRecords')}</span>
+            <NoRecords singularText="en ny utgift" pluralText="de faste ugiftene" />
         );
 
         setExpensesComp(comp);

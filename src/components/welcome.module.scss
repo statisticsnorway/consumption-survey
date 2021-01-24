@@ -1,41 +1,19 @@
-.iosShim {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
+@import '../styles/common';
 
-  img {
-    width: 50px;
-    margin-right: 1rem;
+.welcome {
+  .welcomeText {
+    font-family: "Open Sans";
+    font-size: 1rem;
   }
-}
 
-.arrowBox {
-  position: relative;
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 5px;
-}
-.arrowBox:after, .arrowBox:before {
-  top: 100%;
-  left: 50%;
-  border: solid transparent;
-  content: " ";
-  height: 0;
-  width: 0;
-  position: absolute;
-  pointer-events: none;
-}
+  .loginLink {
+    color: $ssb-green-4;
+    display: block;
+    margin: 2rem 0;
+    cursor: pointer;
+  }
 
-.arrowBox:after {
-  border-color: rgba(255, 255, 255, 0);
-  border-top-color: #fff;
-  border-width: 15px;
-  margin-left: -15px;
-}
-.arrowBox:before {
-  border-color: rgba(238, 238, 238, 0);
-  border-top-color: #eee;
-  border-width: 16px;
-  margin-left: -16px;
+  .installText {
+    margin-bottom: 2.5rem;
+  }
 }

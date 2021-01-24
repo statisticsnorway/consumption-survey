@@ -15,6 +15,7 @@ import {
 import { DASHBOARD_TABS, PATHS, TABS_PARAMS, makeDashboardPath } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
+import NoRecords from '../common/blocks/NoRecords';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -70,7 +71,7 @@ const PurchasesList = ({limit = -1}) => {
         setDatesForDisplay((limit > 0) ? sorted.slice(0, limit) : sorted);
     }, [sorted]);
 
-    return (
+    return (datesForDisplay.length > 1) ? (
         <div className={styles.purchasesList}>
             {datesForDisplay
                 .map((dateOfPurchase) => {
@@ -105,6 +106,8 @@ const PurchasesList = ({limit = -1}) => {
                 })
             }
         </div>
+    ) : (
+        <NoRecords singularText="et nytt kjøp" pluralText="alle kjøpene og løpende utgifter" />
     );
 };
 

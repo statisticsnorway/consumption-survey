@@ -25,4 +25,5 @@ const expenses = [
   }
 ];
 
-export default expenses;
+// export default expenses;
+export default [];

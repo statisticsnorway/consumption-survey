@@ -8,12 +8,13 @@ import { appWithTranslation } from '../../i18n'
 import { AppContext, AppContextType } from '../uiContexts';
 import FireProvider from '../firebase/FireProvider';
 import UserProvider from '../firebase/UserProvider';
-import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 import '../styles/globals.scss'
 import 'react-day-picker/lib/style.css'
 import 'rc-time-picker/assets/index.css'
 import PurchasesProvider from '../mock/PurchasesProvider';
+import { withRouter } from 'next/router';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 const appConfig = getConfig();
 
@@ -82,18 +83,19 @@ class MyApp extends App {
     */
 
     render() {
-        const {Component, pageProps} = this.props
-        const {initComplete} = this.state
+        const {Component, pageProps, router} = this.props;
+        const {initComplete} = this.state;
+
         return (
             <AppContext.Provider value={{envVars: appConfig}}>
                 <UserProvider>
-                    <ProtectedRoute>
-                        <PurchasesProvider>
-                            <Layout>
+                    <PurchasesProvider>
+                        <Layout>
+                            <ProtectedRoute>
                                 <Component {...pageProps} />
-                            </Layout>
-                        </PurchasesProvider>
-                    </ProtectedRoute>
+                            </ProtectedRoute>
+                        </Layout>
+                    </PurchasesProvider>
                 </UserProvider>
             </AppContext.Provider>
         );
@@ -110,4 +112,4 @@ const MyApp = ({Component, pageProps}) => {
 };
 */
 
-export default appWithTranslation(MyApp)
+export default appWithTranslation(MyApp);
