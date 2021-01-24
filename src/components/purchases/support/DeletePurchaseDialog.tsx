@@ -30,7 +30,7 @@ const DeletePurchaseDialog = ({purchase, show, onConfirm, onCancel}: DeletePurch
             onCancel={onCancel} cancelText={t('deletePurchase.cancelText')}
             leadingText={t('deletePurchase.text')}
             warningText={t('deletePurchase.textWarning')}
-            info={purchase.where}
+            info={purchase.name}
         />
     );
 };

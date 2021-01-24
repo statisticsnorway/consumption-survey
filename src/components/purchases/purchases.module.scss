@@ -2,8 +2,8 @@
 
 .purchasesList {
   margin: 0;
-  border-bottom: 1px solid #eee;
-  padding: 1rem 0;
+  /* border-bottom: 1px solid #eee; */
+  /* padding: 1rem 0; */
 
   .purchaseEntry {
     background-color: #fff;
@@ -17,46 +17,75 @@
   .purchaseGroup {
     display: flex;
     background: #fff;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     color: #000;
 
     .purchaseGroupDate {
       flex-grow: 0;
       display: flex;
       flex-direction: column;
-      padding: 0.5rem 0.75rem 0.5rem 0.5rem;
       justify-content: flex-start;
+      margin-right: 1.25rem;
+      margin-bottom: 1rem;
       align-items: center;
-      border-right: 1px solid #eee;
+      /* border-right: 1px solid #eee; */
 
       .purchaseGroupDateMonth {
         font-variant: small-caps;
         color: #666;
+        font-size: 0.875rem;
+        font-family: "Open Sans";
+        color: $ssb-dark-3;
       }
 
       .purchaseGroupDateDay {
         colof: #333;
-        font-size: 1.25rem;
+        font-size: 1rem;
+        font-family: "Open Sans";
       }
     }
 
     .purchaseGroupEntries {
       flex-grow: 2;
-      padding: 0.5rem 0.5rem 0.5rem 1rem;
+      /* padding: 0.5rem 0.5rem 0.5rem 1rem; */
+      padding: 0;
+      margin: 0;
+      border-bottom: 1px solid $ssb-dark-2;
 
       .purchaseGroupEntry {
         display: flex;
         justify-content: space-between;
+        cursor: pointer;
 
         .purchaseEntryName {
           font-weight: bold;
           font-family: Roboto;
         }
 
-        .purchaseEntryTotal {
-          font-weight: normal;
-          font-family: "Open Sans";
+        .purchaseTotalEdit {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+
+          .purchaseEntryTotal {
+            font-weight: normal;
+            font-family: "Open Sans";
+          }
+
+          .editPurchase {
+            margin-left: 1.25rem;
+            color: $ssb-green-4;
+          }
         }
+      }
+
+      .purchaseGroupEntry + .purchaseGroupEntry {
+        margin-top: 1rem;
+      }
+
+      .purchaseGroupEntry:last-of-type {
+        margin-bottom: 1rem;
       }
     }
 
@@ -72,6 +101,8 @@
       border-left: 1px solid #eee;
       margin-left: 0.5rem;
       padding-left: 0.5rem;
+
+      display: none;
     }
   }
 

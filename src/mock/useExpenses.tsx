@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { RegularExpenseType } from '../firebase/model/RegularExpense';
 
-import EXPENSES_MOCK from './expenses.json';
+import EXPENSES_MOCK from './expenses';
 
 const useExpenses = () => {
     const [expenses, setExpenses] = useState([]);
@@ -14,7 +14,10 @@ const useExpenses = () => {
         console.log('Adding expense record', expense);
         setExpenses([
             ...expenses,
-            expense
+            {
+                ...expense,
+                registeredTime: new Date().toISOString(),
+            }
         ]);
 
         return Promise.resolve();

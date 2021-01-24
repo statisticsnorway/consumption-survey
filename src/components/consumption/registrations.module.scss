@@ -1,0 +1,80 @@
+@import '../../styles/common';
+
+.regList {
+  display: flex;
+  flex-direction: column;
+
+  .reg {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .purchaseDate {
+      flex-grow: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 1rem;
+
+
+      /* border-right: 1px solid #eee; */
+
+      .purchaseDateDay {
+        font-variant: small-caps;
+        color: #666;
+        font-size: 0.875rem;
+        font-family: "Open Sans";
+        color: $ssb-dark-3;
+      }
+
+      .purchaseDateDate {
+        colof: #333;
+        font-size: 1rem;
+        font-family: "Open Sans";
+      }
+    }
+
+    .fastIcon {
+      margin-right: 1rem;
+      font-weight: bold;
+      color: $ssb-blue-3;
+    }
+
+    .regInfo {
+      display: flex;
+      flex: 1 1;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid $ssb-dark-2;
+      padding: 1rem 0;
+      cursor: pointer;
+
+      .nameAmount {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0.5rem 0;
+
+        .name {
+          font-family: Roboto;
+          font-weight: 700;
+          font-size: 1rem;
+        }
+
+        .amount {
+          text-align: right;
+          font-family: "Open Sans";
+          font-weight: 400;
+          font-size: 1rem;
+        }
+      }
+
+      .edit {
+        margin-left: 1.25rem;
+        color: $ssb-green-4;
+      }
+    }
+  }
+}

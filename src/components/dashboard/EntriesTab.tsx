@@ -58,7 +58,6 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
                 />
             ) : (
                 <>
-                    <h1>{t('entries.title')}</h1>
                     <DiaryViz
                         renderDay={onDayClick}
                         modifiers={getModifiers(purchases)}
@@ -66,6 +65,7 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
                         surveyEnd={simpleFormat(surveyEnd)}
                         className={styles.dashboardDiary}
                     />
+                    <h1>{t('entries.title')}</h1>
                     <ConsumptionChart/>
                     <div className={styles.entries}>
                         <PurchasesList/>

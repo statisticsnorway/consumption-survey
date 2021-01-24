@@ -10,6 +10,7 @@ import { simpleFormat } from '../../utils/dateUtils';
 import DiaryViz from './DiaryViz';
 
 import styles from '../../pages/dashboard/dashboard.module.scss';
+import RecentRegistrations from '../consumption/RecentRegistrations';
 
 export const FLOATING_BTN_OPTIONS = {
     iconResting: <Plus/>,
@@ -89,21 +90,10 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
                 surveyEnd={simpleFormat(surveyEnd)}
             />
             {sectionNav}
-            <div className={styles.dashboardPurchaseList}>
-                <div className={styles.dashboardPurchaseListHeader}>
-                    <h3>{t('recent.title')}</h3>
-                    <a
-                        className={styles.allEntriesLink}
-                        onClick={() => {
-                            setActiveTab('entries');
-                        }}
-                    >
-                        <span>{t('recent.allLink')}</span>
-                        <ArrowRight className={styles.allEntriesIcon}/>
-                    </a>
-                </div>
-                <PurchasesList limit={1}/>
-            </div>
+            <>
+                <h2>{t('recent.title')}</h2>
+                <RecentRegistrations limit={5}/>
+            </>
         </>
     );
 };

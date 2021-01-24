@@ -77,6 +77,11 @@
   }
 }
 
+.recents {
+  display: flex;
+  flex-direction: column;
+}
+
 .dashboardRegularExpenses {
   padding: 0;
 

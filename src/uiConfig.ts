@@ -3,6 +3,7 @@ import { add, sub } from 'date-fns';
 export const PATHS = {
     DASHBOARD: '/dashboard/Dashboard',
     EDIT_PURCHASE: '/purchases/editPurchase',
+    EDIT_EXPESE: `/`
 };
 
 export const TABS_PARAMS = {
@@ -51,7 +52,7 @@ export const modifiers = {
 };
 
 export const getModifiers = (purchases) => {
-    const withEntries = purchases.map(purchase => new Date(purchase.when));
+    const withEntries = purchases.map(purchase => new Date(purchase.purchaseDate));
     return {
         ...modifiers,
         withEntries,

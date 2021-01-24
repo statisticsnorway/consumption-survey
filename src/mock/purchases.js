@@ -2,20 +2,21 @@ import { add, sub } from 'date-fns';
 import { parseDate, simpleFormat } from '../utils/dateUtils';
 import { DUMMY_SURVEY_INFO } from '../firebase/UserProvider';
 
-const makeDay = (offset) =>
+export const makeDay = (offset) =>
     simpleFormat(add(DUMMY_SURVEY_INFO.journalStart, {days: offset}));
 
-const day1 = makeDay(2);
-const day2 = makeDay(3);
-const day3 = makeDay(5);
-const day4 = makeDay(6);
+export const day1 = makeDay(2);
+export const day2 = makeDay(3);
+export const day3 = makeDay(5);
+export const day4 = makeDay(6);
 
 const purchasesData = {
     [day1]: [
         {
             'id': 'bLpP5xKekFf4OMEa9M0f',
-            'when': parseDate(day1).toISOString(),
-            'totalPrice': 19.9,
+            'purchaseDate': parseDate(day1).toISOString(),
+            'registeredTime': parseDate(day1).toISOString(),
+            'amount': 19.9,
             'items': [
                 {
                     'idx': 0,
@@ -25,16 +26,17 @@ const purchasesData = {
                     'amount': '19.90'
                 }
             ],
-            'where': 'kiosk',
-            'whenRaw': '063742935600.000000000'
+            'name': 'kiosk',
+            'purchaseDateRaw': '063742935600.000000000'
         }
     ],
     [day2]: [
         {
             'id': '9jBx2KXLx1zA4CuOeY4r',
-            'when': parseDate(day2).toISOString(),
-            'where': 'Kiosk',
-            'totalPrice': 120,
+            'purchaseDate': parseDate(day2).toISOString(),
+            'registeredTime': parseDate(day2).toISOString(),
+            'name': 'Kiosk',
+            'amount': 120,
             'items': [
                 {
                     'units': 'stk',
@@ -44,7 +46,7 @@ const purchasesData = {
                     'idx': 0
                 }
             ],
-            'whenRaw': '063743108400.000000000'
+            'purchaseDateRaw': '063743108400.000000000'
         },
         {
             'id': 'ERlHmtl7BC47FWPacmSo',
@@ -57,18 +59,20 @@ const purchasesData = {
                     'qty': '1',
                 }
             ],
-            'when': parseDate(day2).toISOString(),
-            'where': 'kafé',
-            'totalPrice': 30,
-            'whenRaw': '063743108400.000000000'
+            'purchaseDate': parseDate(day2).toISOString(),
+            'registeredTime': parseDate(day2).toISOString(),
+            'name': 'kafé',
+            'amount': 30,
+            'purchaseDateRaw': '063743108400.000000000'
         }
     ],
     [day3]: [
         {
             'id': 'RJbUbnBxVJFHg5oMuPyW',
-            'where': 'kiosk',
-            'when': parseDate(day3).toISOString(),
-            'totalPrice': 70,
+            'name': 'kiosk',
+            'purchaseDate': parseDate(day3).toISOString(),
+            'registeredTime': parseDate(day3).toISOString(),
+            'amount': 70,
             'items': [
                 {
                     'units': 'stk',
@@ -85,7 +89,7 @@ const purchasesData = {
                     'qty': '1'
                 }
             ],
-            'whenRaw': '063743194800.000000000'
+            'purchaseDateRaw': '063743194800.000000000'
         }
     ],
     [day4]: [
@@ -100,14 +104,16 @@ const purchasesData = {
                     'amount': '49.00'
                 }
             ],
-            'where': 'Baker Hansen',
-            'when': parseDate(day4).toISOString(),
-            'totalPrice': 49,
-            'whenRaw': '063743276389.307000000'
+            'name': 'Baker Hansen',
+            'purchaseDate': parseDate(day4).toISOString(),
+            'registeredTime': parseDate(day4).toISOString(),
+            'amount': 49,
+            'purchaseDateRaw': '063743276389.307000000'
         },
         {
             'id': 'uc1TxYR53uVHsW8DriGU',
-            'when': parseDate(day4).toISOString(),
+            'purchaseDate': parseDate(day4).toISOString(),
+            'registeredTime': parseDate(day4).toISOString(),
             'items': [
                 {
                     'qty': '1',
@@ -117,9 +123,9 @@ const purchasesData = {
                     'amount': '99.00',
                 }
             ],
-            'where': 'Nytt kjøp',
-            'totalPrice': 99,
-            'whenRaw': '063743275543.270000000'
+            'name': 'Nytt kjøp',
+            'amount': 99,
+            'purchaseDateRaw': '063743275543.270000000'
         }
     ]
 };

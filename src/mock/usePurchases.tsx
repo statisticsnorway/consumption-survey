@@ -19,13 +19,14 @@ const usePurchases = () => {
             {
                 id,
                 ...purchase,
-                where: notEmptyString(purchase.where) ? purchase.where : 'Nytt kjøp'
+                registeredTime: new Date().toISOString(),
+                name: notEmptyString(purchase.name) ? purchase.name : 'Nytt kjøp'
             },
         ]);
 
         setPurchasesByDate({
             ...purchasesByDate,
-            [simpleFormat(new Date(purchase.when))]: [
+            [simpleFormat(new Date(purchase.purchaseDate))]: [
                 { id, ...purchase }
             ],
         });
@@ -45,7 +46,7 @@ const usePurchases = () => {
             newValues,
         ]);
 
-        const updDt = simpleFormat(new Date(newValues.when));
+        const updDt = simpleFormat(new Date(newValues.purchaseDate));
         const otherPurchases = purchasesByDate[updDt]
             .filter(p => p.id !== id);
 
@@ -63,7 +64,7 @@ const usePurchases = () => {
     const deletePurchase = (purchase) => {
         setPurchases(purchases.filter(p => p.id !== purchase.id));
 
-        const delDt = simpleFormat(new Date(purchase.when));
+        const delDt = simpleFormat(new Date(purchase.purchaseDate));
         const otherPurchases = purchasesByDate[delDt]
             .filter(p => p.id !== purchase.id);
 
