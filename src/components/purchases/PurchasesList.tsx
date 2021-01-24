@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Edit3 } from 'react-feather';
@@ -14,7 +15,6 @@ import {
 import { DASHBOARD_TABS, PATHS, TABS_PARAMS, makeDashboardPath } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
-import { useEffect, useState } from 'react';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -29,7 +29,7 @@ const prepForDisplay = (date) => {
     );
 };
 
-const listDayDate = (date) => {
+export const listDayDate = (date, styles) => {
     const [dt, day] =
         dateFormatDayDate(parseDate(date))
             .split('.');
@@ -46,8 +46,8 @@ export const purchaseDatePath = (date) =>
     makeDashboardPath(DASHBOARD_TABS.ENTRIES, {[TABS_PARAMS.SELECTED_DATE]: date});
 
 export const getPurchaseName = (purchase) => {
-    return notEmptyString(purchase.where) ? (
-        <span className={styles.purchaseEntryName}>{purchase.where}</span>
+    return notEmptyString(purchase.name) ? (
+        <span className={styles.purchaseEntryName}>{purchase.name}</span>
     ) : (
         <span className={`${styles.purchaseEntryName} ${styles.temporaryPurchaseName}`}>
             ({(purchase.items && purchase.items[0] && purchase.items[0].name) || '??'})
@@ -78,7 +78,7 @@ const PurchasesList = ({limit = -1}) => {
                     return (
                         <div className={styles.purchaseGroup}>
                             <div className={styles.purchaseGroupDate}>
-                                {listDayDate(dateOfPurchase)}
+                                {listDayDate(dateOfPurchase, styles)}
                             </div>
                             <div className={styles.purchaseGroupEntries}>
                                 {purchases.map(p => {
@@ -91,7 +91,7 @@ const PurchasesList = ({limit = -1}) => {
                                                 {getPurchaseName(p)}
                                                 <div className={styles.purchaseTotalEdit}>
                                                     <span className={styles.purchaseEntryTotal}>
-                                                        {krCents(Number(p.totalPrice || 0))}
+                                                        {krCents(Number(p.amount || 0))}
                                                     </span>
                                                     <Edit3 width={20} height={20} className={styles.editPurchase}/>
                                                 </div>

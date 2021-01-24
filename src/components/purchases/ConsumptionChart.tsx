@@ -31,7 +31,7 @@ const ConsumptionChart = () => {
         .map(name => ({
             name,
             y: purchasesByDate[name]
-                .reduce((acc, p) => acc + Number(p.totalPrice), 0)
+                .reduce((acc, p) => acc + Number(p.amount), 0)
         }));
 
     const chartData = surveyPeriod.map(dt => ({

@@ -22,12 +22,12 @@ const usePurchases = () => {
                         pbdDoc.ref.collection('entries')
                             .onSnapshot(snapShot => {
                                 const purchaseRecords = snapShot.docs.map(doc => {
-                                    const {when} = doc.data();
+                                    const {purchaseDate} = doc.data();
                                     return {
                                         id: doc.id,
                                         ...doc.data(),
-                                        when: when.toDate().toISOString(),
-                                        whenRaw: when.valueOf(),                // useful for sorting/comparators
+                                        purchaseDate: purchaseDate.toDate().toISOString(),
+                                        purchaseDateRaw: purchaseDate.valueOf(),                // useful for sorting/comparators
                                     }
                                 });
 
@@ -51,16 +51,19 @@ const usePurchases = () => {
     const addPurchase = (purchase: PurchaseType) => {
         console.log('adding new purchase', purchase);
 
-        const dt = simpleFormat(purchase.when);
+        const dt = simpleFormat(purchase.purchaseDate);
 
         return firestore
             .collection(`/users/${userInfo.userName}/purchases/${dt}/entries`)
-            .add(purchase);
+            .add({
+                ...purchase,
+                registeredTime: new Date().toISOString(),
+            });
     };
 
     const editPurchase = (id: string, newValues: PurchaseType) => {
         console.log('editing', id);
-        const dt = simpleFormat(newValues.when);
+        const dt = simpleFormat(newValues.purchaseDate);
 
         return firestore
             .doc(`/users/${userInfo.userName}/purchases/${dt}/entries/${id}`)

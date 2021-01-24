@@ -29,7 +29,10 @@ const useExpenses = () => {
         console.log('Adding expense record', expense);
         return firestore
             .collection(`/users/${userInfo.userName}/regularExpenses`)
-            .add(expense);
+            .add({
+                ...expense,
+                registeredTime: new Date().toISOString(),
+            });
     }
 
     const editExpense = (id: string, newValues: RegularExpenseType) => {

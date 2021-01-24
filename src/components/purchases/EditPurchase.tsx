@@ -65,7 +65,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             } else {
                 setPurchase({
                     ...INIT_PURCHASE,
-                    when: onDate ? parseDate(onDate).toISOString() : INIT_PURCHASE.when,
+                    purchaseDate: onDate ? parseDate(onDate).toISOString() : INIT_PURCHASE.purchaseDate,
                 });
             }
         }
@@ -85,13 +85,13 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const updateNameAndDate = (name, date) => {
         setValues({
             ...values,
-            where: name,
-            when: date,
+            name,
+            purchaseDate: date,
         });
     };
 
     const addItem = ({id, idx, name, qty, units, amount}) => {
-        const {items, totalPrice} = values;
+        const {items} = values;
 
         setValues({
             ...values,
@@ -99,7 +99,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 ...items,
                 {idx: items.length, name, qty, units, amount},
             ],
-            totalPrice: (totalPrice + (Number(amount) * Number(qty))),
+            amount: (values.amount + (Number(amount) * Number(qty))),
         });
 
         setShowAddItemForm(false);
@@ -123,7 +123,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     amount,
                 }
             ],
-            totalPrice: values.totalPrice
+            amount: values.amount
                 - (Number(oldItem.amount) * Number(oldItem.qty))
                 + (Number(amount) * Number(qty)),
         });
@@ -133,12 +133,12 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
 
     const removeItem = (item) => {
         const {idx, id} = item;
-        const {items, totalPrice} = values;
+        const {items, amount} = values;
         setValues({
             ...values,
             items: items.filter(it =>
                 it.id ? (it.id !== id) : (it.idx !== idx)),
-            totalPrice: (totalPrice - (Number(item.amount) * Number(item.qty))),
+            amount: (amount - (Number(item.amount) * Number(item.qty))),
         });
     };
 
@@ -167,7 +167,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const doSave = (where, when) => {
         console.log('saving', values);
 
-        const complete = {...values, when, where};
+        const complete = {...values, purchaseDate: when, name: where};
 
         if (purchaseId) {
             editPurchase(purchaseId, complete)
@@ -185,11 +185,11 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     };
 
     const savePurchase = () => {
-        if (!values.where) {
+        if (!values.name) {
             setIsSaving(true)
             setNameDatePopupVisible(true);
         } else {
-            doSave(values.where, values.when);
+            doSave(values.name, values.purchaseDate);
         }
     };
 
@@ -259,7 +259,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     showEditNameDatePopup();
                 }}
             >
-                {simpleFormat(values.when ? new Date(values.when) : new Date())}
+                {simpleFormat(values.purchaseDate ? new Date(values.purchaseDate) : new Date())}
             </a>
         </div>
     );
@@ -267,8 +267,8 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     return values ? (
         <>
             <PurchaseNameDateGroup
-                currName={values.where}
-                currDate={new Date(values.when)}
+                currName={values.name}
+                currDate={new Date(values.purchaseDate)}
                 show={nameDatePopupVisible}
                 onSubmit={(name, date) => {
                     console.log('saving', name, date);
@@ -288,9 +288,9 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             />
             <div className={workspaceStyles.pageHeader}>
                 <div className={workspaceStyles.leftSection}>
-                    <h1>{values.where || t('addPurchase.title')}</h1>
+                    <h1>{values.name || t('addPurchase.title')}</h1>
                     <div className={styles.purchaseDate}>
-                        {simpleFormat(values.when ? new Date(values.when) : new Date())}
+                        {simpleFormat(values.purchaseDate ? new Date(values.purchaseDate) : new Date())}
                     </div>
                 </div>
                 <div className={workspaceStyles.rightSection}>
@@ -335,13 +335,13 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                                 return match(i) ? {...i, qty: `${newQty}`} : i;
                             });
 
-                            const totalPrice = itemsUpd.reduce((acc, item) =>
+                            const amount = itemsUpd.reduce((acc, item) =>
                                 acc + (Number(item.amount) * Number(item.qty)), 0);
 
                             setValues({
                                 ...values,
                                 items: itemsUpd,
-                                totalPrice,
+                                amount,
                             });
                         }
                     }}
