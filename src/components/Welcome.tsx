@@ -23,9 +23,7 @@ const Welcome = () => {
 
     return (
         <>
-            <div className={workspaceStyles.pageHeader}>
-                <h1>{t('title')}</h1>
-            </div>
+            <h2>{t('title')}</h2>
             <div className={styles.welcome}>
                 <div className={styles.welcomeText}>
                     {t('welcomeText')}
