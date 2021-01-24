@@ -41,6 +41,8 @@ const PurchaseNameDateGroup = ({
     const nameFieldRef = useRef(null);
     const [dayPickerVisible, setDayPickerVisible] = useState(false);
 
+    const [errors, setErrors] = useState({});
+
     useEffect(() => {
         /** Initial
          if (!currName) {
@@ -89,8 +91,17 @@ const PurchaseNameDateGroup = ({
             title={t('addPurchase.nameDateGroupTitle')}
             closeText={t('addPurchase.save')}
             onClose={() => {
-                console.log('sending', name, date);
-                onSubmit(name, date);
+                if (name && date) {
+                    console.log('sending', name, date);
+                    onSubmit(name, date);
+                    setErrors({});
+                } else {
+                    setErrors({
+                        ...errors,
+                        name: name ? null : 'error',
+                        date: date ? null : 'error',
+                    });
+                }
             }}
             onCancel={() => {
                 onCancel();
@@ -107,6 +118,7 @@ const PurchaseNameDateGroup = ({
                             setName(e.target.value);
                         }}
                         inputRef={nameFieldRef}
+                        error={errors['name'] === 'error'}
                     />
                 </div>
 
