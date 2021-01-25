@@ -1,14 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { RegularExpenseType } from '../firebase/model/RegularExpense';
 
 import EXPENSES_MOCK from './expenses';
+import { ExpensesContext } from '../contexts';
 
 const useExpenses = () => {
-    const [expenses, setExpenses] = useState([]);
-
-    useEffect(() => {
-        setExpenses(EXPENSES_MOCK);
-    }, []);
+    const {expenses, setExpenses} = useContext(ExpensesContext);
 
     const addExpense = (expense: RegularExpenseType) => {
         console.log('Adding expense record', expense);

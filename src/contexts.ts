@@ -4,6 +4,7 @@ import { FirebaseAuth } from '@firebase/auth-types';
 import { FirebaseFirestore } from '@firebase/firestore-types';
 import { FirebaseStorage } from '@firebase/storage-types';
 import { FirebaseDatabase } from '@firebase/database-types';
+import { RegularExpenseType } from './firebase/model/RegularExpense';
 
 export type SurveyInfo = {
     journalStart: Date;
@@ -45,3 +46,10 @@ export type PurchasesContextType = {
 };
 
 export const PurchasesContext = createContext({} as PurchasesContextType);
+
+export type ExpensesContextType = {
+    expenses: RegularExpenseType[];
+    setExpenses: (expense: RegularExpenseType[]) => void;
+};
+
+export const ExpensesContext = createContext({} as ExpensesContextType);
