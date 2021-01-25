@@ -71,7 +71,7 @@ const RecentRegistrations = ({limit = 5, setActiveTab }: RecentRegistrationsProp
         }
     };
 
-    return (recents.length > 1) ? (
+    return (recents.length >= 1) ? (
         <div className={styles.regList}>
             {recents
                 .map((reg: PurchaseType | RegularExpenseType) => {

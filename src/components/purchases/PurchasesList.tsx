@@ -71,7 +71,7 @@ const PurchasesList = ({limit = -1}) => {
         setDatesForDisplay((limit > 0) ? sorted.slice(0, limit) : sorted);
     }, [sorted]);
 
-    return (datesForDisplay.length > 1) ? (
+    return (datesForDisplay.length >= 1) ? (
         <div className={styles.purchasesList}>
             {datesForDisplay
                 .map((dateOfPurchase) => {
