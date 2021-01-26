@@ -17,8 +17,8 @@ const usePurchases = () => {
         setPurchases([
             ...purchases,
             {
-                id,
                 ...purchase,
+                id,
                 registeredTime: new Date().toISOString(),
                 name: notEmptyString(purchase.name) ? purchase.name : 'Nytt kjøp'
             },

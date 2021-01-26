@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { RegularExpenseType } from '../firebase/model/RegularExpense';
+import uuid from 'uuid';
 
 import EXPENSES_MOCK from './expenses';
 import { ExpensesContext } from '../contexts';
@@ -9,10 +10,12 @@ const useExpenses = () => {
 
     const addExpense = (expense: RegularExpenseType) => {
         console.log('Adding expense record', expense);
+        const id = uuid();
         setExpenses([
             ...expenses,
             {
                 ...expense,
+                id,
                 registeredTime: new Date().toISOString(),
             }
         ]);
