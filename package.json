@@ -48,7 +48,7 @@
     "react-number-format": "^4.4.4",
     "react-pin-input": "^1.0.1",
     "react-pwa-install-ios": "^1.4.0",
-    "sass": "^1.26.10",
+    "sass": "^1.29.0",
     "styled-components": "^5.2.0",
     "use-custom-element": "^1.0.5"
   },
