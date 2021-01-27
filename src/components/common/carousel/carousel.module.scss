@@ -1,0 +1,55 @@
+@import '../../../styles/common';
+
+.carousel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .slide {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .slideContent {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .slideNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    bottom: 50px;
+    z-index: 120;
+
+    .slideDot {
+      font-size: 2rem;
+      color: $ssb-green-2;
+
+      &.current {
+        color: $ssb-green-4;
+      }
+    }
+
+    .slideDot + .slideDot {
+      margin-left: 1rem;
+    }
+  }
+}

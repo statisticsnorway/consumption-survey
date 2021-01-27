@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, MinusCircle, RotateCw, X } from 'react-feather';
+import uuid from 'uuid';
 import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
 import AddEditExpense from './AddEditExpense';
 import FloatingButton from '../common/buttons/FloatingButton';
@@ -8,17 +9,17 @@ import FloatingButton from '../common/buttons/FloatingButton';
 import useExpenses from '../../mock/useExpenses';
 import { krCents } from '../../utils/jsUtils';
 import DeleteConfirmDialog from '../common/dialog/DeleteConfirmDialog';
+import NoRecords from '../common/blocks/NoRecords';
 
 import dashboardStyles from '../../pages/dashboard/dashboard.module.scss';
 import styles from './styles/regularExpenses.module.scss';
-import NoRecords from '../common/blocks/NoRecords';
 
 export type RegularExpensesProps = {};
 
 export const convert = (values: RegularExpenseType) => {
     const {id, amount, frequency, name} = values;
     return {
-        id,
+        id: id || uuid(),
         name,
         frequency,
         amount,

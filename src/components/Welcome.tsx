@@ -28,7 +28,7 @@ const Welcome = () => {
                 <div className={styles.welcomeText}>
                     {t('welcomeText')}
                 </div>
-                <Link href="/login">
+                <Link href="/support/onboarding">
                     <span className={styles.loginLink}>{t('loginLinkText')}</span>
                 </Link>
                 <div className={styles.installText}>

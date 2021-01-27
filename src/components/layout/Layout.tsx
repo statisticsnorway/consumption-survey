@@ -98,6 +98,11 @@ const Layout = (props: LayoutProps) => {
     // console.log('Went Idle @', wentIdleAt, 'active again @', activeAgainAt);
     // console.log('----------- loading: ', loading);
 
+    if (router.pathname === '/support/onboarding') {
+        //return <div className={styles.mainContainer}>{props.children}</div>;
+        return <>{props.children}</>;
+    }
+
     return (
         <div className={styles.mainContainer}>
             <Head>

@@ -7,6 +7,7 @@ const EXCLUDE_AUTH = [
     '/',
     '/login',
     '/welcome',
+    '/support/onboarding'
 ];
 
 export default (props) => {
