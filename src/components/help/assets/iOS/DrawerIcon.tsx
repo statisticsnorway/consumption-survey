@@ -1,4 +1,4 @@
-import { IconProps } from '../../../icons/iconTypes';
+import { IconProps } from '../../../common/icons/iconTypes';
 
 const DrawerIcon = ({width = 44, height = 44}: IconProps) => {
     return (

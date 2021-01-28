@@ -1,4 +1,4 @@
-import { IconProps } from '../../../icons/iconTypes';
+import { IconProps } from '../../../common/icons/iconTypes';
 
 const AddOp = ({width = 55, height = 28}: IconProps) => {
     return (

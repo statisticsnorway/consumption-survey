@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 // import { FireContext, UserContext } from '../contexts';
-import { SurveyInfo, UserContext, UserInfoType } from '../contexts';
+import { FireContext, SurveyInfo, UserContext, UserInfoType } from '../contexts';
 import { i18n } from '../../i18n';
 import { add, sub } from 'date-fns';
 
@@ -28,11 +28,13 @@ export const DUMMY_SURVEY_INFO: SurveyInfo = {
 }
 
 const UserProvider = ({children}) => {
-    // const { auth, firestore } = useContext(FireContext);
+    const { auth, firestore } = useContext(FireContext);
     const [userInfo, setUserInfo] = useState<UserInfoType>(null);
     const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
+    /*
     const login = async (userName) => {
         console.log('Mock loggin in user', userName);
         setIsLoggingIn(true);
@@ -49,7 +51,8 @@ const UserProvider = ({children}) => {
         });
     };
 
-    /*
+     */
+
     const login = async (userName) => {
         setIsLoggingIn(true);
         const res = await axios.post('/bff/login', {
@@ -66,6 +69,7 @@ const UserProvider = ({children}) => {
                         setUserInfo({
                             ...authInfo.userInfo,
                             userName: authInfo.userInfo.id,
+                            surveyInfo: DUMMY_SURVEY_INFO,
                         });
 
                         firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
@@ -95,8 +99,9 @@ const UserProvider = ({children}) => {
                     .doc(`/users/${user.uid}/profile/about`)
                     .onSnapshot((snapshot) => {
                         setUserInfo({
-                            ...snapshot.data(),
+                            ...(snapshot.data() as UserInfoType),
                             userName: user.uid,
+                            surveyInfo: DUMMY_SURVEY_INFO,
                         });
                         setIsLoggingIn(false);
                     });
@@ -110,7 +115,6 @@ const UserProvider = ({children}) => {
             });
         }
     }, [auth]);
-     */
 
     useEffect(() => {
         if (userPreferences) {
@@ -120,6 +124,10 @@ const UserProvider = ({children}) => {
                 });
         }
     }, [userPreferences]);
+
+    useEffect(() => {
+        setIsAuthenticated(!!userInfo);
+    }, [userInfo]);
 
 
     const logout = () => {
@@ -131,7 +139,7 @@ const UserProvider = ({children}) => {
     return (
         <UserContext.Provider
             value={{
-                isAuthenticated: !!userInfo,
+                isAuthenticated,
                 userInfo,
                 login,
                 logout,

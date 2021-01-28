@@ -4,74 +4,118 @@ import { PurchaseType } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
 
 const usePurchases = () => {
-    const {firestore} = useContext(FireContext);
-    const {userInfo} = useContext(UserContext);
-    const [purchases, setPurchases] = useState([]);
-    const [purchasesByDate, setPurchasesByDate] = useState({});
+        const {firestore} = useContext(FireContext);
+        const {userInfo} = useContext(UserContext);
+        const {purchases, purchasesByDate, setPurchases, setPurchasesByDate} = useContext(PurchasesContext);
 
-    useEffect(() => {
-        console.log(`Fetching purchases ...  /users/${userInfo.userName}/purchases`);
-        try {
-            firestore
-                .collection(`/users/${userInfo.userName}/purchases`)
-                .onSnapshot(pbdSnapshot => {
-                    console.log('pbdSnapshot');
-                    pbdSnapshot.docs.map(pbdDoc => {
-                        const dt = pbdDoc.id;
+        useEffect(() => {
+            console.log('v2 fetching purchases');
+            try {
+                firestore
+                    .collection(`/users/${userInfo.userName}/purchases`)
+                    .onSnapshot(ps => {
+                        const pRecords = ps.docs.map(p => {
+                            const {purchaseDate} = p.data();
+                            return {
+                                ...(p.data() as PurchaseType),
+                                purchaseDate: purchaseDate.toDate().toISOString(),
+                                id: p.id,
+                            };
+                        });
 
-                        pbdDoc.ref.collection('entries')
-                            .onSnapshot(snapShot => {
-                                const purchaseRecords = snapShot.docs.map(doc => {
-                                    const {purchaseDate} = doc.data();
-                                    return {
-                                        id: doc.id,
-                                        ...doc.data(),
-                                        purchaseDate: purchaseDate.toDate().toISOString(),
-                                        purchaseDateRaw: purchaseDate.valueOf(),                // useful for sorting/comparators
-                                    }
-                                });
+                        setPurchases(pRecords);
 
-                                setPurchasesByDate({
-                                    ...purchasesByDate,
-                                    [dt]: purchaseRecords,
-                                });
+                        const pbd = pRecords.reduce((acc, p) => {
+                            const dt = simpleFormat(new Date(p.purchaseDate));
+                            const curr = acc[dt] || [];
+                            acc[dt] = curr.concat(p);
+                            return acc;
+                        }, {});
 
-                                setPurchases([
-                                    ...purchases,
-                                    ...purchaseRecords,
-                                ]);
-                            });
+                        setPurchasesByDate(pbd);
                     });
+            } catch (err) {
+                console.log('Could not fetch purchases', err);
+            }
+        }, []);
+
+        /*
+        useEffect(() => {
+            console.log(`Fetching purchases ...  /users/${userInfo.userName}/purchases`);
+            try {
+                firestore
+                    .collection(`/users/${userInfo.userName}/purchases`)
+                    .onSnapshot(pbdSnapshot => {
+                        console.log('pbdSnapshot', pbdSnapshot.size);
+                        pbdSnapshot.docs.map(pbdDoc => {
+                            const dt = pbdDoc.id;
+                            console.log('found entries for ', dt);
+
+                            pbdDoc.ref.collection('entries')
+                                .onSnapshot(snapShot => {
+                                    console.log('purchases records found');
+                                    const purchaseRecords = snapShot.docs.map(doc => {
+                                        console.log('record', doc.id);
+                                        const {purchaseDate} = doc.data();
+                                        return {
+                                            ...(doc.data() as PurchaseType),
+                                            id: doc.id,
+                                            purchaseDate: purchaseDate.toDate().toISOString(),
+                                            purchaseDateRaw: purchaseDate.valueOf(),                // useful for sorting/comparators
+                                        }
+                                    });
+
+                                    setPurchasesByDate({
+                                        ...purchasesByDate,
+                                        [dt]: purchaseRecords,
+                                    });
+
+                                    setPurchases([
+                                        ...purchases,
+                                        ...purchaseRecords,
+                                    ]);
+                                });
+                        });
+                    });
+            } catch (err) {
+                console.log('unable to fetch purchases', err);
+            }
+        }, []);
+         */
+
+        const addPurchase = (purchase: PurchaseType) => {
+            console.log('adding new purchase', purchase);
+
+            const dt = simpleFormat(purchase.purchaseDate);
+
+            return firestore
+                .collection(`/users/${userInfo.userName}/purchases`)
+                .add({
+                    ...purchase,
+                    registeredTime: new Date().toISOString(),
                 });
-        } catch (err) {
-            console.log('unable to fetch purchases', err);
-        }
-    }, []);
+        };
 
-    const addPurchase = (purchase: PurchaseType) => {
-        console.log('adding new purchase', purchase);
+        const editPurchase = (id: string, newValues: PurchaseType) => {
+            console.log('editing', id);
+            const dt = simpleFormat(newValues.purchaseDate);
 
-        const dt = simpleFormat(purchase.purchaseDate);
+            return firestore
+                .doc(`/users/${userInfo.userName}/purchases/${dt}/entries/${id}`)
+                .set(newValues);
+        };
 
-        return firestore
-            .collection(`/users/${userInfo.userName}/purchases/${dt}/entries`)
-            .add({
-                ...purchase,
-                registeredTime: new Date().toISOString(),
-            });
-    };
+        const deletePurchase = (purchase: PurchaseType) => {
+            console.log('deleting', purchase.id);
+            const dt = simpleFormat(purchase.purchaseDate);
 
-    const editPurchase = (id: string, newValues: PurchaseType) => {
-        console.log('editing', id);
-        const dt = simpleFormat(newValues.purchaseDate);
+            return firestore
+                .doc(`/users/${userInfo.userName}/purchases/${dt}/entries/${purchase.id}`)
+                .delete();
+        };
 
-        return firestore
-            .doc(`/users/${userInfo.userName}/purchases/${dt}/entries/${id}`)
-            .set(newValues);
-    };
-
-    // console.log('purchases', purchases);
-    return {purchases, addPurchase, editPurchase};
-};
+        return {purchases, purchasesByDate, addPurchase, editPurchase, deletePurchase};
+    }
+;
 
 export default usePurchases;

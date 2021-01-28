@@ -1,6 +1,7 @@
 import { eachDayOfInterval } from 'date-fns';
 import SimpleBarChart from '../common/charts/SimpleBarChart';
-import usePurchases from '../../mock/usePurchases';
+import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../mock/usePurchases';
 
 import styles from './styles/chart.module.scss';
 import { useContext } from 'react';

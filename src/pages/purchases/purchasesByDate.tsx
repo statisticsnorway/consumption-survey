@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import PurchasesByDateComp from '../../components/purchases/PurchasesByDate';
-import usePurchases from '../../mock/usePurchases';
+import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../mock/usePurchases';
 import { useState } from 'react';
 
 const PurchasesByDate = () => {

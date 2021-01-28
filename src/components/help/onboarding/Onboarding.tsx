@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Carousel, Slide } from '../../carousel';
+import { Carousel, Slide } from '../../common/carousel';
 
 import styles from './onboarding.module.scss';
 import { ReactNode, useState } from 'react';
@@ -13,7 +13,14 @@ const Onboarding = () => {
             onSlideChange={(slide) => {
                 console.log('on slide change', slide);
                 if (slide === 2) {
-                    setFooter(<button className="ssb-btn primary-btn">Kom i gang!</button>);
+                    setFooter(
+                        <button
+                            className="ssb-btn primary-btn"
+                            onClick={() => { router.push('/dashboard/Dashboard'); }}
+                        >
+                            Kom i gang!
+                        </button>
+                    );
                 } else {
                     setFooter(null);
                 }

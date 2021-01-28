@@ -4,14 +4,16 @@ import { useRouter } from 'next/router';
 import { ArrowRight, Camera, Edit, Plus, X } from 'react-feather';
 import { Tag } from '@statisticsnorway/ssb-component-library';
 import PurchasesList from '../purchases/PurchasesList';
-import usePurchases from '../../mock/usePurchases';
+import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../mock/usePurchases';
 import { DASHBOARD_TABS, PATHS, getModifiers, surveyStart, surveyEnd } from '../../uiConfig';
 import { simpleFormat } from '../../utils/dateUtils';
 import DiaryViz from './DiaryViz';
 
 import styles from '../../pages/dashboard/dashboard.module.scss';
 import RecentRegistrations from '../consumption/RecentRegistrations';
-import useExpenses from '../../mock/useExpenses';
+import useExpenses from '../../hocs/useExpenses';
+// import useExpenses from '../../mock/useExpenses';
 import { ReactNode, useEffect, useState } from 'react';
 
 export const FLOATING_BTN_OPTIONS = {

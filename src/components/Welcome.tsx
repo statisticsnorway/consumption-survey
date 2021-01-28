@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { isIOS } from 'react-device-detect';
-import IOSInstallInstructions from './common/help/IOSInstallInstructions';
-import AndroidInstallInstructions from './common/help/AndroidInstallInstructions';
+import IOSInstallInstructions from './help/IOSInstallInstructions';
+import AndroidInstallInstructions from './help/AndroidInstallInstructions';
 
 import workspaceStyles from './layout/styles/workspace.module.scss';
 import styles from './welcome.module.scss';

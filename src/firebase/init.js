@@ -4,6 +4,6 @@ import 'firebase/firestore';
 import 'firebase/database';
 import 'firebase/storage';
 
-import firebaseConfig from './config';
+import firebaseConfig from './config-gcp';
 
 export default firebase.initializeApp(firebaseConfig);

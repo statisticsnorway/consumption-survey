@@ -12,8 +12,8 @@ import UserProvider from '../firebase/UserProvider';
 import '../styles/globals.scss'
 import 'react-day-picker/lib/style.css'
 import 'rc-time-picker/assets/index.css'
-import PurchasesProvider from '../mock/PurchasesProvider';
-import ExpensesProvider from '../mock/ExpensesProvider';
+import PurchasesProvider from '../firebase/PurchasesProvider';
+import ExpensesProvider from '../firebase/ExpensesProvider';
 import { withRouter } from 'next/router';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 
@@ -89,17 +89,19 @@ class MyApp extends App {
 
         return (
             <AppContext.Provider value={{envVars: appConfig}}>
-                <UserProvider>
-                    <PurchasesProvider>
-                        <ExpensesProvider>
-                            <Layout>
-                                <ProtectedRoute>
-                                    <Component {...pageProps} />
-                                </ProtectedRoute>
-                            </Layout>
-                        </ExpensesProvider>
-                    </PurchasesProvider>
-                </UserProvider>
+                <FireProvider>
+                    <UserProvider>
+                        <PurchasesProvider>
+                            <ExpensesProvider>
+                                <Layout>
+                                    <ProtectedRoute>
+                                        <Component {...pageProps} />
+                                    </ProtectedRoute>
+                                </Layout>
+                            </ExpensesProvider>
+                        </PurchasesProvider>
+                    </UserProvider>
+                </FireProvider>
             </AppContext.Provider>
         );
     }

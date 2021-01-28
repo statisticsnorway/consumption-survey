@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PurchasesContext } from '../contexts';
-import { PurchasesByDate, PurchaseType } from '../firebase/model/Purchase';
-import PURCHASES_MOCK from './purchases';
+import { PurchasesByDate, PurchaseType } from './model/Purchase';
+import PURCHASES_MOCK from '../mock/purchases';
 
 const PurchasesProvider = ({ children }) => {
     const [purchases, setPurchases] = useState<PurchaseType[]>([]);
@@ -9,7 +9,9 @@ const PurchasesProvider = ({ children }) => {
 
     useEffect(() => {
         console.log('Initializing mock');
-        // @ts-ignore
+
+        /**
+         * Uncomment this for some mocking!
         setPurchasesByDate(PURCHASES_MOCK);
         setPurchases(
             Object.keys(PURCHASES_MOCK)
@@ -17,6 +19,7 @@ const PurchasesProvider = ({ children }) => {
                     return acc.concat(PURCHASES_MOCK[key]);
                 }, [])
         );
+         */
     }, []);
 
     return (

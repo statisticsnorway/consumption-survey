@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { FireContext, UserContext } from '../contexts';
+import { ExpensesContext, FireContext, UserContext } from '../contexts';
 import { RegularExpenseType } from '../firebase/model/RegularExpense';
-import exp from 'constants';
 
 const useExpenses = () => {
     const {firestore} = useContext(FireContext);
     const {userInfo} = useContext(UserContext);
-    const [expenses, setExpenses] = useState([]);
+    const {expenses, setExpenses} = useContext(ExpensesContext);
 
     useEffect(() => {
         firestore
@@ -16,7 +15,7 @@ const useExpenses = () => {
                 const expenseRecords = snapShot.docs.map(doc => {
                     return {
                         id: doc.id,
-                        ...doc.data(),
+                        ...(doc.data() as RegularExpenseType),
                     }
                 });
 

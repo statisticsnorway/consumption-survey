@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 
 const OnboardingNoSSR = dynamic(
-    () => import('../../components/common/help/onboarding/Onboarding'),
+    () => import('../../components/help/onboarding/Onboarding'),
     { ssr: false }
 );
 

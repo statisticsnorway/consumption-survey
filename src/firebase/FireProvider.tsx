@@ -10,6 +10,7 @@ const FireProvider = ({ children }) => {
     const [rtdb, setRtdb] = useState(null);
     const [storage, setStorage] = useState(null);
     const { envVars } = useContext(AppContext);
+    const [initComplete, setInitComplete] = useState(false);
 
     useEffect(() => {
         console.log('--------------------------------------');
@@ -25,19 +26,25 @@ const FireProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        if (fireAuth) {
-            // TODO: get FirebaseAuth import working
-            fb.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-                .then((res) => {
-                    console.log('[AUTH]: enabled persistence', res);
-                })
-        }
+        if (!initComplete) {
+            if (fireAuth) {
+                // TODO: get FirebaseAuth import working
+                /*
+                fb.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+                    .then((res) => {
+                        console.log('[AUTH]: enabled persistence', res);
+                    })
+                 */
+            }
 
-        if (firestore) {
-            firestore.enablePersistence()
-                .then((res) => {
-                    console.log('[Store]: enabled persistence', res);
-                })
+            if (firestore) {
+                firestore.enablePersistence()
+                    .then((res) => {
+                        console.log('[Store]: enabled persistence', res);
+                    })
+            }
+
+            setInitComplete(true);
         }
     }, [fireAuth, firestore]);
 

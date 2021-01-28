@@ -20,7 +20,7 @@ services:
     ports:
       - 3005:3005
     environment:
-      - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey.json
+      - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey-gcp.json
 
   backend:
     build:
