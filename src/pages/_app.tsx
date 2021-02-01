@@ -14,7 +14,7 @@ import 'react-day-picker/lib/style.css'
 import 'rc-time-picker/assets/index.css'
 import PurchasesProvider from '../firebase/PurchasesProvider';
 import ExpensesProvider from '../firebase/ExpensesProvider';
-import { withRouter } from 'next/router';
+import PouchDBProvider from '../pouchdb/PouchDBProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 const appConfig = getConfig();
@@ -90,17 +90,19 @@ class MyApp extends App {
         return (
             <AppContext.Provider value={{envVars: appConfig}}>
                 <FireProvider>
-                    <UserProvider>
-                        <PurchasesProvider>
-                            <ExpensesProvider>
-                                <Layout>
-                                    <ProtectedRoute>
-                                        <Component {...pageProps} />
-                                    </ProtectedRoute>
-                                </Layout>
-                            </ExpensesProvider>
-                        </PurchasesProvider>
-                    </UserProvider>
+                    <PouchDBProvider dbName="receipts">
+                        <UserProvider>
+                            <PurchasesProvider>
+                                <ExpensesProvider>
+                                    <Layout>
+                                        <ProtectedRoute>
+                                            <Component {...pageProps} />
+                                        </ProtectedRoute>
+                                    </Layout>
+                                </ExpensesProvider>
+                            </PurchasesProvider>
+                        </UserProvider>
+                    </PouchDBProvider>
                 </FireProvider>
             </AppContext.Provider>
         );

@@ -53,3 +53,5 @@ export type ExpensesContextType = {
 };
 
 export const ExpensesContext = createContext({} as ExpensesContextType);
+
+
