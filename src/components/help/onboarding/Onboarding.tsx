@@ -1,35 +1,25 @@
 import { useRouter } from 'next/router';
 import { Carousel, Slide } from '../../common/carousel';
+import OnFBU from './slides/OnFBU';
+import Goals from './slides/Goals';
+import HowTo from './slides/HowTo';
+import DataSec from './slides/DataSec';
 
 import styles from './onboarding.module.scss';
-import { ReactNode, useState } from 'react';
 
 const Onboarding = () => {
     const router = useRouter();
-    const [footer, setFooter] = useState<ReactNode>();
 
     return (
         <Carousel
-            onSlideChange={(slide) => {
-                console.log('on slide change', slide);
-                if (slide === 2) {
-                    setFooter(
-                        <button
-                            className="ssb-btn primary-btn"
-                            onClick={() => { router.push('/dashboard/Dashboard'); }}
-                        >
-                            Kom i gang!
-                        </button>
-                    );
-                } else {
-                    setFooter(null);
-                }
+            onComplete={() => {
+                router.push(`/dashboard/Dashboard`);
             }}
-            footer={footer}
         >
-            <Slide className={`${styles.slide} ${styles.slide1}`}>One</Slide>
-            <Slide className={`${styles.slide} ${styles.slide2}`}>Two</Slide>
-            <Slide className={`${styles.slide} ${styles.slide3}`}>Three</Slide>
+            <Slide><OnFBU/></Slide>
+            <Slide><Goals/></Slide>
+            <Slide><HowTo/></Slide>
+            <Slide><DataSec/></Slide>
         </Carousel>
     );
 };

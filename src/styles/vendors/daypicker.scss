@@ -22,7 +22,7 @@
 
 .DayPicker-Month {
   width: 100% !important;
-  margin: 1rem 0 !important;
+  margin: 1rem 0 0 !important;
   padding: 1rem !important;
 }
 
@@ -32,6 +32,11 @@
     font-family: "Roboto Condensed";
     color: $ssb-dark-3;
   }
+}
+
+/** workaround: the display is set to table-header-group, so padding/margin will not work */
+.DayPicker-Weekdays {
+  border-bottom: 0.5rem solid #fff;
 }
 
 .DayPicker-Day {

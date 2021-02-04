@@ -6,7 +6,7 @@ import { Tag } from '@statisticsnorway/ssb-component-library';
 import PurchasesList from '../purchases/PurchasesList';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
-import { DASHBOARD_TABS, PATHS, getModifiers, surveyStart, surveyEnd } from '../../uiConfig';
+import { DASHBOARD_TABS, PATHS, getModifiers } from '../../uiConfig';
 import { simpleFormat } from '../../utils/dateUtils';
 import DiaryViz from './DiaryViz';
 
@@ -14,7 +14,8 @@ import styles from '../../pages/dashboard/dashboard.module.scss';
 import RecentRegistrations from '../consumption/RecentRegistrations';
 import useExpenses from '../../hocs/useExpenses';
 // import useExpenses from '../../mock/useExpenses';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../contexts';
 
 export const FLOATING_BTN_OPTIONS = {
     iconResting: <Plus/>,
@@ -43,6 +44,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
     const {t} = useTranslation('dashboard');
     const {purchases} = usePurchases();
     const {expenses} = useExpenses();
+    const {userInfo: { surveyInfo }} = useContext(UserContext);
 
     const [sectionNav, setSectionNav] = useState<ReactNode>();
 
@@ -101,14 +103,14 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
         <>
             <DiaryViz
                 renderDay={onDayClick}
-                modifiers={getModifiers(purchases)}
+                modifiers={getModifiers(purchases, surveyInfo)}
                 className={styles.dashboardDiary}
-                surveyStart={simpleFormat(surveyStart)}
-                surveyEnd={simpleFormat(surveyEnd)}
+                surveyStart={simpleFormat(surveyInfo.journalStart)}
+                surveyEnd={simpleFormat(surveyInfo.journalEnd)}
             />
             {sectionNav}
             <>
-                <h2>{t('recent.title')}</h2>
+                <h4>{t('recent.title')}</h4>
                 <RecentRegistrations limit={5} setActiveTab={setActiveTab}/>
             </>
         </>

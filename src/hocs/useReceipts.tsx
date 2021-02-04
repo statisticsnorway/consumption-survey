@@ -2,13 +2,14 @@ import { useContext } from 'react';
 import { PouchDBContext } from '../uiContexts';
 import { ImageData } from '../components/common/media/ImageHandler';
 import { FireContext, UserContext } from '../contexts';
+import { UploadTask } from '@firebase/storage-types';
 
 const useReceipts = () => {
     const {db} = useContext(PouchDBContext);
     const {storage} = useContext(FireContext);
     const {userInfo} = useContext(UserContext);
 
-    const saveReceipt = (id: string, name: string, image: ImageData) => {
+    const saveReceiptString = (id: string, name: string, image: ImageData) => {
         const rootRef = storage.ref();
         if (rootRef) {
             const receiptRef = rootRef.child(`/users/${userInfo.userName}/receipts/${id}`);
@@ -33,6 +34,16 @@ const useReceipts = () => {
         });
     };
 
+    const saveReceiptBlob = (id: string, name: string, imageData: Blob, contentType: string): UploadTask => {
+        const rootRef = storage.ref();
+        if (rootRef) {
+            const receiptRef = rootRef.child(`/users/${userInfo.userName}/receipts/${id}`);
+            return receiptRef.put(imageData, { contentType });
+        } else {
+            throw new Error('Root-ref is null');
+        }
+    };
+
     const getReceipt = (id: string, name: string) => {
         return db.getAttachment(id, name)
             .then((blob) => {
@@ -42,7 +53,7 @@ const useReceipts = () => {
     };
 
 
-    return {saveReceipt, getReceipt}
+    return {saveReceiptString, saveReceiptBlob, getReceipt}
 };
 
 export default useReceipts;

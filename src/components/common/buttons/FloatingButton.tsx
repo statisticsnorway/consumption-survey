@@ -21,6 +21,7 @@ export type ChildMenuProps = {
     title: string;
     onClick: () => void;
     icon: ReactNode;
+    component?: ReactNode;
 };
 
 export type FloatingButtonProps = {
@@ -65,16 +66,18 @@ const FloatingButton = ({
                     className={className}
                 >
                     {childButtonProps && Array.isArray(childButtonProps) &&
-                    childButtonProps.map(action => (
-                        <SpeedDialAction
-                            title={action.title}
-                            key={action.id}
-                            onClick={action.onClick}
-                            icon={action.icon}
-                            tooltipOpen
-                            tooltipTitle={action.title}
-                        />
-                    ))
+                    childButtonProps.map(action => {
+                        return action.component || (
+                            <SpeedDialAction
+                                title={action.title}
+                                key={action.id}
+                                onClick={action.onClick}
+                                icon={action.icon}
+                                tooltipOpen
+                                tooltipTitle={action.title}
+                            />
+                        );
+                    })
                     }
                 </SpeedDial>
             </StylesProvider>

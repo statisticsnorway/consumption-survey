@@ -16,9 +16,11 @@ const Welcome = () => {
     const {t} = useTranslation('welcome');
 
     useEffect(() => {
+        /*
         if (isPWA()) {
             router.push(PATHS.DASHBOARD);
         }
+         */
     }, []);
 
     return (

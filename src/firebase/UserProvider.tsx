@@ -13,7 +13,6 @@ export enum CommunicationPreference {
 };
 
 
-
 export type UserPreferences = {
     language: string;
     communicationPreferences: CommunicationPreference[];
@@ -23,12 +22,12 @@ export type UserPreferences = {
 const TODAY = new Date();
 
 export const DUMMY_SURVEY_INFO: SurveyInfo = {
-    journalStart:  sub(TODAY, { days: 7 }),
-    journalEnd: add(TODAY, { days: 7 }),
+    journalStart: sub(TODAY, {days: 3}),
+    journalEnd: add(TODAY, {days: 12}),
 }
 
 const UserProvider = ({children}) => {
-    const { auth, firestore } = useContext(FireContext);
+    const {auth, firestore} = useContext(FireContext);
     const [userInfo, setUserInfo] = useState<UserInfoType>(null);
     const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -109,7 +108,10 @@ const UserProvider = ({children}) => {
                 firestore
                     .doc(`/users/${user.uid}/profile/preferences`)
                     .onSnapshot(snapshot => {
-                        setUserPreferences(snapshot.data() as UserPreferences);
+                        setUserPreferences({
+                            ...snapshot.data(),
+                            language: 'nb',
+                        } as UserPreferences);
                     })
 
             });

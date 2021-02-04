@@ -12,7 +12,7 @@ const ScanReceipts = () => {
     const [image, setImage] = useState<string>(null);
     const [showCamera, setShowCamera] = useState<boolean>(true);
     const [error, setError] = useState<string>();
-    const {saveReceipt, getReceipt} = useReceipts();
+    const {saveReceiptString, getReceipt} = useReceipts();
 
     console.log('error', error);
 
@@ -25,7 +25,7 @@ const ScanReceipts = () => {
             {showCamera &&
             <Camera
                 onImageCapture={(image) => {
-                    saveReceipt(id, 'test', image)
+                    saveReceiptString(id, 'test', image)
                         .then(() => {
                             setShowCamera(false);
                         })

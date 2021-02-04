@@ -377,7 +377,7 @@ class ReCarousel extends Component {
 
     render() {
         const {frames, current} = this.state
-        const {widgets, axis, loop, auto, interval, className, footer, onSlideChange} = this.props
+        const {widgets, axis, loop, auto, interval, className, footer, onSlideChange, onComplete} = this.props
         const wrapperStyle = objectAssign(styles.wrapper, this.props.style)
 
         return (
@@ -404,6 +404,7 @@ class ReCarousel extends Component {
                             prevHandler={this.prev}
                             nextHandler={this.next}
                             onSlideChange={onSlideChange}
+                            onComplete={onComplete}
                             axis={axis} loop={loop} auto={auto} interval={interval}/>
                     ))
                 }
@@ -425,6 +426,7 @@ ReCarousel.propTypes = {
     minMove: PropTypes.number,
     onTransitionEnd: PropTypes.func,
     onSlideChange: PropTypes.func,
+    onComplete: PropTypes.func,
     className: PropTypes.string,
     footer: PropTypes.node,
 };

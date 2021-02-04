@@ -80,17 +80,26 @@ const Camera = ({
                     ref={camRef}
                     screenshotFormat={format}
                     audio={false}
-                    videoConstraints={{...videoConstraints, aspectRatio}}
+                    videoConstraints={{
+                        ...videoConstraints,
+                        aspectRatio,
+                        width: 1280,
+                    }}
                     className={`${styles.scene}`}
                     onUserMediaError={onError}
+                    screenshotQuality={0.99}
+                    forceScreenshotSourceSize={true}
+                    width={1280}
                 />
             </div>
-            <button
-                className={`ssb-btn secondary-btn ${styles.shutterButton}`}
-                onClick={capture}
-            >
-                <Aperture width={20} height={20}/>
-            </button>
+            <div className={styles.buttonGroup}>
+                <button
+                    className={`ssb-btn secondary-btn ${styles.shutterButton}`}
+                    onClick={capture}
+                >
+                    <Aperture width={20} height={20}/>
+                </button>
+            </div>
             <span className={styles.screenInfo}>
                 {JSON.stringify(size)}, {orientation}, {aspectRatio}
             </span>

@@ -19,6 +19,7 @@ const usePurchases = () => {
                             return {
                                 ...(p.data() as PurchaseType),
                                 purchaseDate: purchaseDate.toDate().toISOString(),
+                                // ensure id is set *AFTEr* the doc content to ensure we use firebase id all places
                                 id: p.id,
                             };
                         });
@@ -98,19 +99,17 @@ const usePurchases = () => {
 
         const editPurchase = (id: string, newValues: PurchaseType) => {
             console.log('editing', id);
-            const dt = simpleFormat(newValues.purchaseDate);
 
             return firestore
-                .doc(`/users/${userInfo.userName}/purchases/${dt}/entries/${id}`)
+                .doc(`/users/${userInfo.userName}/purchases/${id}`)
                 .set(newValues);
         };
 
         const deletePurchase = (purchase: PurchaseType) => {
-            console.log('deleting', purchase.id);
-            const dt = simpleFormat(purchase.purchaseDate);
+            console.log('deleting', purchase.id, purchase.purchaseDate, typeof purchase.purchaseDate);
 
             return firestore
-                .doc(`/users/${userInfo.userName}/purchases/${dt}/entries/${purchase.id}`)
+                .doc(`/users/${userInfo.userName}/purchases/${purchase.id}`)
                 .delete();
         };
 

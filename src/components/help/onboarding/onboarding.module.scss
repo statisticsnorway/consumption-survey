@@ -1,3 +1,71 @@
+@import '../../../styles/common';
+
+.onboardingCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  margin: 1.25rem;
+
+  .title {
+    font-family: "Roboto Condensed";
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 3.75rem 0;
+  }
+
+  .image {
+    margin-bottom: 2.5rem;
+  }
+
+  .description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Open Sans";
+    font-size: 1rem;
+
+    width: 100%;
+
+    p {
+      text-align: center;
+      margin: 1.25rem 0;
+    }
+
+    a {
+      color: $ssb-green-4;
+      text-decoration: underline;
+
+      &:hover,
+      &:visited {
+        color: $ssb-green-4;
+      }
+    }
+
+    ul {
+      list-style: none;
+      margin-right: 1rem;
+
+      li::before {
+        content: "\2022";
+        color: $ssb-green-4;
+        width: 1.5rem;
+        margin-left: -1.5rem;
+        display: inline-block;
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+
+      li + li {
+        margin-top: 1rem;
+      }
+    }
+  }
+}
+
 .slide {
   &.slide1 {
   }

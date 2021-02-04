@@ -19,6 +19,7 @@ export type CarouselProps = {
     showNav?: boolean;
     children: ReactNode | ReactNodeArray;
     onSlideChange?: (currentSlide: number) => void;
+    onComplete: () => void;
 };
 
 const Carousel = ({
@@ -28,7 +29,9 @@ const Carousel = ({
                       showNav = true,
                       children,
                       onSlideChange = DO_NOTHING,
+                      onComplete,
                   }: CarouselProps) => {
+
     return (
         <ReCarousel
             axis={direction === Direction.HORIZONTAL ? 'x' : 'y'}
@@ -36,6 +39,7 @@ const Carousel = ({
             className={styles.carousel}
             footer={footer}
             onSlideChange={onSlideChange}
+            onComplete={onComplete}
         >
             {children}
         </ReCarousel>

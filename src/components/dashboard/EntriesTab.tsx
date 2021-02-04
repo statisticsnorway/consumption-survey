@@ -6,18 +6,20 @@ import PurchasesList from '../purchases/PurchasesList';
 import PurchasesByDate from '../purchases/PurchasesByDate';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ConsumptionChart from '../purchases/ConsumptionChart';
 import FloatingButton, { ChildMenuProps } from '../common/buttons/FloatingButton';
 import DiaryViz from './DiaryViz';
-import { getModifiers, surveyEnd, surveyStart } from '../../uiConfig';
+import { getModifiers } from '../../uiConfig';
 import { FLOATING_BTN_OPTIONS } from './HomeTab';
 import { simpleFormat } from '../../utils/dateUtils';
+import { UserContext } from '../../contexts';
 
 const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
     const {t} = useTranslation('dashboard');
     const router = useRouter();
     const {purchases, purchasesByDate} = usePurchases();
+    const { userInfo: { surveyInfo }} = useContext(UserContext);
 
     const [entriesComp, setEntriesComp] = useState(null);
     const [floatingMenuOptions, setFloatingMenuOptions] = useState<ChildMenuProps[]>();
@@ -61,9 +63,9 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
                 <>
                     <DiaryViz
                         renderDay={onDayClick}
-                        modifiers={getModifiers(purchases)}
-                        surveyStart={simpleFormat(surveyStart)}
-                        surveyEnd={simpleFormat(surveyEnd)}
+                        modifiers={getModifiers(purchases, surveyInfo)}
+                        surveyStart={simpleFormat(surveyInfo.journalStart)}
+                        surveyEnd={simpleFormat(surveyInfo.journalEnd)}
                         className={styles.dashboardDiary}
                     />
                     <h1>{t('entries.title')}</h1>

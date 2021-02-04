@@ -14,8 +14,9 @@ const useExpenses = () => {
                 console.log('Snapshot fetched for ', userInfo.userName, snapShot.docs);
                 const expenseRecords = snapShot.docs.map(doc => {
                     return {
-                        id: doc.id,
                         ...(doc.data() as RegularExpenseType),
+                        // ensure id is set *AFTEr* the doc content to ensure we use firebase id all places
+                        id: doc.id,
                     }
                 });
 
@@ -37,16 +38,14 @@ const useExpenses = () => {
     const editExpense = (id: string, newValues: RegularExpenseType) => {
         console.log(`Updating ${id} with `, newValues);
         return firestore
-            .collection(`/users/${userInfo.userName}/regularExpenses`)
-            .doc(`/${id}`)
+            .doc(`/users/${userInfo.userName}/regularExpenses/${id}`)
             .update(newValues);
     };
 
     const deleteExpense = (id: string) => {
         console.log(`Deleting ${id}`);
         return firestore
-            .collection(`/users/${userInfo.userName}/regularExpenses`)
-            .doc(`/${id}`)
+            .doc(`/users/${userInfo.userName}/regularExpenses/${id}`)
             .delete();
     };
 
