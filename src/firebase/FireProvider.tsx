@@ -9,7 +9,7 @@ import { getConfig } from './init';
 import { FireContext } from '../contexts';
 import { isBrowser } from '../utils/pwaUtils';
 
-const FireProvider = ({children}) => {
+const FireProvider = ({config, children}) => {
     const [firebase, setFirebase] = useState(null);
     const [fireAuth, setFireAuth] = useState(null);
     const [firestore, setFirestore] = useState(null);
@@ -18,6 +18,7 @@ const FireProvider = ({children}) => {
     const [initComplete, setInitComplete] = useState(false);
 
     useEffect(() => {
+        /*
         if (isBrowser()) {
             getConfig()
                 .then(firebaseConfig => {
@@ -30,7 +31,17 @@ const FireProvider = ({children}) => {
         } else {
             console.log('Skipping firebase config on server side ...');
         }
-    }, []);
+         */
+        try {
+            if (!firebase && config) {
+                setFirebase(firebaseApp.initializeApp(config));
+            } else {
+                console.log('app already initialized ?');
+            }
+        } catch (err) {
+            console.log('app already initialized ?', err);
+        }
+    }, [config]);
 
     useEffect(() => {
         if (firebase) {

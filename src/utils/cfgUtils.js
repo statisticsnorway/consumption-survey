@@ -1,7 +1,7 @@
 const protectSecretValue = (val) =>
     `${val.slice(0, 5)} ... ${val.slice(-5)}`;
 
-const sanitizeConfig = (config) =>
+export const sanitizeConfig = (config) =>
     Object.keys(config)
         .reduce((acc, key) => ({
             ...acc,
@@ -15,4 +15,12 @@ export const loadConfig = async (configFile) => {
     console.log('Initializiing firebase with config: ', sanitizeConfig(firebaseConfig));
     return firebaseConfig;
 };
+
+export const loadFromEnvVars = (envVars, prefix = null, removePrefix = true) =>
+    Object.keys(envVars)
+        .filter(key => prefix ? key.startsWith(prefix) : true)
+        .reduce((acc, key) => ({
+            ...acc,
+            [(prefix && removePrefix) ? key.replace(prefix, '') : key]: envVars[key]
+        }), {});
 

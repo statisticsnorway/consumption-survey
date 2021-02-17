@@ -32,12 +32,12 @@ const offlineOpts = {
 };
 */
 
-const extractEnvVars = (vars, prefix) =>
+const extractEnvVars = (vars, prefix, removePrefix = false) =>
   Object.keys(vars)
-      .filter(name => name.startsWith(prefix))
+      .filter(name => prefix ? name.startsWith(prefix) : true)
       .reduce((acc, name) => ({
           ...acc,
-          [name.replace(prefix, '')]: vars[name]
+          [(prefix && removePrefix) ? name.replace(prefix, '') : name]: vars[name]
       }), {});
 
 runtimeCaching[0].handler = 'CacheFirst';
@@ -54,7 +54,7 @@ const nextConfig = {
     },
     publicRuntimeConfig: {
         localeSubpaths,
-        envVars: extractEnvVars(process.env, 'FORBRUK_APP_VAR_')
+        envVars: extractEnvVars(process.env, 'NEXT_PUBLIC_')
     }
 };
 
