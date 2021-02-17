@@ -37,7 +37,7 @@ const extractEnvVars = (vars, prefix) =>
       .filter(name => name.startsWith(prefix))
       .reduce((acc, name) => ({
           ...acc,
-          [name]: vars[name]
+          [name.replace(prefix, '')]: vars[name]
       }), {});
 
 runtimeCaching[0].handler = 'CacheFirst';

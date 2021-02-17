@@ -24,7 +24,7 @@ worker-development.js
 
 # creds/config
 src/firebase/config.js
-src/firebase/config-gcp.js
+firebase-config-gcp.json
 
 # misc
 secure/

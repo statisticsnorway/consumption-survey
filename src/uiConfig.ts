@@ -3,7 +3,8 @@ import { add, sub } from 'date-fns';
 export const PATHS = {
     DASHBOARD: '/dashboard/Dashboard',
     EDIT_PURCHASE: '/purchases/editPurchase',
-    EDIT_EXPESE: `/`
+    EDIT_EXPENSE: `/`,
+    AUTH_IDP: '/auth/api'
 };
 
 export const TABS_PARAMS = {

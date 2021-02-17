@@ -9,7 +9,8 @@ RUN npm install
 
 RUN npx next telemetry disable
 
-COPY ./ ./next.config.js /app/
+COPY ./ ./next.config.js ./firebase-config-gcp.json /app/
+COPY ./.env.production /app/
 RUN npm run build
 
 EXPOSE 3000

@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+  auth:
+    build:
+      context: ../forbruk-security-test
+    ports:
+      - 8443:8443
+      - 8080:8080
+    environment:
+      - CLIENT_ID=c635dcac-bd75-41e6-8a51-14a798c0165c
+      - CLIENT_SECRET=bad5313f-28f4-4b20-ba40-9313d3bea7c9
+      - IDPORTEN_REDIRECT_URI=https://localhost/auth/api/login/oauth2/code/idporten
+
   nextjs:
     build:
       context: ./
@@ -8,10 +19,6 @@ services:
     depends_on:
       - backend
       - bff
-    environment:
-      - FORBRUK_APP_VAR_VAR1=val1
-      - FORBRUK_APP_VAR_VAR2=val2
-      - FORBRUK_SERVER_VAR_VAR2=vals
 
   bff:
     build:
@@ -21,12 +28,13 @@ services:
       - 3005:3005
     environment:
       - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey-gcp.json
+      - DEPLOYMENT_ENV=local
 
   backend:
     build:
       context: ../survey-service
     ports:
-      - 8080:8080
+      - 8081:8080
 
   nginx:
     build: ./nginx
