@@ -1,9 +1,10 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
+import { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Edit3, PlusCircle, ArrowLeft, Trash2 } from 'react-feather';
+import { Edit3, PlusCircle, ArrowLeft, Trash2, Camera } from 'react-feather';
+import uuid from 'uuid';
 import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purchase';
-// import usePurchases from '../../hocs/usePurchases';
-import usePurchases from '../../mock/usePurchases';
+import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../mock/usePurchases';
 import { parseDate, simpleFormat } from '../../utils/dateUtils';
 import ItemsTable from './ItemsTable';
 import EditItem from './EditItem';
@@ -18,6 +19,10 @@ import styles from './purchases.module.scss';
 import headerStyles from '../layout/styles/header.module.scss';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
 import ActionsPopup from '../common/dialog/ActionsPopup';
+import { FireContext } from '../../contexts';
+import useReceipts from '../../hocs/useReceipts';
+import { getPurchaseName } from './PurchasesList';
+import { UploadTaskSnapshot } from '@firebase/storage-types';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -31,6 +36,10 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
     const [isDirty, setIsDirty] = useState<boolean>();
     const [init, setInit] = useState<boolean>(true);
+
+    const {saveReceiptBlob} = useReceipts();
+
+    const mediaInputRef = useRef(null);
 
     const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>();
 
@@ -77,6 +86,16 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             setInit(false);
         }
     }, [purchase]);
+
+    const onFileSelected = async (e) => {
+        const image = e.target.files[0];
+        console.log('image', image, image.value);
+
+        saveReceiptBlob(uuid(), image.name, image, image.type)
+            .then((snapShot: UploadTaskSnapshot) => {
+                console.log('Transferred', snapShot.totalBytes, snapShot.metadata, snapShot.bytesTransferred);
+            })
+    };
 
     const onCancelAddItem = () => {
         setShowAddItemForm(false);
@@ -161,7 +180,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
 
     const onSuccessfulEdit = () => {
         cleanup();
-        router.push(`/dashboard/Dashboard`);
+        router.push(`/dashboard/Dashboard?selectedTab=entries`);
     };
 
     const doSave = (where, when) => {
@@ -300,6 +319,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                             showEditNameDatePopup();
                         }}
                     />
+
                     {purchaseId &&
                     <Trash2
                         className={`${styles.editMetaIcon} ${styles.deletePurchaseIcon}`}
@@ -308,6 +328,23 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                         }}
                     />
                     }
+                    <div className={styles.addReceiptsGroup}>
+                        <input
+                            ref={mediaInputRef}
+                            type="file"
+                            accept="image/*"
+                            capture
+                            style={{display: 'none'}}
+                            onChange={onFileSelected}
+                        />
+                        <Camera
+                            className={`${styles.editMetaIcon} ${styles.addReceiptIcon}`}
+                            onClick={() => {
+                                // launch the media roll
+                                mediaInputRef.current && mediaInputRef.current.click()
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
 

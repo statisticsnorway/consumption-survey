@@ -1,9 +1,16 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/database';
-import 'firebase/storage';
+const protectSecretValue = (val) =>
+    `${val.slice(0, 5)} ... ${val.slice(-5)}`;
 
-import firebaseConfig from './config';
+const sanitizeConfig = (config) =>
+    Object.keys(config)
+        .reduce((acc, key) => ({
+            ...acc,
+            [key]: protectSecretValue(config[key]),
+        }), {});
 
-export default firebase.initializeApp(firebaseConfig);
+export const getConfig = async () => {
+    const { default: firebaseConfig } = await import(process.env.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
+    console.log('Initializiing firebase with config: ', sanitizeConfig(firebaseConfig));
+    return firebaseConfig;
+};
+

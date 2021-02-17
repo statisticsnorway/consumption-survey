@@ -23,7 +23,8 @@ next-env.d.ts
 worker-development.js
 
 # creds/config
-src/fb/config.js
+src/firebase/config.js
+firebase-config-gcp.json
 
 # misc
 secure/

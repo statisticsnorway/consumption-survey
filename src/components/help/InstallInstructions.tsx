@@ -1,4 +1,4 @@
-import Accordion from '../blocks/accordion/Accordion';
+import Accordion from '../common/blocks/accordion/Accordion';
 import Instructions, { InstructionStep } from './Instructions';
 import { useState } from 'react';
 

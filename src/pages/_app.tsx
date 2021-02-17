@@ -12,10 +12,11 @@ import UserProvider from '../firebase/UserProvider';
 import '../styles/globals.scss'
 import 'react-day-picker/lib/style.css'
 import 'rc-time-picker/assets/index.css'
-import PurchasesProvider from '../mock/PurchasesProvider';
-import ExpensesProvider from '../mock/ExpensesProvider';
-import { withRouter } from 'next/router';
+import PurchasesProvider from '../firebase/PurchasesProvider';
+import ExpensesProvider from '../firebase/ExpensesProvider';
+import PouchDBProvider from '../pouchdb/PouchDBProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
+import { loadFromEnvVars, sanitizeConfig } from '../utils/cfgUtils';
 
 const appConfig = getConfig();
 
@@ -31,6 +32,8 @@ class MyApp extends App {
         console.log('--------------------------------------');
         console.log('Environment Variables (_app)', appConfig);
         console.log('--------------------------------------');
+
+
 
         return {
             ...(await App.getInitialProps(ctxt)),
@@ -58,7 +61,7 @@ class MyApp extends App {
 
         const pwaActivatedFlag = isPWA()
             ? await saveToCache('pwaActivated', 'true')
-            : false
+            : false;
 
         const pwaActivated = Boolean(pwaActivatedFlag)
 
@@ -85,21 +88,42 @@ class MyApp extends App {
 
     render() {
         const {Component, pageProps, router} = this.props;
-        const {initComplete} = this.state;
+
+        const {envVars} = appConfig.publicRuntimeConfig;
+
+        // !! NextJS FACE-PALM !!
+        const getCfg = () => {
+            if (envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON) {
+                // config available as json object
+                console.log('found config (json)', envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
+                return JSON.parse(envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
+            } else {
+                const cfg = loadFromEnvVars(envVars, 'NEXT_PUBLIC_FB_LOCAL_');
+                console.log('config (vars)', cfg);
+                return cfg;
+            }
+        };
+
+        const firebaseConfig = getCfg();
+        console.log('_app :: fbCfg', sanitizeConfig(firebaseConfig));
 
         return (
             <AppContext.Provider value={{envVars: appConfig}}>
-                <UserProvider>
-                    <PurchasesProvider>
-                        <ExpensesProvider>
-                            <Layout>
-                                <ProtectedRoute>
-                                    <Component {...pageProps} />
-                                </ProtectedRoute>
-                            </Layout>
-                        </ExpensesProvider>
-                    </PurchasesProvider>
-                </UserProvider>
+                <FireProvider config={firebaseConfig}>
+                    <PouchDBProvider dbName="receipts">
+                        <UserProvider>
+                            <PurchasesProvider>
+                                <ExpensesProvider>
+                                    <Layout>
+                                        <ProtectedRoute>
+                                            <Component {...pageProps} />
+                                        </ProtectedRoute>
+                                    </Layout>
+                                </ExpensesProvider>
+                            </PurchasesProvider>
+                        </UserProvider>
+                    </PouchDBProvider>
+                </FireProvider>
             </AppContext.Provider>
         );
     }

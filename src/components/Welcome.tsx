@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { isIOS } from 'react-device-detect';
-import IOSInstallInstructions from './common/help/IOSInstallInstructions';
-import AndroidInstallInstructions from './common/help/AndroidInstallInstructions';
+import IOSInstallInstructions from './help/IOSInstallInstructions';
+import AndroidInstallInstructions from './help/AndroidInstallInstructions';
 
 import workspaceStyles from './layout/styles/workspace.module.scss';
 import styles from './welcome.module.scss';
@@ -16,9 +16,11 @@ const Welcome = () => {
     const {t} = useTranslation('welcome');
 
     useEffect(() => {
+        /*
         if (isPWA()) {
             router.push(PATHS.DASHBOARD);
         }
+         */
     }, []);
 
     return (
@@ -28,7 +30,7 @@ const Welcome = () => {
                 <div className={styles.welcomeText}>
                     {t('welcomeText')}
                 </div>
-                <Link href="/login">
+                <Link href="/support/onboarding">
                     <span className={styles.loginLink}>{t('loginLinkText')}</span>
                 </Link>
                 <div className={styles.installText}>

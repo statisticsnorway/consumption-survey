@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { FireContext, UserContext } from '../contexts';
+import { ExpensesContext, FireContext, UserContext } from '../contexts';
 import { RegularExpenseType } from '../firebase/model/RegularExpense';
-import exp from 'constants';
 
 const useExpenses = () => {
     const {firestore} = useContext(FireContext);
     const {userInfo} = useContext(UserContext);
-    const [expenses, setExpenses] = useState([]);
+    const {expenses, setExpenses} = useContext(ExpensesContext);
 
     useEffect(() => {
         firestore
@@ -15,8 +14,9 @@ const useExpenses = () => {
                 console.log('Snapshot fetched for ', userInfo.userName, snapShot.docs);
                 const expenseRecords = snapShot.docs.map(doc => {
                     return {
+                        ...(doc.data() as RegularExpenseType),
+                        // ensure id is set *AFTEr* the doc content to ensure we use firebase id all places
                         id: doc.id,
-                        ...doc.data(),
                     }
                 });
 
@@ -38,16 +38,14 @@ const useExpenses = () => {
     const editExpense = (id: string, newValues: RegularExpenseType) => {
         console.log(`Updating ${id} with `, newValues);
         return firestore
-            .collection(`/users/${userInfo.userName}/regularExpenses`)
-            .doc(`/${id}`)
+            .doc(`/users/${userInfo.userName}/regularExpenses/${id}`)
             .update(newValues);
     };
 
     const deleteExpense = (id: string) => {
         console.log(`Deleting ${id}`);
         return firestore
-            .collection(`/users/${userInfo.userName}/regularExpenses`)
-            .doc(`/${id}`)
+            .doc(`/users/${userInfo.userName}/regularExpenses/${id}`)
             .delete();
     };
 

@@ -25,6 +25,11 @@ type LayoutProps = {
     home?: boolean,
 };
 
+const FULLSCREEN_PAGES = [
+    '/support/onboarding',
+    '/purchases/scanReceipt'
+];
+
 const Layout = (props: LayoutProps) => {
     const router = useRouter();
     const [isOnline, setIsOnline] = useState(true);
@@ -97,6 +102,11 @@ const Layout = (props: LayoutProps) => {
     // console.log('Layout', firstVisitWeb, pwaActivated);
     // console.log('Went Idle @', wentIdleAt, 'active again @', activeAgainAt);
     // console.log('----------- loading: ', loading);
+
+    if (FULLSCREEN_PAGES.includes(router.pathname)) {
+        //return <div className={styles.mainContainer}>{props.children}</div>;
+        return <>{props.children}</>;
+    }
 
     return (
         <div className={styles.mainContainer}>

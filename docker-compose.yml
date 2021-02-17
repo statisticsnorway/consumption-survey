@@ -1,6 +1,13 @@
 version: '3'
 
 services:
+  auth:
+    build:
+      context: ../forbruk-security-test
+    ports:
+      - 8443:8443
+      - 8080:8080
+
   nextjs:
     build:
       context: ./
@@ -8,10 +15,6 @@ services:
     depends_on:
       - backend
       - bff
-    environment:
-      - FORBRUK_APP_VAR_VAR1=val1
-      - FORBRUK_APP_VAR_VAR2=val2
-      - FORBRUK_SERVER_VAR_VAR2=vals
 
   bff:
     build:
@@ -20,13 +23,13 @@ services:
     ports:
       - 3005:3005
     environment:
-      - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey.json
+      - DEPLOYMENT_ENV=local
 
   backend:
     build:
       context: ../survey-service
     ports:
-      - 8080:8080
+      - 8081:8080
 
   nginx:
     build: ./nginx

@@ -6,7 +6,9 @@ import Loader from '../common/Loader';
 const EXCLUDE_AUTH = [
     '/',
     '/login',
+    '/idp-success',
     '/welcome',
+    '/support/onboarding'
 ];
 
 export default (props) => {

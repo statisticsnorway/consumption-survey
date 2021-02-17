@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Edit3 } from 'react-feather';
-// import usePurchases from '../../hocs/usePurchases';
-import usePurchases from '../../mock/usePurchases';
+import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../mock/usePurchases';
 import { krCents, notEmptyString } from '../../utils/jsUtils';
 import {
     DASHBOARD_DATE_GROUPING_FORMAT,

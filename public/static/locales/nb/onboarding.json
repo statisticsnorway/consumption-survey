@@ -1,0 +1,46 @@
+{
+  "onFBU": {
+    "title": "Forbruksundersøkelse 2021",
+    "description": "Forbruksundersøkelsens formål er å gi detaljert oversikt over utgifter i private husholdninger. For å forenkle arbeidet med føringen har vi laget dette verktøyet.",
+    "detailsLink": "https://ssb.no",
+    "detailsLinkText": "Les mer om forbruksundersøkelsen her."
+  },
+
+  "goals": {
+    "title": "Hva du skal gjøre",
+    "description1": "Dette verktøyet skal du bruke til å rapportere og registrere alle utgifter du har de neste fjorten dagene.",
+    "description2": "Det innebærer alt fra hva du handler på matbutikk, om du går til frisøren eller bruker penger på oppusing."
+  },
+
+  "howTo": {
+    "title": "Hvordan du tar i bruk vektøyet",
+    "description": "I appen fordeler utgiftene seg slik: ",
+    "tip": "Klikk på pil ned for å lese mer",
+
+    "purchases": {
+      "title": "Løpende utgifger",
+      "description": "Løpende utgifter er det du handler i butikk, på nett eller det du kjøper av tjenester i føringsperioden."
+    },
+
+    "expenses": {
+      "title": "Faste utgifter",
+      "description": "Tekst kommer"
+    },
+
+    "forms": {
+      "title": "Spørreskjema",
+      "description": "Tekst kommer"
+    }
+  },
+
+  "dataSec": {
+    "title": "Personvern",
+    "bullets": [
+      "SSB lagrer informasjon og bruker det til å analysere forbruket i norske husholdninger.",
+      "Informasjonen er anonymisert og SSB kan ikke spore forbruket tilbake til en bestemt husholdning.",
+      "All innsamlet data blir slettet etter to år og du har rett til innsyn samt sletting av innsendt data."
+    ],
+
+    "consent": "Jeg samtykker til at Statistisk sentralbyrå samler inn og behandler mine data for statistikkproduksjon."
+  }
+}

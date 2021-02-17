@@ -1,4 +1,4 @@
-import { IconProps } from '../../../icons/iconTypes';
+import { IconProps } from '../../../common/icons/iconTypes';
 
 const ChromeAppIcon = ({ width = 40, height = 40}: IconProps) => {
     return (

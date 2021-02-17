@@ -1,9 +1,9 @@
 import { compareDesc } from 'date-fns';
 import { Edit3, RotateCw } from 'react-feather';
-// import usePurchases from '../../hocs/usePurchases';
-import usePurchases from '../../mock/usePurchases';
-// import useExpenses from '../../hocs/useExpenses';
-import useExpenses from '../../mock/useExpenses';
+import usePurchases from '../../hocs/usePurchases';
+// import usePurchases from '../../mock/usePurchases';
+import useExpenses from '../../hocs/useExpenses';
+// import useExpenses from '../../mock/useExpenses';
 import { PurchaseType } from '../../firebase/model/Purchase';
 import { RegularExpenseType } from '../../firebase/model/RegularExpense';
 import { dateFormatDayDate, parseDate, simpleFormat } from '../../utils/dateUtils';
