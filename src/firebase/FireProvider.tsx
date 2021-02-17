@@ -7,6 +7,7 @@ import 'firebase/storage';
 import { useState, useEffect } from 'react';
 import { getConfig } from './init';
 import { FireContext } from '../contexts';
+import { isBrowser } from '../utils/pwaUtils';
 
 const FireProvider = ({children}) => {
     const [firebase, setFirebase] = useState(null);
@@ -17,14 +18,18 @@ const FireProvider = ({children}) => {
     const [initComplete, setInitComplete] = useState(false);
 
     useEffect(() => {
-        getConfig()
-            .then(firebaseConfig => {
-                setFirebase(firebaseApp.initializeApp(firebaseConfig));
-            })
-            .catch(err => {
-                console.log('Could not load config', err);
-                process.exit(-1);
-            })
+        if (isBrowser()) {
+            getConfig()
+                .then(firebaseConfig => {
+                    setFirebase(firebaseApp.initializeApp(firebaseConfig));
+                })
+                .catch(err => {
+                    console.log('Could not load config', err);
+                    process.exit(-1);
+                })
+        } else {
+            console.log('Skipping firebase config on server side ...');
+        }
     }, []);
 
     useEffect(() => {
