@@ -1,28 +1,40 @@
-import { useState, useEffect, useContext } from 'react';
-import fb from './init';
-import { FireContext } from '../contexts';
-import { AppContext } from '../uiContexts';
+import firebaseApp from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/database';
+import 'firebase/storage';
 
-const FireProvider = ({ children }) => {
+import { useState, useEffect } from 'react';
+import { getConfig } from './init';
+import { FireContext } from '../contexts';
+
+const FireProvider = ({children}) => {
+    const [firebase, setFirebase] = useState(null);
     const [fireAuth, setFireAuth] = useState(null);
     const [firestore, setFirestore] = useState(null);
     const [rtdb, setRtdb] = useState(null);
     const [storage, setStorage] = useState(null);
-    const { envVars } = useContext(AppContext);
     const [initComplete, setInitComplete] = useState(false);
 
     useEffect(() => {
-        console.log('--------------------------------------');
-        console.log('Environment Variables for FireProvider', envVars);
-        console.log('--------------------------------------');
+        getConfig()
+            .then(firebaseConfig => {
+                setFirebase(firebaseApp.initializeApp(firebaseConfig));
+            })
+            .catch(err => {
+                console.log('Could not load config', err);
+                process.exit(-1);
+            })
     }, []);
 
     useEffect(() => {
-        setFireAuth(fb.auth());
-        setFirestore(fb.firestore());
-        setRtdb(fb.database());
-        setStorage(fb.storage());
-    }, []);
+        if (firebase) {
+            setFireAuth(firebase.auth());
+            setFirestore(firebase.firestore());
+            setRtdb(firebase.database());
+            setStorage(firebase.storage());
+        }
+    }, [firebase]);
 
     useEffect(() => {
         if (!initComplete) {
