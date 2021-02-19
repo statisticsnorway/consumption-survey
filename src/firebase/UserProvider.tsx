@@ -12,6 +12,7 @@ export enum CommunicationPreference {
     PHONE = 'PHONE',
 };
 
+const LOGIN_URL=`${process.env.NEXT_PUBLIC_BFF_HOST}/login`;
 
 export type UserPreferences = {
     language: string;
@@ -54,7 +55,7 @@ const UserProvider = ({children}) => {
 
     const login = async (userName) => {
         setIsLoggingIn(true);
-        const res = await axios.post('/bff/login', {
+        const res = await axios.post(LOGIN_URL, {
             user: userName
         });
 

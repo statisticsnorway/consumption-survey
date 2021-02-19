@@ -95,21 +95,19 @@ class MyApp extends App {
         const getCfg = () => {
             if (envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON) {
                 // config available as json object
-                console.log('found config (json)', envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
-                return JSON.parse(envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
+                const cfg = JSON.parse(envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
+                console.log('found config (json)', sanitizeConfig(cfg));
+                return cfg;
             } else {
                 const cfg = loadFromEnvVars(envVars, 'NEXT_PUBLIC_FB_LOCAL_');
-                console.log('config (vars)', cfg);
+                console.log('config (vars)', sanitizeConfig(cfg));
                 return cfg;
             }
         };
 
-        const firebaseConfig = getCfg();
-        console.log('_app :: fbCfg', sanitizeConfig(firebaseConfig));
-
         return (
             <AppContext.Provider value={{envVars: appConfig}}>
-                <FireProvider config={firebaseConfig}>
+                <FireProvider config={getCfg()}>
                     <PouchDBProvider dbName="receipts">
                         <UserProvider>
                             <PurchasesProvider>
