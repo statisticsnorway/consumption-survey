@@ -17,6 +17,7 @@ import ExpensesProvider from '../firebase/ExpensesProvider';
 import PouchDBProvider from '../pouchdb/PouchDBProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import { loadFromEnvVars, sanitizeConfig } from '../utils/cfgUtils';
+import { POUCH_DATABASES } from '../uiConfig';
 
 const appConfig = getConfig();
 
@@ -105,25 +106,30 @@ class MyApp extends App {
             }
         };
 
-        return (
-            <AppContext.Provider value={{envVars: appConfig}}>
-                <FireProvider config={getCfg()}>
-                    <PouchDBProvider dbName="receipts">
-                        <UserProvider>
-                            <PurchasesProvider>
-                                <ExpensesProvider>
-                                    <Layout>
-                                        <ProtectedRoute>
-                                            <Component {...pageProps} />
-                                        </ProtectedRoute>
-                                    </Layout>
-                                </ExpensesProvider>
-                            </PurchasesProvider>
-                        </UserProvider>
-                    </PouchDBProvider>
-                </FireProvider>
-            </AppContext.Provider>
-        );
+        try {
+            return (
+                <AppContext.Provider value={{envVars: appConfig}}>
+                    <FireProvider config={getCfg()}>
+                        <PouchDBProvider dbNames={POUCH_DATABASES}>
+                            <UserProvider>
+                                <PurchasesProvider>
+                                    <ExpensesProvider>
+                                        <Layout>
+                                            <ProtectedRoute>
+                                                <Component {...pageProps} />
+                                            </ProtectedRoute>
+                                        </Layout>
+                                    </ExpensesProvider>
+                                </PurchasesProvider>
+                            </UserProvider>
+                        </PouchDBProvider>
+                    </FireProvider>
+                </AppContext.Provider>
+            );
+        } catch (err) {
+            console.log('error while rendering app', err);
+            return <>{JSON.stringify(err)}</>;
+        }
     }
 }
 

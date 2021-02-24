@@ -12,7 +12,6 @@ const ScanReceipts = () => {
     const [image, setImage] = useState<string>(null);
     const [showCamera, setShowCamera] = useState<boolean>(true);
     const [error, setError] = useState<string>();
-    const {saveReceiptString, getReceipt} = useReceipts();
 
     console.log('error', error);
 
@@ -25,11 +24,13 @@ const ScanReceipts = () => {
             {showCamera &&
             <Camera
                 onImageCapture={(image) => {
-                    saveReceiptString(id, 'test', image)
+                    /* saveReceiptString(id, 'test', image)
                         .then(() => {
                             setShowCamera(false);
                         })
                         .catch(setError);
+
+                     */
                 }}
                 onError={setError}
             />
@@ -51,11 +52,14 @@ const ScanReceipts = () => {
             <button
                 className={`ssb-btn primary-btn`}
                 onClick={() => {
+                    /*
                     getReceipt(id, 'test')
                         .then((img) => {
                             setImage(img);
                         })
                         .catch(setError)
+                        :w
+                     */
                 }}
             >
                 Fetch

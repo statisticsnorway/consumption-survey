@@ -358,4 +358,53 @@
   }
 }
 
+.addPurchaseByReceipt {
+  height: 100%;
+  padding-bottom: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .captureInfo {
+    display: flex;
+    flex-direction: column;
+
+    .addPurchaseImgPreviewContainer {
+      height: 225px;
+
+      overflow-y: scroll;
+      position: relative;
+
+      margin: 1.25rem 0;
+
+      img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+
+        width: 100%;
+      }
+    }
+
+    h3 {
+      color: $ssb-dark-6;
+      font-family: Roboto;
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    p {
+      color: $ssb-dark-6;
+      font-family: "Open Sans";
+      font-size: 1rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  .savePurchaseAndUploadImage {
+  }
+}
+
 

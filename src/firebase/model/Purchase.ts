@@ -16,6 +16,21 @@ export type PurchaseType = {
     purchaseDate: string;
     amount: number;
     registeredTime?: string;
+    ocrResults?: any;
+};
+
+export type Receipt = {
+    ref?: string;
+    attachmentId: string;
+    name: string;
+    contentType: string;
+    blob: Blob;
+    uploadedToFirebase?: boolean;
+};
+
+export type PurchaseTypeByReceipts = {
+    id?: string;
+    receipts: Receipt[];
 };
 
 export const INIT_PURCHASE = {

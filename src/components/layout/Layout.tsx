@@ -128,6 +128,7 @@ const Layout = (props: LayoutProps) => {
             </Head>
             <LayoutContext.Provider
                 value={{
+                    isOnline, setIsOnline,
                     showHeader, showFooter,
                     setShowHeader, setShowFooter,
                     headerContent, setHeaderContent,

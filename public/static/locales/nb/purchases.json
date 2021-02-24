@@ -8,7 +8,7 @@
   },
 
   "addPurchase": {
-    "title": "Registrer ny",
+    "title": "Ny utgift",
     "total": "Sum",
     "cancel": "Avbryt",
     "save": "Lagre",

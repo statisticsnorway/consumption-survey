@@ -55,3 +55,12 @@ export const getModifiers = (purchases, surveyInfo) => {
         withEntries,
     };
 };
+
+/** Databases */
+export const DATABASE_RECEIPTS = 'receipts';
+export const DATABASE_PURCHASE_RECEIPTS = 'purchase-receipts';
+
+export const POUCH_DATABASES = [
+    DATABASE_RECEIPTS,
+    DATABASE_PURCHASE_RECEIPTS,
+];

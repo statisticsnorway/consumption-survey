@@ -18,7 +18,7 @@ const usePurchases = () => {
                             const {purchaseDate} = p.data();
                             return {
                                 ...(p.data() as PurchaseType),
-                                purchaseDate: purchaseDate.toDate().toISOString(),
+                                purchaseDate: purchaseDate ? purchaseDate.toDate().toISOString() : new Date().toISOString(),
                                 // ensure id is set *AFTEr* the doc content to ensure we use firebase id all places
                                 id: p.id,
                             };
@@ -84,6 +84,15 @@ const usePurchases = () => {
         }, []);
          */
 
+        const initPurchase = () => {
+            console.log('initializing empty purchase');
+            return firestore
+                .collection(`/users/${userInfo.userName}/purchases`)
+                .add({
+                    registeredTime: new Date().toISOString(),
+                });
+        };
+
         const addPurchase = (purchase: PurchaseType) => {
             console.log('adding new purchase', purchase);
 
@@ -113,7 +122,7 @@ const usePurchases = () => {
                 .delete();
         };
 
-        return {purchases, purchasesByDate, addPurchase, editPurchase, deletePurchase};
+        return {purchases, purchasesByDate, initPurchase, addPurchase, editPurchase, deletePurchase};
     }
 ;
 

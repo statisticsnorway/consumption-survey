@@ -1,19 +1,44 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UploadTask } from '@firebase/storage-types';
+import { PouchDB } from 'react-pouchdb';
 import { PouchDBContext } from '../uiContexts';
 import { ImageData } from '../components/common/media/ImageHandler';
 import { FireContext, UserContext } from '../contexts';
-import { UploadTask } from '@firebase/storage-types';
+
+import { base64ToBlob, getType } from '../utils/imgUtils';
+import { Receipt } from '../firebase/model/Purchase';
+import { DATABASE_RECEIPTS } from '../uiConfig';
 
 const useReceipts = () => {
-    const {db} = useContext(PouchDBContext);
+    const {ready, getDB} = useContext(PouchDBContext);
     const {storage} = useContext(FireContext);
     const {userInfo} = useContext(UserContext);
 
-    const saveReceiptString = (id: string, name: string, image: ImageData) => {
+    const [receiptsDB, setReceiptsDB] = useState<PouchDB.Database>();
+
+    useEffect(() => {
+        if (ready) {
+            setReceiptsDB(getDB(DATABASE_RECEIPTS));
+        }
+    }, [ready]);
+
+    const saveImageBlobToPouchDB = (id: string, name: string, image: Blob) => {
+        return receiptsDB.put({
+            _id: id,
+            _attachments: {
+                [name]: {
+                    data: image,
+                    content_type: getType(name),
+                }
+            }
+        });
+    };
+
+    const saveImageUrlToPouchDB = (id: string, name: string, image: ImageData, type: string) => {
         const rootRef = storage.ref();
         if (rootRef) {
             const receiptRef = rootRef.child(`/users/${userInfo.userName}/receipts/${id}`);
-            receiptRef.putString(`data:image/png;base64,${image}`, 'data_url')
+            receiptRef.putString(`data:${type};base64,${image}`, 'data_url')
                 .then(snapShot => {
                     console.log('bytes transferred', snapShot.bytesTransferred);
                     console.log('total bytes', snapShot.totalBytes);
@@ -23,7 +48,7 @@ const useReceipts = () => {
         } else {
             console.log('rootRef is null!!');
         }
-        return db.put({
+        return receiptsDB.put({
             _id: id,
             _attachments: {
                 [name]: {
@@ -34,26 +59,65 @@ const useReceipts = () => {
         });
     };
 
-    const saveReceiptBlob = (id: string, name: string, imageData: Blob, contentType: string): UploadTask => {
+    const uploadToFireStorage = (
+        purchaseId: string,
+        receiptId: string,
+        imageData: Blob,
+        contentType: string
+    ): UploadTask => {
         const rootRef = storage.ref();
         if (rootRef) {
-            const receiptRef = rootRef.child(`/users/${userInfo.userName}/receipts/${id}`);
-            return receiptRef.put(imageData, { contentType });
+            const receiptRef = rootRef.child(`/users/${userInfo.userName}/receipts/${purchaseId}/${receiptId}`);
+            return receiptRef.put(imageData, {contentType});
         } else {
             throw new Error('Root-ref is null');
         }
     };
 
-    const getReceipt = (id: string, name: string) => {
-        return db.getAttachment(id, name)
-            .then((blob) => {
-                    return URL.createObjectURL(blob);
-                }
-            );
+    const uploadDataUrlToFireStorage = (id: string, name: string, imageUrl: string) => {
+        const rootRef = storage.ref();
+        if (rootRef) {
+            const receiptRef = rootRef.child(`/users/${userInfo.userName}/receipts/${id}`);
+            return receiptRef.putString(imageUrl, 'data_url');
+        }
     };
 
+    const getReceiptFromPouchDB1 = (id: string, name: string) =>
+        receiptsDB.getAttachment(id, name);
 
-    return {saveReceiptString, saveReceiptBlob, getReceipt}
+    const getReceiptsFromPouchDB = async (id: string): Promise<Receipt[]> => {
+        const doc = await receiptsDB.get(id, {attachments: true});
+        const attachments = doc._attachments;
+
+        return attachments ?
+            Object.keys(attachments)
+                .map(key => {
+                    const {data, content_type} = attachments[key];
+                    const blob = base64ToBlob(data, content_type);
+                    return {
+                        attachmentId: key,
+                        name: key,
+                        contentType: content_type,
+                        blob,
+                    }
+                })
+            : [];
+    };
+
+    // note: it might be easier to call getAttachment() here
+    // but then we lose the content_type info from the returned blob
+    const getReceiptFromPouchDB = (id: string, name: string) =>
+        getReceiptsFromPouchDB(id)
+            .then(receipts => receipts.find(att => att.name === name));
+
+
+    return {
+        saveImageBlobToPouchDB,
+        saveImageUrlToPouchDB,
+        uploadToFireStorage,
+        uploadDataUrlToFireStorage,
+        getReceiptFromPouchDB,
+    }
 };
 
 export default useReceipts;

@@ -23,6 +23,7 @@ import { FireContext } from '../../contexts';
 import useReceipts from '../../hocs/useReceipts';
 import { getPurchaseName } from './PurchasesList';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
+import { getType } from 'mime';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -30,14 +31,18 @@ export type EditPurchaseProps = {
 };
 
 const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
-    const {purchases, editPurchase, addPurchase, deletePurchase} = usePurchases();
+    const {purchases, initPurchase, editPurchase, addPurchase, deletePurchase} = usePurchases();
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>();
     const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
     const [isDirty, setIsDirty] = useState<boolean>();
     const [init, setInit] = useState<boolean>(true);
 
-    const {saveReceiptBlob} = useReceipts();
+    const {
+        saveImageBlobToPouchDB,
+        getReceiptFromPouchDB,
+        uploadToFireStorage,
+    } = useReceipts();
 
     const mediaInputRef = useRef(null);
 
@@ -56,6 +61,10 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const [error, setError] = useState<string>();
 
     const [isSaving, setIsSaving] = useState(false);
+    const [contentType, setContentType] = useState<string>(null);
+    const [imageName, setImageName] = useState<string>(null);
+    const [imageBlob, setImageBlob] = useState<Blob>(null);
+    const [previewUrl, setPreviewUrl] = useState<string>(null);
 
     useEffect(() => {
         if (purchases) {
@@ -87,14 +96,35 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         }
     }, [purchase]);
 
+    const showPreview = async (id, name) => {
+        getReceiptFromPouchDB(id, name)
+            .then(({name, contentType, blob}) => {
+                setImageBlob(blob);
+                setImageName(name);
+                setContentType(contentType);
+
+                const imageUrl = URL.createObjectURL(blob);
+                setPreviewUrl(imageUrl);
+            })
+    };
+
     const onFileSelected = async (e) => {
         const image = e.target.files[0];
-        console.log('image', image, image.value);
+        const imageId = uuid();
+        saveImageBlobToPouchDB(imageId, image.name, image)
+            .then(async res => {
+                console.log('image stored locally');
+                await showPreview(imageId, image.name);
+            });
+    };
 
-        saveReceiptBlob(uuid(), image.name, image, image.type)
+    const onFileAccepted = async (e) => {
+        /*
+        uploadToFireStorage(imageId, image.name, image, image.type)
             .then((snapShot: UploadTaskSnapshot) => {
                 console.log('Transferred', snapShot.totalBytes, snapShot.metadata, snapShot.bytesTransferred);
             })
+         */
     };
 
     const onCancelAddItem = () => {
@@ -212,6 +242,26 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         }
     };
 
+    const savePurchaseByReceipt = () => {
+        if (imageBlob) {
+            initPurchase()
+                .then(docRef => {
+                    uploadToFireStorage(
+                        docRef.id,
+                        imageName,
+                        imageBlob,
+                        contentType
+                    )
+                        .then(uploadSnapshot => {
+                            console.log('Upload details', uploadSnapshot);
+                        })
+                        .catch(err => {
+                            console.log('Firebase upload error', err);
+                        });
+                });
+        }
+    };
+
     useEffect(() => {
         if (values && Array.isArray(values.items)) {
             if (!init) {
@@ -237,16 +287,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                         </a>
                     </div>
                     <div className={headerStyles.rightSection}>
-                        <button
-                            className={`ssb-btn primary-btn ${styles.addPurchaseSave}`}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                savePurchase();
-                            }}
-                            disabled={disabled}
-                        >
-                            {t('addPurchase.save')}
-                        </button>
+                       <h3>{t('addPurchase.title')}</h3>
                     </div>
                 </div>
             );
@@ -282,6 +323,36 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             </a>
         </div>
     );
+
+    if (purchase && purchase.ocrResults) {
+        console.log('OCR Results', purchase.ocrResults);
+        return (
+            <>
+                oohoo!!
+            </>
+        );
+    }
+
+    if (previewUrl) {
+        return (
+            <div className={styles.addPurchaseByReceipt}>
+                <div className={styles.captureInfo}>
+                    <div className={styles.addPurchaseImgPreviewContainer}>
+                        <img src={previewUrl}/>
+                    </div>
+
+                    <h3>Kvitteringen kan skannes nå!</h3>
+                    <p>Trykk på knappen under for å starte skanningen.</p>
+                </div>
+                <button
+                    className={`ssb-btn primary-btn ${styles.savePurchaseAndUploadImage}`}
+                    onClick={savePurchaseByReceipt}
+                >
+                    Lagre og start skanning
+                </button>
+            </div>
+        );
+    }
 
     return values ? (
         <>
