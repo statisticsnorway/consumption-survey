@@ -1,29 +1,23 @@
 import { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Edit3, PlusCircle, ArrowLeft, Trash2, Camera } from 'react-feather';
+import { ArrowLeft, Camera, Edit3, PlusCircle, Trash2 } from 'react-feather';
 import uuid from 'uuid';
-import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purchase';
+import { INIT_PURCHASE, ItemType, PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
-import { parseDate, simpleFormat } from '../../utils/dateUtils';
+import { OCR_DATE_FORMAT, parseDate, simpleFormat } from '../../utils/dateUtils';
 import ItemsTable from './ItemsTable';
 import EditItem from './EditItem';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import { useRouter } from 'next/router';
 import { LayoutContext } from '../../uiContexts';
-import DeleteItemDialog from './support/DeleteItemDialog';
 import DeletePurchaseDialog from './support/DeletePurchaseDialog';
 import { PATHS } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
 import headerStyles from '../layout/styles/header.module.scss';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
-import ActionsPopup from '../common/dialog/ActionsPopup';
-import { FireContext } from '../../contexts';
 import useReceipts from '../../hocs/useReceipts';
-import { getPurchaseName } from './PurchasesList';
-import { UploadTaskSnapshot } from '@firebase/storage-types';
-import { getType } from 'mime';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -84,14 +78,50 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 setPurchase({
                     ...INIT_PURCHASE,
                     purchaseDate: onDate ? parseDate(onDate).toISOString() : INIT_PURCHASE.purchaseDate,
+                    status: PurchaseStatus.CREATED,
                 });
             }
         }
     }, [purchases]);
 
+    const extractItemInfo = (lineItems) =>
+        lineItems.map((li, idx) => ({
+            name: li.description,
+            qty: li.quantity,
+            units: li.unit_of_measure,
+            amount: li.price || li.total,
+            id: li.id,
+            idx,
+        }));
+
+    // TODO: for now we assume only one receipt.
+    const extractReceipts = (ocrResults) => {
+        const receipts = Object.keys(ocrResults);
+        return ocrResults[receipts[0]];
+    };
+
+    const extractPurchaseInfo = (ocrResults) => {
+        const receiptInfo = extractReceipts(ocrResults);
+        const { line_items, date, vendor, total } = receiptInfo;
+
+        return {
+            name: vendor.name || vendor.raw_name || '??',
+            purchaseDate: parseDate(date, OCR_DATE_FORMAT).toISOString(),
+            amount: total,
+            items: extractItemInfo(line_items),
+
+            // todo: make following line unnecessary!
+            status: PurchaseStatus.OCR_COMPLETE,
+        };
+    };
+
     useEffect(() => {
         if (purchase) {
-            setValues(purchase);
+            if ((purchase.status === PurchaseStatus.OCR_COMPLETE) && purchase.ocrResults) {
+                setValues(extractPurchaseInfo(purchase.ocrResults));
+            } else {
+                setValues(purchase);
+            }
             setInit(false);
         }
     }, [purchase]);
@@ -154,27 +184,33 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         setShowAddItemForm(false);
     };
 
-    const updateItem = ({idx, name, qty, units, amount}) => {
+    const updateItem = ({id, idx, name, qty, units, amount}) => {
         console.log('updating', idx, name, qty);
         const {items} = values;
-        const oldItem = items.find(item => (item.idx === idx));
-        const other = items.filter(item => (item.idx !== idx));
+        const oldItem = items.find(item => id ? (item.id === id) : (item.idx === idx));
+        const other = items.filter(item => id ? (item.id !== id) : (item.idx !== idx));
+
+        const byIdx = (i1, i2) => i1.idx > i2.idx ? 1 : -1;
+
+        const newItemList = [
+            ...other,
+            {
+                idx,
+                name,
+                qty,
+                units,
+                amount,
+            }
+        ].sort(byIdx);
+
+        const newAmount = newItemList.reduce(
+            (acc, i) => acc + (Number(i.amount) * Number(i.qty)),
+            0);
 
         setValues({
             ...values,
-            items: [
-                ...other,
-                {
-                    idx,
-                    name,
-                    qty,
-                    units,
-                    amount,
-                }
-            ],
-            amount: values.amount
-                - (Number(oldItem.amount) * Number(oldItem.qty))
-                + (Number(amount) * Number(qty)),
+            items: newItemList,
+            amount: newAmount,
         });
 
         setShowEditItemForm(false);
@@ -208,9 +244,12 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         clearAll();
     };
 
-    const onSuccessfulEdit = () => {
+    const onSuccessfulEdit = ({ highlight }) => {
         cleanup();
-        router.push(`/dashboard/Dashboard?selectedTab=entries`);
+
+        const highlightParam = highlight ? `&highlight=${highlight}` : '';
+
+        router.push(`/dashboard/Dashboard?selectedTab=entries${highlightParam}`);
     };
 
     const doSave = (where, when) => {
@@ -222,13 +261,13 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             editPurchase(purchaseId, complete)
                 .then((res) => {
                     console.log('purchase updated', res);
-                    onSuccessfulEdit();
+                    onSuccessfulEdit({ highlight: purchaseId });
                 });
         } else {
             addPurchase(complete)
-                .then((res) => {
-                    console.log('item added', res);
-                    onSuccessfulEdit();
+                .then((docRef) => {
+                    console.log('item added', docRef);
+                    onSuccessfulEdit({ highlight: docRef.id });
                 });
         }
     };
@@ -254,9 +293,21 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                     )
                         .then(uploadSnapshot => {
                             console.log('Upload details', uploadSnapshot);
+                            editPurchase(docRef.id, {
+                                status: PurchaseStatus.OCR_IN_PROGRESS
+                            })
+                                .then(() => {
+                                    onSuccessfulEdit({ highlight: docRef.id });
+                                })
                         })
                         .catch(err => {
                             console.log('Firebase upload error', err);
+                            editPurchase(docRef.id, {
+                                status: PurchaseStatus.OCR_UPLOAD_FAILED,
+                            })
+                                .then(() => {
+                                    onSuccessfulEdit({ highlight: docRef.id });
+                                })
                         });
                 });
         }
@@ -287,7 +338,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                         </a>
                     </div>
                     <div className={headerStyles.rightSection}>
-                       <h3>{t('addPurchase.title')}</h3>
+                        <h3>{t('addPurchase.title')}</h3>
                     </div>
                 </div>
             );
@@ -324,15 +375,6 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         </div>
     );
 
-    if (purchase && purchase.ocrResults) {
-        console.log('OCR Results', purchase.ocrResults);
-        return (
-            <>
-                oohoo!!
-            </>
-        );
-    }
-
     if (previewUrl) {
         return (
             <div className={styles.addPurchaseByReceipt}>
@@ -354,8 +396,31 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         );
     }
 
+    const approveOcrResults = () => {
+        editPurchase(purchase.id, {
+            ...values,
+            status: PurchaseStatus.COMPLETE
+        })
+            .then(() => {
+                console.log('fb updated');
+            })
+    };
+
     return values ? (
         <>
+            {(values.status === PurchaseStatus.OCR_COMPLETE) &&
+                <div className={styles.approvePanel}>
+                    <p>
+                        Skanning er nå ferdig. Kontrollér at all informasjon er korrekt
+                    </p>
+                    <button
+                        className={`ssb-btn primary-btn`}
+                        onClick={approveOcrResults}
+                    >
+                        Ja, ser bra ut!
+                    </button>
+                </div>
+            }
             <PurchaseNameDateGroup
                 currName={values.name}
                 currDate={new Date(values.purchaseDate)}

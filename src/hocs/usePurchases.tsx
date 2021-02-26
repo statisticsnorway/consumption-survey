@@ -1,12 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import { FireContext, UserContext, PurchasesContext } from '../contexts';
-import { PurchaseType } from '../firebase/model/Purchase';
+import { PurchaseStatus, PurchaseType } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
+import { parse } from 'date-fns';
 
 const usePurchases = () => {
         const {firestore} = useContext(FireContext);
         const {userInfo} = useContext(UserContext);
         const {purchases, purchasesByDate, setPurchases, setPurchasesByDate} = useContext(PurchasesContext);
+
+        const extractDate = (dt) => {
+            return (typeof dt === 'string')
+                ? new Date(dt).toISOString()
+                : dt.toDate().toISOString();
+        };
 
         useEffect(() => {
             console.log('v2 fetching purchases');
@@ -16,9 +23,12 @@ const usePurchases = () => {
                     .onSnapshot(ps => {
                         const pRecords = ps.docs.map(p => {
                             const {purchaseDate} = p.data();
+                            console.log('trying to comprehend', purchaseDate, typeof purchaseDate);
+                            console.log('dt', new Date(purchaseDate));
+                            console.log('prs dt', Date.parse(purchaseDate));
                             return {
                                 ...(p.data() as PurchaseType),
-                                purchaseDate: purchaseDate ? purchaseDate.toDate().toISOString() : new Date().toISOString(),
+                                purchaseDate: purchaseDate ? extractDate(purchaseDate) : new Date().toISOString(),
                                 // ensure id is set *AFTEr* the doc content to ensure we use firebase id all places
                                 id: p.id,
                             };
@@ -39,6 +49,20 @@ const usePurchases = () => {
                 console.log('Could not fetch purchases', err);
             }
         }, []);
+
+
+        useEffect(() => {
+            if (purchases) {
+                const pbd = purchases.reduce((acc, p) => {
+                    const dt = simpleFormat(new Date(p.purchaseDate));
+                    const curr = acc[dt] || [];
+                    acc[dt] = curr.concat(p);
+                    return acc;
+                }, {});
+
+                setPurchasesByDate(pbd);
+            }
+        }, [purchases]);
 
         /*
         useEffect(() => {
@@ -90,6 +114,7 @@ const usePurchases = () => {
                 .collection(`/users/${userInfo.userName}/purchases`)
                 .add({
                     registeredTime: new Date().toISOString(),
+                    status: PurchaseStatus.CREATED,
                 });
         };
 
@@ -103,6 +128,7 @@ const usePurchases = () => {
                 .add({
                     ...purchase,
                     registeredTime: new Date().toISOString(),
+                    status: PurchaseStatus.CREATED,
                 });
         };
 
@@ -111,7 +137,7 @@ const usePurchases = () => {
 
             return firestore
                 .doc(`/users/${userInfo.userName}/purchases/${id}`)
-                .set(newValues);
+                .set(newValues, { merge: true });
         };
 
         const deletePurchase = (purchase: PurchaseType) => {

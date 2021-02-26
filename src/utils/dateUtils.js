@@ -39,6 +39,7 @@ export const DAYS_SHORT = [
 export const SIMPLE_DATE_FORMAT = 'dd.MM.yyyy';
 export const DASHBOARD_DATE_GROUPING_FORMAT = 'dd.MMM.yyyy';
 export const DASHBOARD_DAY_DATE_FORMAT = 'dd.eee.yyyy';
+export const OCR_DATE_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 
 export const parseDate = (dateStr, fmt = SIMPLE_DATE_FORMAT, locale) => {
     return parse(dateStr, fmt, new Date(), {locale});
