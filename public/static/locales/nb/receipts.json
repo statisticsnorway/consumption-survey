@@ -1,0 +1,12 @@
+{
+  "previews": {
+    "scanning": {
+      "addNew": "Legge til kvittering",
+      "readyForScanning": "Klar til å skannes",
+      "text": "Leser kvittering",
+      "cancel": "Avbryt",
+      "delete": "Fjern",
+      "error": "En feil har oppstod"
+    }
+  }
+}

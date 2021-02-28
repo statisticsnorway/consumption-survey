@@ -1,4 +1,5 @@
 import { add, sub } from 'date-fns';
+import { ChangeEvent } from 'react';
 
 export const PATHS = {
     DASHBOARD: '/dashboard/Dashboard',
@@ -64,3 +65,6 @@ export const POUCH_DATABASES = [
     DATABASE_RECEIPTS,
     DATABASE_PURCHASE_RECEIPTS,
 ];
+
+/** Change Event Handler */
+export type INPUT_CHANGE_HANDLER = (e: ChangeEvent<HTMLInputElement>) => void;

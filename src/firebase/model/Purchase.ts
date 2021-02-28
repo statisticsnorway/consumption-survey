@@ -44,6 +44,42 @@ export enum PurchaseStatus {
     DISCARDED = 'DISCARDED',
 };
 
+/**
+ * ToDo: This looks exactly like PurchaseStatus right  now.
+ *    - PurchaseStatus must be changed to incorporate and handle
+ *      status of mulitple receipts.
+ */
+export enum ReceiptStatus {
+    CREATED,
+    COMPLETE,
+    OCR_WAITING_NETWORK,
+    OCR_UPLOAD_FAILED,
+    OCR_IN_PROGRESS,
+    OCR_ERROR,
+    OCR_COMPLETE,
+    OCR_VALIDATED,
+    DISCARDED,
+}
+
+export const OCR_INCOMPLETE_STATUSES = [
+    ReceiptStatus.OCR_IN_PROGRESS,
+    ReceiptStatus.OCR_WAITING_NETWORK,
+];
+
+export const OCR_ERROR_STATUSES = [
+    ReceiptStatus.OCR_UPLOAD_FAILED,
+    ReceiptStatus.OCR_ERROR,
+];
+
+export type ReceiptInfo = {
+    imageId: string;
+    imageName: string;
+    contentType?: string;
+    image?: Blob;
+    previewUrl?: string;
+    status: ReceiptStatus;
+};
+
 export type PurchaseType = {
     id?: string;
     name?: string;
@@ -52,7 +88,7 @@ export type PurchaseType = {
     amount?: number;
     registeredTime?: string;
     ocrResults?: any;
-    receipts?: any;
+    receipts?: ReceiptInfo[];
     status: PurchaseStatus;
 };
 

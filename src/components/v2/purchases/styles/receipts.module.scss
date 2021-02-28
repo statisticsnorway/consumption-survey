@@ -1,0 +1,85 @@
+@import '../../../../styles/common';
+
+.receiptPreviews {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .receiptPreview {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0.75rem;
+    border: 1px solid $ssb-green-4;
+
+    .errorText {
+      background-color: $ssb-red-1;
+      color: $ssb-red-4;
+    }
+
+    .text {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+
+      p {
+        color: $ssb-dark-6;
+        font-family: "Roboto";
+        margin: 0;
+      }
+
+      p + p {
+        margin-top: 1rem;
+      }
+
+      .addNew {
+        font-family: "Open Sans";
+      }
+
+      .readyForScanning {
+        font-weight: 700;
+        font-family: "Roboto";
+      }
+
+      .cancelLink {
+        color: $ssb-green-4;
+        text-decoration: underline;
+      }
+
+      .deleteLink {
+        color: $ssb-red-2;
+        text-decoration: underline;
+      }
+    }
+
+    .thumbnail {
+      width: 5rem;
+      height: 5rem;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background-color: $ssb-dark-2;
+      color: $ssb-green-4;
+    }
+  }
+
+  .receiptPreview + .receiptPreview {
+    margin-top: 1.25rem;
+  }
+
+  .addNewPanel {
+    background-color: $ssb-dark-1;
+    border: 1px solid $ssb-dark-1;
+
+    .text {
+      p {
+        color: $ssb-green-4;
+      }
+    }
+  }
+}

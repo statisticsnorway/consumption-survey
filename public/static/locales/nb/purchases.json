@@ -11,10 +11,21 @@
     "title": "Ny utgift",
     "total": "Sum",
     "cancel": "Avbryt",
-    "save": "Lagre",
+    "save": "Lagre registreringen",
 
-    "name": {
-      "label": "Butikk eller type tjeneste"
+    "purchaseDate": {
+      "label": "Dato",
+      "placeholder": "Dato"
+    },
+
+    "purchaseName": {
+      "label": "Butikk/sted",
+      "placeholder": "Butikk/sted"
+    },
+
+    "addNewItem": {
+      "leaderText": "Legg til varer ved å skanne en kvittering eller manuelt nedenfor",
+      "label": "Legg inn vare"
     },
 
     "nameDateGroupTitle": "Hvor har du handlet ?",

@@ -30,7 +30,8 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highli
             title: t('fab.registerNew'),
             onClick: () => {
                 const onDateParam = onDate ? `?onDate=${onDate}` : '';
-                router.push(`/purchases/editPurchase${onDateParam}`);
+                // router.push(`/purchases/editPurchase${onDateParam}`);
+                router.push(`/v2/purchases/addPurchase${onDateParam}`);
             },
             icon: <Edit/>,
         }, {
