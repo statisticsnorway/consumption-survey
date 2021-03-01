@@ -82,8 +82,19 @@ const useReceipts = () => {
         }
     };
 
-    const getReceiptFromPouchDB1 = (id: string, name: string) =>
+    const getAttachment = (id: string, name: string) =>
         receiptsDB.getAttachment(id, name);
+
+    const getReceiptWithImageUrl = async (id: string, name: string) => {
+        const doc = await receiptsDB.get(id, { attachments: true });
+        const attachmens = doc._attachments;
+
+        const att = attachmens[name];
+        return {
+            ...att,
+            previewUrl: `data:${att.content_type};base64, ${att.data}`,
+        };
+    };
 
     const getReceiptsFromPouchDB = async (id: string): Promise<Receipt[]> => {
         const doc = await receiptsDB.get(id, {attachments: true});
@@ -127,6 +138,7 @@ const useReceipts = () => {
         uploadDataUrlToFireStorage,
         getReceiptFromPouchDB,
         notifyReceipt,
+        getReceiptWithImageUrl,
     }
 };
 

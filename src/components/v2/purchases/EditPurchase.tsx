@@ -18,7 +18,7 @@ export type EditPurchaseProps = {
 
 const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const {purchases, editPurchase} = usePurchases();
-    const {getReceiptFromPouchDB} = useReceipts();
+    const {getReceiptFromPouchDB, getReceiptWithImageUrl} = useReceipts();
     const {t} = useTranslation('purchases');
     const {setHeaderContent} = useContext(LayoutContext);
     const [purchase, setPurchase] = useState<PurchaseType>(null);
@@ -76,24 +76,20 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
             if (purchase.receipts) {
                 purchase.receipts.forEach(r => {
-                    console.log('loading image', r.imageId, r.imageName);
-                    getReceiptFromPouchDB(r.imageId, r.imageName)
-                        .then(blob => {
-                            const previewUrl = URL.createObjectURL(blob);
+                    console.log('loading image', r.imageId, r.imageName, r.contentType);
+                    getReceiptWithImageUrl(r.imageId, r.imageName)
+                        .then(withImg => {
                             setValues(prevState => {
-                                const curr = prevState.receipts;
+                                const curr = prevState.receipts || [];
                                 return {
                                     ...prevState,
                                     receipts: [
                                         ...curr,
-                                        {
-                                            ...r,
-                                            previewUrl
-                                        },
+                                        withImg,
                                     ],
                                 };
-                            })
-                        })
+                            });
+                        });
                 });
             }
         }
