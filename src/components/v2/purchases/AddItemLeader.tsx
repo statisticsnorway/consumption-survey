@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { PlusCircle } from 'react-feather';
 
-import styles from './styles/addPurchase.module.scss';
+import styles from './styles/editPurchase.module.scss';
 
 export type AddItemLeaderProps = {
     onAddItemClick: () => void;

@@ -23,9 +23,6 @@ const usePurchases = () => {
                     .onSnapshot(ps => {
                         const pRecords = ps.docs.map(p => {
                             const {purchaseDate} = p.data();
-                            console.log('trying to comprehend', purchaseDate, typeof purchaseDate);
-                            console.log('dt', new Date(purchaseDate));
-                            console.log('prs dt', Date.parse(purchaseDate));
                             return {
                                 ...(p.data() as PurchaseType),
                                 purchaseDate: purchaseDate ? extractDate(purchaseDate) : new Date().toISOString(),
@@ -133,7 +130,7 @@ const usePurchases = () => {
         };
 
         const editPurchase = (id: string, newValues: PurchaseType) => {
-            console.log('editing', id);
+            console.log('editing', id, newValues);
 
             return firestore
                 .doc(`/users/${userInfo.userName}/purchases/${id}`)

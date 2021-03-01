@@ -5,13 +5,13 @@ import { PouchDBContext } from '../uiContexts';
 import { ImageData } from '../components/common/media/ImageHandler';
 import { FireContext, UserContext } from '../contexts';
 
-import { base64ToBlob, getType } from '../utils/imgUtils';
-import { Receipt } from '../firebase/model/Purchase';
+import { base64ToBlob, getContentType } from '../utils/imgUtils';
+import { Receipt, ReceiptStatus } from '../firebase/model/Purchase';
 import { DATABASE_RECEIPTS } from '../uiConfig';
 
 const useReceipts = () => {
     const {ready, getDB} = useContext(PouchDBContext);
-    const {storage} = useContext(FireContext);
+    const {storage, firestore} = useContext(FireContext);
     const {userInfo} = useContext(UserContext);
 
     const [receiptsDB, setReceiptsDB] = useState<PouchDB.Database>();
@@ -28,7 +28,7 @@ const useReceipts = () => {
             _attachments: {
                 [name]: {
                     data: image,
-                    content_type: getType(name),
+                    content_type: getContentType(name),
                 }
             }
         });
@@ -63,7 +63,7 @@ const useReceipts = () => {
         purchaseId: string,
         receiptId: string,
         imageData: Blob,
-        contentType: string
+        contentType: string,
     ): UploadTask => {
         const rootRef = storage.ref();
         if (rootRef) {
@@ -111,12 +111,22 @@ const useReceipts = () => {
             .then(receipts => receipts.find(att => att.name === name));
 
 
+    const notifyReceipt = (purchaseId, receiptId, metadata) => {
+      const path = `/users/${userInfo.userName}/receipts/${purchaseId}`;
+      return firestore.doc(path)
+          .set({
+              receiptId,
+              receiptMetadata: metadata,
+          })
+    };
+
     return {
         saveImageBlobToPouchDB,
         saveImageUrlToPouchDB,
         uploadToFireStorage,
         uploadDataUrlToFireStorage,
         getReceiptFromPouchDB,
+        notifyReceipt,
     }
 };
 

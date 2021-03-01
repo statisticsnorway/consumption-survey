@@ -7,6 +7,17 @@
     "purchaseNotFound": "Registreringen kan ikke finnes"
   },
 
+  "lineItems": {
+    "table": {
+      "name": "Vare",
+      "qty": "Antall",
+      "unitPrice": "Beløp"
+    },
+
+    "addNew": "Ny vare",
+    "total": "Totalt"
+  },
+
   "addPurchase": {
     "title": "Ny utgift",
     "total": "Sum",
@@ -35,8 +46,7 @@
     "purchaseDateLabel": "Kjøpsdato",
     "changeNameAndDate": "Endre navn og dato",
 
-    "lineItems": {
-    },
+
 
     "newItem": {
       "title": "Ny vare eller tjeneste",

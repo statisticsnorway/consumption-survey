@@ -2,10 +2,11 @@ import { TextField } from '@material-ui/core';
 import { Camera, Edit3 } from 'react-feather';
 import { INPUT_CHANGE_HANDLER } from '../../../uiConfig';
 
-import styles from './styles/addPurchase.module.scss';
+import styles from './styles/editPurchase.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useRef } from 'react';
 import { ReceiptInfo } from '../../../firebase/model/Purchase';
+import { simpleFormat } from '../../../utils/dateUtils';
 
 export type AddPurchaseTitleZoneProps = {
     name: string;
@@ -28,7 +29,7 @@ const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}:
         <div className={styles.titleZone}>
             <div className={styles.nameAndDate}>
                 <TextField
-                    value={date}
+                    value={simpleFormat(new Date(date))}
                     onChange={updateField('purchaseDate')}
                     placeholder={t('addPurchase.purchaseDate.placeholder')}
                 />
