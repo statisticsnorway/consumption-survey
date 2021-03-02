@@ -34,7 +34,7 @@ export const getPurchaseDate = (reg: PurchaseType) => reg.purchaseDate;
 
 const dateDisp = (date) => {
     const [dt, day] =
-        dateFormatDayDate(parseDate(simpleFormat(date)))
+        dateFormatDayDate(parseDate(simpleFormat(date || new Date())))
             .split('.');
 
     return (

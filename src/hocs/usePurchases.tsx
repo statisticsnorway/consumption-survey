@@ -25,7 +25,7 @@ const usePurchases = () => {
                             const {purchaseDate} = p.data();
                             return {
                                 ...(p.data() as PurchaseType),
-                                purchaseDate: purchaseDate ? extractDate(purchaseDate) : new Date().toISOString(),
+                                purchaseDate: purchaseDate ? extractDate(purchaseDate) : null,
                                 // ensure id is set *AFTEr* the doc content to ensure we use firebase id all places
                                 id: p.id,
                             };

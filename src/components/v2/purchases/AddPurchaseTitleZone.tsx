@@ -31,7 +31,7 @@ const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}:
         <div className={styles.titleZone}>
             <div className={styles.nameAndDate}>
                 <TextField
-                    value={simpleFormat(new Date(date))}
+                    value={date ? simpleFormat(new Date(date)) : null}
                     onChange={updateField('purchaseDate')}
                     placeholder={t('addPurchase.purchaseDate.placeholder')}
                 />
