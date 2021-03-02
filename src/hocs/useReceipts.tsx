@@ -91,6 +91,8 @@ const useReceipts = () => {
 
         const att = attachmens[name];
         return {
+            id,
+            name,
             ...att,
             previewUrl: `data:${att.content_type};base64, ${att.data}`,
         };

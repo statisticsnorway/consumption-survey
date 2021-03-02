@@ -1,29 +1,40 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
-import usePurchases from '../../../hocs/usePurchases';
-import { ItemType, PurchaseStatus, PurchaseType, ReceiptInfo } from '../../../firebase/model/Purchase';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
+import { ArrowLeft, Check, Save, Trash2 } from 'react-feather';
+import usePurchases from '../../../hocs/usePurchases';
+import { ItemType, PurchaseStatus, PurchaseType } from '../../../firebase/model/Purchase';
 import { LineItem, OcrResults, ReceiptScanResult } from '../../../firebase/model/Veryfi';
 import { OCR_DATE_FORMAT, parseDate } from '../../../utils/dateUtils';
 import { LayoutContext } from '../../../uiContexts';
 import AddPurchaseTitleZone from './AddPurchaseTitleZone';
 import ItemsTable from './ItemsTable';
 import Loader from '../../common/Loader';
-
-import styles from './styles/editPurchase.module.scss';
 import useReceipts from '../../../hocs/useReceipts';
+
+import headerStyles from '../../layout/styles/header.module.scss';
+import styles from './styles/editPurchase.module.scss';
+import { DASHBOARD_TABS, PATHS, TABS_PARAMS } from '../../../uiConfig';
+import RoundButton from '../../common/buttons/RoundButton';
+import FullscreenLoader from '../../common/FullscreenLoader';
+import DeletePurchaseDialog from '../../purchases/support/DeletePurchaseDialog';
 
 export type EditPurchaseProps = {
     purchaseId: string;
 };
 
 const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
-    const {purchases, editPurchase} = usePurchases();
+    const router = useRouter();
+    const {purchases, editPurchase, deletePurchase} = usePurchases();
     const {getReceiptFromPouchDB, getReceiptWithImageUrl} = useReceipts();
     const {t} = useTranslation('purchases');
     const {setHeaderContent} = useContext(LayoutContext);
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>(null);
     const [error, setError] = useState<string>(null);
+    const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [loaderMessage, setLoaderMesage] = useState<string>(null);
+    const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>();
 
     useEffect(() => {
         if (purchases) {
@@ -35,6 +46,16 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             }
         }
     }, [purchases]);
+
+    const showMessage = (msg) => {
+        setShowLoader(true);
+        setLoaderMesage(msg);
+    };
+
+    const clearMessages = () => {
+        setShowLoader(false);
+        setLoaderMesage(null);
+    };
 
     const extractItems = (lineItems: LineItem[]): ItemType[] => {
         return lineItems.map((li, idx) => ({
@@ -80,18 +101,56 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     getReceiptWithImageUrl(r.imageId, r.imageName)
                         .then(withImg => {
                             setValues(prevState => {
-                                const curr = prevState.receipts || [];
-                                return {
+                                const afterImgLoad = {
                                     ...prevState,
-                                    receipts: [
-                                        ...curr,
-                                        withImg,
-                                    ],
+                                    receipts: [withImg],
                                 };
+
+                                return afterImgLoad;
                             });
                         });
                 });
             }
+
+            setHeaderContent(
+                <div className={`${headerStyles.headerComponentWrapper} ${styles.editPurchaseHeader}`}>
+                    <div className={headerStyles.leftSection}>
+                        <a
+                            className={headerStyles.actionLink}
+                            onClick={() => {
+                                router.push(`${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${DASHBOARD_TABS.ENTRIES}`);
+                            }}
+                        >
+                            <ArrowLeft width={16} height={16} className={headerStyles.actionIcon}/>
+                            <span className={styles.linkText}>{t('back')}</span>
+                        </a>
+                    </div>
+                    <div className={headerStyles.rightSection}>
+                        <RoundButton
+                            className={styles.deletePurchaseBtn}
+                            onClick={() => { setShowPurchaseDeleteConfirm(true); }}
+                        >
+                            <Trash2 className={styles.icon}/>
+                        </RoundButton>
+                        {(purchase.status === PurchaseStatus.OCR_COMPLETE) &&
+                        <RoundButton
+                            className={styles.approveOcrBtn}
+                            onClick={approveOcrResults}
+                        >
+                            <Check className={styles.icon}/>
+                        </RoundButton>
+                        }
+                        {(purchase.status === PurchaseStatus.COMPLETE) &&
+                        <RoundButton
+                            className={styles.saveChangesBtn}
+                            onClick={savePurchase}
+                        >
+                            <Save className={styles.icon}/>
+                        </RoundButton>
+                        }
+                    </div>
+                </div>
+            )
         }
     }, [purchase]);
 
@@ -100,6 +159,61 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             ...values,
             [fieldName]: e.target.value,
         });
+    };
+
+    const removeItem = (item) => {
+        const {idx, id} = item;
+        const {items, amount} = values;
+        setValues({
+            ...values,
+            items: items.filter(it =>
+                it.id ? (it.id !== id) : (it.idx !== idx)),
+            amount: (amount - (Number(item.amount) * Number(item.qty))),
+        });
+    };
+
+    const approveOcrResults = () => {
+        savePurchase();
+    };
+
+    const savePurchase = () => {
+        showMessage(t('Lagrer registreringen ...'));
+        console.log('new values', values);
+        editPurchase(purchase.id, {
+            ...values,
+            status: PurchaseStatus.COMPLETE
+        })
+            .then(() => {
+                console.log('fb updated');
+                clearMessages();
+            })
+    };
+
+    const onItemUpdate = (item: ItemType, newQty: number) => {
+        if (newQty === 0) {
+            console.log('item will be removed');
+            removeItem(item);
+        } else {
+            const itemsUpd = values.items.map(i => {
+                const match = (x) =>
+                    x.id ? x.id === item.id : x.idx === item.idx;
+
+                return match(i) ? {...i, qty: `${newQty}`} : i;
+            });
+
+            const amount = itemsUpd.reduce((acc, item) =>
+                acc + (Number(item.amount) * Number(item.qty)), 0);
+
+            setValues({
+                ...values,
+                items: itemsUpd,
+                amount,
+            });
+        }
+    };
+
+    const clearPurchaseDelete = () => {
+        setShowPurchaseDeleteConfirm(false);
     };
 
     return values ? (
@@ -114,6 +228,21 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             />
             <ItemsTable
                 items={values.items}
+                onItemUpdate={onItemUpdate}
+            />
+            <FullscreenLoader show={showLoader} loaderMessage={loaderMessage} />
+            <DeletePurchaseDialog
+                purchase={purchase}
+                show={showPurchaseDeleteConfirm}
+                onConfirm={() => {
+                    deletePurchase(purchase)
+                        .then(res => {
+                            console.log('Purchase deleted', purchase);
+                            clearPurchaseDelete();
+                            router.push(PATHS.DASHBOARD);
+                        });
+                }}
+                onCancel={clearPurchaseDelete}
             />
         </div>
     ) : <Loader/>;

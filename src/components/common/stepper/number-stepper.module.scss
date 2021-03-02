@@ -3,9 +3,8 @@
 .numberStepper {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-left: 1.25rem;
 
   & > * {
     display: flex;

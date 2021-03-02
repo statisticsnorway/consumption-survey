@@ -33,7 +33,7 @@
     }
 
     .itemQtyGroup {
-      text-align: right;
+      text-align: center;
     }
 
     .totalAmount,
@@ -63,6 +63,7 @@
     .totalRow {
       td {
         border-top: 1px solid $ssb-dark-5;
+        border-bottom: 0;
         color: $ssb-dark-5;
         font-weight: 700;
         font-family: "Roboto";

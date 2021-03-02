@@ -12,6 +12,7 @@ const HEADER_EXCLUDE_PAGES = [];
 
 const PAGES_WITH_CUSTOM_HEADER = [
     '/purchases/editPurchase',
+    '/v2/purchases/editPurchase',
 ];
 
 const Header = ({siteTitle, version, isOnline}) => {

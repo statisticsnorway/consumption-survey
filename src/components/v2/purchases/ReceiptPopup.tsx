@@ -18,7 +18,7 @@ const ReceiptPopup = ({
     return (
         <Modal
             show={show}
-            title={receipt.imageName}
+            showTitle={false}
             onClose={onClose}
             closeText="Lukk"
             showCancel={false}

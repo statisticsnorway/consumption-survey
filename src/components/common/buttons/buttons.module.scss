@@ -1,0 +1,14 @@
+.roundButton {
+  padding: 0.25rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  border: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.roundButton + .roundButton {
+  margin-left: 0.5rem;
+}

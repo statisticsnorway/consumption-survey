@@ -117,3 +117,26 @@
 .addPurchase {
   justify-content: space-between;
 }
+
+/** edit purchase header zone */
+.editPurchaseHeader {
+  justify-content: space-between !important;
+}
+
+.deletePurchaseBtn,
+.approveOcrBtn,
+.saveChangesBtn {
+  background-color: $ssb-green-4;
+  color: #fff;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.deletePurchaseBtn {
+  background-color: $ssb-red-1;
+  color: $ssb-red-4;
+  border: 1px solid $ssb-red-3 !important;
+}
