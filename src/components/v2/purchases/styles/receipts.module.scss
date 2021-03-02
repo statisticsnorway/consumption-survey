@@ -83,3 +83,14 @@
     }
   }
 }
+
+.receiptModal {
+  padding: 0 1rem;
+  margin: 0;
+  height: 100%;
+  overflow-y: scroll;
+
+  .image {
+    width: 100%;
+  }
+}

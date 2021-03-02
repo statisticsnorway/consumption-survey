@@ -4,9 +4,10 @@ import { INPUT_CHANGE_HANDLER } from '../../../uiConfig';
 
 import styles from './styles/editPurchase.module.scss';
 import { useTranslation } from 'react-i18next';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ReceiptInfo } from '../../../firebase/model/Purchase';
 import { simpleFormat } from '../../../utils/dateUtils';
+import ReceiptPopup from './ReceiptPopup';
 
 export type AddPurchaseTitleZoneProps = {
     name: string;
@@ -19,6 +20,7 @@ export type AddPurchaseTitleZoneProps = {
 const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}: AddPurchaseTitleZoneProps) => {
     const {t} = useTranslation('purchases');
     const mediaInputRef = useRef(null);
+    const [showReceiptPopup, setShowReceiptPopup] = useState<boolean>(false);
 
     const onFileSelected = async (e) => {
         const image = e.target.files[0];
@@ -61,8 +63,21 @@ const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}:
                     </>
                     }
                     {receipts && Array.isArray(receipts) && (receipts.length >= 1) &&
-                        <img src={receipts[0].previewUrl} />
-
+                    <>
+                        <img src={receipts[0].previewUrl} onClick={() => {
+                            setShowReceiptPopup(true);
+                        }}/>
+                        <ReceiptPopup
+                            show={showReceiptPopup}
+                            receipt={receipts[0]}
+                            onClose={() => {
+                                setShowReceiptPopup(false);
+                            }}
+                            onCancel={() => {
+                                setShowReceiptPopup(false);
+                            }}
+                        />
+                    </>
                     }
                 </div>
             </div>

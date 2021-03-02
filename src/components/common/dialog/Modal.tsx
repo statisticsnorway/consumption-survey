@@ -5,8 +5,9 @@ export interface ModalProps {
     title: string;
     onClose: () => void;
     closeText: string;
-    onCancel: () => void;
-    cancelText: string;
+    showCancel?: boolean;
+    onCancel?: () => void;
+    cancelText?: string;
     className?: string;
     style?: object;
 };
@@ -15,6 +16,7 @@ const Modal: React.FC<ModalProps> = ({
                                          show,
                                          title,
                                          children,
+                                         showCancel = true,
                                          onClose, closeText, onCancel, cancelText,
                                          className = '', style = {},
                                      }) => {
@@ -32,12 +34,13 @@ const Modal: React.FC<ModalProps> = ({
                 {children}
 
                 <div className={styles.fbuModalFooter}>
-                    <button
+                    {showCancel && <button
                         onClick={onCancel}
                         className={`ssb-btn secondary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCancelButton}`}
                     >
                         {cancelText}
                     </button>
+                    }
                     <button
                         className={`ssb-btn primary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCloseButton}`}
                         onClick={onClose}>
