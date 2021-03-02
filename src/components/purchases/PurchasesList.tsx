@@ -16,7 +16,8 @@ import { DASHBOARD_TABS, PATHS, TABS_PARAMS, makeDashboardPath } from '../../uiC
 
 import styles from './purchases.module.scss';
 import NoRecords from '../common/blocks/NoRecords';
-import { PurchaseStatus } from '../../firebase/model/Purchase';
+import { PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
+import OcrStatus from './OcrStatus';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -82,7 +83,7 @@ const PurchasesList = ({limit = -1, highlight}) => {
         setDatesForDisplay((limit > 0) ? sorted.slice(0, limit) : sorted);
     }, [sorted]);
 
-    const purchaseContent = (p) => {
+    const purchaseContent = (p: PurchaseType) => {
         if (p.status === PurchaseStatus.COMPLETE) {
             return (
                 <>
@@ -96,13 +97,7 @@ const PurchasesList = ({limit = -1, highlight}) => {
                 </>
             );
         } else {
-            return (
-                <>
-                    <span style={{ fontStyle: 'italic' }}>
-                        Skanner ({p.status}) ...
-                    </span>
-                </>
-            );
+            return <OcrStatus status={p.status} />
         }
     };
 

@@ -16,6 +16,8 @@ import { getContentType } from '../../../utils/imgUtils';
 import headerStyles from '../../layout/styles/header.module.scss';
 import styles from './styles/editPurchase.module.scss';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
+import FullscreenLoader from '../../common/FullscreenLoader';
+import Loader from '../../common/Loader';
 
 export type AddPurchaseProps = {
     onDate: string;
@@ -35,6 +37,8 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
     const {saveImageBlobToPouchDB, uploadToFireStorage, notifyReceipt} = useReceipts();
     const {initPurchase, editPurchase} = usePurchases();
     const {setHeaderContent} = useContext(LayoutContext);
+    const [showLoader, setShowLoader] = useState<boolean>(false);
+    const [loaderMessage, setLoaderMessage] = useState<string>('');
 
     useEffect(() => {
         setHeaderContent(
@@ -69,8 +73,19 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
         console.log('add an item manually');
     };
 
+    const clearMessages = () => {
+        setShowLoader(false);
+        setLoaderMessage('');
+    };
+
+    const showMessage = (msg) => {
+        setShowLoader(true);
+        setLoaderMessage(msg);
+    };
+
     const onAddReceipt = (imageName: string, image: Blob) => {
         const imageId = uuid();
+        showMessage(t('addPurchase.progress.saveImage'));
         saveImageBlobToPouchDB(imageId, imageName, image)
             .then(async res => {
                 console.log('image stored locally');
@@ -88,6 +103,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                     ...values,
                     receipts: newList,
                 });
+                clearMessages();
             })
     };
 
@@ -100,6 +116,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
 
     const cleanup = () => {
         setHeaderContent(null);
+        clearMessages();
     };
 
     const onSuccessfulAdd = ({highlight}) => {
@@ -111,6 +128,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
 
     const savePurchaseByReceipt = (receipt: ReceiptInfo) => {
         const {imageName, image, contentType, imageId, status} = receipt;
+        showMessage(t('addPurchase.progress.uploadReceipt'));
         initPurchase()
             .then(docRef => {
                 uploadToFireStorage(
@@ -175,6 +193,9 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                     {t('addPurchase.save')}
                 </button>
             </div>
+            <FullscreenLoader
+                show={showLoader}
+                loaderMessage={loaderMessage} />
         </div>
     );
 };

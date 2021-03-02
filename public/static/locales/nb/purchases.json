@@ -1,53 +1,53 @@
 {
-  "when" : "når",
+  "when": "når",
   "noRecords": "Ingen registreringer",
   "back": "Tilbake",
-
   "error": {
     "purchaseNotFound": "Registreringen kan ikke finnes"
   },
-
   "lineItems": {
     "table": {
       "name": "Vare",
       "qty": "Antall",
       "unitPrice": "Beløp"
     },
-
     "addNew": "Ny vare",
     "total": "Totalt"
   },
-
   "addPurchase": {
     "title": "Ny utgift",
     "total": "Sum",
     "cancel": "Avbryt",
     "save": "Lagre registreringen",
 
+    "progress": {
+      "saveImage": "Lagrer bilde",
+      "uploadReceipt": "Laster opp kvittering for skanning"
+    },
+
+    "status": {
+      "OCR_IN_PROGRESS": "Skanner",
+      "OCR_COMPLETE": "Venter på kontroll"
+    },
+
     "purchaseDate": {
       "label": "Dato",
       "placeholder": "Dato"
     },
-
     "purchaseName": {
       "label": "Butikk/sted",
       "placeholder": "Butikk/sted"
     },
-
     "addNewItem": {
       "leaderText": "Legg til varer ved å skanne en kvittering eller manuelt nedenfor",
       "label": "Legg inn vare"
     },
-
     "nameDateGroupTitle": "Hvor har du handlet ?",
     "purchaseNameLabel": "Navn på kjøpet",
     "purchaseNameDefault": "Register ny",
     "purchaseNamePlaceholder": "Daglivare, Kafé, Restaurant, osv..",
     "purchaseDateLabel": "Kjøpsdato",
     "changeNameAndDate": "Endre navn og dato",
-
-
-
     "newItem": {
       "title": "Ny vare eller tjeneste",
       "addNewTerm": "Legge til",
@@ -55,28 +55,23 @@
         "label": "Jeg har kjøpt",
         "placeholder": "Vare eller tjeneste"
       },
-
       "qty": {
         "label": "Mengde",
         "placeholder": "1, 2, ..."
       },
-
       "price": {
         "kr": {
           "label": "kr.",
           "placeholder": "kr"
         },
-
         "cents": {
           "label": "øre",
           "placeholder": "øre"
         }
       }
     },
-
     "addAnotherItem": "Legge til ny vare eller tjeneste"
   },
-
   "deleteItem": {
     "title": "Slett vare ?",
     "text": "Er du sikker på at du vil slette",
@@ -84,7 +79,6 @@
     "confirmText": "Slett",
     "cancelText": "Nei"
   },
-
   "deletePurchase": {
     "title": "Slett registreringen",
     "text": "Er du sikker på at du vil slette hele registreringen",
