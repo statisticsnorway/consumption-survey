@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, ReactNode, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Check, Save, Trash2 } from 'react-feather';
@@ -29,6 +29,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const {getReceiptFromPouchDB, getReceiptWithImageUrl} = useReceipts();
     const {t} = useTranslation('purchases');
     const {setHeaderContent} = useContext(LayoutContext);
+    const [editPurchaseHeader, setEditPurchaseHeader] = useState<ReactNode>(null);
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>(null);
     const [error, setError] = useState<string>(null);
@@ -90,28 +91,32 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
         if (purchase) {
             console.log('showing', purchase);
             if ((purchase.status === PurchaseStatus.OCR_COMPLETE) && purchase.ocrResults) {
+                console.log('using values from ocr results');
                 setValues(extractPurchaseInfo(purchase.ocrResults));
             } else {
+                console.log('using values from usePurchase');
                 setValues(purchase);
             }
 
             if (purchase.receipts) {
                 purchase.receipts.forEach(r => {
                     console.log('loading image', r.imageId, r.imageName, r.contentType);
-                    getReceiptWithImageUrl(r.imageId, r.imageName)
-                        .then(withImg => {
-                            setValues(prevState => {
-                                const afterImgLoad = {
-                                    ...prevState,
-                                    receipts: [withImg],
-                                };
+                    if (r.imageId && r.imageName) {
+                        getReceiptWithImageUrl(r.imageId, r.imageName)
+                            .then(withImg => {
+                                setValues(prevState => {
+                                    const afterImgLoad = {
+                                        ...prevState,
+                                        receipts: [{ ...r, ...withImg }],
+                                    };
 
-                                console.log('prev state', prevState);
-                                console.log('new state', afterImgLoad);
+                                    console.log('xx prev state', prevState);
+                                    console.log('xx new state', afterImgLoad);
 
-                                return afterImgLoad;
+                                    return afterImgLoad;
+                                });
                             });
-                        });
+                    }
                 });
             }
 
@@ -120,7 +125,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     }, [purchase]);
 
     const updateHeader = () => {
-        setHeaderContent(
+        setEditPurchaseHeader(
             <div className={`${headerStyles.headerComponentWrapper} ${styles.editPurchaseHeader}`}>
                 <div className={headerStyles.leftSection}>
                     <a
@@ -153,7 +158,9 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     {(purchase.status === PurchaseStatus.COMPLETE) &&
                     <RoundButton
                         className={styles.saveChangesBtn}
-                        onClick={() => { savePurchase({status: PurchaseStatus.COMPLETE}); }}
+                        onClick={() => {
+                            savePurchase({status: PurchaseStatus.COMPLETE});
+                        }}
                     >
                         <Save className={styles.icon}/>
                     </RoundButton>
@@ -175,9 +182,15 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
         console.log(' ---> Values changed', values);
 
         if (values) {
-            // updateHeader();
+            updateHeader();
+        } else {
+            setEditPurchaseHeader(null);
         }
     }, [values]);
+
+    useEffect(() => {
+        setHeaderContent(editPurchaseHeader);
+    }, [editPurchaseHeader]);
 
     const removeItem = (item) => {
         const {idx, id} = item;
@@ -196,11 +209,23 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
     const savePurchase = ({status}) => {
         showMessage(t('Lagrer registreringen ...'));
-        console.log('new values', values);
-        editPurchase(purchase.id, {
+        console.log('wtf is it with receipts and state', values, values.receipts);
+        const receiptsForFirebase = values.receipts
+            ? values.receipts.map(r => ({
+                imageName: r.imageName,
+                imageId: r.imageId,
+                contentType: r.contentType,
+                status: r.status,
+            }))
+            : null;
+        console.log(receiptsForFirebase);
+        const newValues = {
             ...values,
-            status,
-        })
+            receipts: receiptsForFirebase,
+            status: PurchaseStatus.COMPLETE,
+        };
+        console.log('attempting to save', newValues);
+        editPurchase(purchase.id, newValues)
             .then(() => {
                 console.log('fb updated');
                 clearMessages();
