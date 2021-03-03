@@ -1,0 +1,25 @@
+@import '../../styles/common';
+.ocrStatus {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  .text {
+    font-weight: bold;
+    font-family: "Roboto";
+    color: $ssb-dark-6;
+    font-size: 1rem;
+  }
+
+  .component {
+  }
+
+  .icon {
+    color: $ssb-green-4;
+    font-size: 1rem;
+    width: 20px;
+    height: 20px;
+  }
+}

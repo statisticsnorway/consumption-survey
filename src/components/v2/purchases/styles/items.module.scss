@@ -1,0 +1,73 @@
+@import '../../../../styles/common';
+
+.items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: 2.5rem 0 0;
+
+  table.itemsTable {
+    width: 100%;
+    margin-bottom: 1.25rem;
+
+    th, td {
+      height: 2.75rem !important;
+      font-size: 1rem;
+    }
+
+    th {
+      border-bottom: 1px solid $ssb-dark-5;
+      font-size: 0.875rem;
+    }
+
+    td {
+      border-bottom: 1px solid $ssb-dark-2;
+      font-family: "Open Sans";
+    }
+
+    .itemName {
+      text-align: left;
+    }
+
+    .itemQtyGroup {
+      text-align: center;
+    }
+
+    .totalAmount,
+    .unitPrice {
+      text-align: right;
+    }
+
+    .addNewRow {
+      td {
+        border-bottom: 0;
+        color: $ssb-green-4;
+        font-weight: 700;
+        font-family: "Roboto";
+        padding-bottom: 1rem;
+
+        display: flex;
+        align-items: center;
+
+        .icon {
+          width: 20px;
+          height: 20px;
+          margin-left: 0.25rem;
+        }
+      }
+    }
+
+    .totalRow {
+      td {
+        border-top: 1px solid $ssb-dark-5;
+        border-bottom: 0;
+        color: $ssb-dark-5;
+        font-weight: 700;
+        font-family: "Roboto";
+      }
+    }
+  }
+}

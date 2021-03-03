@@ -1,8 +1,9 @@
 import { add, sub } from 'date-fns';
+import { ChangeEvent } from 'react';
 
 export const PATHS = {
     DASHBOARD: '/dashboard/Dashboard',
-    EDIT_PURCHASE: '/purchases/editPurchase',
+    EDIT_PURCHASE: '/v2/purchases/editPurchase',
     EDIT_EXPENSE: `/`,
     AUTH_IDP: '/auth/api'
 };
@@ -55,3 +56,15 @@ export const getModifiers = (purchases, surveyInfo) => {
         withEntries,
     };
 };
+
+/** Databases */
+export const DATABASE_RECEIPTS = 'receipts';
+export const DATABASE_PURCHASE_RECEIPTS = 'purchase-receipts';
+
+export const POUCH_DATABASES = [
+    DATABASE_RECEIPTS,
+    DATABASE_PURCHASE_RECEIPTS,
+];
+
+/** Change Event Handler */
+export type INPUT_CHANGE_HANDLER = (e: ChangeEvent<HTMLInputElement>) => void;

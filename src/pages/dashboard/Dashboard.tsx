@@ -22,6 +22,7 @@ const Dashboard = () => {
 
     const pathActiveTab = router.query.selectedTab as string;
     const pathSelectedDate = router.query.selectedDate as string;
+    const highlight = router.query.highlight as string;
 
     const [activeTab, setActiveTab] = useState(pathActiveTab || 'diary');
     const [selectedDate, setSelectedDate] = useState(pathSelectedDate || null);
@@ -85,6 +86,7 @@ const Dashboard = () => {
                                 }}
                                 selectDate={showPurchasesByDate}
                                 onDayClick={onDayClick}
+                                highlight={highlight}
                             />
                         ),
                         icon: <ShoppingCart height={24} width={24} />,

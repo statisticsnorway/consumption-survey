@@ -5,8 +5,9 @@
   background: $ssb-dark-1; /* $ssb-white; */
   /* border-bottom: 1px solid $ssb-dark-5; */
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 1rem;
+  height: 68px;
 
   .contentHolder {
     padding-top: 45px;
@@ -150,6 +151,12 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
+    padding-left: 1rem;
+
+    h3 {
+      font-size: 1rem;
+      font-family: "Roboto";
+    }
 
     .links {
       align-items: center;

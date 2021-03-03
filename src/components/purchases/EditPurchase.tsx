@@ -1,28 +1,23 @@
 import { ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Edit3, PlusCircle, ArrowLeft, Trash2, Camera } from 'react-feather';
+import { ArrowLeft, Camera, Edit3, PlusCircle, Trash2 } from 'react-feather';
 import uuid from 'uuid';
-import { INIT_PURCHASE, ItemType, PurchaseType } from '../../firebase/model/Purchase';
+import { INIT_PURCHASE, ItemType, PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
-import { parseDate, simpleFormat } from '../../utils/dateUtils';
+import { OCR_DATE_FORMAT, parseDate, simpleFormat } from '../../utils/dateUtils';
 import ItemsTable from './ItemsTable';
 import EditItem from './EditItem';
 import PurchaseNameDateGroup from './PurchaseNameDateGroup';
 import { useRouter } from 'next/router';
 import { LayoutContext } from '../../uiContexts';
-import DeleteItemDialog from './support/DeleteItemDialog';
 import DeletePurchaseDialog from './support/DeletePurchaseDialog';
 import { PATHS } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
 import headerStyles from '../layout/styles/header.module.scss';
 import workspaceStyles from '../layout/styles/workspace.module.scss';
-import ActionsPopup from '../common/dialog/ActionsPopup';
-import { FireContext } from '../../contexts';
 import useReceipts from '../../hocs/useReceipts';
-import { getPurchaseName } from './PurchasesList';
-import { UploadTaskSnapshot } from '@firebase/storage-types';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -30,14 +25,18 @@ export type EditPurchaseProps = {
 };
 
 const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
-    const {purchases, editPurchase, addPurchase, deletePurchase} = usePurchases();
+    const {purchases, initPurchase, editPurchase, addPurchase, deletePurchase} = usePurchases();
     const [purchase, setPurchase] = useState<PurchaseType>(null);
     const [values, setValues] = useState<PurchaseType>();
     const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
     const [isDirty, setIsDirty] = useState<boolean>();
     const [init, setInit] = useState<boolean>(true);
 
-    const {saveReceiptBlob} = useReceipts();
+    const {
+        saveImageBlobToPouchDB,
+        getReceiptFromPouchDB,
+        uploadToFireStorage,
+    } = useReceipts();
 
     const mediaInputRef = useRef(null);
 
@@ -56,6 +55,10 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
     const [error, setError] = useState<string>();
 
     const [isSaving, setIsSaving] = useState(false);
+    const [contentType, setContentType] = useState<string>(null);
+    const [imageName, setImageName] = useState<string>(null);
+    const [imageBlob, setImageBlob] = useState<Blob>(null);
+    const [previewUrl, setPreviewUrl] = useState<string>(null);
 
     useEffect(() => {
         if (purchases) {
@@ -75,26 +78,83 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                 setPurchase({
                     ...INIT_PURCHASE,
                     purchaseDate: onDate ? parseDate(onDate).toISOString() : INIT_PURCHASE.purchaseDate,
+                    status: PurchaseStatus.CREATED,
                 });
             }
         }
     }, [purchases]);
 
+    const extractItemInfo = (lineItems) =>
+        lineItems.map((li, idx) => ({
+            name: li.description,
+            qty: li.quantity,
+            units: li.unit_of_measure,
+            amount: li.price || li.total,
+            id: li.id,
+            idx,
+        }));
+
+    // TODO: for now we assume only one receipt.
+    const extractReceipts = (ocrResults) => {
+        const receipts = Object.keys(ocrResults);
+        return ocrResults[receipts[0]];
+    };
+
+    const extractPurchaseInfo = (ocrResults) => {
+        const receiptInfo = extractReceipts(ocrResults);
+        const { line_items, date, vendor, total } = receiptInfo;
+
+        return {
+            name: vendor.name || vendor.raw_name || '??',
+            purchaseDate: parseDate(date, OCR_DATE_FORMAT).toISOString(),
+            amount: total,
+            items: extractItemInfo(line_items),
+
+            // todo: make following line unnecessary!
+            status: PurchaseStatus.OCR_COMPLETE,
+        };
+    };
+
     useEffect(() => {
         if (purchase) {
-            setValues(purchase);
+            if ((purchase.status === PurchaseStatus.OCR_COMPLETE) && purchase.ocrResults) {
+                setValues(extractPurchaseInfo(purchase.ocrResults));
+            } else {
+                setValues(purchase);
+            }
             setInit(false);
         }
     }, [purchase]);
 
+    const showPreview = async (id, name) => {
+        getReceiptFromPouchDB(id, name)
+            .then(({name, contentType, blob}) => {
+                setImageBlob(blob);
+                setImageName(name);
+                setContentType(contentType);
+
+                const imageUrl = URL.createObjectURL(blob);
+                setPreviewUrl(imageUrl);
+            })
+    };
+
     const onFileSelected = async (e) => {
         const image = e.target.files[0];
-        console.log('image', image, image.value);
+        const imageId = uuid();
+        saveImageBlobToPouchDB(imageId, image.name, image)
+            .then(async res => {
+                console.log('image stored locally');
+                await showPreview(imageId, image.name);
+            });
+    };
 
-        saveReceiptBlob(uuid(), image.name, image, image.type)
+    const onFileAccepted = async (e) => {
+        /*
+        uploadToFireStorage(imageId, image.name, image, image.type)
             .then((snapShot: UploadTaskSnapshot) => {
                 console.log('Transferred', snapShot.totalBytes, snapShot.metadata, snapShot.bytesTransferred);
             })
+         */
     };
 
     const onCancelAddItem = () => {
@@ -124,27 +184,33 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         setShowAddItemForm(false);
     };
 
-    const updateItem = ({idx, name, qty, units, amount}) => {
+    const updateItem = ({id, idx, name, qty, units, amount}) => {
         console.log('updating', idx, name, qty);
         const {items} = values;
-        const oldItem = items.find(item => (item.idx === idx));
-        const other = items.filter(item => (item.idx !== idx));
+        const oldItem = items.find(item => id ? (item.id === id) : (item.idx === idx));
+        const other = items.filter(item => id ? (item.id !== id) : (item.idx !== idx));
+
+        const byIdx = (i1, i2) => i1.idx > i2.idx ? 1 : -1;
+
+        const newItemList = [
+            ...other,
+            {
+                idx,
+                name,
+                qty,
+                units,
+                amount,
+            }
+        ].sort(byIdx);
+
+        const newAmount = newItemList.reduce(
+            (acc, i) => acc + (Number(i.amount) * Number(i.qty)),
+            0);
 
         setValues({
             ...values,
-            items: [
-                ...other,
-                {
-                    idx,
-                    name,
-                    qty,
-                    units,
-                    amount,
-                }
-            ],
-            amount: values.amount
-                - (Number(oldItem.amount) * Number(oldItem.qty))
-                + (Number(amount) * Number(qty)),
+            items: newItemList,
+            amount: newAmount,
         });
 
         setShowEditItemForm(false);
@@ -178,9 +244,12 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         clearAll();
     };
 
-    const onSuccessfulEdit = () => {
+    const onSuccessfulEdit = ({ highlight }) => {
         cleanup();
-        router.push(`/dashboard/Dashboard?selectedTab=entries`);
+
+        const highlightParam = highlight ? `&highlight=${highlight}` : '';
+
+        router.push(`/dashboard/Dashboard?selectedTab=entries${highlightParam}`);
     };
 
     const doSave = (where, when) => {
@@ -192,13 +261,13 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             editPurchase(purchaseId, complete)
                 .then((res) => {
                     console.log('purchase updated', res);
-                    onSuccessfulEdit();
+                    onSuccessfulEdit({ highlight: purchaseId });
                 });
         } else {
             addPurchase(complete)
-                .then((res) => {
-                    console.log('item added', res);
-                    onSuccessfulEdit();
+                .then((docRef) => {
+                    console.log('item added', docRef);
+                    onSuccessfulEdit({ highlight: docRef.id });
                 });
         }
     };
@@ -209,6 +278,38 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
             setNameDatePopupVisible(true);
         } else {
             doSave(values.name, values.purchaseDate);
+        }
+    };
+
+    const savePurchaseByReceipt = () => {
+        if (imageBlob) {
+            initPurchase()
+                .then(docRef => {
+                    uploadToFireStorage(
+                        docRef.id,
+                        imageName,
+                        imageBlob,
+                        contentType
+                    )
+                        .then(uploadSnapshot => {
+                            console.log('Upload details', uploadSnapshot);
+                            editPurchase(docRef.id, {
+                                status: PurchaseStatus.OCR_IN_PROGRESS
+                            })
+                                .then(() => {
+                                    onSuccessfulEdit({ highlight: docRef.id });
+                                })
+                        })
+                        .catch(err => {
+                            console.log('Firebase upload error', err);
+                            editPurchase(docRef.id, {
+                                status: PurchaseStatus.OCR_UPLOAD_FAILED,
+                            })
+                                .then(() => {
+                                    onSuccessfulEdit({ highlight: docRef.id });
+                                })
+                        });
+                });
         }
     };
 
@@ -237,16 +338,7 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
                         </a>
                     </div>
                     <div className={headerStyles.rightSection}>
-                        <button
-                            className={`ssb-btn primary-btn ${styles.addPurchaseSave}`}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                savePurchase();
-                            }}
-                            disabled={disabled}
-                        >
-                            {t('addPurchase.save')}
-                        </button>
+                        <h3>{t('addPurchase.title')}</h3>
                     </div>
                 </div>
             );
@@ -283,8 +375,52 @@ const EditPurchase = ({purchaseId, onDate}: EditPurchaseProps) => {
         </div>
     );
 
+    if (previewUrl) {
+        return (
+            <div className={styles.addPurchaseByReceipt}>
+                <div className={styles.captureInfo}>
+                    <div className={styles.addPurchaseImgPreviewContainer}>
+                        <img src={previewUrl}/>
+                    </div>
+
+                    <h3>Kvitteringen kan skannes nå!</h3>
+                    <p>Trykk på knappen under for å starte skanningen.</p>
+                </div>
+                <button
+                    className={`ssb-btn primary-btn ${styles.savePurchaseAndUploadImage}`}
+                    onClick={savePurchaseByReceipt}
+                >
+                    Lagre og start skanning
+                </button>
+            </div>
+        );
+    }
+
+    const approveOcrResults = () => {
+        editPurchase(purchase.id, {
+            ...values,
+            status: PurchaseStatus.COMPLETE
+        })
+            .then(() => {
+                console.log('fb updated');
+            })
+    };
+
     return values ? (
         <>
+            {(values.status === PurchaseStatus.OCR_COMPLETE) &&
+                <div className={styles.approvePanel}>
+                    <p>
+                        Skanning er nå ferdig. Kontrollér at all informasjon er korrekt
+                    </p>
+                    <button
+                        className={`ssb-btn primary-btn`}
+                        onClick={approveOcrResults}
+                    >
+                        Ja, ser bra ut!
+                    </button>
+                </div>
+            }
             <PurchaseNameDateGroup
                 currName={values.name}
                 currDate={new Date(values.purchaseDate)}

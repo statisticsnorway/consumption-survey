@@ -18,6 +18,8 @@ export type AppContextType = {
 export const AppContext = createContext({} as AppContextType);
 
 export type LayoutContextType = {
+    isOnline: boolean;
+    setIsOnline: (boolean) => void;
     showHeader: boolean;
     setShowHeader: (boolean) => void;
     showFooter: boolean;
@@ -38,7 +40,8 @@ export type ImageSaverContextType = {
 export const ImageHandlerContext = createContext({} as ImageSaverContextType);
 
 export type PouchDBContextType = {
-    db: PouchDB.Database;
+    getDB: (name: string) => PouchDB.Database;
+    ready: boolean;
 };
 
 export const PouchDBContext = createContext({} as PouchDBContextType);

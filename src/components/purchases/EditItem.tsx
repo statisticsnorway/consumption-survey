@@ -17,6 +17,7 @@ type SearchTermExt = SearchTermType & { inputValue?: string };
 const filter = createFilterOptions<SearchTermExt>();
 
 const INIT_STATE: ItemType = {
+    id: null,
     idx: -1,
     name: '',
     qty: '1',

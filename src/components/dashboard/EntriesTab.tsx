@@ -15,7 +15,7 @@ import { FLOATING_BTN_OPTIONS } from './HomeTab';
 import { simpleFormat } from '../../utils/dateUtils';
 import { UserContext } from '../../contexts';
 
-const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
+const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highlight}) => {
     const {t} = useTranslation('dashboard');
     const router = useRouter();
     const {purchases, purchasesByDate} = usePurchases();
@@ -30,7 +30,8 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
             title: t('fab.registerNew'),
             onClick: () => {
                 const onDateParam = onDate ? `?onDate=${onDate}` : '';
-                router.push(`/purchases/editPurchase${onDateParam}`);
+                // router.push(`/purchases/editPurchase${onDateParam}`);
+                router.push(`/v2/purchases/addPurchase${onDateParam}`);
             },
             icon: <Edit/>,
         }, {
@@ -58,6 +59,7 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
                     purchases={purchasesDisp}
                     deselectDate={deselectDate}
                     selectDate={selectDate}
+                    highlight={highlight}
                 />
             ) : (
                 <>
@@ -69,9 +71,8 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick}) => {
                         className={styles.dashboardDiary}
                     />
                     <h1>{t('entries.title')}</h1>
-                    <ConsumptionChart/>
                     <div className={styles.entries}>
-                        <PurchasesList/>
+                        <PurchasesList highlight={highlight}/>
                     </div>
                 </>
             )

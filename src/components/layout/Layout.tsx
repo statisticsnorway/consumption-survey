@@ -128,13 +128,14 @@ const Layout = (props: LayoutProps) => {
             </Head>
             <LayoutContext.Provider
                 value={{
+                    isOnline, setIsOnline,
                     showHeader, showFooter,
                     setShowHeader, setShowFooter,
                     headerContent, setHeaderContent,
                     footerContent, setFooterContent,
                 }}
             >
-                {showHeader && <Header isOnline={isOnline} siteTitle="Forbruk 2021" version="1.0" />}
+                {showHeader && <Header isOnline={isOnline} siteTitle="Forbruk 2021" version="1.2" />}
                 <Workspace>
                     <SWHelper isOnline={isOnline} firstVisitWeb={firstVisitWeb}/>
                     {loading && <Loader/>}

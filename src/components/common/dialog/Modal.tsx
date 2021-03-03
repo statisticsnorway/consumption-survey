@@ -2,19 +2,24 @@ import styles from './modal.module.scss';
 
 export interface ModalProps {
     show: boolean;
-    title: string;
+    showTitle?: boolean;
+    title?: string;
     onClose: () => void;
-    closeText: string;
-    onCancel: () => void;
-    cancelText: string;
+    showClose?: boolean;
+    closeText?: string;
+    showCancel?: boolean;
+    onCancel?: () => void;
+    cancelText?: string;
     className?: string;
     style?: object;
 };
 
 const Modal: React.FC<ModalProps> = ({
                                          show,
+                                         showTitle = true,
                                          title,
                                          children,
+                                         showCancel = true, showClose = true,
                                          onClose, closeText, onCancel, cancelText,
                                          className = '', style = {},
                                      }) => {
@@ -25,24 +30,29 @@ const Modal: React.FC<ModalProps> = ({
     return (
         <div className={styles.fbuModalOverlay} style={style}>
             <div className={`${styles.fbuModalDialog} ${className || ''}`}>
+                {showTitle &&
                 <div className={`${styles.fbuModalDialogHeader}`}>
                     <h3>{title}</h3>
                 </div>
+                }
 
                 {children}
 
                 <div className={styles.fbuModalFooter}>
-                    <button
+                    {showCancel && <button
                         onClick={onCancel}
                         className={`ssb-btn secondary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCancelButton}`}
                     >
                         {cancelText}
                     </button>
+                    }
+                    {showClose &&
                     <button
                         className={`ssb-btn primary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCloseButton}`}
                         onClick={onClose}>
                         {closeText}
                     </button>
+                    }
                 </div>
             </div>
         </div>

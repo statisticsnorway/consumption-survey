@@ -14,7 +14,7 @@ export type PurchasesByDateProps = {
     selectDate: (date) => void;
 }
 
-const PurchasesByDate = ({date, purchases, selectDate, deselectDate }) => {
+const PurchasesByDate = ({date, purchases, selectDate, deselectDate, highlight = undefined }) => {
     console.log('listing purchases', date, purchases);
     const dt = parseDate(date, SIMPLE_DATE_FORMAT);
     const prevDate = sub(dt, { days: 1 });

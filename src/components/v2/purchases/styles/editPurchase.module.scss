@@ -1,0 +1,142 @@
+@import 'src/styles/common';
+
+.editPurchase,
+.addPurchase {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  padding-bottom: 1.25rem;
+
+  /** name, date, receipts */
+  .titleZone {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+
+    .nameAndDate {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      input {
+        color: $ssb-dark-6;
+        font-weight: 700;
+        font-family: "Roboto";
+
+        border-width: 0;
+        border-bottom: 1px solid $ssb-dark-2;
+        font-size: 1rem;
+        line-height: 1.75rem;
+
+        &::placeholder {
+          color: $ssb-dark-3;
+          font-weight: 700;
+          font-family: "Open Sans";
+        }
+      }
+
+      .placeHolder {
+        color: $ssb-dark-2;
+      }
+
+    }
+
+    .receipts {
+      .placeHolder {
+        width: 5rem !important;
+        height: 5rem !important;
+        background-color: $ssb-dark-1;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          width: 100%;
+          height: 100%;
+        }
+
+        .icon {
+          width: 1.5rem;
+          height: 1.5rem;
+          color: $ssb-green-4;
+        }
+      }
+    }
+  }
+
+  .emptyItemsTable {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    overflow-y: scroll;
+
+    p {
+      color: $ssb-dark-3;
+
+      font-family: "Open Sans";
+      font-size: 1rem;
+      line-height: 1.75rem;
+
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .addNewItemButton {
+      border-radius: 1.5rem;
+      color: $ssb-green-4;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  /** line items */
+  .itemsTable {
+
+  }
+
+  /** info, common btn group etc. */
+  .footerZone {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.addPurchase {
+  justify-content: space-between;
+}
+
+/** edit purchase header zone */
+.editPurchaseHeader {
+  justify-content: space-between !important;
+}
+
+.deletePurchaseBtn,
+.approveOcrBtn,
+.saveChangesBtn {
+  background-color: $ssb-green-4;
+  color: #fff;
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.deletePurchaseBtn {
+  background-color: $ssb-red-1;
+  color: $ssb-red-4;
+  border: 1px solid $ssb-red-3 !important;
+}

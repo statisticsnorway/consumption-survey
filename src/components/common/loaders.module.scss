@@ -1,0 +1,14 @@
+@import '../../styles/common';
+
+.fullscreenLoader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+
+  .loaderMessage {
+    color: $ssb-dark-4;
+    margin-bottom: 1rem;
+  }
+}

@@ -34,7 +34,7 @@ export const getPurchaseDate = (reg: PurchaseType) => reg.purchaseDate;
 
 const dateDisp = (date) => {
     const [dt, day] =
-        dateFormatDayDate(parseDate(simpleFormat(date)))
+        dateFormatDayDate(parseDate(simpleFormat(date || new Date())))
             .split('.');
 
     return (
@@ -75,9 +75,11 @@ const RecentRegistrations = ({limit = 5, setActiveTab }: RecentRegistrationsProp
         <div className={styles.regList}>
             {recents
                 .map((reg: PurchaseType | RegularExpenseType) => {
+                    /*
                     console.log('processing', reg,
                         'isP', isPurchase(reg),
                         'dt', isPurchase(reg) ? (reg as PurchaseType).purchaseDate : 'fast');
+                     */
                     return (
                         <div className={styles.reg}>
                             {isPurchase(reg) ?

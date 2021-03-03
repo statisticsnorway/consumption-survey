@@ -16,6 +16,8 @@ import { DASHBOARD_TABS, PATHS, TABS_PARAMS, makeDashboardPath } from '../../uiC
 
 import styles from './purchases.module.scss';
 import NoRecords from '../common/blocks/NoRecords';
+import { PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
+import OcrStatus from './OcrStatus';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -56,11 +58,21 @@ export const getPurchaseName = (purchase) => {
     );
 }
 
-const PurchasesList = ({limit = -1}) => {
+const PurchasesList = ({limit = -1, highlight}) => {
     const {t} = useTranslation('purchases');
     const {purchasesByDate} = usePurchases();
     const [sorted, setSorted] = useState([]);
     const [datesForDisplay, setDatesForDisplay] = useState([]);
+    const [highlightPurchase, setHighlightPurchase] = useState(undefined);
+
+    useEffect(() => {
+        if (highlight) {
+            setHighlightPurchase(highlight);
+            setTimeout(() => {
+                setHighlightPurchase(undefined);
+            }, 1000);
+        }
+    }, []);
 
     useEffect(() => {
         setSorted(Object.keys(purchasesByDate)
@@ -71,11 +83,30 @@ const PurchasesList = ({limit = -1}) => {
         setDatesForDisplay((limit > 0) ? sorted.slice(0, limit) : sorted);
     }, [sorted]);
 
+    const purchaseContent = (p: PurchaseType) => {
+        if (p.status === PurchaseStatus.COMPLETE) {
+            return (
+                <>
+                    {getPurchaseName(p)}
+                    <div className={styles.purchaseTotalEdit}>
+                        <span className={styles.purchaseEntryTotal}>
+                            {krCents(Number(p.amount || 0))}
+                        </span>
+                        <Edit3 width={20} height={20} className={styles.editPurchase}/>
+                    </div>
+                </>
+            );
+        } else {
+            return <OcrStatus status={p.status} />
+        }
+    };
+
     return (datesForDisplay.length >= 1) ? (
         <div className={styles.purchasesList}>
             {datesForDisplay
                 .map((dateOfPurchase) => {
-                    const purchases = purchasesByDate[dateOfPurchase];
+                    const purchases = purchasesByDate[dateOfPurchase]
+                        .sort((a, b) => dateComparator(a.registeredTime, b.registeredTime));
                     return (
                         <div className={styles.purchaseGroup}>
                             <div className={styles.purchaseGroupDate}>
@@ -88,14 +119,11 @@ const PurchasesList = ({limit = -1}) => {
                                         <Link
                                             href={editPurchaseUrl}
                                         >
-                                            <div className={styles.purchaseGroupEntry}>
-                                                {getPurchaseName(p)}
-                                                <div className={styles.purchaseTotalEdit}>
-                                                    <span className={styles.purchaseEntryTotal}>
-                                                        {krCents(Number(p.amount || 0))}
-                                                    </span>
-                                                    <Edit3 width={20} height={20} className={styles.editPurchase}/>
-                                                </div>
+                                            <div
+                                                className={
+                                                    `${styles.purchaseGroupEntry} ${highlightPurchase === p.id ? styles.highlight : ''}`}
+                                            >
+                                                {purchaseContent(p)}
                                             </div>
                                         </Link>
                                     );
@@ -107,7 +135,7 @@ const PurchasesList = ({limit = -1}) => {
             }
         </div>
     ) : (
-        <NoRecords singularText="et nytt kjøp" pluralText="alle kjøpene og løpende utgifter" />
+        <NoRecords singularText="et nytt kjøp" pluralText="alle kjøpene og løpende utgifter"/>
     );
 };
 
