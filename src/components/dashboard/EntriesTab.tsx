@@ -71,7 +71,6 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highli
                         className={styles.dashboardDiary}
                     />
                     <h1>{t('entries.title')}</h1>
-                    <ConsumptionChart/>
                     <div className={styles.entries}>
                         <PurchasesList highlight={highlight}/>
                     </div>

@@ -10,7 +10,7 @@ export type RoundButtonProps = {
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-const RoundButton = ({ size = '2rem', className = '', children = null, onClick = DO_NOTHING}: RoundButtonProps) => {
+const RoundButton = ({ size = '3rem', className = '', children = null, onClick = DO_NOTHING}: RoundButtonProps) => {
     const sizeDim = (typeof size === 'string') ? size : `${size}px`;
 
   return (

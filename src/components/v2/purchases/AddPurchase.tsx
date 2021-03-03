@@ -2,7 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import uuid from 'uuid';
 import useReceipts from '../../../hocs/useReceipts';
-import { PurchaseStatus, PurchaseType, ReceiptInfo, ReceiptStatus } from '../../../firebase/model/Purchase';
+import { ItemType, PurchaseStatus, PurchaseType, ReceiptInfo, ReceiptStatus } from '../../../firebase/model/Purchase';
 import AddPurchaseTitleZone from './AddPurchaseTitleZone';
 import AddItemLeader from './AddItemLeader';
 import ReceiptPreviews from './ReceiptPreviews';
@@ -18,6 +18,7 @@ import styles from './styles/editPurchase.module.scss';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 import FullscreenLoader from '../../common/FullscreenLoader';
 import Loader from '../../common/Loader';
+import ItemsTable from './ItemsTable';
 
 export type AddPurchaseProps = {
     onDate: string;
@@ -167,23 +168,31 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
         }
     };
 
+    // ToDo: when we support manual additions again..
+    const onItemUpdate = (item: ItemType, newValue: number) => {
+        // do nothing for now..
+        // <AddItemLeader onAddItemClick={onAddItemClick}/>
+    };
+
     return (
         <div className={styles.addPurchase}>
-            {!values.receipts &&
-            <AddPurchaseTitleZone
-                updateField={updateField}
-                name={values.name}
-                date={values.purchaseDate}
-                receipts={values.receipts}
-                onAddReceipt={onAddReceipt}
-            />
-            }
-            {(!values.items && !values.receipts) &&
-            <AddItemLeader onAddItemClick={onAddItemClick}/>
-            }
-            {values.receipts && Array.isArray(values.receipts) && (values.receipts.length > 0) &&
-            <ReceiptPreviews receipts={values.receipts}/>
-            }
+            <div>
+                {!values.receipts &&
+                <AddPurchaseTitleZone
+                    updateField={updateField}
+                    name={values.name}
+                    date={values.purchaseDate}
+                    receipts={values.receipts}
+                    onAddReceipt={onAddReceipt}
+                />
+                }
+                {(!values.items && !values.receipts) &&
+                <ItemsTable items={values.items} onItemUpdate={onItemUpdate}/>
+                }
+                {values.receipts && Array.isArray(values.receipts) && (values.receipts.length > 0) &&
+                <ReceiptPreviews receipts={values.receipts}/>
+                }
+            </div>
             <div className={styles.footerZone}>
                 <button
                     className={'ssb-btn primary-btn'}
@@ -195,7 +204,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
             </div>
             <FullscreenLoader
                 show={showLoader}
-                loaderMessage={loaderMessage} />
+                loaderMessage={loaderMessage}/>
         </div>
     );
 };

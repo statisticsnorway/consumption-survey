@@ -27,7 +27,7 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
         }
     }, [items]);
 
-    return items ? (
+    return (
         <div className={styles.items}>
             <table
                 className={styles.itemsTable}
@@ -41,7 +41,7 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
                 </tr>
                 </thead>
                 <tbody>
-                {items.map((item) => (
+                {(items || []).map((item) => (
                     <tr>
                         <td className={styles.itemName}>{item.name}</td>
                         <td className={styles.itemQtyGroup}>
@@ -72,7 +72,7 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
                     </td>
                 </tr>
                 }
-                {showTotal &&
+                {items && showTotal &&
                 <tr className={styles.totalRow}>
                     <td className={styles.itemName}>{t('lineItems.total')}</td>
                     <td className={styles.itemQtyGroup}>{`${items.length} vare(r)`}</td>
@@ -82,7 +82,7 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
                 </tbody>
             </table>
         </div>
-    ) : <Loader/>;
+    );
 };
 
 export default ItemsTable;

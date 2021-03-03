@@ -75,9 +75,11 @@ const RecentRegistrations = ({limit = 5, setActiveTab }: RecentRegistrationsProp
         <div className={styles.regList}>
             {recents
                 .map((reg: PurchaseType | RegularExpenseType) => {
+                    /*
                     console.log('processing', reg,
                         'isP', isPurchase(reg),
                         'dt', isPurchase(reg) ? (reg as PurchaseType).purchaseDate : 'fast');
+                     */
                     return (
                         <div className={styles.reg}>
                             {isPurchase(reg) ?

@@ -106,60 +106,78 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                                     receipts: [withImg],
                                 };
 
+                                console.log('prev state', prevState);
+                                console.log('new state', afterImgLoad);
+
                                 return afterImgLoad;
                             });
                         });
                 });
             }
 
-            setHeaderContent(
-                <div className={`${headerStyles.headerComponentWrapper} ${styles.editPurchaseHeader}`}>
-                    <div className={headerStyles.leftSection}>
-                        <a
-                            className={headerStyles.actionLink}
-                            onClick={() => {
-                                router.push(`${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${DASHBOARD_TABS.ENTRIES}`);
-                            }}
-                        >
-                            <ArrowLeft width={16} height={16} className={headerStyles.actionIcon}/>
-                            <span className={styles.linkText}>{t('back')}</span>
-                        </a>
-                    </div>
-                    <div className={headerStyles.rightSection}>
-                        <RoundButton
-                            className={styles.deletePurchaseBtn}
-                            onClick={() => { setShowPurchaseDeleteConfirm(true); }}
-                        >
-                            <Trash2 className={styles.icon}/>
-                        </RoundButton>
-                        {(purchase.status === PurchaseStatus.OCR_COMPLETE) &&
-                        <RoundButton
-                            className={styles.approveOcrBtn}
-                            onClick={approveOcrResults}
-                        >
-                            <Check className={styles.icon}/>
-                        </RoundButton>
-                        }
-                        {(purchase.status === PurchaseStatus.COMPLETE) &&
-                        <RoundButton
-                            className={styles.saveChangesBtn}
-                            onClick={savePurchase}
-                        >
-                            <Save className={styles.icon}/>
-                        </RoundButton>
-                        }
-                    </div>
-                </div>
-            )
+            updateHeader();
         }
     }, [purchase]);
 
+    const updateHeader = () => {
+        setHeaderContent(
+            <div className={`${headerStyles.headerComponentWrapper} ${styles.editPurchaseHeader}`}>
+                <div className={headerStyles.leftSection}>
+                    <a
+                        className={headerStyles.actionLink}
+                        onClick={() => {
+                            router.push(`${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${DASHBOARD_TABS.ENTRIES}`);
+                        }}
+                    >
+                        <ArrowLeft width={16} height={16} className={headerStyles.actionIcon}/>
+                        <span className={styles.linkText}>{t('back')}</span>
+                    </a>
+                </div>
+                <div className={headerStyles.rightSection}>
+                    <RoundButton
+                        className={styles.deletePurchaseBtn}
+                        onClick={() => {
+                            setShowPurchaseDeleteConfirm(true);
+                        }}
+                    >
+                        <Trash2 className={styles.icon}/>
+                    </RoundButton>
+                    {(purchase.status === PurchaseStatus.OCR_COMPLETE) &&
+                    <RoundButton
+                        className={styles.approveOcrBtn}
+                        onClick={approveOcrResults}
+                    >
+                        <Check className={styles.icon}/>
+                    </RoundButton>
+                    }
+                    {(purchase.status === PurchaseStatus.COMPLETE) &&
+                    <RoundButton
+                        className={styles.saveChangesBtn}
+                        onClick={() => { savePurchase({status: PurchaseStatus.COMPLETE}); }}
+                    >
+                        <Save className={styles.icon}/>
+                    </RoundButton>
+                    }
+                </div>
+            </div>
+        );
+    };
+
     const updateField = (fieldName: keyof PurchaseType) => (e: ChangeEvent<HTMLInputElement>) => {
+        console.log('should change field', fieldName, e.target.value);
         setValues({
             ...values,
             [fieldName]: e.target.value,
         });
     };
+
+    useEffect(() => {
+        console.log(' ---> Values changed', values);
+
+        if (values) {
+            // updateHeader();
+        }
+    }, [values]);
 
     const removeItem = (item) => {
         const {idx, id} = item;
@@ -173,15 +191,15 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     };
 
     const approveOcrResults = () => {
-        savePurchase();
+        savePurchase({status: PurchaseStatus.COMPLETE});
     };
 
-    const savePurchase = () => {
+    const savePurchase = ({status}) => {
         showMessage(t('Lagrer registreringen ...'));
         console.log('new values', values);
         editPurchase(purchase.id, {
             ...values,
-            status: PurchaseStatus.COMPLETE
+            status,
         })
             .then(() => {
                 console.log('fb updated');
@@ -230,7 +248,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 items={values.items}
                 onItemUpdate={onItemUpdate}
             />
-            <FullscreenLoader show={showLoader} loaderMessage={loaderMessage} />
+            <FullscreenLoader show={showLoader} loaderMessage={loaderMessage}/>
             <DeletePurchaseDialog
                 purchase={purchase}
                 show={showPurchaseDeleteConfirm}
