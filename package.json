@@ -1,6 +1,6 @@
 {
   "name": "fbu-v1.0",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "dev": "node_modules/.bin/next dev",
