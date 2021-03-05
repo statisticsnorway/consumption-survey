@@ -18,6 +18,7 @@ import { DASHBOARD_TABS, PATHS, TABS_PARAMS } from '../../../uiConfig';
 import RoundButton from '../../common/buttons/RoundButton';
 import FullscreenLoader from '../../common/FullscreenLoader';
 import DeletePurchaseDialog from '../../purchases/support/DeletePurchaseDialog';
+import useSearchTerms from '../../../hocs/useSearchTerms';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -26,6 +27,7 @@ export type EditPurchaseProps = {
 const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const router = useRouter();
     const {purchases, editPurchase, deletePurchase} = usePurchases();
+    const {searchTerms} = useSearchTerms();
     const {getReceiptFromPouchDB, getReceiptWithImageUrl} = useReceipts();
     const {t} = useTranslation('purchases');
     const {setHeaderContent} = useContext(LayoutContext);
@@ -179,8 +181,6 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     };
 
     useEffect(() => {
-        console.log(' ---> Values changed', values);
-
         if (values) {
             updateHeader();
         } else {
@@ -257,6 +257,10 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
     const clearPurchaseDelete = () => {
         setShowPurchaseDeleteConfirm(false);
+    };
+
+    if (!searchTerms || searchTerms.length < 1) {
+        return <Loader />;
     };
 
     return values ? (

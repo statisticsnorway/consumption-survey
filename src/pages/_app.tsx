@@ -18,6 +18,7 @@ import PouchDBProvider from '../pouchdb/PouchDBProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import { loadFromEnvVars, sanitizeConfig } from '../utils/cfgUtils';
 import { POUCH_DATABASES } from '../uiConfig';
+import SearchTermsProvider from '../firebase/SearchTermsProvider';
 
 const appConfig = getConfig();
 
@@ -33,7 +34,6 @@ class MyApp extends App {
         console.log('--------------------------------------');
         console.log('Environment Variables (_app)', appConfig);
         console.log('--------------------------------------');
-
 
 
         return {
@@ -112,15 +112,17 @@ class MyApp extends App {
                     <FireProvider config={getCfg()}>
                         <PouchDBProvider dbNames={POUCH_DATABASES}>
                             <UserProvider>
-                                <PurchasesProvider>
-                                    <ExpensesProvider>
-                                        <Layout>
-                                            <ProtectedRoute>
-                                                <Component {...pageProps} />
-                                            </ProtectedRoute>
-                                        </Layout>
-                                    </ExpensesProvider>
-                                </PurchasesProvider>
+                                <SearchTermsProvider>
+                                    <PurchasesProvider>
+                                        <ExpensesProvider>
+                                            <Layout>
+                                                <ProtectedRoute>
+                                                    <Component {...pageProps} />
+                                                </ProtectedRoute>
+                                            </Layout>
+                                        </ExpensesProvider>
+                                    </PurchasesProvider>
+                                </SearchTermsProvider>
                             </UserProvider>
                         </PouchDBProvider>
                     </FireProvider>

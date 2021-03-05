@@ -53,6 +53,7 @@ const FireProvider = ({config, children}) => {
     }, [firebase]);
 
     useEffect(() => {
+        console.log('-----> rtdb:', rtdb);
         if (!initComplete) {
             if (fireAuth) {
                 // TODO: get FirebaseAuth import working
@@ -73,7 +74,7 @@ const FireProvider = ({config, children}) => {
 
             setInitComplete(true);
         }
-    }, [fireAuth, firestore]);
+    }, [fireAuth, firestore, rtdb]);
 
     return (
         <FireContext.Provider value={{
