@@ -19,6 +19,11 @@
     "total": "Sum",
     "cancel": "Avbryt",
     "save": "Lagre registreringen",
+    "saveByReceipt": "Start sknning",
+
+    "receiptScanning": {
+      "start": "Lagre kvitteringen for å starte skanningen. Du får beskjed når skann er fullført (eller noe sånt)."
+    },
 
     "progress": {
       "saveImage": "Lagrer bilde",

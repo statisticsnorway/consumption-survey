@@ -176,8 +176,8 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
 
     return (
         <div className={styles.addPurchase}>
+            {!values.receipts &&
             <div>
-                {!values.receipts &&
                 <AddPurchaseTitleZone
                     updateField={updateField}
                     name={values.name}
@@ -185,21 +185,21 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                     receipts={values.receipts}
                     onAddReceipt={onAddReceipt}
                 />
-                }
                 {(!values.items && !values.receipts) &&
                 <ItemsTable items={values.items} onItemUpdate={onItemUpdate}/>
                 }
-                {values.receipts && Array.isArray(values.receipts) && (values.receipts.length > 0) &&
-                <ReceiptPreviews receipts={values.receipts}/>
-                }
             </div>
+            }
+            {values.receipts && Array.isArray(values.receipts) && (values.receipts.length > 0) &&
+            <ReceiptPreviews receipts={values.receipts} showAddReceipt={false}/>
+            }
             <div className={styles.footerZone}>
                 <button
                     className={'ssb-btn primary-btn'}
                     disabled={!values.receipts || (values.receipts.length < 1)}
                     onClick={savePurchaseByReceipts}
                 >
-                    {t('addPurchase.save')}
+                    {t('addPurchase.saveByReceipt')}
                 </button>
             </div>
             <FullscreenLoader
