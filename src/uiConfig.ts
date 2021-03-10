@@ -3,6 +3,7 @@ import { ChangeEvent } from 'react';
 
 export const PATHS = {
     DASHBOARD: '/dashboard/Dashboard',
+    ADD_PURCHASE: '/v2/purchases/addPurchase',
     EDIT_PURCHASE: '/v2/purchases/editPurchase',
     EDIT_EXPENSE: `/`,
     AUTH_IDP: '/auth/api'
