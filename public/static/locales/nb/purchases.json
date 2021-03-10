@@ -11,7 +11,7 @@
       "qty": "Antall",
       "unitPrice": "Beløp"
     },
-    "addNew": "Ny vare",
+    "addNew": "Legge til vare/tjeneste",
     "total": "Totalt"
   },
   "addPurchase": {

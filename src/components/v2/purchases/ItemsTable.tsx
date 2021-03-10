@@ -75,7 +75,7 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
                 {items && showTotal &&
                 <tr className={styles.totalRow}>
                     <td className={styles.itemName}>{t('lineItems.total')}</td>
-                    <td className={styles.itemQtyGroup}>{`${items.length} vare(r)`}</td>
+                    <td className={styles.itemQtyGroup}>{`${items.length} vare${(items.length > 1) ? 'r': ''}`}</td>
                     <td className={styles.totalAmount}>{krCents(totalAmount)}</td>
                 </tr>
                 }
