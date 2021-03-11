@@ -4,6 +4,10 @@
   display: flex;
   flex-direction: column;
 
+  .noBox {
+    border: 0;
+  }
+
   .fbuFormField {
     margin: 0;
     display: flex;

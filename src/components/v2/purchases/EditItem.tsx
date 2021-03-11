@@ -6,12 +6,12 @@ import { ItemType } from '../../../firebase/model/Purchase';
 import Loader from '../../common/Loader';
 import { SearchTermType } from '../../../firebase/model/SearchTerm';
 import useSearchTerms from '../../../hocs/useSearchTerms';
-
-import styles from './styles/item.module.scss';
-import formStyles from '../../form/form.module.scss';
 import { TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import NorwegianCurrencyFormat from '../../common/NorwegianCurrencyFormat';
+
+import styles from './styles/item.module.scss';
+import formStyles from '../../form/form.module.scss';
 
 export type EditItemProps = {
     item: ItemType;

@@ -1,13 +1,22 @@
 import { TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Camera, Edit3 } from 'react-feather';
 import { INPUT_CHANGE_HANDLER } from '../../../uiConfig';
-
-import styles from './styles/editPurchase.module.scss';
 import { useTranslation } from 'react-i18next';
 import { useRef, useState } from 'react';
 import { ReceiptInfo } from '../../../firebase/model/Purchase';
 import { simpleFormat } from '../../../utils/dateUtils';
 import ReceiptPopup from './ReceiptPopup';
+
+import styles from './styles/editPurchase.module.scss';
+
+const noBorderStyles = makeStyles({
+    root: {
+        "& .MuiInputBase-root": {
+            border: '0'
+        }
+    }
+});
 
 export type AddPurchaseTitleZoneProps = {
     name: string;
@@ -22,6 +31,8 @@ const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}:
     const mediaInputRef = useRef(null);
     const [showReceiptPopup, setShowReceiptPopup] = useState<boolean>(false);
 
+    const classes = noBorderStyles();
+
     const onFileSelected = async (e) => {
         const image = e.target.files[0];
         onAddReceipt(image.name, image);
@@ -34,12 +45,14 @@ const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}:
                     value={date ? simpleFormat(new Date(date)) : null}
                     onChange={updateField('purchaseDate')}
                     placeholder={t('addPurchase.purchaseDate.placeholder')}
+                    className={classes.root}
                 />
 
                 <TextField
                     value={name}
                     onChange={updateField('name')}
                     placeholder={t('addPurchase.purchaseName.placeholder')}
+                    className={classes.root}
                 />
             </div>
 
