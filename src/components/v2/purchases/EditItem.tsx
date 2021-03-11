@@ -11,6 +11,7 @@ import styles from './styles/item.module.scss';
 import formStyles from '../../form/form.module.scss';
 import { TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import NorwegianCurrencyFormat from '../../common/NorwegianCurrencyFormat';
 
 export type EditItemProps = {
     item: ItemType;
@@ -30,6 +31,8 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
 
     // refs
     const nameFieldRef = useRef(null);
+    const amountFieldRef = useRef(null);
+    const qtyFieldRef = useRef(null);
 
     // errors
     const [errors, setErrors] = useState<ItemType>({} as ItemType);
@@ -127,12 +130,15 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                     </div>
                 </div>
                 <div className={`${formStyles.fbuForm} ${styles.newItemForm}`}>
-                    <div className={`${formStyles.fbuFormGroup} ${styles.itemNamePriceGroup}`}>
-                        <Autocomplete
-                            inputValue={values.name}
-                            options={searchTerms as SearchTermExt[]}
-                            renderOption={(option: SearchTermExt) => option.text}
-                            renderInput={(params) => (
+                    <Autocomplete
+                        inputValue={values.name}
+                        options={searchTerms as SearchTermExt[]}
+                        renderOption={(option: SearchTermExt) => option.text}
+                        renderInput={(params) => (
+                            <div className={formStyles.fbuFormField}>
+                                <label className={formStyles.fbuFieldLabel}>
+                                    Jeg har kjøpt
+                                </label>
                                 <TextField
                                     inputRef={nameFieldRef}
                                     placeholder={t('addPurchase.newItem.name.placeholder')}
@@ -140,47 +146,83 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                                     value={values.name}
                                     onChange={updateValue('name')}
                                     {...params}
-                                    className={`${formStyles.fbuFormField} ${styles.itemName}`}
+                                    className={styles.itemName}
                                     error={errors['name'] === 'error'}
                                 />
-                            )}
-                            onChange={(evt, newValue) => {
-                                setValues({
-                                    ...values,
-                                    ...extractValFromAutoComplete(evt, newValue),
+                            </div>
+                        )}
+                        onChange={(evt, newValue) => {
+                            setValues({
+                                ...values,
+                                ...extractValFromAutoComplete(evt, newValue),
+                            });
+
+                            if (amountFieldRef && amountFieldRef.current) {
+                                amountFieldRef.current.focus();
+                            }
+                        }}
+                        filterOptions={(options, params) => {
+                            const filtered = filter(options, params) as SearchTermExt[];
+
+                            if (params.inputValue !== '') {
+                                filtered.push({
+                                    inputValue: params.inputValue,
+                                    text: `${t('addPurchase.newItem.addNewTerm')} "${params.inputValue}"`,
+                                    id: null,
+                                    coicopCode: null,
                                 });
+                            }
 
-                                // ToDo: shift focus to amountField
-                            }}
-                            filterOptions={(options, params) => {
-                                const filtered = filter(options, params) as SearchTermExt[];
-
-                                if (params.inputValue !== '') {
-                                    filtered.push({
-                                        inputValue: params.inputValue,
-                                        text: `${t('addPurchase.newItem.addNewTerm')} "${params.inputValue}"`,
-                                        id: null,
-                                        coicopCode: null,
-                                    });
-                                }
-
-                                return filtered;
-                            }}
-                            getOptionLabel={(option) => {
-                                if (typeof option === 'string') {
-                                    return option;
-                                } else if (option.inputValue) {
-                                    return option.inputValue;
-                                } else {
-                                    return option.text;
-                                }
-                            }}
-                            selectOnFocus
-                            handleHomeEndKeys
-                            id="newItem-auto"
-                            freeSolo
-                            className={`${formStyles.fbuFormField} ${styles.itemName}`}
-                        />
+                            return filtered;
+                        }}
+                        getOptionLabel={(option) => {
+                            if (typeof option === 'string') {
+                                return option;
+                            } else if (option.inputValue) {
+                                return option.inputValue;
+                            } else {
+                                return option.text;
+                            }
+                        }}
+                        selectOnFocus
+                        handleHomeEndKeys
+                        id="newItem-auto"
+                        freeSolo
+                        className={formStyles.fbuFormGroup}
+                    />
+                    <div className={`${formStyles.fbuFormGroup} ${styles.qtyAmountGroup}`}>
+                        <div className={`${formStyles.fbuFormField} ${styles.qty}`}>
+                            <span className={formStyles.fbuFieldLabel}>
+                                Antall
+                            </span>
+                            <TextField
+                                placeholder="1"
+                                id="newItem-qty"
+                                inputRef={qtyFieldRef}
+                                value={values.qty}
+                                onChange={updateValue('qty')}
+                                InputProps={{
+                                    inputComponent: NorwegianCurrencyFormat as any,
+                                }}
+                                error={errors['qty'] === 'error'}
+                            />
+                        </div>
+                        <div className={`${formStyles.fbuFormField} ${styles.amount}`}>
+                            <span className={formStyles.fbuFieldLabel}>
+                                Beløp
+                            </span>
+                            <TextField
+                                placeholder={`1,00`}
+                                id="newItem-price"
+                                inputRef={amountFieldRef}
+                                value={values.amount}
+                                onChange={updateValue('amount')}
+                                InputProps={{
+                                    inputComponent: NorwegianCurrencyFormat as any,
+                                }}
+                                error={errors['amount'] === 'error'}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -35,13 +35,40 @@
     border-top: 1px solid $ssb-dark-2;
     padding: 1.25rem;
 
-    .itemNamePriceGroup {
+    .itemName {
+      flex: 2 1;
+    }
+
+    .qtyAmountGroup {
       display: flex;
       flex-direction: row;
+      align-items: center;
 
-      .itemName {
-        flex: 2 1;
+      .qty {
+        order: 1;
+        flex: 1 1;
+
+        input {
+          text-align: right;
+        }
       }
+
+      .amount {
+        order: 2;
+        flex: 2 1;
+
+        input {
+          text-align: right;
+        }
+      }
+
+      .qty + .amount {
+        margin-left: 1rem;
+      }
+    }
+
+    .formField + .formField {
+      margin-top: 1rem;
     }
   }
 }

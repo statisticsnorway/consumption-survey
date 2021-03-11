@@ -37,3 +37,14 @@
   border-bottom-width: 0px !important;
 }
 
+.Mui-focused {
+  border-color: $ssb-green-4 !important;
+}
+
+.MuiInput-underline:after {
+  border-bottom-width: 0px !important;
+}
+
+.MuiInputBase-root {
+  border: 1px solid $ssb-dark-6;
+}

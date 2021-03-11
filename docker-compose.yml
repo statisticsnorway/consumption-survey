@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  auth:
-    build:
-      context: ../forbruk-security-test
-    ports:
-      - 8443:8443
-      - 8080:8080
+#  auth:
+#    build:
+#      context: ../forbruk-security-test
+#    ports:
+#      - 8443:8443
+#      - 8080:8080
 
   nextjs:
     build:
