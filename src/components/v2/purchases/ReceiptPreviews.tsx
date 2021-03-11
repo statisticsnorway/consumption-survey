@@ -66,9 +66,6 @@ const ReceiptPreviews = ({receipts, showAddReceipt = true}: ReceiptPreviewsProps
                 </div>
                 }
             </div>
-            <div className={styles.startScanLeader}>
-                {t('previews.scanning.start')}
-            </div>
         </>
     );
 };

@@ -33,3 +33,24 @@
   text-align: left;
 }
 
+/**
+ * sass does not allow @extend within @media queries
+ * this is a workaround.
+ * ref: https://stackoverflow.com/questions/14840918/extending-selectors-from-within-media-queries-with-sass
+ */
+@mixin makeFullScreen {
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+
+  border-radius: 0 !important;
+}
+
+%makeFullScreen {
+  @include makeFullScreen;
+}

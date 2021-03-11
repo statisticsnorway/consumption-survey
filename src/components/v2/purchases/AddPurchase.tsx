@@ -169,9 +169,13 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
     };
 
     // ToDo: when we support manual additions again..
-    const onItemUpdate = (item: ItemType, newValue: number) => {
+    const onItemQtyChange = (item: ItemType, newValue: number) => {
         // do nothing for now..
         // <AddItemLeader onAddItemClick={onAddItemClick}/>
+    };
+
+    const onItemUpdate = (oldValues: ItemType, newValues: ItemType) => {
+
     };
 
     return (
@@ -186,14 +190,17 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                     onAddReceipt={onAddReceipt}
                 />
                 {(!values.items && !values.receipts) &&
-                <ItemsTable items={values.items} onItemUpdate={onItemUpdate}/>
+                <ItemsTable
+                    items={values.items}
+                    onItemQtyChange={onItemQtyChange}
+                    onItemUpdate={onItemUpdate}
+                />
                 }
             </div>
             }
             {values.receipts && Array.isArray(values.receipts) && (values.receipts.length > 0) &&
-            <ReceiptPreviews receipts={values.receipts} showAddReceipt={false}/>
-            }
-            <div className={styles.footerZone}>
+            <>
+                <ReceiptPreviews receipts={values.receipts} showAddReceipt={false}/>
                 <button
                     className={'ssb-btn primary-btn'}
                     disabled={!values.receipts || (values.receipts.length < 1)}
@@ -201,6 +208,13 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                 >
                     {t('addPurchase.saveByReceipt')}
                 </button>
+                <div className={styles.startScanLeader}>
+                    {t('addPurchase.receiptScanning.start')}
+                </div>
+            </>
+            }
+            <div className={styles.footerZone}>
+
             </div>
             <FullscreenLoader
                 show={showLoader}

@@ -107,7 +107,15 @@
 
   }
 
+  .startScanLeader {
+    color: $ssb-dark-6;
+    font-family: "Open Sans";
+    font-size: 0.875rem;
+    line-height: 1.5rem;
 
+    padding-top: 1.25rem;
+    border-top: 1px solid $ssb-dark-1;
+  }
 
   /** info, common btn group etc. */
   .footerZone {

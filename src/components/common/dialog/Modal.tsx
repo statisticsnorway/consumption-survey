@@ -12,6 +12,8 @@ export interface ModalProps {
     cancelText?: string;
     className?: string;
     style?: object;
+    fullScreen?: boolean;
+    showFooter?: boolean;
 };
 
 const Modal: React.FC<ModalProps> = ({
@@ -22,41 +24,45 @@ const Modal: React.FC<ModalProps> = ({
                                          showCancel = true, showClose = true,
                                          onClose, closeText, onCancel, cancelText,
                                          className = '', style = {},
+                                         fullScreen = false, showFooter = true
                                      }) => {
-    if (!show) {
-        return null;
-    }
+        if (!show) {
+            return null;
+        }
 
-    return (
-        <div className={styles.fbuModalOverlay} style={style}>
-            <div className={`${styles.fbuModalDialog} ${className || ''}`}>
-                {showTitle &&
-                <div className={`${styles.fbuModalDialogHeader}`}>
-                    <h3>{title}</h3>
-                </div>
-                }
-
-                {children}
-
-                <div className={styles.fbuModalFooter}>
-                    {showCancel && <button
-                        onClick={onCancel}
-                        className={`ssb-btn secondary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCancelButton}`}
-                    >
-                        {cancelText}
-                    </button>
+        return (
+            <div className={styles.fbuModalOverlay} style={style}>
+                <div className={`${styles.fbuModalDialog} ${className || ''} ${fullScreen ? styles.fullScreen : ''}`}>
+                    {showTitle &&
+                    <div className={`${styles.fbuModalDialogHeader}`}>
+                        <h3>{title}</h3>
+                    </div>
                     }
-                    {showClose &&
-                    <button
-                        className={`ssb-btn primary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCloseButton}`}
-                        onClick={onClose}>
-                        {closeText}
-                    </button>
+
+                    {children}
+
+                    {showFooter &&
+                    <div className={styles.fbuModalFooter}>
+                        {showCancel && <button
+                            onClick={onCancel}
+                            className={`ssb-btn secondary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCancelButton}`}
+                        >
+                            {cancelText}
+                        </button>
+                        }
+                        {showClose &&
+                        <button
+                            className={`ssb-btn primary-btn ${styles.fbuModalActionButton} ${styles.fbuModalCloseButton}`}
+                            onClick={onClose}>
+                            {closeText}
+                        </button>
+                        }
+                    </div>
                     }
                 </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+;
 
 export default Modal;

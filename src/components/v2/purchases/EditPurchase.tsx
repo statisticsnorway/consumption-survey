@@ -232,7 +232,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             })
     };
 
-    const onItemUpdate = (item: ItemType, newQty: number) => {
+    const onItemQtyChange = (item: ItemType, newQty: number) => {
         if (newQty === 0) {
             console.log('item will be removed');
             removeItem(item);
@@ -255,6 +255,10 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
         }
     };
 
+    const onItemUpdate = (oldValues: ItemType, newValues: ItemType) => {
+      console.log(oldValues, '=>', newValues);
+    };
+
     const clearPurchaseDelete = () => {
         setShowPurchaseDeleteConfirm(false);
     };
@@ -275,6 +279,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             />
             <ItemsTable
                 items={values.items}
+                onItemQtyChange={onItemQtyChange}
                 onItemUpdate={onItemUpdate}
             />
             <FullscreenLoader show={showLoader} loaderMessage={loaderMessage}/>

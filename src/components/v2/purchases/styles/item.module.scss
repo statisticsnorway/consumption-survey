@@ -1,0 +1,47 @@
+@import '../../../../styles/common';
+
+.editItemDialog {
+  display: flex;
+  flex-direction: column;
+
+  .headerZone {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4.25rem;
+    padding: 0 1rem;
+
+    .leftSection {
+      order: 1;
+      display: flex;
+      align-items: center;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    .rightSection {
+      order: 2;
+
+      .saveChangesLink {
+        color: $ssb-green-4;
+      }
+    }
+  }
+
+  .newItemForm {
+    border-top: 1px solid $ssb-dark-2;
+    padding: 1.25rem;
+
+    .itemNamePriceGroup {
+      display: flex;
+      flex-direction: row;
+
+      .itemName {
+        flex: 2 1;
+      }
+    }
+  }
+}
