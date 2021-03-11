@@ -23,8 +23,14 @@ const ReceiptPopup = ({
             closeText="Lukk"
             showCancel={false}
             className={styles.receiptModal}
+            fullScreen={true}
+            showFooter={false}
         >
-            <img src={receipt.previewUrl} className={styles.image}/>
+            <img
+                src={receipt.previewUrl}
+                className={styles.image}
+                onClick={onClose}
+            />
         </Modal>
     );
 };
