@@ -19,6 +19,7 @@ import RoundButton from '../../common/buttons/RoundButton';
 import FullscreenLoader from '../../common/FullscreenLoader';
 import DeletePurchaseDialog from '../../purchases/support/DeletePurchaseDialog';
 import useSearchTerms from '../../../hocs/useSearchTerms';
+import { krCents } from '../../../utils/jsUtils';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -279,6 +280,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             />
             <ItemsTable
                 items={values.items}
+                ocrTotal={krCents(values.amount)}
                 onItemQtyChange={onItemQtyChange}
                 onItemUpdate={onItemUpdate}
             />

@@ -15,9 +15,10 @@ export type ItemsTableProps = {
     showTotal?: boolean;
     onItemQtyChange: (item: ItemType, newValue: number) => void;
     onItemUpdate: (oldValues: ItemType, newValues: ItemType) => void;
+    ocrTotal?: string;
 };
 
-const ItemsTable = ({items, onItemQtyChange, onItemUpdate, showAddNewItem = true, showTotal = true}: ItemsTableProps) => {
+const ItemsTable = ({items, ocrTotal, onItemQtyChange, onItemUpdate, showAddNewItem = true, showTotal = true}: ItemsTableProps) => {
     const {t} = useTranslation('purchases');
     const [totalAmount, setTotalAmount] = useState<number>(0);
 
@@ -104,7 +105,7 @@ const ItemsTable = ({items, onItemQtyChange, onItemUpdate, showAddNewItem = true
                 <tr className={styles.totalRow}>
                     <td className={styles.itemName}>{t('lineItems.total')}</td>
                     <td className={styles.itemQtyGroup}>{`${items.length} vare${(items.length > 1) ? 'r' : ''}`}</td>
-                    <td className={styles.totalAmount}>{krCents(totalAmount)}</td>
+                    <td className={styles.totalAmount}>{ocrTotal || krCents(totalAmount)}</td>
                 </tr>
                 }
                 </tbody>
