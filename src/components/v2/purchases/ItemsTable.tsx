@@ -7,17 +7,22 @@ import styles from './styles/items.module.scss';
 import { krCents } from '../../../utils/jsUtils';
 import Loader from '../../common/Loader';
 import NumberStepper from '../../common/stepper/NumberStepper';
+import EditItem from './EditItem';
 
 export type ItemsTableProps = {
     items: ItemType[];
     showAddNewItem?: boolean;
     showTotal?: boolean;
-    onItemUpdate: (item: ItemType, newValue: number) => void;
+    onItemQtyChange: (item: ItemType, newValue: number) => void;
+    onItemUpdate: (oldValues: ItemType, newValues: ItemType) => void;
 };
 
-const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = true}: ItemsTableProps) => {
+const ItemsTable = ({items, onItemQtyChange, onItemUpdate, showAddNewItem = true, showTotal = true}: ItemsTableProps) => {
     const {t} = useTranslation('purchases');
     const [totalAmount, setTotalAmount] = useState<number>(0);
+
+    const [showEditItem, setShowEditItem] = useState(false);
+    const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
 
     useEffect(() => {
         if (items) {
@@ -26,6 +31,22 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
             setTotalAmount(total);
         }
     }, [items]);
+
+    const onItemRowClick = (item) => {
+        console.log('should show item', item);
+        setItemForEdit(item);
+        setShowEditItem(true);
+    };
+
+    const onItemUpdated = (oldValues, newValues) => {
+        console.log(oldValues, '=>', newValues);
+        onItemUpdate(oldValues, newValues);
+    };
+
+    const onItemEditCancel = () => {
+        setShowEditItem(false);
+        setItemForEdit(null);
+    };
 
     return (
         <div className={styles.items}>
@@ -43,12 +64,19 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
                 <tbody>
                 {(items || []).map((item) => (
                     <tr>
-                        <td className={styles.itemName}>{item.name}</td>
+                        <td
+                            className={styles.itemName}
+                            onClick={() => {
+                                onItemRowClick(item);
+                            }}
+                        >
+                            {item.name}
+                        </td>
                         <td className={styles.itemQtyGroup}>
                             <NumberStepper
                                 initialValue={Number(item.qty)}
                                 onChange={(newValue) => {
-                                    onItemUpdate(item, newValue);
+                                    onItemQtyChange(item, newValue);
                                 }}
                                 min={1}
                                 deleteConfirmProps={{
@@ -75,12 +103,18 @@ const ItemsTable = ({items, onItemUpdate, showAddNewItem = true, showTotal = tru
                 {items && showTotal &&
                 <tr className={styles.totalRow}>
                     <td className={styles.itemName}>{t('lineItems.total')}</td>
-                    <td className={styles.itemQtyGroup}>{`${items.length} vare(r)`}</td>
+                    <td className={styles.itemQtyGroup}>{`${items.length} vare${(items.length > 1) ? 'r' : ''}`}</td>
                     <td className={styles.totalAmount}>{krCents(totalAmount)}</td>
                 </tr>
                 }
                 </tbody>
             </table>
+            <EditItem
+                item={itemForEdit}
+                show={showEditItem}
+                onUpdate={onItemUpdated}
+                onCancel={onItemEditCancel}
+            />
         </div>
     );
 };

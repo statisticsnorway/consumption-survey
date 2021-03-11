@@ -11,14 +11,34 @@
       "qty": "Antall",
       "unitPrice": "Beløp"
     },
-    "addNew": "Ny vare",
-    "total": "Totalt"
+    "addNew": "Legge til vare/tjeneste",
+    "total": "Totalt",
+
+    "editItem": {
+      "addNew": "Legge til",
+      "save": "Lagre",
+      "cancel": "Avbryt",
+      "name": {
+        "help": "Jeg har kjøpt"
+      },
+      "kr": {
+        "help": "Kroner"
+      },
+      "cents": {
+        "help": "Øre"
+      }
+    }
   },
   "addPurchase": {
     "title": "Ny utgift",
     "total": "Sum",
     "cancel": "Avbryt",
     "save": "Lagre registreringen",
+    "saveByReceipt": "Start sknning",
+
+    "receiptScanning": {
+      "start": "Det kan ta litt tid å skanne kvitteringen. Du får beskjed når den er klar."
+    },
 
     "progress": {
       "saveImage": "Lagrer bilde",

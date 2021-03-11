@@ -5,6 +5,7 @@ import { FirebaseFirestore } from '@firebase/firestore-types';
 import { FirebaseStorage } from '@firebase/storage-types';
 import { FirebaseDatabase } from '@firebase/database-types';
 import { RegularExpenseType } from './firebase/model/RegularExpense';
+import { SearchTermType } from './firebase/model/SearchTerm';
 
 export type SurveyInfo = {
     journalStart: Date;
@@ -53,5 +54,14 @@ export type ExpensesContextType = {
 };
 
 export const ExpensesContext = createContext({} as ExpensesContextType);
+
+export type SearchTermsContextType = {
+    searchTerms: SearchTermType[];
+    initialLoadComplete: boolean;
+    setInitialLoadComplete: (status: boolean) => void;
+    setSearchTerms: (terms: SearchTermType[]) => void;
+};
+
+export const SearchTermsContext = createContext({} as SearchTermsContextType);
 
 

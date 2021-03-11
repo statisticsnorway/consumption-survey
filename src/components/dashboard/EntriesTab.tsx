@@ -7,10 +7,9 @@ import PurchasesByDate from '../purchases/PurchasesByDate';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
 import { useContext, useEffect, useState } from 'react';
-import ConsumptionChart from '../purchases/ConsumptionChart';
 import FloatingButton, { ChildMenuProps } from '../common/buttons/FloatingButton';
 import DiaryViz from './DiaryViz';
-import { getModifiers } from '../../uiConfig';
+import { getModifiers, PATHS } from '../../uiConfig';
 import { FLOATING_BTN_OPTIONS } from './HomeTab';
 import { simpleFormat } from '../../utils/dateUtils';
 import { UserContext } from '../../contexts';
@@ -19,7 +18,7 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highli
     const {t} = useTranslation('dashboard');
     const router = useRouter();
     const {purchases, purchasesByDate} = usePurchases();
-    const { userInfo: { surveyInfo }} = useContext(UserContext);
+    const {userInfo: {surveyInfo}} = useContext(UserContext);
 
     const [entriesComp, setEntriesComp] = useState(null);
     const [floatingMenuOptions, setFloatingMenuOptions] = useState<ChildMenuProps[]>();
@@ -48,7 +47,7 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highli
         setFloatingMenuOptions(makeMenuOptions(dateSelection));
     }, [dateSelection]);
 
-        useEffect(() => {
+    useEffect(() => {
         const purchasesDisp = dateSelection ? purchasesByDate[dateSelection] : purchases;
         console.log('should show', purchases);
 
@@ -85,8 +84,12 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highli
         <>
             {entriesComp}
             <FloatingButton
-                mainProps={FLOATING_BTN_OPTIONS}
-                childButtonProps={floatingMenuOptions}
+                mainProps={{
+                    ...FLOATING_BTN_OPTIONS,
+                    onClick: () => {
+                        router.push(`${PATHS.ADD_PURCHASE}`);
+                    }
+                }}
                 className={styles.floatingAddNew}
             />
         </>

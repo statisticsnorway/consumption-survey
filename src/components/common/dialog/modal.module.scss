@@ -19,11 +19,17 @@
   }
 }
 
+.fullScreen {
+  @include makeFullScreen;
+}
+
 .fbuModalDialog {
   background-color: #fff;
   border-radius: 0.25rem;
   margin: 20% auto;
   padding: 1.25rem;
+
+
 
   display: flex;
   flex-direction: column;

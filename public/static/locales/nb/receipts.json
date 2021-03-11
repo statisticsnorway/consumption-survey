@@ -6,7 +6,8 @@
       "text": "Leser kvittering",
       "cancel": "Avbryt",
       "delete": "Fjern",
-      "error": "En feil har oppstod"
+      "error": "En feil har oppstod",
+      "start": "Lagre kvitteringen for å starte skanning. Du får beskjed når skann er fullført."
     }
   }
 }

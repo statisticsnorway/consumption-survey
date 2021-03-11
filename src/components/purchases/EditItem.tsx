@@ -182,7 +182,7 @@ const EditItem = ({itemInfo, show, onAddItem, onCancel}: EditItemProps) => {
                                     inputValue: params.inputValue,
                                     text: `${t('addPurchase.newItem.addNewTerm')} "${params.inputValue}"`,
                                     id: null,
-                                    code: null,
+                                    coicopCode: null,
                                 });
                             }
 
