@@ -258,6 +258,18 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
     const onItemUpdate = (oldValues: ItemType, newValues: ItemType) => {
       console.log(oldValues, '=>', newValues);
+
+      const itemsUpd = values.items.map(i => {
+          const match = (x) =>
+              x.id ? x.id === oldValues.id : x.idx === oldValues.idx;
+
+          return match(i) ? newValues : i;
+      });
+
+      setValues({
+          ...values,
+          items: itemsUpd,
+      });
     };
 
     const clearPurchaseDelete = () => {
