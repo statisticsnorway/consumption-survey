@@ -38,9 +38,22 @@
     justify-content: center;
     align-items: center;
 
-    .nextButton {
-      margin: 1.25rem 0;
+
+    .buttonComplex {
+      display: flex;
+      flex-direction: column;
+      justifyContent: center;
+      alignItems: center;
+
+      .nextButton {
+        margin: 1.25rem 0;
+      }
+
+      .skip {
+        color: $ssb-green-4;
+      }
     }
+
 
     .slideNav {
       display: flex;

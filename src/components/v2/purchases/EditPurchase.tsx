@@ -118,6 +118,10 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
                                     return afterImgLoad;
                                 });
+                            })
+                            .catch((err) => {
+                                console.log('Could not load', r.imageId, r.imageName);
+                                console.log('Ignoring for now ...');
                             });
                     }
                 });
@@ -288,7 +292,18 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 receipts={values.receipts}
                 onAddReceipt={() => { /* TODO */
                 }}
-                updateField={updateField}
+                updateName={(newName) => {
+                    setValues({
+                        ...values,
+                        name: newName
+                    });
+                }}
+                updateDate={(newDate) => {
+                    setValues({
+                        ...values,
+                        purchaseDate: newDate.toISOString(),
+                    })
+                }}
             />
             <ItemsTable
                 items={values.items}

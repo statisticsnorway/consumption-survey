@@ -183,11 +183,22 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
             {!values.receipts &&
             <div>
                 <AddPurchaseTitleZone
-                    updateField={updateField}
                     name={values.name}
                     date={values.purchaseDate}
                     receipts={values.receipts}
                     onAddReceipt={onAddReceipt}
+                    updateName={(newName) => {
+                        setValues({
+                            ...values,
+                            name: newName,
+                        });
+                    }}
+                    updateDate={(newDate) => {
+                        setValues({
+                            ...values,
+                            purchaseDate: newDate.toISOString(),
+                        });
+                    }}
                 />
                 {(!values.items && !values.receipts) &&
                 <ItemsTable
