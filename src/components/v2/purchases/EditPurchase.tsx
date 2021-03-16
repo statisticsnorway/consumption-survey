@@ -276,6 +276,16 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
       });
     };
 
+    const onItemAdd = (newItem: ItemType) => {
+      setValues({
+          ...values,
+          items: [
+              ...values.items,
+              { ...newItem, idx: values.items.length },
+          ],
+      });
+    };
+
     const clearPurchaseDelete = () => {
         setShowPurchaseDeleteConfirm(false);
     };
@@ -310,6 +320,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 ocrTotal={krCents(values.amount)}
                 onItemQtyChange={onItemQtyChange}
                 onItemUpdate={onItemUpdate}
+                onNewItem={onItemAdd}
             />
             <FullscreenLoader show={showLoader} loaderMessage={loaderMessage}/>
             <DeletePurchaseDialog

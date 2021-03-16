@@ -175,7 +175,27 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
     };
 
     const onItemUpdate = (oldValues: ItemType, newValues: ItemType) => {
+        const itemsUpd = values.items.map(i => {
+            const match = (x) =>
+                x.idx === oldValues.idx;
 
+            return match(i) ? newValues : i;
+        });
+
+        setValues({
+            ...values,
+            items: itemsUpd,
+        });
+    };
+
+    const onItemAdd = (newItem: ItemType) => {
+        setValues({
+            ...values,
+            items: [
+                ...values.items,
+                { ...newItem, idx: values.items.length },
+            ],
+        });
     };
 
     return (
@@ -205,6 +225,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                     items={values.items}
                     onItemQtyChange={onItemQtyChange}
                     onItemUpdate={onItemUpdate}
+                    onNewItem={onItemAdd}
                 />
                 }
             </div>

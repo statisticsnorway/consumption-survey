@@ -6,7 +6,7 @@ import { ItemType } from '../../../firebase/model/Purchase';
 import Loader from '../../common/Loader';
 import { SearchTermType } from '../../../firebase/model/SearchTerm';
 import useSearchTerms from '../../../hocs/useSearchTerms';
-import { TextField } from '@material-ui/core';
+import { TextField, InputAdornment } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import NorwegianCurrencyFormat from '../../common/NorwegianCurrencyFormat';
 
@@ -28,6 +28,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
     const [values, setValues] = useState<ItemType>(item);
     const {searchTerms} = useSearchTerms();
     const {t} = useTranslation('purchases');
+    const [adornProps, setAdornProps] = useState({});
 
     // refs
     const nameFieldRef = useRef(null);
@@ -57,7 +58,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
     const onClose = () => {
         console.log('verifying', values);
 
-        if (values.name) {
+        if (values.name && values.qty && values.amount) {
             onUpdate(item, values);
             setShowPopup(false);
             clearErrors();
@@ -65,6 +66,8 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             setErrors({
                 ...errors,
                 name: values.name ? null : 'error',
+                qty: values.qty ? null : 'error',
+                amount: values.amount ? null : 'error',
             });
         }
     };
@@ -79,6 +82,18 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             setValues(item);
         }
     }, [item]);
+
+    useEffect(() => {
+        if (values && values.code) {
+            setAdornProps({
+                InputProps: {
+                    endAdornment: <InputAdornment position="end">{values.code}</InputAdornment>
+                },
+            });
+        } else {
+            setAdornProps({});
+        }
+    }, [values]);
 
     const updateValue = (key: keyof ItemType) => (e: ChangeEvent<HTMLInputElement>) => {
         setValues({
@@ -98,7 +113,8 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
         } else if (newValue && newValue.inputValue) {
             return {name: newValue.inputValue};
         } else {
-            const {id, text, code, units} = newValue;
+            console.log('val with code', newValue);
+            const {id, text, coicopCode: code, units} = newValue;
             return {
                 searchTermId: id,
                 name: text,
@@ -148,6 +164,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                                     {...params}
                                     className={styles.itemName}
                                     error={errors['name'] === 'error'}
+                                    {...adornProps}
                                 />
                             </div>
                         )}

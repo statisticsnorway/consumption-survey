@@ -48,3 +48,10 @@
 .MuiInputBase-root {
   border: 1px solid $ssb-dark-6;
 }
+
+.MuiInputAdornment-positionEnd {
+  p {
+    color: $ssb-dark-3;
+    margin-right: 0.5rem;
+  }
+}
