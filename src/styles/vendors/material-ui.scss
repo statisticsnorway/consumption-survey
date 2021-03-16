@@ -55,3 +55,11 @@
     margin-right: 0.5rem;
   }
 }
+
+.Mui-error {
+  input {
+    border-bottom-color: $ssb-red-4 !important;
+    color: $ssb-red-4 !important;
+    background-color: $ssb-red-1 !important;
+  }
+}

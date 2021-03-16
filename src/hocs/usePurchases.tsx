@@ -125,7 +125,6 @@ const usePurchases = () => {
                 .add({
                     ...purchase,
                     registeredTime: new Date().toISOString(),
-                    status: PurchaseStatus.CREATED,
                 });
         };
 

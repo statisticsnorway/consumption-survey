@@ -7,6 +7,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { ReceiptInfo } from '../../../firebase/model/Purchase';
 import { DAYS_FULL, DAYS_SHORT, MONTHS, parseDate, SIMPLE_DATE_FORMAT, simpleFormat } from '../../../utils/dateUtils';
 import ReceiptPopup from './ReceiptPopup';
+import { AddPurchaseErrors } from '../../../firebase/model/errors';
 
 import styles from './styles/editPurchase.module.scss';
 import daypickerStyles from './styles/daypicker.module.scss';
@@ -27,6 +28,7 @@ export type AddPurchaseTitleZoneProps = {
     onAddReceipt: (imageName: string, image: Blob) => void;
     updateName: (newName: string) => void;
     updateDate: (newDate: Date) => void;
+    errors: AddPurchaseErrors,
 };
 
 const dayPickerInputClassNames = {
@@ -43,7 +45,8 @@ const dayPickerInputClassNames = {
 const AddPurchaseTitleZone = ({
                                   name, date,
                                   updateName, updateDate,
-                                  receipts, onAddReceipt
+                                  receipts, onAddReceipt,
+                                  errors,
                               }: AddPurchaseTitleZoneProps) => {
     const {t} = useTranslation('purchases');
     const mediaInputRef = useRef(null);
@@ -70,7 +73,9 @@ const AddPurchaseTitleZone = ({
                     format={SIMPLE_DATE_FORMAT}
                     parseDate={parseDate}
                     value={new Date(date)}
-                    onDayChange={(newDate) => { updateDate(newDate); }}
+                    onDayChange={(newDate) => {
+                        updateDate(newDate);
+                    }}
                     placeholder={`${simpleFormat(date)}`}
                     keepFocus={false}
                     inputProps={{readOnly: true}}
@@ -85,9 +90,12 @@ const AddPurchaseTitleZone = ({
 
                 <TextField
                     value={name}
-                    onChange={(e) => { updateName(e.target.value); }}
+                    onChange={(e) => {
+                        updateName(e.target.value);
+                    }}
                     placeholder={t('addPurchase.purchaseName.placeholder')}
                     className={classes.root}
+                    error={errors['name'] === 'error'}
                 />
             </div>
 
