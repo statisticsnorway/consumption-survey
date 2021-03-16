@@ -1,17 +1,18 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Autocomplete, createFilterOptions } from '@material-ui/lab';
+import { ChangeEvent, ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { Autocomplete, AutocompleteRenderInputParams, createFilterOptions } from '@material-ui/lab';
 import { ArrowLeft } from 'react-feather';
 import Modal from '../../common/dialog/Modal';
 import { ItemType } from '../../../firebase/model/Purchase';
 import Loader from '../../common/Loader';
 import { SearchTermType } from '../../../firebase/model/SearchTerm';
 import useSearchTerms from '../../../hocs/useSearchTerms';
-import { TextField } from '@material-ui/core';
+import { TextField, InputAdornment } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import NorwegianCurrencyFormat from '../../common/NorwegianCurrencyFormat';
 
 import styles from './styles/item.module.scss';
 import formStyles from '../../form/form.module.scss';
+import { DO_NOTHING } from '../../../utils/jsUtils';
 
 export type EditItemProps = {
     item: ItemType;
@@ -45,10 +46,10 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
     }, [show, item]);
 
     useEffect(() => {
-        if (showPopup) {
+        if (showPopup && nameFieldRef && nameFieldRef.current) {
             nameFieldRef.current.focus();
         }
-    }, [showPopup]);
+    }, [showPopup, nameFieldRef]);
 
     const clearErrors = () => {
         setErrors({} as ItemType);
@@ -57,7 +58,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
     const onClose = () => {
         console.log('verifying', values);
 
-        if (values.name) {
+        if (values.name && values.qty && values.amount) {
             onUpdate(item, values);
             setShowPopup(false);
             clearErrors();
@@ -65,6 +66,8 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             setErrors({
                 ...errors,
                 name: values.name ? null : 'error',
+                qty: values.qty ? null : 'error',
+                amount: values.amount ? null : 'error',
             });
         }
     };
@@ -98,7 +101,9 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
         } else if (newValue && newValue.inputValue) {
             return {name: newValue.inputValue};
         } else {
-            const {id, text, code, units} = newValue;
+            console.log('val with code', newValue);
+            const {id, text, coicopCode: code, units} = newValue;
+
             return {
                 searchTermId: id,
                 name: text,
@@ -107,6 +112,8 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             }
         }
     };
+
+    console.log('values before render', values);
 
     return values ? (
         <Modal
@@ -133,7 +140,15 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                     <Autocomplete
                         inputValue={values.name}
                         options={searchTerms as SearchTermExt[]}
-                        renderOption={(option: SearchTermExt) => option.text}
+                        renderOption={(option: SearchTermExt) => {
+                            return (
+                                <div className={styles.searchTermOption}>
+                                    <span className={styles.searchTermName}>{option.text}</span>
+                                    <span className={styles.searchTermCode}>{option.coicopCode}</span>
+                                </div>
+                            );
+                        }}
+                        autoHighlight
                         renderInput={(params) => (
                             <div className={formStyles.fbuFormField}>
                                 <label className={formStyles.fbuFieldLabel}>
@@ -157,6 +172,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                                 ...extractValFromAutoComplete(evt, newValue),
                             });
 
+
                             if (amountFieldRef && amountFieldRef.current) {
                                 amountFieldRef.current.focus();
                             }
@@ -169,7 +185,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                                     inputValue: params.inputValue,
                                     text: `${t('addPurchase.newItem.addNewTerm')} "${params.inputValue}"`,
                                     id: null,
-                                    coicopCode: null,
+                                    coicopCode: null
                                 });
                             }
 

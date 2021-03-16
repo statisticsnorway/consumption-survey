@@ -3,16 +3,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Camera, Edit3 } from 'react-feather';
 import { INPUT_CHANGE_HANDLER } from '../../../uiConfig';
 import { useTranslation } from 'react-i18next';
-import { useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { ReceiptInfo } from '../../../firebase/model/Purchase';
-import { simpleFormat } from '../../../utils/dateUtils';
+import { DAYS_FULL, DAYS_SHORT, MONTHS, parseDate, SIMPLE_DATE_FORMAT, simpleFormat } from '../../../utils/dateUtils';
 import ReceiptPopup from './ReceiptPopup';
 
 import styles from './styles/editPurchase.module.scss';
+import daypickerStyles from './styles/daypicker.module.scss';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
 
 const noBorderStyles = makeStyles({
     root: {
-        "& .MuiInputBase-root": {
+        '& .MuiInputBase-root': {
             border: '0'
         }
     }
@@ -23,13 +25,30 @@ export type AddPurchaseTitleZoneProps = {
     date: string;
     receipts: ReceiptInfo[];
     onAddReceipt: (imageName: string, image: Blob) => void;
-    updateField: (fieldName: string) => INPUT_CHANGE_HANDLER;
+    updateName: (newName: string) => void;
+    updateDate: (newDate: Date) => void;
 };
 
-const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}: AddPurchaseTitleZoneProps) => {
+const dayPickerInputClassNames = {
+    container: daypickerStyles.dayPickerInput,
+    overlayWrapper: daypickerStyles.dayPickerOverlayWrapper,
+    overlay: daypickerStyles.dayPickerOverlay,
+
+    day: daypickerStyles.dayPickerDay,
+    caption: daypickerStyles.dayPickerCaption,
+    selected: daypickerStyles.dayPickerSelected,
+    today: daypickerStyles.dayPickerToday,
+};
+
+const AddPurchaseTitleZone = ({
+                                  name, date,
+                                  updateName, updateDate,
+                                  receipts, onAddReceipt
+                              }: AddPurchaseTitleZoneProps) => {
     const {t} = useTranslation('purchases');
     const mediaInputRef = useRef(null);
     const [showReceiptPopup, setShowReceiptPopup] = useState<boolean>(false);
+    const dayPickerRef = useRef(null);
 
     const classes = noBorderStyles();
 
@@ -38,19 +57,35 @@ const AddPurchaseTitleZone = ({updateField, name, date, receipts, onAddReceipt}:
         onAddReceipt(image.name, image);
     };
 
+    console.log(date);
+    console.log(new Date(date));
+    console.log(Date.parse(date));
+
     return (
         <div className={styles.titleZone}>
             <div className={styles.nameAndDate}>
-                <TextField
-                    value={date ? simpleFormat(new Date(date)) : null}
-                    onChange={updateField('purchaseDate')}
-                    placeholder={t('addPurchase.purchaseDate.placeholder')}
-                    className={classes.root}
+                <DayPickerInput
+                    ref={dayPickerRef}
+                    formatDate={simpleFormat}
+                    format={SIMPLE_DATE_FORMAT}
+                    parseDate={parseDate}
+                    value={new Date(date)}
+                    onDayChange={(newDate) => { updateDate(newDate); }}
+                    placeholder={`${simpleFormat(date)}`}
+                    keepFocus={false}
+                    inputProps={{readOnly: true}}
+                    classNames={dayPickerInputClassNames}
+                    dayPickerProps={{
+                        months: MONTHS,
+                        weekdaysLong: DAYS_FULL,
+                        weekdaysShort: DAYS_SHORT,
+                        firstDayOfWeek: 1
+                    }}
                 />
 
                 <TextField
                     value={name}
-                    onChange={updateField('name')}
+                    onChange={(e) => { updateName(e.target.value); }}
                     placeholder={t('addPurchase.purchaseName.placeholder')}
                     className={classes.root}
                 />

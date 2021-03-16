@@ -5,16 +5,16 @@ import Goals from './slides/Goals';
 import HowTo from './slides/HowTo';
 import DataSec from './slides/DataSec';
 
-import styles from './onboarding.module.scss';
-
 const Onboarding = () => {
     const router = useRouter();
 
+    const onComplete = () => {
+        router.push(`/dashboard/Dashboard`);
+    };
+
     return (
         <Carousel
-            onComplete={() => {
-                router.push(`/dashboard/Dashboard`);
-            }}
+            onComplete={onComplete}
         >
             <Slide><OnFBU/></Slide>
             <Slide><Goals/></Slide>

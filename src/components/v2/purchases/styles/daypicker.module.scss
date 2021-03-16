@@ -1,0 +1,32 @@
+@import '../../../../styles/common';
+
+.dayPickerOverlay {
+  padding: 0.5rem;
+  border: 1px solid $ssb-dark-3;
+  color: #62919A;
+}
+
+.dayPickerDay {
+  color: #62919A;
+}
+
+.dayPickerCaption {
+  color: #62919A;
+  font-weight: bold;
+}
+
+.dayPickerToday {
+  color: #fff;
+  background-color: $ssb-blue-3;
+}
+
+.dayPickerSelected {
+  background-color: $ssb-green-4;
+  color: #fff;
+}
+
+.dayPickerOverlayWrapper {
+  background-color: #fff;
+  position: absolute;
+  top: 3.25rem;
+}

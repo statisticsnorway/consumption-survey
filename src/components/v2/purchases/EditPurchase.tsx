@@ -118,6 +118,10 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
                                     return afterImgLoad;
                                 });
+                            })
+                            .catch((err) => {
+                                console.log('Could not load', r.imageId, r.imageName);
+                                console.log('Ignoring for now ...');
                             });
                     }
                 });
@@ -272,6 +276,16 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
       });
     };
 
+    const onItemAdd = (newItem: ItemType) => {
+      setValues({
+          ...values,
+          items: [
+              ...values.items,
+              { ...newItem, idx: values.items.length },
+          ],
+      });
+    };
+
     const clearPurchaseDelete = () => {
         setShowPurchaseDeleteConfirm(false);
     };
@@ -288,13 +302,25 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 receipts={values.receipts}
                 onAddReceipt={() => { /* TODO */
                 }}
-                updateField={updateField}
+                updateName={(newName) => {
+                    setValues({
+                        ...values,
+                        name: newName
+                    });
+                }}
+                updateDate={(newDate) => {
+                    setValues({
+                        ...values,
+                        purchaseDate: newDate.toISOString(),
+                    })
+                }}
             />
             <ItemsTable
                 items={values.items}
                 ocrTotal={krCents(values.amount)}
                 onItemQtyChange={onItemQtyChange}
                 onItemUpdate={onItemUpdate}
+                onNewItem={onItemAdd}
             />
             <FullscreenLoader show={showLoader} loaderMessage={loaderMessage}/>
             <DeletePurchaseDialog

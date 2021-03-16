@@ -28,6 +28,12 @@ const SlideNav = ({
         onSlideChange(currentSlide);
     }, [currentSlide]);
 
+    const hoppStyle = {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+    };
+
     return (
         <div className={styles.slideNavContainer}>
             {currentSlide === (totalSlides - 1) &&
@@ -39,12 +45,15 @@ const SlideNav = ({
             </button>
             }
             {currentSlide !== (totalSlides - 1) &&
-            <button
-                className={`ssb-btn secondary-btn ${styles.nextButton}`}
-                onClick={nextHandler}
-            >
-                Neste
-            </button>
+            <div className={styles.buttonComplex}>
+                <button
+                    className={`ssb-btn secondary-btn ${styles.nextButton}`}
+                    onClick={nextHandler}
+                >
+                    Neste
+                </button>
+                <a onClick={onComplete} className={styles.skip}>Hopp over</a>
+            </div>
             }
             <div className={`${styles.slideNav} ${className}`} style={style}>
                 {range(0, totalSlides).map((idx) => (

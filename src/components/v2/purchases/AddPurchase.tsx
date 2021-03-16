@@ -175,7 +175,27 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
     };
 
     const onItemUpdate = (oldValues: ItemType, newValues: ItemType) => {
+        const itemsUpd = values.items.map(i => {
+            const match = (x) =>
+                x.idx === oldValues.idx;
 
+            return match(i) ? newValues : i;
+        });
+
+        setValues({
+            ...values,
+            items: itemsUpd,
+        });
+    };
+
+    const onItemAdd = (newItem: ItemType) => {
+        setValues({
+            ...values,
+            items: [
+                ...values.items,
+                { ...newItem, idx: values.items.length },
+            ],
+        });
     };
 
     return (
@@ -183,17 +203,29 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
             {!values.receipts &&
             <div>
                 <AddPurchaseTitleZone
-                    updateField={updateField}
                     name={values.name}
                     date={values.purchaseDate}
                     receipts={values.receipts}
                     onAddReceipt={onAddReceipt}
+                    updateName={(newName) => {
+                        setValues({
+                            ...values,
+                            name: newName,
+                        });
+                    }}
+                    updateDate={(newDate) => {
+                        setValues({
+                            ...values,
+                            purchaseDate: newDate.toISOString(),
+                        });
+                    }}
                 />
                 {(!values.items && !values.receipts) &&
                 <ItemsTable
                     items={values.items}
                     onItemQtyChange={onItemQtyChange}
                     onItemUpdate={onItemUpdate}
+                    onNewItem={onItemAdd}
                 />
                 }
             </div>

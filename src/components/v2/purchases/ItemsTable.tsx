@@ -16,14 +16,36 @@ export type ItemsTableProps = {
     onItemQtyChange: (item: ItemType, newValue: number) => void;
     onItemUpdate: (oldValues: ItemType, newValues: ItemType) => void;
     ocrTotal?: string;
+    onNewItem: (values: ItemType) => void;
 };
 
-const ItemsTable = ({items, ocrTotal, onItemQtyChange, onItemUpdate, showAddNewItem = true, showTotal = true}: ItemsTableProps) => {
+const INIT_STATE: ItemType = {
+    id: null,
+    idx: -1,
+    name: '',
+    qty: '1',
+    units: 'stk',
+    amount: '',
+    code: undefined,
+    searchTermId: undefined,
+};
+
+const ItemsTable = ({
+                        items,
+                        ocrTotal,
+                        onItemQtyChange,
+                        onItemUpdate,
+                        showAddNewItem = true,
+                        onNewItem,
+                        showTotal = true
+                    }: ItemsTableProps) => {
     const {t} = useTranslation('purchases');
     const [totalAmount, setTotalAmount] = useState<number>(0);
 
     const [showEditItem, setShowEditItem] = useState(false);
     const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
+    const [newItem, setNewItem] = useState<ItemType>(INIT_STATE);
+    const [showNewItem, setShowNewItem] = useState(false);
 
     useEffect(() => {
         if (items) {
@@ -44,10 +66,27 @@ const ItemsTable = ({items, ocrTotal, onItemQtyChange, onItemUpdate, showAddNewI
         onItemUpdate(oldValues, newValues);
     };
 
+    const clearNewItem = () => {
+        setShowNewItem(false);
+        setNewItem(INIT_STATE);
+    };
+
+    const onNewItemUpdated = (oldValues, newValues) => {
+        console.log('new Item', newValues);
+        clearNewItem();
+        onNewItem(newValues);
+    };
+
     const onItemEditCancel = () => {
         setShowEditItem(false);
         setItemForEdit(null);
     };
+
+    const onNewItemCancel = () => {
+        clearNewItem();
+    };
+
+    console.log('new item flag', showNewItem);
 
     return (
         <div className={styles.items}>
@@ -95,7 +134,13 @@ const ItemsTable = ({items, ocrTotal, onItemQtyChange, onItemUpdate, showAddNewI
                 ))}
                 {showAddNewItem &&
                 <tr className={styles.addNewRow}>
-                    <td colSpan={3}>
+                    <td
+                        colSpan={3}
+                        onClick={() => {
+                            console.log('toggling new item flag');
+                            setShowNewItem(true);
+                        }}
+                    >
                         {t('lineItems.addNew')}
                         <PlusCircle className={styles.icon}/>
                     </td>
@@ -115,6 +160,12 @@ const ItemsTable = ({items, ocrTotal, onItemQtyChange, onItemUpdate, showAddNewI
                 show={showEditItem}
                 onUpdate={onItemUpdated}
                 onCancel={onItemEditCancel}
+            />
+            <EditItem
+                item={newItem}
+                show={showNewItem}
+                onUpdate={onNewItemUpdated}
+                onCancel={onNewItemCancel}
             />
         </div>
     );
