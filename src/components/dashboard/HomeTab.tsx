@@ -19,7 +19,6 @@ import { UserContext } from '../../contexts';
 
 export const FLOATING_BTN_OPTIONS = {
     iconResting: <Plus/>,
-    iconActive: <X/>,
 };
 
 export const FLOATING_MENU_OPTIONS = (t, router) => [

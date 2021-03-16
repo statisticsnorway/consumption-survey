@@ -20,6 +20,7 @@ import FullscreenLoader from '../../common/FullscreenLoader';
 import DeletePurchaseDialog from '../../purchases/support/DeletePurchaseDialog';
 import useSearchTerms from '../../../hocs/useSearchTerms';
 import { krCents } from '../../../utils/jsUtils';
+import { AddPurchaseErrors } from '../../../firebase/model/errors';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -39,6 +40,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const [showLoader, setShowLoader] = useState<boolean>(false);
     const [loaderMessage, setLoaderMesage] = useState<string>(null);
     const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>();
+    const [errors, setErrors] = useState<AddPurchaseErrors>({} as AddPurchaseErrors);
 
     useEffect(() => {
         if (purchases) {
@@ -213,28 +215,30 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     };
 
     const savePurchase = ({status}) => {
-        showMessage(t('Lagrer registreringen ...'));
-        console.log('wtf is it with receipts and state', values, values.receipts);
-        const receiptsForFirebase = values.receipts
-            ? values.receipts.map(r => ({
-                imageName: r.imageName,
-                imageId: r.imageId,
-                contentType: r.contentType,
-                status: r.status,
-            }))
-            : null;
-        console.log(receiptsForFirebase);
-        const newValues = {
-            ...values,
-            receipts: receiptsForFirebase,
-            status: PurchaseStatus.COMPLETE,
-        };
-        console.log('attempting to save', newValues);
-        editPurchase(purchase.id, newValues)
-            .then(() => {
-                console.log('fb updated');
-                clearMessages();
-            })
+        if (validate()) {
+            showMessage(t('Lagrer registreringen ...'));
+            console.log('wtf is it with receipts and state', values, values.receipts);
+            const receiptsForFirebase = values.receipts
+                ? values.receipts.map(r => ({
+                    imageName: r.imageName,
+                    imageId: r.imageId,
+                    contentType: r.contentType,
+                    status: r.status,
+                }))
+                : null;
+            console.log(receiptsForFirebase);
+            const newValues = {
+                ...values,
+                receipts: receiptsForFirebase,
+                status: PurchaseStatus.COMPLETE,
+            };
+            console.log('attempting to save', newValues);
+            editPurchase(purchase.id, newValues)
+                .then(() => {
+                    console.log('fb updated');
+                    clearMessages();
+                })
+        }
     };
 
     const onItemQtyChange = (item: ItemType, newQty: number) => {
@@ -290,6 +294,19 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
         setShowPurchaseDeleteConfirm(false);
     };
 
+    const validate = () => {
+        const err = {
+            name: values.name ? null : 'error',
+            purchaseDate: values.purchaseDate ? null : 'error',
+            items: (values.items && values.items.length > 0) ? null : 'error',
+        };
+
+        setErrors(err);
+
+        return Object.keys(err)
+            .reduce((acc, key) => acc && err[key] !== 'error', true);
+    };
+
     if (!searchTerms || searchTerms.length < 1) {
         return <Loader />;
     };
@@ -314,6 +331,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         purchaseDate: newDate.toISOString(),
                     })
                 }}
+                errors={errors}
             />
             <ItemsTable
                 items={values.items}

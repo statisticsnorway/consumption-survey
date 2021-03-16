@@ -1,15 +1,14 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, ReactNode, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import uuid from 'uuid';
 import useReceipts from '../../../hocs/useReceipts';
 import { ItemType, PurchaseStatus, PurchaseType, ReceiptInfo, ReceiptStatus } from '../../../firebase/model/Purchase';
 import AddPurchaseTitleZone from './AddPurchaseTitleZone';
-import AddItemLeader from './AddItemLeader';
 import ReceiptPreviews from './ReceiptPreviews';
 import usePurchases from '../../../hocs/usePurchases';
 import { useRouter } from 'next/router';
 import { LayoutContext } from '../../../uiContexts';
-import { ArrowLeft } from 'react-feather';
+import { ArrowLeft, Save } from 'react-feather';
 import { DASHBOARD_TABS, PATHS, TABS_PARAMS } from '../../../uiConfig';
 import { getContentType } from '../../../utils/imgUtils';
 
@@ -17,18 +16,20 @@ import headerStyles from '../../layout/styles/header.module.scss';
 import styles from './styles/editPurchase.module.scss';
 import { UploadTaskSnapshot } from '@firebase/storage-types';
 import FullscreenLoader from '../../common/FullscreenLoader';
-import Loader from '../../common/Loader';
 import ItemsTable from './ItemsTable';
+import { AddPurchaseErrors } from '../../../firebase/model/errors';
 
 export type AddPurchaseProps = {
     onDate: string;
 };
 
+
 const INIT_STATE: PurchaseType = {
     name: '',
-    purchaseDate: null,
+    purchaseDate: new Date().toISOString(),
     status: PurchaseStatus.CREATED,
     receipts: null,
+    items: null,
 };
 
 const AddPurchase = ({onDate}: AddPurchaseProps) => {
@@ -36,10 +37,11 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
     const {t} = useTranslation('purchases');
     const [values, setValues] = useState<PurchaseType>(INIT_STATE);
     const {saveImageBlobToPouchDB, uploadToFireStorage, notifyReceipt} = useReceipts();
-    const {initPurchase, editPurchase} = usePurchases();
+    const {addPurchase, initPurchase, editPurchase} = usePurchases();
     const {setHeaderContent} = useContext(LayoutContext);
     const [showLoader, setShowLoader] = useState<boolean>(false);
     const [loaderMessage, setLoaderMessage] = useState<string>('');
+    const [errors, setErrors] = useState<AddPurchaseErrors>({} as AddPurchaseErrors);
 
     useEffect(() => {
         setHeaderContent(
@@ -160,6 +162,35 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
             });
     };
 
+    const validate = () => {
+        const err = {
+            name: values.name ? null : 'error',
+            purchaseDate: values.purchaseDate ? null : 'error',
+            items: (values.items && values.items.length > 0) ? null : 'error',
+        };
+
+        setErrors(err);
+
+        return Object.keys(err)
+            .reduce((acc, key) => acc && err[key] !== 'error', true);
+    };
+
+    const savePurchase = () => {
+        if (validate()) {
+            const amount = values.items.reduce((acc, item) =>
+                acc + Number(item.qty) * Number(item.amount), 0);
+            addPurchase({
+                ...values,
+                amount,
+                status: PurchaseStatus.COMPLETE
+            })
+                .then((docRef) => {
+                    console.log('item added', docRef);
+                    onSuccessfulAdd({highlight: docRef.id});
+                });
+        }
+    };
+
     const savePurchaseByReceipts = () => {
         if (values.receipts && Array.isArray(values.receipts) && (values.receipts.length > 0)) {
             savePurchaseByReceipt(values.receipts[0]);
@@ -189,11 +220,12 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
     };
 
     const onItemAdd = (newItem: ItemType) => {
+        const currItems = values.items || [];
         setValues({
             ...values,
             items: [
-                ...values.items,
-                { ...newItem, idx: values.items.length },
+                ...currItems,
+                {...newItem, idx: currItems.length},
             ],
         });
     };
@@ -219,15 +251,14 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                             purchaseDate: newDate.toISOString(),
                         });
                     }}
+                    errors={errors}
                 />
-                {(!values.items && !values.receipts) &&
                 <ItemsTable
                     items={values.items}
                     onItemQtyChange={onItemQtyChange}
                     onItemUpdate={onItemUpdate}
                     onNewItem={onItemAdd}
                 />
-                }
             </div>
             }
             {values.receipts && Array.isArray(values.receipts) && (values.receipts.length > 0) &&
@@ -244,6 +275,15 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                     {t('addPurchase.receiptScanning.start')}
                 </div>
             </>
+            }
+            {!values.receipts && Array.isArray(values.items) && (values.items.length > 0) &&
+            <button
+                className={'ssb-btn primary-btn'}
+                disabled={!values.items || (values.items.length < 1)}
+                onClick={savePurchase}
+            >
+                {t('addPurchase.save')}
+            </button>
             }
             <div className={styles.footerZone}>
 
