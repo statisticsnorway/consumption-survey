@@ -15,7 +15,8 @@ import RecentRegistrations from '../consumption/RecentRegistrations';
 import useExpenses from '../../hocs/useExpenses';
 // import useExpenses from '../../mock/useExpenses';
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../contexts';
+import { SearchTermsContext, UserContext } from '../../contexts';
+import Loader from '../common/Loader';
 
 export const FLOATING_BTN_OPTIONS = {
     iconResting: <Plus/>,
@@ -43,7 +44,8 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
     const {t} = useTranslation('dashboard');
     const {purchases} = usePurchases();
     const {expenses} = useExpenses();
-    const {userInfo: {surveyInfo}} = useContext(UserContext);
+    const {initialLoadComplete} = useContext(SearchTermsContext);
+    const {userInfo: {surveyInfo}, isAuthenticated} = useContext(UserContext);
 
     const [sectionNav, setSectionNav] = useState<ReactNode>();
 
@@ -111,7 +113,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
         );
     };
 
-    return (
+    return (isAuthenticated && initialLoadComplete) ? (
         <>
             <DiaryViz
                 renderDay={onDayClick}
@@ -126,7 +128,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
                 <RecentRegistrations limit={5} setActiveTab={setActiveTab}/>
             </>
         </>
-    );
+    ) : <Loader />;
 };
 
 export default HomeTab;

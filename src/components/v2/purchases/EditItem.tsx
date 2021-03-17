@@ -105,9 +105,9 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             const {id, text, coicopCode: code, units} = newValue;
 
             return {
-                searchTermId: id,
+                searchTermId: id || null,
                 name: text,
-                code,
+                code: code || null,
                 units: units || values.units,
             }
         }
