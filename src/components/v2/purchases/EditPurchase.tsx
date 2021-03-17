@@ -30,7 +30,7 @@ export type EditPurchaseProps = {
 const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const router = useRouter();
     const {purchases, editPurchase, deletePurchase} = usePurchases();
-    const {searchTerms} = useSearchTerms();
+    const {searchTerms, searchTermsErrors} = useSearchTerms();
     const {getReceiptFromPouchDB, getReceiptWithImageUrl} = useReceipts();
     const {t} = useTranslation('purchases');
     const {setHeaderContent} = useContext(LayoutContext);
@@ -320,12 +320,22 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             .reduce((acc, key) => acc && err[key] !== 'error', true);
     };
 
-    if (!searchTerms || searchTerms.length < 1) {
+    if (searchTermsErrors) {
         return (
-            <div className={workspaceStyles.error}>
-                Could not load search terms!
-            </div>
+            <>
+                Could not load searchTerms. {JSON.stringify(searchTermsErrors)}
+                <a
+                    onClick={() => { window.location.reload(); }}
+                    style={{ color: 'green' }}
+                >
+                    Try again
+                </a>
+            </>
         );
+    }
+
+    if (!searchTerms || searchTerms.length < 1) {
+        return <Loader/>;
     }
 
     if (error) {

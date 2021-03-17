@@ -18,6 +18,8 @@ import { UploadTaskSnapshot } from '@firebase/storage-types';
 import FullscreenLoader from '../../common/FullscreenLoader';
 import ItemsTable from './ItemsTable';
 import { AddPurchaseErrors } from '../../../firebase/model/errors';
+import useSearchTerms from '../../../hocs/useSearchTerms';
+import Loader from '../../common/Loader';
 
 export type AddPurchaseProps = {
     onDate: string;
@@ -35,6 +37,7 @@ const INIT_STATE: PurchaseType = {
 const AddPurchase = ({onDate}: AddPurchaseProps) => {
     const router = useRouter();
     const {t} = useTranslation('purchases');
+    const { searchTerms, searchTermsErrors } = useSearchTerms();
     const [values, setValues] = useState<PurchaseType>(INIT_STATE);
     const {saveImageBlobToPouchDB, uploadToFireStorage, notifyReceipt} = useReceipts();
     const {addPurchase, initPurchase, editPurchase} = usePurchases();
@@ -229,6 +232,24 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
             ],
         });
     };
+
+    if (searchTermsErrors) {
+        return (
+            <>
+                Could not load searchTerms.
+                <a
+                    onClick={() => { window.location.reload(); }}
+                    style={{ color: 'green' }}
+                >
+                    Try again
+                </a>
+            </>
+        );
+    }
+
+    if (!searchTerms || searchTerms.length <= 0) {
+        return <Loader />;
+    }
 
     return (
         <div className={styles.addPurchase}>

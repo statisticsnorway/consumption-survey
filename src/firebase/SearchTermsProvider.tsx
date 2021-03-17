@@ -1,14 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
-import { FireContext, SearchTermsContext } from '../contexts';
+import { FireContext, SearchTermsContext, UserContext } from '../contexts';
 import { SearchTermType } from './model/SearchTerm';
 
 const SearchTermsProvider = ({children}) => {
+    const {isAuthenticated} = useContext(UserContext);
     const {rtdb} = useContext(FireContext);
     const [searchTerms, setSearchTerms] = useState<SearchTermType[]>([]);
+    const [searchTermsErrors, setSearchTermsErrors] = useState<any>(null);
     const [initialLoadComplete, setInitialLoadComplete] = useState<boolean>(false);
 
     useEffect(() => {
-        if (rtdb) {
+        // possible race condition between rtdb, auth and fb ?!
+        if (isAuthenticated && rtdb) {
             try {
                 console.log('fetching 1st cut searchTerms list ...');
                 rtdb.ref()
@@ -19,6 +22,9 @@ const SearchTermsProvider = ({children}) => {
                         });
 
                         setInitialLoadComplete(true);
+                    })
+                    .catch((err) => {
+                        setSearchTermsErrors(err);
                     });
 
                 console.log('setting up child event listeners');
@@ -50,11 +56,12 @@ const SearchTermsProvider = ({children}) => {
                     })
             } catch (err) {
                 console.log('error setting up rtdb', err);
+                setSearchTermsErrors(err);
             }
         } else {
-            console.log('rtdb not setup');
+            console.log('rtdb not ready yet');
         }
-    }, [rtdb]);
+    }, [isAuthenticated, rtdb]);
 
     const addSearchTerm = (added: SearchTermType) => {
         searchTerms.push(added);
@@ -76,6 +83,7 @@ const SearchTermsProvider = ({children}) => {
         <SearchTermsContext.Provider value={{
             searchTerms, setSearchTerms,
             initialLoadComplete, setInitialLoadComplete,
+            searchTermsErrors,
         }}>
             {children}
         </SearchTermsContext.Provider>

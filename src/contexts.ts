@@ -60,6 +60,7 @@ export type SearchTermsContextType = {
     initialLoadComplete: boolean;
     setInitialLoadComplete: (status: boolean) => void;
     setSearchTerms: (terms: SearchTermType[]) => void;
+    searchTermsErrors: any;
 };
 
 export const SearchTermsContext = createContext({} as SearchTermsContextType);

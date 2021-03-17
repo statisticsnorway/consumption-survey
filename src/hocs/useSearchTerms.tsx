@@ -9,14 +9,16 @@ export type SearchTermsHookData = {
     searchTerms: SearchTermType[];
     addSearchTerm?: AddSearchTermFn;
     modifySearchTerm?: ModifySearchTermFn;
+    searchTermsErrors: any;
 };
 
 /** This hook is redundant ? */
 const useSearchTerms = (): SearchTermsHookData => {
-    const {searchTerms} = useContext(SearchTermsContext);
+    const {searchTerms, searchTermsErrors} = useContext(SearchTermsContext);
 
     return {
         searchTerms,
+        searchTermsErrors,
     };
 };
 
