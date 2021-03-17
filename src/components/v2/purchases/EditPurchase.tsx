@@ -325,8 +325,10 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             <>
                 Could not load searchTerms. {JSON.stringify(searchTermsErrors)}
                 <a
-                    onClick={() => { window.location.reload(); }}
-                    style={{ color: 'green' }}
+                    onClick={() => {
+                        window.location.reload();
+                    }}
+                    style={{color: 'green'}}
                 >
                     Try again
                 </a>
@@ -375,6 +377,11 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 onItemUpdate={onItemUpdate}
                 onNewItem={onItemAdd}
             />
+            {(errors['items'] === 'error') &&
+            <div className={workspaceStyles.error}>
+                Minst en vare bør registreres!
+            </div>
+            }
             <FullscreenLoader show={showLoader} loaderMessage={loaderMessage}/>
             <DeletePurchaseDialog
                 purchase={purchase}
