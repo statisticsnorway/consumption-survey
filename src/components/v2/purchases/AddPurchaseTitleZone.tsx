@@ -31,8 +31,8 @@ export type AddPurchaseTitleZoneProps = {
     errors: AddPurchaseErrors,
 };
 
-const dayPickerInputClassNames = {
-    container: daypickerStyles.dayPickerInput,
+const dayPickerInputClassNames = (isError = false) => ({
+    container: isError ? daypickerStyles.dayPickerInputError : daypickerStyles.dayPickerInput,
     overlayWrapper: daypickerStyles.dayPickerOverlayWrapper,
     overlay: daypickerStyles.dayPickerOverlay,
 
@@ -40,7 +40,7 @@ const dayPickerInputClassNames = {
     caption: daypickerStyles.dayPickerCaption,
     selected: daypickerStyles.dayPickerSelected,
     today: daypickerStyles.dayPickerToday,
-};
+});
 
 const AddPurchaseTitleZone = ({
                                   name, date,
@@ -79,7 +79,7 @@ const AddPurchaseTitleZone = ({
                     placeholder={`${simpleFormat(date)}`}
                     keepFocus={false}
                     inputProps={{readOnly: true}}
-                    classNames={dayPickerInputClassNames}
+                    classNames={dayPickerInputClassNames(errors['purchaseDate'] === 'error')}
                     dayPickerProps={{
                         months: MONTHS,
                         weekdaysLong: DAYS_FULL,
