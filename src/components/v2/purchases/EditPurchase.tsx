@@ -321,8 +321,11 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     };
 
     if (!searchTerms || searchTerms.length < 1) {
-        setError('Could not load searchTerms!');
-        return <Loader/>;
+        return (
+            <div className={workspaceStyles.error}>
+                Could not load search terms!
+            </div>
+        );
     }
 
     if (error) {
