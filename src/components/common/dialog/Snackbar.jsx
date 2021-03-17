@@ -19,7 +19,7 @@ export const VersionUpdateSnackbar = ({open}) => {
     const [showLoading, setShowLoading] = useState(false);
     const onClick = () => {
         setShowLoading(true);
-        window.location.reload(true);
+        window.location.reload();
     };
 
     const msgComponent = showLoading ?

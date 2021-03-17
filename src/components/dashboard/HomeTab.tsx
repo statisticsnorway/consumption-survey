@@ -43,7 +43,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
     const {t} = useTranslation('dashboard');
     const {purchases} = usePurchases();
     const {expenses} = useExpenses();
-    const {userInfo: { surveyInfo }} = useContext(UserContext);
+    const {userInfo: {surveyInfo}} = useContext(UserContext);
 
     const [sectionNav, setSectionNav] = useState<ReactNode>();
 
@@ -76,10 +76,23 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
         }
     };
 
+    const reload = () => {
+        window.location.reload();
+    };
+
     const makeSectionNav = (ids) => {
         return (
             <>
-                <h1>{t('tasks.title')}</h1>
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}
+                >
+                    <h1>{t('tasks.title')}</h1>
+                    <a onClick={reload}>{t('home.reload')}</a>
+                </div>
                 <div className="section-nav">
                     {ids.map(id => {
                         const status = getStatus(id);
