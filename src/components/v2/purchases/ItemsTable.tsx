@@ -129,7 +129,14 @@ const ItemsTable = ({
                                 }}
                             />
                         </td>
-                        <td className={styles.unitPrice}>{krCents(item.amount)}</td>
+                        <td
+                            className={styles.unitPrice}
+                            onClick={() => {
+                                onItemRowClick(item);
+                            }}
+                        >
+                            {krCents(item.amount)}
+                        </td>
                     </tr>
                 ))}
                 {showAddNewItem &&

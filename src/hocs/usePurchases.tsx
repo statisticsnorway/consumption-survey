@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { FireContext, UserContext, PurchasesContext } from '../contexts';
+import { useContext, useEffect } from 'react';
+import { FireContext, PurchasesContext, UserContext } from '../contexts';
 import { PurchaseStatus, PurchaseType } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
-import { parse } from 'date-fns';
 
 const usePurchases = () => {
         const {firestore} = useContext(FireContext);
@@ -26,7 +25,7 @@ const usePurchases = () => {
                             return {
                                 ...(p.data() as PurchaseType),
                                 purchaseDate: purchaseDate ? extractDate(purchaseDate) : null,
-                                // ensure id is set *AFTEr* the doc content to ensure we use firebase id all places
+                                // ensure id is set *AFTER* the doc content to ensure we use firebase id all places
                                 id: p.id,
                             };
                         });
@@ -34,10 +33,14 @@ const usePurchases = () => {
                         setPurchases(pRecords);
 
                         const pbd = pRecords.reduce((acc, p) => {
-                            const dt = simpleFormat(new Date(p.purchaseDate));
-                            const curr = acc[dt] || [];
-                            acc[dt] = curr.concat(p);
-                            return acc;
+                            if (p.status !== PurchaseStatus.COMPLETE) {
+                                return acc;
+                            } else {
+                                const dt = simpleFormat(new Date(p.purchaseDate));
+                                const curr = acc[dt] || [];
+                                acc[dt] = curr.concat(p);
+                                return acc;
+                            }
                         }, {});
 
                         setPurchasesByDate(pbd);
@@ -51,10 +54,14 @@ const usePurchases = () => {
         useEffect(() => {
             if (purchases) {
                 const pbd = purchases.reduce((acc, p) => {
-                    const dt = simpleFormat(new Date(p.purchaseDate));
-                    const curr = acc[dt] || [];
-                    acc[dt] = curr.concat(p);
-                    return acc;
+                    if (p.status !== PurchaseStatus.COMPLETE) {
+                        return acc;
+                    } else {
+                        const dt = simpleFormat(new Date(p.purchaseDate));
+                        const curr = acc[dt] || [];
+                        acc[dt] = curr.concat(p);
+                        return acc;
+                    }
                 }, {});
 
                 setPurchasesByDate(pbd);
@@ -133,7 +140,7 @@ const usePurchases = () => {
 
             return firestore
                 .doc(`/users/${userInfo.userName}/purchases/${id}`)
-                .set(newValues, { merge: true });
+                .set(newValues, {merge: true});
         };
 
         const deletePurchase = (purchase: PurchaseType) => {
