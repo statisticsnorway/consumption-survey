@@ -91,7 +91,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
                     }}
                 >
                     <h1>{t('tasks.title')}</h1>
-                    <a onClick={reload}>{t('home.reload')}</a>
+                    <a onClick={reload} className={styles.reload}>{t('home.reload')}</a>
                 </div>
                 <div className="section-nav">
                     {ids.map(id => {

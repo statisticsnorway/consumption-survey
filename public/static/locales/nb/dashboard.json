@@ -4,6 +4,10 @@
     "openHeader": "Skjul føringsperiode"
   },
 
+  "home": {
+    "reload": "Oppdater"
+  },
+
   "entries": {
     "title": "Løpende utgifter"
   },
