@@ -1,5 +1,19 @@
 @import '../../../../styles/common';
 
+.dayPickerInput {
+  position: relative;
+}
+
+.dayPickerInputError {
+  position: relative;
+
+  input {
+    border-bottom-color: $ssb-red-4 !important;
+    background-color: $ssb-red-1 !important;
+    color: $ssb-red-4 !important;
+  }
+}
+
 .dayPickerOverlay {
   padding: 0.5rem;
   border: 1px solid $ssb-dark-3;
@@ -28,5 +42,6 @@
 .dayPickerOverlayWrapper {
   background-color: #fff;
   position: absolute;
-  top: 3.25rem;
+  /* top: 3.25rem; */
+  z-index: 199;
 }

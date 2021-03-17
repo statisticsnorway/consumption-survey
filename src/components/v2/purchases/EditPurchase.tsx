@@ -13,6 +13,7 @@ import Loader from '../../common/Loader';
 import useReceipts from '../../../hocs/useReceipts';
 
 import headerStyles from '../../layout/styles/header.module.scss';
+import workspaceStyles from '../../layout/styles/workspace.module.scss';
 import styles from './styles/editPurchase.module.scss';
 import { DASHBOARD_TABS, PATHS, TABS_PARAMS } from '../../../uiConfig';
 import RoundButton from '../../common/buttons/RoundButton';
@@ -29,7 +30,7 @@ export type EditPurchaseProps = {
 const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const router = useRouter();
     const {purchases, editPurchase, deletePurchase} = usePurchases();
-    const {searchTerms} = useSearchTerms();
+    const {searchTerms, searchTermsErrors} = useSearchTerms();
     const {getReceiptFromPouchDB, getReceiptWithImageUrl} = useReceipts();
     const {t} = useTranslation('purchases');
     const {setHeaderContent} = useContext(LayoutContext);
@@ -79,17 +80,24 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
         return ocrResults[receiptKeys[0]];
     };
 
-    const extractPurchaseInfo = (ocrResults: OcrResults): PurchaseType => {
+    const extractPurchaseInfo = (ocrResults: OcrResults, registeredTime: string): PurchaseType => {
         const receiptInfo = extractReceipts(ocrResults);
         const {line_items, date, vendor, total} = receiptInfo;
 
-        return {
+        const ext = {
             name: vendor.name || vendor.raw_name || '??',
-            purchaseDate: parseDate(date, OCR_DATE_FORMAT).toISOString(),
+            purchaseDate: date ? parseDate(date, OCR_DATE_FORMAT).toISOString() : registeredTime,
             amount: total,
             items: extractItems(line_items),
             status: PurchaseStatus.OCR_COMPLETE,
         };
+
+        setErrors({
+            purchaseDate: date ? '' : 'error',
+            name: (vendor && (vendor.name || vendor.raw_name)) ? '' : 'error',
+        });
+
+        return ext;
     };
 
     useEffect(() => {
@@ -97,7 +105,12 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             console.log('showing', purchase);
             if ((purchase.status === PurchaseStatus.OCR_COMPLETE) && purchase.ocrResults) {
                 console.log('using values from ocr results');
-                setValues(extractPurchaseInfo(purchase.ocrResults));
+                try {
+                    setValues(extractPurchaseInfo(purchase.ocrResults, purchase.registeredTime));
+                } catch (err) {
+                    console.log('could not extract purchaseInfo from ocrResults', err);
+                    setError(`Could not extract purchaseInfo from OcrResults ${JSON.stringify(err)}`)
+                }
             } else {
                 console.log('using values from usePurchase');
                 setValues(purchase);
@@ -112,7 +125,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                                 setValues(prevState => {
                                     const afterImgLoad = {
                                         ...prevState,
-                                        receipts: [{ ...r, ...withImg }],
+                                        receipts: [{...r, ...withImg}],
                                     };
 
                                     console.log('xx prev state', prevState);
@@ -265,29 +278,29 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     };
 
     const onItemUpdate = (oldValues: ItemType, newValues: ItemType) => {
-      console.log(oldValues, '=>', newValues);
+        console.log(oldValues, '=>', newValues);
 
-      const itemsUpd = values.items.map(i => {
-          const match = (x) =>
-              x.id ? x.id === oldValues.id : x.idx === oldValues.idx;
+        const itemsUpd = values.items.map(i => {
+            const match = (x) =>
+                x.id ? x.id === oldValues.id : x.idx === oldValues.idx;
 
-          return match(i) ? newValues : i;
-      });
+            return match(i) ? newValues : i;
+        });
 
-      setValues({
-          ...values,
-          items: itemsUpd,
-      });
+        setValues({
+            ...values,
+            items: itemsUpd,
+        });
     };
 
     const onItemAdd = (newItem: ItemType) => {
-      setValues({
-          ...values,
-          items: [
-              ...values.items,
-              { ...newItem, idx: values.items.length },
-          ],
-      });
+        setValues({
+            ...values,
+            items: [
+                ...values.items,
+                {...newItem, idx: values.items.length},
+            ],
+        });
     };
 
     const clearPurchaseDelete = () => {
@@ -307,9 +320,31 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             .reduce((acc, key) => acc && err[key] !== 'error', true);
     };
 
+    if (searchTermsErrors) {
+        return (
+            <>
+                Could not load searchTerms. {JSON.stringify(searchTermsErrors)}
+                <a
+                    onClick={() => { window.location.reload(); }}
+                    style={{ color: 'green' }}
+                >
+                    Try again
+                </a>
+            </>
+        );
+    }
+
     if (!searchTerms || searchTerms.length < 1) {
-        return <Loader />;
-    };
+        return <Loader/>;
+    }
+
+    if (error) {
+        return (
+            <div className={workspaceStyles.error}>
+                {error}
+            </div>
+        );
+    }
 
     return values ? (
         <div className={styles.editPurchase}>
