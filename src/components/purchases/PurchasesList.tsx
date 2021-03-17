@@ -8,16 +8,17 @@ import { krCents, notEmptyString } from '../../utils/jsUtils';
 import {
     DASHBOARD_DATE_GROUPING_FORMAT,
     dateComparator,
+    dateFormatDayDate,
     parseDate,
-    simpleFormat,
-    dateFormatDayDate
+    simpleFormat
 } from '../../utils/dateUtils';
-import { DASHBOARD_TABS, PATHS, TABS_PARAMS, makeDashboardPath } from '../../uiConfig';
+import { DASHBOARD_TABS, makeDashboardPath, PATHS, TABS_PARAMS } from '../../uiConfig';
 
 import styles from './purchases.module.scss';
 import NoRecords from '../common/blocks/NoRecords';
 import { PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
 import OcrStatus from './OcrStatus';
+import { wait } from 'next/dist/build/output/log';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -56,14 +57,23 @@ export const getPurchaseName = (purchase) => {
             ({(purchase.items && purchase.items[0] && purchase.items[0].name) || '??'})
         </span>
     );
-}
+};
+
+export const ERROR_CASES = [
+    PurchaseStatus.OCR_ERROR,
+    PurchaseStatus.OCR_UPLOAD_FAILED,
+    PurchaseStatus.OCR_WAITING_NETWORK,
+];
 
 const PurchasesList = ({limit = -1, highlight}) => {
     const {t} = useTranslation('purchases');
-    const {purchasesByDate} = usePurchases();
+    const {purchases, purchasesByDate} = usePurchases();
     const [sorted, setSorted] = useState([]);
     const [datesForDisplay, setDatesForDisplay] = useState([]);
     const [highlightPurchase, setHighlightPurchase] = useState(undefined);
+    const [beingScanned, setBeingScanned] = useState([]);
+    const [waitingApproval, setWaitingApproval] = useState([]);
+    const [errorCases, setErrorCases] = useState([]);
 
     useEffect(() => {
         if (highlight) {
@@ -73,6 +83,16 @@ const PurchasesList = ({limit = -1, highlight}) => {
             }, 1000);
         }
     }, []);
+
+
+    useEffect(() => {
+        if (purchases) {
+            setBeingScanned(purchases.filter(p => p.status === PurchaseStatus.OCR_IN_PROGRESS));
+            setWaitingApproval(purchases.filter(p => p.status === PurchaseStatus.OCR_COMPLETE));
+            setErrorCases(purchases.filter(p => ERROR_CASES.includes(p.status)));
+        }
+    }, [purchases]);
+
 
     useEffect(() => {
         setSorted(Object.keys(purchasesByDate)
@@ -97,12 +117,12 @@ const PurchasesList = ({limit = -1, highlight}) => {
                 </>
             );
         } else {
-            return <OcrStatus status={p.status} />
+            return <OcrStatus status={p.status}/>
         }
     };
 
-    return (datesForDisplay.length >= 1) ? (
-        <div className={styles.purchasesList}>
+    const dfdComp = (datesForDisplay.length >= 1) ? (
+        <>
             {datesForDisplay
                 .map((dateOfPurchase) => {
                     const purchases = purchasesByDate[dateOfPurchase]
@@ -133,9 +153,39 @@ const PurchasesList = ({limit = -1, highlight}) => {
                     );
                 })
             }
-        </div>
+        </>
     ) : (
         <NoRecords singularText="et nytt kjøp" pluralText="alle kjøpene og løpende utgifter"/>
+    );
+
+    const makeListing = (purchases) => (
+        <div className={styles.purchaseGroup}>
+            <div className={styles.purchaseGroupEntries}>
+                {purchases.map((p) => {
+                    const editPurchaseUrl = `${PATHS.EDIT_PURCHASE}?purchaseId=${p.id}`;
+                    return (
+                        <Link
+                            href={editPurchaseUrl}
+                        >
+                            <div
+                                className={
+                                    `${styles.purchaseGroupEntry} ${highlightPurchase === p.id ? styles.highlight : ''}`}
+                            >
+                                {purchaseContent(p)}
+                            </div>
+                        </Link>
+                    );
+                })}
+            </div>
+        </div>
+    );
+
+    return (
+        <div className={styles.purchasesList}>
+            {(waitingApproval.length > 0) && makeListing(waitingApproval)}
+            {(beingScanned.length > 0) && makeListing(beingScanned)}
+            {dfdComp}
+        </div>
     );
 };
 
