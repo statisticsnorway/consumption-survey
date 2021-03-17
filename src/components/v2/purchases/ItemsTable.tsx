@@ -26,8 +26,8 @@ const INIT_STATE: ItemType = {
     qty: '1',
     units: 'stk',
     amount: '',
-    code: undefined,
-    searchTermId: undefined,
+    code: null,
+    searchTermId: null,
 };
 
 const ItemsTable = ({
