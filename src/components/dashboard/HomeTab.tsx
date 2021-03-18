@@ -45,7 +45,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
     const {purchases} = usePurchases();
     const {expenses} = useExpenses();
     const {initialLoadComplete} = useContext(SearchTermsContext);
-    const {userInfo: {surveyInfo}, isAuthenticated} = useContext(UserContext);
+    const {userInfo, isAuthenticated} = useContext(UserContext);
 
     const [sectionNav, setSectionNav] = useState<ReactNode>();
 
@@ -113,14 +113,14 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
         );
     };
 
-    return (isAuthenticated && initialLoadComplete) ? (
+    return (isAuthenticated && userInfo && initialLoadComplete) ? (
         <>
             <DiaryViz
                 renderDay={onDayClick}
-                modifiers={getModifiers(purchases, surveyInfo)}
+                modifiers={getModifiers(purchases, userInfo.surveyInfo)}
                 className={styles.dashboardDiary}
-                surveyStart={simpleFormat(surveyInfo.journalStart)}
-                surveyEnd={simpleFormat(surveyInfo.journalEnd)}
+                surveyStart={simpleFormat(userInfo.surveyInfo.journalStart)}
+                surveyEnd={simpleFormat(userInfo.surveyInfo.journalEnd)}
             />
             {sectionNav}
             <>

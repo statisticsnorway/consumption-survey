@@ -1,12 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Menu } from 'react-feather';
+import { LogIn, LogOut } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { Text } from '@statisticsnorway/ssb-component-library';
 import Notifications from '../common/notifications/Notifications';
 import { LayoutContext } from '../../uiContexts';
 
 import styles from './styles/header.module.scss';
+import { FireContext, UserContext } from '../../contexts';
 
 const HEADER_EXCLUDE_PAGES = [];
 
@@ -18,7 +19,9 @@ const PAGES_WITH_CUSTOM_HEADER = [
 
 const Header = ({siteTitle, version, isOnline}) => {
     const router = useRouter();
-    const {t} =  useTranslation('common');
+    const {isAuthenticated, userInfo, login, logout} = useContext(UserContext);
+    const {auth} = useContext(FireContext);
+    const {t} = useTranslation('common');
     const [showMenu, setShowMenu] = useState(false);
     const [headerCmp, setHeaderCmp] = useState(null);
 
@@ -26,8 +29,18 @@ const Header = ({siteTitle, version, isOnline}) => {
 
     const MENU = (
         <>
-            <span className={styles.menuLabel}>{t('menu.label')}</span>
-            <Menu width={20} height={20} className={styles.menuIcon} />
+            {isAuthenticated &&
+            <div className={styles.menuGroup} onClick={async () => { await logout(); }}>
+                <span className={styles.menuLabel}>{t('menu.logout')}</span>
+                <LogOut width={20} height={20} className={styles.menuIcon}/>
+            </div>
+            }
+            {!isAuthenticated &&
+            <div className={styles.menuGroup} onClick={login}>
+                <span className={styles.menuLabel}>{t('menu.login')}</span>
+                <LogIn width={20} height={20} className={styles.menuIcon}/>
+            </div>
+            }
         </>
     );
 

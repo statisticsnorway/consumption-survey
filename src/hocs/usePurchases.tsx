@@ -6,7 +6,13 @@ import { simpleFormat } from '../utils/dateUtils';
 const usePurchases = () => {
         const {firestore} = useContext(FireContext);
         const {userInfo} = useContext(UserContext);
-        const {purchases, purchasesByDate, setPurchases, setPurchasesByDate} = useContext(PurchasesContext);
+        const {purchases, purchasesByDate, setPurchases, setPurchasesByDate, clearPurchases} = useContext(PurchasesContext);
+
+        useEffect(() => {
+            if (!userInfo) {
+                clearPurchases();
+            }
+        }, [userInfo]);
 
         const extractDate = (dt) => {
             return (typeof dt === 'string')

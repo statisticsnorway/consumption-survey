@@ -4,11 +4,14 @@ import axios from 'axios';
 import { UserContext } from '../contexts';
 import { WorkspacePanel } from '../components/layout/Workspace';
 
+import workspaceStyles from '../components/layout/styles/workspace.module.scss';
+import Loader from '../components/common/Loader';
+
 const Login = () => {
     const router = useRouter();
     const [userName, setUserName] = useState('');
     const [error, setError] = useState(null);
-    const {isAuthenticated, login} = useContext(UserContext);
+    const {isAuthenticated, isLoggingIn, login, loginLogoutErrors} = useContext(UserContext);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -19,7 +22,13 @@ const Login = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
 
-        await login(userName);
+        try {
+            await login(userName);
+            setError(null);
+        } catch (err) {
+            console.log(err);
+            setError(JSON.stringify(err));
+        }
 
         /*
         axios.post('/bff/login', {user: userName})
@@ -45,13 +54,33 @@ const Login = () => {
     return (
         <>
             <WorkspacePanel>
-                {error &&
-                <div style={{display: 'block', background: '#fcc', color: 'red'}}>
+                {!isLoggingIn &&
+                <>
+                    <input value={userName} onChange={onUserNameChange}/>
+                    <button onClick={onSubmit}> Login</button>
+                </>
+                }
+                {isLoggingIn &&
+                <Loader/>
+                }
+                {(error || loginLogoutErrors) &&
+                <div className={workspaceStyles.error}>
                     {error}
+                    {JSON.stringify(loginLogoutErrors)}
+                    <p>Vennligst prøv igjen! </p>
+                    <p>Hvis problemet vedvarer,
+                        <a
+                            className={workspaceStyles.action}
+                            onClick={() => {
+                                window.location.reload();
+                            }}
+                        >
+                            Last inn på nytt
+                        </a>
+                    </p>
                 </div>
                 }
-                <input value={userName} onChange={onUserNameChange}/>
-                <button onClick={onSubmit}>Login</button>
+
             </WorkspacePanel>
         </>
     );

@@ -110,21 +110,19 @@ class MyApp extends App {
             return (
                 <AppContext.Provider value={{envVars: appConfig}}>
                     <FireProvider config={getCfg()}>
-                        <PouchDBProvider dbNames={POUCH_DATABASES}>
-                            <UserProvider>
-                                <SearchTermsProvider>
-                                    <PurchasesProvider>
-                                        <ExpensesProvider>
-                                            <Layout>
-                                                <ProtectedRoute>
-                                                    <Component {...pageProps} />
-                                                </ProtectedRoute>
-                                            </Layout>
-                                        </ExpensesProvider>
-                                    </PurchasesProvider>
-                                </SearchTermsProvider>
-                            </UserProvider>
-                        </PouchDBProvider>
+                        <UserProvider>
+                            <SearchTermsProvider>
+                                <PurchasesProvider>
+                                    <ExpensesProvider>
+                                        <Layout>
+                                            <ProtectedRoute>
+                                                <Component {...pageProps} />
+                                            </ProtectedRoute>
+                                        </Layout>
+                                    </ExpensesProvider>
+                                </PurchasesProvider>
+                            </SearchTermsProvider>
+                        </UserProvider>
                     </FireProvider>
                 </AppContext.Provider>
             );

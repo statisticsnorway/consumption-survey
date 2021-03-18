@@ -5,7 +5,7 @@
   background: $ssb-dark-1; /* $ssb-white; */
   /* border-bottom: 1px solid $ssb-dark-5; */
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 1rem;
   height: 68px;
 
@@ -169,9 +169,22 @@
       }
     }
 
-    .menuIcon {
-      /* color: $ssb-green-4; */
-      color: #aaa;
+    .menuGroup {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .menuLabel {
+        @include roboto;
+        font-size: 1rem;
+        font-weight: normal;
+        margin-right: 0.5rem;
+        color: $ssb-green-4;
+      }
+
+      .menuIcon {
+        color: $ssb-green-4;
+      }
     }
 
   }
@@ -221,7 +234,7 @@
     font-size: 20px;
     font-weight: normal;
     margin-right: 0.5rem;
-    color: #aaa;
+    color: $ssb-green-4;
   }
 
   @media #{$mobile} {

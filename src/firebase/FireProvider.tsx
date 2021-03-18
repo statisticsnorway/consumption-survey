@@ -16,6 +16,7 @@ const FireProvider = ({config, children}) => {
     const [rtdb, setRtdb] = useState(null);
     const [storage, setStorage] = useState(null);
     const [initComplete, setInitComplete] = useState(false);
+    const [reinitFlag, setReinitFlag] = useState(false);
 
     useEffect(() => {
         /*
@@ -41,16 +42,74 @@ const FireProvider = ({config, children}) => {
         } catch (err) {
             console.log('app already initialized ?', err);
         }
-    }, [config]);
+    }, [firebase, config]);
+
+    const clearFirebaseComponents = () => {
+        setFirestore(null);
+        setStorage(null);
+        setRtdb(null);
+        setFireAuth(null);
+        console.log('firebase components cleared');
+    };
+
+    const initFirebaseComponents = () => {
+        setFireAuth(firebase.auth());
+        setFirestore(firebase.firestore());
+        setRtdb(firebase.database());
+        setStorage(firebase.storage());
+        console.log('firebase components initialized');
+    };
+
+    const resetFirebaseComponents = () => {
+        clearFirebaseComponents();
+        initFirebaseComponents();
+    };
 
     useEffect(() => {
         if (firebase) {
-            setFireAuth(firebase.auth());
-            setFirestore(firebase.firestore());
-            setRtdb(firebase.database());
-            setStorage(firebase.storage());
+            initFirebaseComponents();
         }
     }, [firebase]);
+
+    const reset = async () => {
+        if (firebase) {
+            if (firestore) {
+                try {
+                    await firestore.terminate();
+                    console.log('successfully terminated firestore')
+
+                    await firestore.clearPersistence();
+                    console.log('successfully cleared firestore persistence');
+                } catch (err) {
+                    console.log('could not terminate/clear firestore persistence', err);
+                }
+            }
+
+            /*
+            if (rtdb) {
+                try {
+                    await rtdb.terminate();
+                    console.log('successfully terminated rtdb');
+                } catch (err) {
+                    console.log('could not terminate rtdb', err);
+                }
+            }
+
+            if (fireAuth) {
+                try {
+                    await fireAuth.terminate();
+                    console.log('successfully terminated fireauth');
+                } catch (err) {
+                    console.log('could not terminate storage', err);
+                }
+            }
+            */
+
+            resetFirebaseComponents();
+        } else {
+            console.log('firebase app not found!');
+        }
+    };
 
     useEffect(() => {
         console.log('-----> rtdb:', rtdb);
@@ -82,6 +141,7 @@ const FireProvider = ({config, children}) => {
             firestore,
             rtdb,
             storage,
+            reset,
         }}>
             {children}
         </FireContext.Provider>

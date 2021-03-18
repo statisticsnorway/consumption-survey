@@ -26,6 +26,8 @@ export type UserContextType = {
     logout: () => void;
     isAuthenticated: boolean;
     isLoggingIn: boolean;
+    isLoggingOut: boolean;
+    loginLogoutErrors: any;
 };
 
 export const UserContext = createContext({} as UserContextType);
@@ -35,6 +37,7 @@ export type FireContextType = {
     firestore: FirebaseFirestore;
     storage: FirebaseStorage;
     rtdb: FirebaseDatabase;
+    reset: () => void;
 };
 
 export const FireContext = createContext({} as FireContextType);
@@ -44,6 +47,7 @@ export type PurchasesContextType = {
     setPurchases: (purchases: PurchaseType[]) => void;
     purchasesByDate: PurchasesByDate;
     setPurchasesByDate: (PurchasesByDate) => void;
+    clearPurchases: () => void;
 };
 
 export const PurchasesContext = createContext({} as PurchasesContextType);
@@ -51,6 +55,7 @@ export const PurchasesContext = createContext({} as PurchasesContextType);
 export type ExpensesContextType = {
     expenses: RegularExpenseType[];
     setExpenses: (expense: RegularExpenseType[]) => void;
+    clearExpenses: () => void;
 };
 
 export const ExpensesContext = createContext({} as ExpensesContextType);
