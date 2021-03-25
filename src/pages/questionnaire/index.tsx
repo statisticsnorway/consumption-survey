@@ -6,7 +6,7 @@ function Questionnaire() {
     const {t} = useTranslation('purchases');
 
     return (
-        <div className="App">
+        <div className="section-questionnaire">
             <ConsumptionForm>
 
             </ConsumptionForm>

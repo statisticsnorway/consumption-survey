@@ -1,5 +1,9 @@
-.App {
+.section-questionnaire {
   height: 90vh;
+}
+
+.section-questionnaire h4 {
+    font-size: 1.2em;
 }
 
 .App-logo {
