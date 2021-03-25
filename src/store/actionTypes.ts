@@ -1,0 +1,2 @@
+export const CHANGE_FORM_VALUE = "CHANGE_FORM_VALUE"
+export const CHANGE_FOCUS = "CHANGE_FOCUS"

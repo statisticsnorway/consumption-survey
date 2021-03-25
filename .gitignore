@@ -44,3 +44,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea/
+
+./nginx/secure/fbu.key
+./nginx/secure/fbu.pem

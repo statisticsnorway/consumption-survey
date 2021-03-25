@@ -54,8 +54,11 @@
     "react-pin-input": "^1.0.1",
     "react-pouchdb": "^2.1.0",
     "react-pwa-install-ios": "^1.4.0",
+    "react-redux": "^7.2.3",
     "react-spinners": "^0.10.6",
     "react-webcam": "^5.2.2",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0",
     "sass": "^1.26.10",
     "styled-components": "^5.2.0",
     "use-custom-element": "^1.0.5"
