@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { FireContext, PurchasesContext, UserContext } from '../contexts';
-import { PurchaseStatus, PurchaseType } from '../firebase/model/Purchase';
+import { PurchaseStatus, PurchaseType, isPurchaseComplete } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
 
 const usePurchases = () => {
@@ -39,7 +39,7 @@ const usePurchases = () => {
                         setPurchases(pRecords);
 
                         const pbd = pRecords.reduce((acc, p) => {
-                            if (p.status !== PurchaseStatus.COMPLETE) {
+                            if (isPurchaseComplete(p.status)) {
                                 return acc;
                             } else {
                                 const dt = simpleFormat(new Date(p.purchaseDate));
@@ -60,7 +60,7 @@ const usePurchases = () => {
         useEffect(() => {
             if (purchases) {
                 const pbd = purchases.reduce((acc, p) => {
-                    if (p.status !== PurchaseStatus.COMPLETE) {
+                    if (!isPurchaseComplete(p.status)) {
                         return acc;
                     } else {
                         const dt = simpleFormat(new Date(p.purchaseDate));

@@ -30,8 +30,42 @@ services:
   backend:
     build:
       context: ../survey-service
+    depends_on:
+      - postgres
     ports:
       - 8081:8080
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - CONTACT_IO_URL=http://localhost
+
+  adapter:
+    build:
+      context: ../firebase-survey-service-adapter
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3007:3007
+    environment:
+      - PORT=3007
+      - SURVEY_SERVICE_HOST=http://backend:8080
+      - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey-gcp.json
+      - FIREBASE_CONFIG_JSON=/app/secure/config-gcp.js
+      - DEPLOYMENT_ENV=local
+      - DUMMY_RESPONDENT_UUID=82343c3f-03fc-4c29-9094-c055236323df
+    depends_on:
+      - backend
+    volumes:
+      - adapter_files:/app
+
+  postgres:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=surveyservice
+    ports:
+      - 5432:5432
+    restart: always
 
   nginx:
     build: ./nginx
@@ -40,4 +74,9 @@ services:
     ports:
       - 443:443
       - 80:80
+
+volumes:
+  adapter_files:
+    external: true
+
 
