@@ -1,12 +1,18 @@
 import { useContext, useEffect } from 'react';
 import { FireContext, PurchasesContext, UserContext } from '../contexts';
-import { PurchaseStatus, PurchaseType } from '../firebase/model/Purchase';
+import { PurchaseStatus, PurchaseType, isPurchaseComplete } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
 
 const usePurchases = () => {
         const {firestore} = useContext(FireContext);
         const {userInfo} = useContext(UserContext);
-        const {purchases, purchasesByDate, setPurchases, setPurchasesByDate} = useContext(PurchasesContext);
+        const {purchases, purchasesByDate, setPurchases, setPurchasesByDate, clearPurchases} = useContext(PurchasesContext);
+
+        useEffect(() => {
+            if (!userInfo) {
+                clearPurchases();
+            }
+        }, [userInfo]);
 
         const extractDate = (dt) => {
             return (typeof dt === 'string')
@@ -33,7 +39,7 @@ const usePurchases = () => {
                         setPurchases(pRecords);
 
                         const pbd = pRecords.reduce((acc, p) => {
-                            if (p.status !== PurchaseStatus.COMPLETE) {
+                            if (isPurchaseComplete(p.status)) {
                                 return acc;
                             } else {
                                 const dt = simpleFormat(new Date(p.purchaseDate));
@@ -54,7 +60,7 @@ const usePurchases = () => {
         useEffect(() => {
             if (purchases) {
                 const pbd = purchases.reduce((acc, p) => {
-                    if (p.status !== PurchaseStatus.COMPLETE) {
+                    if (!isPurchaseComplete(p.status)) {
                         return acc;
                     } else {
                         const dt = simpleFormat(new Date(p.purchaseDate));

@@ -85,5 +85,21 @@
     padding: 1rem;
     background-color: $ssb-red-1;
     color: $ssb-red-4;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    p {
+      color: $ssb-red-4;
+      a {
+        color: $ssb-green-4;
+      }
+    }
+
+    .action,
+    a {
+      color: $ssb-green-4;
+    }
   }
 }

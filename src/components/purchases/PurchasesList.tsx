@@ -16,7 +16,7 @@ import { DASHBOARD_TABS, makeDashboardPath, PATHS, TABS_PARAMS } from '../../uiC
 
 import styles from './purchases.module.scss';
 import NoRecords from '../common/blocks/NoRecords';
-import { PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
+import { isPurchaseComplete, PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
 import OcrStatus from './OcrStatus';
 import { wait } from 'next/dist/build/output/log';
 
@@ -104,7 +104,7 @@ const PurchasesList = ({limit = -1, highlight}) => {
     }, [sorted]);
 
     const purchaseContent = (p: PurchaseType) => {
-        if (p.status === PurchaseStatus.COMPLETE) {
+        if (isPurchaseComplete(p.status)) {
             return (
                 <>
                     {getPurchaseName(p)}

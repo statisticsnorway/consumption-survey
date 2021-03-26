@@ -22,10 +22,16 @@ const PurchasesProvider = ({ children }) => {
          */
     }, []);
 
+    const clearPurchases = () => {
+      setPurchasesByDate({});
+      setPurchases([]);
+    };
+
     return (
         <PurchasesContext.Provider value={{
             purchases, setPurchases,
             purchasesByDate, setPurchasesByDate,
+            clearPurchases,
         }}>
             {children}
         </PurchasesContext.Provider>

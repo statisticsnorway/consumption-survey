@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Check, Save, Trash2 } from 'react-feather';
 import usePurchases from '../../../hocs/usePurchases';
-import { ItemType, PurchaseStatus, PurchaseType } from '../../../firebase/model/Purchase';
+import { isPurchaseComplete, ItemType, PurchaseStatus, PurchaseType } from '../../../firebase/model/Purchase';
 import { LineItem, OcrResults, ReceiptScanResult } from '../../../firebase/model/Veryfi';
 import { OCR_DATE_FORMAT, parseDate } from '../../../utils/dateUtils';
 import { LayoutContext } from '../../../uiContexts';
@@ -177,11 +177,11 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         <Check className={styles.icon}/>
                     </RoundButton>
                     }
-                    {(purchase.status === PurchaseStatus.COMPLETE) &&
+                    {(isPurchaseComplete(purchase.status)) &&
                     <RoundButton
                         className={styles.saveChangesBtn}
                         onClick={() => {
-                            savePurchase({status: PurchaseStatus.COMPLETE});
+                            savePurchase({status: purchase.status});
                         }}
                     >
                         <Save className={styles.icon}/>
@@ -243,7 +243,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             const newValues = {
                 ...values,
                 receipts: receiptsForFirebase,
-                status: PurchaseStatus.COMPLETE,
+                status,
             };
             console.log('attempting to save', newValues);
             editPurchase(purchase.id, newValues)

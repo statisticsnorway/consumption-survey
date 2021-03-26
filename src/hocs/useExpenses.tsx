@@ -5,7 +5,13 @@ import { RegularExpenseType } from '../firebase/model/RegularExpense';
 const useExpenses = () => {
     const {firestore} = useContext(FireContext);
     const {userInfo} = useContext(UserContext);
-    const {expenses, setExpenses} = useContext(ExpensesContext);
+    const {expenses, setExpenses, clearExpenses} = useContext(ExpensesContext);
+
+    useEffect(() => {
+        if (!userInfo) {
+            clearExpenses();
+        }
+    }, [userInfo]);
 
     useEffect(() => {
         firestore

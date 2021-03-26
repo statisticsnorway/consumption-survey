@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FireContext, SurveyInfo, UserContext, UserInfoType } from '../contexts';
 import { i18n } from '../../i18n';
 import { add, sub } from 'date-fns';
+import { useRouter } from 'next/router';
 
 export enum CommunicationPreference {
     EMAIL = 'EMAIL',
@@ -12,7 +13,7 @@ export enum CommunicationPreference {
     PHONE = 'PHONE',
 };
 
-const LOGIN_URL=`${process.env.NEXT_PUBLIC_BFF_HOST}/login`;
+const LOGIN_URL = `${process.env.NEXT_PUBLIC_BFF_HOST}/login`;
 
 export type UserPreferences = {
     language: string;
@@ -28,11 +29,14 @@ export const DUMMY_SURVEY_INFO: SurveyInfo = {
 }
 
 const UserProvider = ({children}) => {
-    const {auth, firestore} = useContext(FireContext);
+    const router = useRouter();
+    const {auth, firestore, reset} = useContext(FireContext);
     const [userInfo, setUserInfo] = useState<UserInfoType>(null);
     const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [loginLogoutErrors, setLoginLogoutErrors] = useState<any>(null);
 
     /*
     const login = async (userName) => {
@@ -54,67 +58,96 @@ const UserProvider = ({children}) => {
      */
 
     const login = async (userName) => {
-        setIsLoggingIn(true);
-        const res = await axios.post(LOGIN_URL, {
-            user: userName
-        });
-
-        if ((res.status >= 200) && (res.status < 300)) {
-            const {data: authInfo} = res;
-
-            if (authInfo && authInfo.firebaseToken && authInfo.userInfo) {
-                auth.signInWithCustomToken(authInfo.firebaseToken)
-                    .then((user) => {
-                        console.log('Successfully logged in as', user);
-                        setUserInfo({
-                            ...authInfo.userInfo,
-                            userName: authInfo.userInfo.id,
-                            surveyInfo: DUMMY_SURVEY_INFO,
-                        });
-
-                        firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
-                            .set(authInfo.userInfo);
-                    })
-            } else {
-                console.log('Response without token!');
-            }
-        } else {
-            throw new Error(JSON.stringify(res));
+        if (!auth) {
+            console.log('firebase auth not ready ...');
+            return;
         }
 
-        setIsLoggingIn(false)
+        if (!userName) {
+            await router.push('/login');
+        } else {
+            setIsLoggingIn(true);
+            const res = await axios.post(LOGIN_URL, {
+                user: userName
+            });
+
+            if ((res.status >= 200) && (res.status < 300)) {
+                const {data: authInfo} = res;
+
+                if (authInfo && authInfo.firebaseToken && authInfo.userInfo) {
+                    auth.signInWithCustomToken(authInfo.firebaseToken)
+                        .then((user) => {
+                            console.log('Successfully logged in as', user);
+                            const loginInfo = {
+                                ...authInfo.userInfo,
+                                userName: authInfo.userInfo.id,
+                                surveyInfo: DUMMY_SURVEY_INFO,
+                            };
+
+                            setUserInfo(loginInfo);
+
+                            firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
+                                .set(loginInfo)
+                                .then(res => {
+                                    console.log('successfully updated userInfo', res);
+                                })
+                                .catch(err => {
+                                    console.log(`could not update fb /profile/about for ${authInfo.userInfo.id}`);
+                                    setLoginLogoutErrors(err);
+                                })
+                        })
+                } else {
+                    console.log('Response without token!');
+                    setLoginLogoutErrors('No token in BFF response');
+                }
+            } else {
+                setLoginLogoutErrors(res);
+                setIsLoggingIn(false);
+                throw new Error(JSON.stringify(res));
+            }
+
+            setIsLoggingIn(false);
+        }
     };
 
     useEffect(() => {
         if (auth) {
             auth.onAuthStateChanged((user) => {
-                console.log('[Auth] current user',
-                    user.uid,
-                    user.getIdToken(),
-                    user.refreshToken);
+                if (user) {
+                    console.log('[Auth] current user',
+                        user.uid,
+                        user.getIdToken(),
+                        user.refreshToken);
 
-                setIsLoggingIn(true);
+                    setIsLoggingIn(true);
 
-                firestore
-                    .doc(`/users/${user.uid}/profile/about`)
-                    .onSnapshot((snapshot) => {
-                        setUserInfo({
-                            ...(snapshot.data() as UserInfoType),
-                            userName: user.uid,
-                            surveyInfo: DUMMY_SURVEY_INFO,
-                        });
-                        setIsLoggingIn(false);
-                    });
+                    try {
+                        firestore
+                            .doc(`/users/${user.uid}/profile/about`)
+                            .onSnapshot((snapshot) => {
+                                setUserInfo({
+                                    ...(snapshot.data() as UserInfoType),
+                                    userName: user.uid,
+                                    surveyInfo: DUMMY_SURVEY_INFO,
+                                });
+                                setIsLoggingIn(false);
+                            });
 
-                firestore
-                    .doc(`/users/${user.uid}/profile/preferences`)
-                    .onSnapshot(snapshot => {
-                        setUserPreferences({
-                            ...snapshot.data(),
-                            language: 'nb',
-                        } as UserPreferences);
-                    })
-
+                        firestore
+                            .doc(`/users/${user.uid}/profile/preferences`)
+                            .onSnapshot(snapshot => {
+                                setUserPreferences({
+                                    ...snapshot.data(),
+                                    language: 'nb',
+                                } as UserPreferences);
+                            })
+                    } catch (err) {
+                        console.log('Could not fetch user info/preferences');
+                        setLoginLogoutErrors(err);
+                    }
+                } else {
+                    console.log('User logged out ?');
+                }
             });
         }
     }, [auth]);
@@ -133,11 +166,35 @@ const UserProvider = ({children}) => {
     }, [userInfo]);
 
 
-    const logout = () => {
-        setUserInfo(null);
-    };
+    const logout = async () => {
+        if (auth && isAuthenticated) {
+            setIsLoggingOut(true);
+            auth.signOut()
+                .then(async (res) => {
+                    console.log('successfully signed out', res);
+                    setUserInfo(null);
+                    setIsLoggingIn(false);
+                    setUserPreferences(null);
+                    setIsLoggingOut(false);
 
-    console.log('User Provider', !!userInfo);
+                    try {
+                        await reset();
+                        window.location.reload();
+                    } catch (err) {
+                        console.log('could not reset app', err);
+                        setLoginLogoutErrors(err);
+                    }
+
+                    router.push('/login');
+                })
+                .catch((err) => {
+                    console.log('could not signout cleanly', err);
+                    setIsLoggingOut(false);
+                });
+        } else {
+            console.log('not authenticated, skipping...', auth, isAuthenticated);
+        }
+    };
 
     return (
         <UserContext.Provider
@@ -147,6 +204,8 @@ const UserProvider = ({children}) => {
                 login,
                 logout,
                 isLoggingIn,
+                isLoggingOut,
+                loginLogoutErrors
             }}
         >
             {children}

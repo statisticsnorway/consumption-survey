@@ -37,7 +37,7 @@ const INIT_STATE: PurchaseType = {
 const AddPurchase = ({onDate}: AddPurchaseProps) => {
     const router = useRouter();
     const {t} = useTranslation('purchases');
-    const { searchTerms, searchTermsErrors } = useSearchTerms();
+    const {searchTerms, searchTermsErrors} = useSearchTerms();
     const [values, setValues] = useState<PurchaseType>(INIT_STATE);
     const {saveImageBlobToPouchDB, uploadToFireStorage, notifyReceipt} = useReceipts();
     const {addPurchase, initPurchase, editPurchase} = usePurchases();
@@ -48,7 +48,10 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
 
     useEffect(() => {
         setHeaderContent(
-            <div className={headerStyles.headerComponentWrapper}>
+            <div
+                className={headerStyles.headerComponentWrapper}
+                style={{justifyContent: 'flex-start'}}
+            >
                 <div className={headerStyles.leftSection}>
                     <a
                         className={headerStyles.actionLink}
@@ -238,8 +241,10 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
             <>
                 Could not load searchTerms.
                 <a
-                    onClick={() => { window.location.reload(); }}
-                    style={{ color: 'green' }}
+                    onClick={() => {
+                        window.location.reload();
+                    }}
+                    style={{color: 'green'}}
                 >
                     Try again
                 </a>
@@ -248,7 +253,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
     }
 
     if (!searchTerms || searchTerms.length <= 0) {
-        return <Loader />;
+        return <Loader/>;
     }
 
     return (

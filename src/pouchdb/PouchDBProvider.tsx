@@ -1,6 +1,7 @@
 import { useDB, PouchDB } from 'react-pouchdb';
-import { ReactNode, ReactNodeArray, useEffect, useState } from 'react';
+import { ReactNode, ReactNodeArray, useContext, useEffect, useState } from 'react';
 import { PouchDBContext } from '../uiContexts';
+import { UserContext } from '../contexts';
 
 const DEFAULT_DB_NAME = '_default_db';
 
@@ -19,9 +20,10 @@ export type PouchProviderProps = {
 }
 
 const PouchDBProvider = ({dbNames = [DEFAULT_DB_NAME], children}: PouchProviderProps) => {
+    const {userInfo} = useContext(UserContext);
     const [dbs, setDbs] = useState<DatabasesType>(dbNames.reduce((acc, dbName) => ({
         ...acc,
-        [dbName]: useDB(dbName)
+        [dbName]: useDB(`${userInfo.userName}_${dbName}`),
     }), {}));
 
     const [ready, setReady] = useState<boolean>(false);
@@ -35,7 +37,7 @@ const PouchDBProvider = ({dbNames = [DEFAULT_DB_NAME], children}: PouchProviderP
         }
     }, [dbs]);
 
-    const getDB = (dbName) => dbs[dbName];
+    const getDB = (dbName) => dbs[`${userInfo.userName}_${dbName}`];
 
     console.log('pouch dbs', dbs);
 

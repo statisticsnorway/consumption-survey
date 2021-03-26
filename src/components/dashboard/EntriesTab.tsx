@@ -18,7 +18,7 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highli
     const {t} = useTranslation('dashboard');
     const router = useRouter();
     const {purchases, purchasesByDate} = usePurchases();
-    const {userInfo: {surveyInfo}} = useContext(UserContext);
+    const {userInfo} = useContext(UserContext);
 
     const [entriesComp, setEntriesComp] = useState(null);
     const [floatingMenuOptions, setFloatingMenuOptions] = useState<ChildMenuProps[]>();
@@ -51,31 +51,37 @@ const EntriesTab = ({dateSelection, selectDate, deselectDate, onDayClick, highli
         const purchasesDisp = dateSelection ? purchasesByDate[dateSelection] : purchases;
         console.log('should show', purchases);
 
-        setEntriesComp(
-            dateSelection ? (
-                <PurchasesByDate
-                    date={dateSelection}
-                    purchases={purchasesDisp}
-                    deselectDate={deselectDate}
-                    selectDate={selectDate}
-                    highlight={highlight}
-                />
-            ) : (
-                <>
-                    <DiaryViz
-                        renderDay={onDayClick}
-                        modifiers={getModifiers(purchases, surveyInfo)}
-                        surveyStart={simpleFormat(surveyInfo.journalStart)}
-                        surveyEnd={simpleFormat(surveyInfo.journalEnd)}
-                        className={styles.dashboardDiary}
+        if (userInfo) {
+            const { surveyInfo } = userInfo;
+
+            setEntriesComp(
+                dateSelection ? (
+                    <PurchasesByDate
+                        date={dateSelection}
+                        purchases={purchasesDisp}
+                        deselectDate={deselectDate}
+                        selectDate={selectDate}
+                        highlight={highlight}
                     />
-                    <h1>{t('entries.title')}</h1>
-                    <div className={styles.entries}>
-                        <PurchasesList highlight={highlight}/>
-                    </div>
-                </>
-            )
-        );
+                ) : (
+                    <>
+                        <DiaryViz
+                            renderDay={onDayClick}
+                            modifiers={getModifiers(purchases, surveyInfo)}
+                            surveyStart={simpleFormat(surveyInfo.journalStart)}
+                            surveyEnd={simpleFormat(surveyInfo.journalEnd)}
+                            className={styles.dashboardDiary}
+                        />
+                        <h1>{t('entries.title')}</h1>
+                        <div className={styles.entries}>
+                            <PurchasesList highlight={highlight}/>
+                        </div>
+                    </>
+                )
+            );
+        } else {
+            console.log('entries: user logged out?');
+        }
     }, [dateSelection]);
 
     console.log('Entries Tab', dateSelection, purchasesByDate);
