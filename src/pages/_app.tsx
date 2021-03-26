@@ -31,9 +31,9 @@ class MyApp extends App {
     };
 
     static async getInitialProps(ctxt) {
-        console.log('--------------------------------------');
-        console.log('Environment Variables (_app)', appConfig);
-        console.log('--------------------------------------');
+        // console.log('--------------------------------------');
+        // console.log('Environment Variables (_app)', appConfig);
+        // console.log('--------------------------------------');
 
 
         return {
