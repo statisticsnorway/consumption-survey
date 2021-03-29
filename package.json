@@ -46,7 +46,7 @@
     "react-device-detect": "^1.13.1",
     "react-dom": "16.13.1",
     "react-feather": "^2.0.8",
-    "react-floating-button-menu": "^2.0.8",
+    "react-floating-button-menu": "^2.1.0",
     "react-idle-timer": "^4.3.6",
     "react-indexed-db": "^1.0.12",
     "react-jwt": "^1.1.2",
