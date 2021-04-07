@@ -6,6 +6,7 @@ import { WorkspacePanel } from '../components/layout/Workspace';
 
 import workspaceStyles from '../components/layout/styles/workspace.module.scss';
 import Loader from '../components/common/Loader';
+import { PATHS } from '../uiConfig';
 
 const Login = () => {
     const router = useRouter();
@@ -15,7 +16,7 @@ const Login = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            router.push('/dashboard/Dashboard');
+            router.push(PATHS.HOME);
         }
     }, [isAuthenticated]);
 

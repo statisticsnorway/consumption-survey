@@ -23,6 +23,7 @@ import Loader from '../../common/Loader';
 
 export type AddPurchaseProps = {
     onDate: string;
+    startScan?: boolean;
 };
 
 
@@ -34,7 +35,7 @@ const INIT_STATE: PurchaseType = {
     items: null,
 };
 
-const AddPurchase = ({onDate}: AddPurchaseProps) => {
+const AddPurchase = ({onDate, startScan = true}: AddPurchaseProps) => {
     const router = useRouter();
     const {t} = useTranslation('purchases');
     const {searchTerms, searchTermsErrors} = useSearchTerms();
@@ -278,6 +279,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                         });
                     }}
                     errors={errors}
+                    launchCamera={startScan}
                 />
                 <ItemsTable
                     items={values.items}
