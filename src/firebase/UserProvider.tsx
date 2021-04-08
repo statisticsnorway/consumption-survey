@@ -191,13 +191,14 @@ const UserProvider = ({children}) => {
 
                     try {
                         await reset();
+                        await router.push('/login');
                         window.location.reload();
                     } catch (err) {
                         console.log('could not reset app', err);
                         setLoginLogoutErrors(err);
                     }
 
-                    router.push('/login');
+
                 })
                 .catch((err) => {
                     console.log('could not signout cleanly', err);

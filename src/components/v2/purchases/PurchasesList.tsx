@@ -2,23 +2,22 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { Edit3 } from 'react-feather';
-import usePurchases from '../../hocs/usePurchases';
+import usePurchases from '../../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
-import { krCents, notEmptyString } from '../../utils/jsUtils';
+import { krCents, notEmptyString } from '../../../utils/jsUtils';
 import {
     DASHBOARD_DATE_GROUPING_FORMAT,
     dateComparator,
     dateFormatDayDate,
     parseDate,
     simpleFormat
-} from '../../utils/dateUtils';
-import { DASHBOARD_TABS, makeDashboardPath, PATHS, TABS_PARAMS } from '../../uiConfig';
+} from '../../../utils/dateUtils';
+import { DASHBOARD_TABS, makeDashboardPath, PATHS, TABS_PARAMS } from '../../../uiConfig';
 
-import styles from './purchases.module.scss';
-import NoRecords from '../common/blocks/NoRecords';
-import { isPurchaseComplete, PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
+import styles from './styles/purchases.module.scss';
+import NoRecords from '../../common/blocks/NoRecords';
+import { isPurchaseComplete, PurchaseStatus, PurchaseType } from '../../../firebase/model/Purchase';
 import OcrStatus from './OcrStatus';
-import { wait } from 'next/dist/build/output/log';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -65,7 +64,12 @@ export const ERROR_CASES = [
     PurchaseStatus.OCR_WAITING_NETWORK,
 ];
 
-const PurchasesList = ({limit = -1, highlight}) => {
+export type PurchasesListProps = {
+    limit?: number;
+    highlight?: string;
+}
+
+const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) => {
     const {t} = useTranslation('purchases');
     const {purchases, purchasesByDate} = usePurchases();
     const [sorted, setSorted] = useState([]);
@@ -117,7 +121,7 @@ const PurchasesList = ({limit = -1, highlight}) => {
                 </>
             );
         } else {
-            return <OcrStatus status={p.status}/>
+            return <OcrStatus purchase={p}/>
         }
     };
 
@@ -125,7 +129,7 @@ const PurchasesList = ({limit = -1, highlight}) => {
         <>
             {datesForDisplay
                 .map((dateOfPurchase) => {
-                    const purchases = purchasesByDate[dateOfPurchase]
+                    const purchases = (purchasesByDate[dateOfPurchase] || [])
                         .sort((a, b) => dateComparator(a.registeredTime, b.registeredTime));
                     return (
                         <div className={styles.purchaseGroup}>
@@ -155,7 +159,10 @@ const PurchasesList = ({limit = -1, highlight}) => {
             }
         </>
     ) : (
-        <NoRecords singularText="et nytt kjøp" pluralText="alle kjøpene og løpende utgifter"/>
+        <NoRecords
+            singularText="et nytt kjøp"
+            pluralText="alle kjøpene og løpende utgifter"
+        />
     );
 
     const makeListing = (purchases) => (

@@ -3,6 +3,7 @@ import { ChangeEvent } from 'react';
 
 export const PATHS = {
     HOME: '/home',
+    PURCHASES: '/v2/purchases',
     DASHBOARD: '/dashboard/Dashboard',
     ADD_PURCHASE: '/v2/purchases/addPurchase',
     EDIT_PURCHASE: '/v2/purchases/editPurchase',

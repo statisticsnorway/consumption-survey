@@ -19,7 +19,7 @@ const isCurrent = (currentRoute: string, menuItem: FooterMenuItem) =>
     currentRoute.startsWith(menuItem.href);
 
 
-const FooterMenu = ({footerMenuItems, showIcons = false, iconSize = 24}: FooterMenuProps) => {
+const FooterMenu = ({footerMenuItems, showIcons = true, iconSize = 24}: FooterMenuProps) => {
     const router = useRouter();
 
     return (

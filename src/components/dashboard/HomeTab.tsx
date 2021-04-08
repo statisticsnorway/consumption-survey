@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ArrowRight, Camera, Edit, Plus, X } from 'react-feather';
 import { Tag } from '@statisticsnorway/ssb-component-library';
-import PurchasesList from '../purchases/PurchasesList';
+import PurchasesList from '../v2/purchases/PurchasesList';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
 import { DASHBOARD_TABS, PATHS, getModifiers } from '../../uiConfig';

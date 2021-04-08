@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts';
 import Loader from '../common/Loader';
+import PouchDBProvider from '../../pouchdb/PouchDBProvider';
 
 const EXCLUDE_AUTH = [
     '/',
@@ -25,7 +26,13 @@ export default (props) => {
         }
     }, [isLoggingIn, isAuthenticated, router.pathname]);
 
-    if (isAuthenticated || EXCLUDE_AUTH.includes(router.pathname)) {
+    if (isAuthenticated) {
+        return (
+            <PouchDBProvider>
+                {props.children}
+            </PouchDBProvider>
+        );
+    } else if (EXCLUDE_AUTH.includes(router.pathname)) {
         return props.children;
     } else {
         return <Loader/>;

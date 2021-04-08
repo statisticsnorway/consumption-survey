@@ -131,9 +131,9 @@ const AddPurchase = ({onDate, startScan = true}: AddPurchaseProps) => {
 
     const onSuccessfulAdd = ({highlight}) => {
         cleanup();
-        const highlightParam = highlight ? `&highlight=${highlight}` : '';
+        const highlightParam = highlight ? `highlight=${highlight}` : '';
         console.log(`Purchase ${highlight} should be listed and highlighted`);
-        router.push(`/dashboard/Dashboard?selectedTab=entries${highlightParam}`);
+        router.push(`${PATHS.PURCHASES}?${highlightParam}`);
     };
 
     const savePurchaseByReceipt = (receipt: ReceiptInfo) => {

@@ -2,6 +2,7 @@ import { useDB, PouchDB } from 'react-pouchdb';
 import { ReactNode, ReactNodeArray, useContext, useEffect, useState } from 'react';
 import { PouchDBContext } from '../uiContexts';
 import { UserContext } from '../contexts';
+import { DATABASE_PURCHASE_RECEIPTS, DATABASE_RECEIPTS } from '../uiConfig';
 
 const DEFAULT_DB_NAME = '_default_db';
 
@@ -15,15 +16,15 @@ type DatabasesType = {
 }
 
 export type PouchProviderProps = {
-    dbNames: string[],
+    dbNames?: string[],
     children: ReactNode | ReactNodeArray;
 }
 
-const PouchDBProvider = ({dbNames = [DEFAULT_DB_NAME], children}: PouchProviderProps) => {
+const PouchDBProvider = ({dbNames = [DATABASE_RECEIPTS, DATABASE_PURCHASE_RECEIPTS], children}: PouchProviderProps) => {
     const {userInfo} = useContext(UserContext);
     const [dbs, setDbs] = useState<DatabasesType>(dbNames.reduce((acc, dbName) => ({
         ...acc,
-        [dbName]: useDB(`${userInfo.userName}_${dbName}`),
+        [`${userInfo.userName}_${dbName}`]: useDB(`${userInfo.userName}_${dbName}`),
     }), {}));
 
     const [ready, setReady] = useState<boolean>(false);
