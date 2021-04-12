@@ -95,8 +95,12 @@ const useReceipts = () => {
         receiptsDB.getAttachment(id, name);
 
     const getReceiptWithImageUrl = async (id: string, name: string) => {
+        console.log('[db] asking for ', id, name);
+
         const doc = await receiptsDB.get(id, {attachments: true});
         const attachmens = doc._attachments;
+
+        console.log('[db] got', doc);
 
         const att = attachmens[name];
         return {

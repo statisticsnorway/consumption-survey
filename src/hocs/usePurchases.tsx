@@ -35,49 +35,41 @@ const usePurchases = () => {
             try {
                 firestore
                     .collection(`/users/${userInfo.userName}/purchases`)
-                    .onSnapshot(ps => {
-                        const pRecords = ps.docs.map(p => {
+                    .onSnapshot(async ps => {
+                        const pRecords = await Promise.all(ps.docs.map(async p => {
                             const {purchaseDate} = p.data();
                             const purchase = p.data() as PurchaseType;
 
-                            const withImgs = [];
-                            if (purchase.receipts) {
-                                purchase.receipts.forEach(r => {
-                                    console.log('loading image', r.imageId, r.imageName, r.contentType);
-                                    if (r.imageId && r.imageName) {
-                                        getReceiptWithImageUrl(r.imageId, r.imageName)
-                                            .then(withImg => {
-                                                const afterImgLoad = {
-                                                    ...purchase,
-                                                    receipts: [{...r, ...withImg}],
-                                                };
-
-                                                console.log('yy new state', afterImgLoad);
-                                                withImgs.push({ ...r, ...withImg });
-                                            })
-                                            .catch((err) => {
-                                                console.log('Could not load', r.imageId, r.imageName, err);
-                                                console.log('Ignoring for now ...');
-                                                return r;
-                                            });
-                                    }
-                                });
-                            }
-
-                            if (withImgs.length < 1) {
-                                console.log('------> could not read previews');
-                            } else {
-                                console.log('~~~~> ', withImgs);
-                            }
-
-                            return {
+                            const dflt = {
                                 ...purchase,
-                                receipts: || purchase.receipts,
                                 purchaseDate: purchaseDate ? extractDate(purchaseDate) : null,
                                 // ensure id is set *AFTER* the doc content to ensure we use firebase id all places
                                 id: p.id,
                             };
-                        });
+
+                            if (purchase.receipts) {
+                                const resolvedReceipts = await Promise.all(purchase.receipts.map(async (r) => {
+                                    if (r.imageId && r.imageName) {
+                                        try {
+                                            return await getReceiptWithImageUrl(r.imageId, r.imageName);
+                                        } catch (err) {
+                                            return Promise.resolve(r);
+                                        }
+                                    } else {
+                                        return Promise.resolve(r);
+                                    }
+                                }));
+
+                                console.log('resolved', resolvedReceipts);
+
+                                return {
+                                    ...dflt,
+                                    receipts: resolvedReceipts,
+                                }
+                            } else {
+                                return dflt;
+                            }
+                        }));
 
                         setPurchases(pRecords);
 
