@@ -72,7 +72,7 @@ const usePurchases = () => {
 
                             return {
                                 ...purchase,
-                                receipts: || purchase.receipts,
+                                // receipts: purchase.receipts,
                                 purchaseDate: purchaseDate ? extractDate(purchaseDate) : null,
                                 // ensure id is set *AFTER* the doc content to ensure we use firebase id all places
                                 id: p.id,
