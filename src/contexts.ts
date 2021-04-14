@@ -70,4 +70,3 @@ export type SearchTermsContextType = {
 
 export const SearchTermsContext = createContext({} as SearchTermsContextType);
 
-

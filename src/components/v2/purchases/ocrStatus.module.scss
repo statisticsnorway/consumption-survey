@@ -1,10 +1,13 @@
-@import '../../styles/common';
+@import 'src/styles/common';
 .ocrStatus {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+
+  padding: 1.25rem;
+  border: 1px solid $ssb-dark-3;
 
   .text {
     font-weight: bold;
@@ -23,3 +26,4 @@
     height: 20px;
   }
 }
+

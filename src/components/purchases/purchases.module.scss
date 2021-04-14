@@ -1,7 +1,7 @@
 @import '../../styles/common';
 
 .purchasesList {
-  margin: 0;
+  margin: 1.25rem 0;
   /* border-bottom: 1px solid #eee; */
   /* padding: 1rem 0; */
 
@@ -19,6 +19,7 @@
     background: #fff;
     /* padding: 0.5rem; */
     color: #000;
+    margin: 1.25rem 0;
 
     .purchaseGroupDate {
       flex-grow: 0;

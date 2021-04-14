@@ -140,6 +140,11 @@ const UserProvider = ({children}) => {
                                     ...snapshot.data(),
                                     language: 'nb',
                                 } as UserPreferences);
+                            }, (err) => {
+                                console.log('could not get preferences', err);
+                                setUserPreferences({
+                                    language: 'nb',
+                                } as UserPreferences);
                             })
                     } catch (err) {
                         console.log('Could not fetch user info/preferences');
@@ -154,10 +159,17 @@ const UserProvider = ({children}) => {
 
     useEffect(() => {
         if (userPreferences) {
+            console.log('user preferences change', userPreferences);
             i18n.changeLanguage(userPreferences.language)
                 .then((res) => {
                     console.log('User language changed', res);
                 });
+        } else {
+            console.log('awaiting user preferences..');
+            i18n.changeLanguage('nb')
+                .then((res) => {
+                    console.log('initial language', res);
+                })
         }
     }, [userPreferences]);
 
@@ -179,13 +191,14 @@ const UserProvider = ({children}) => {
 
                     try {
                         await reset();
+                        await router.push('/login');
                         window.location.reload();
                     } catch (err) {
                         console.log('could not reset app', err);
                         setLoginLogoutErrors(err);
                     }
 
-                    router.push('/login');
+
                 })
                 .catch((err) => {
                     console.log('could not signout cleanly', err);

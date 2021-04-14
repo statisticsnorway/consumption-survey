@@ -43,7 +43,7 @@ const Layout = (props: LayoutProps) => {
     const [footerContent, updateFooterContent] = useState(null);
     const [headerContent, updateHeaderContent] = useState(null);
     const [showHeader, setShowHeader] = useState(true);
-    const [showFooter, setShowFooter] = useState(false);
+    const [showFooter, setShowFooter] = useState(true);
 
     const setFooterContent = (node: ReactNode) => {
         console.log('Footer: updating content');
@@ -108,6 +108,9 @@ const Layout = (props: LayoutProps) => {
         return <>{props.children}</>;
     }
 
+    console.log('currPath', router.pathname);
+    console.log('showFooter', showFooter);
+
     return (
         <div className={styles.mainContainer}>
             <Head>
@@ -160,7 +163,7 @@ const Layout = (props: LayoutProps) => {
                 /> */ ''}
                     {!isPWA() && props.children}
                 </Workspace>
-                {showFooter && <Footer/>}
+                <Footer/>
             </LayoutContext.Provider>
         </div>
     );

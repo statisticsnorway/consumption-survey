@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'react-feather';
 import { PurchaseType } from '../../firebase/model/Purchase';
-import { getPurchaseName } from './PurchasesList';
+import { getPurchaseName } from '../v2/purchases/PurchasesList';
 
 import styles from './styles/purchasesTable.module.scss';
 import { krCents } from '../../utils/jsUtils';

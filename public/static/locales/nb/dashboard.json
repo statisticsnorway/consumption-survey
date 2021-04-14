@@ -5,7 +5,8 @@
   },
 
   "home": {
-    "reload": "Oppdater"
+    "reload": "Oppdater",
+    "title": "Hjem"
   },
 
   "entries": {

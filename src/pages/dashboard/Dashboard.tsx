@@ -102,19 +102,7 @@ const Dashboard = () => {
                             </>
                         ),
                         icon: <RotateCw height={24} width={24} />,
-                    }, {
-                        title: 'Andre utgifter',
-                        id: 'otherExpenses',
-                        renderTab: (
-                            <>
-                                <h1>{t('otherExpenses.title')}</h1>
-                                <div className={styles.dashboardRegularExpenses}>
-                                    Kommer snart ...
-                                </div>
-                            </>
-                        ),
-                        icon: <MiscExpenses width={24} height={24} />,
-                    }
+                    },
                 ]}
                 active={activeTab}
                 className={styles.dashboardTabs}
