@@ -21,7 +21,8 @@ const ProtectedRoute = (props) => {
 
     const getAuthUrl = () => {
         const {envVars} = appConfig.publicRuntimeConfig;
-        return envVars.NEXT_PUBLIC_AUTH_URL;
+        const { NEXT_PUBLIC_APP_NAME, NEXT_PUBLIC_AUTH_URL, NEXT_PUBLIC_AUTH_LOGIN_PATH} = envVars;
+        return `${NEXT_PUBLIC_AUTH_URL}${NEXT_PUBLIC_AUTH_LOGIN_PATH}/${NEXT_PUBLIC_APP_NAME}`;
     };
 
     useEffect(() => {
