@@ -150,7 +150,7 @@ const AddPurchase = ({onDate, startScan = true}: AddPurchaseProps) => {
                     .then((uploadSnapshot: UploadTaskSnapshot) => {
                         console.log('upload details', uploadSnapshot);
                         const {bucket, fullPath, name} = uploadSnapshot.metadata;
-                        const metadata = {bucket, fullPath, name};
+                        const metadata = {bucket, fullPath, name, contentType};
                         console.log('metadata', metadata);
 
                         notifyReceipt(docRef.id, imageName, metadata)

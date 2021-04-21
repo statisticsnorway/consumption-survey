@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 // import { FireContext, UserContext } from '../contexts';
-import { FireContext, SurveyInfo, UserContext, UserInfoType } from '../contexts';
+import { FireContext, RespondentDetails, SurveyInfo, UserContext, UserInfoType } from '../contexts';
 import { i18n } from '../../i18n';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -32,6 +32,7 @@ const UserProvider = ({children}) => {
     const router = useRouter();
     const {auth, firestore, reset} = useContext(FireContext);
     const [userInfo, setUserInfo] = useState<UserInfoType>(null);
+    const [respondentDetails, setRespondentDetails] = useState<RespondentDetails>(null);
     const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -57,18 +58,22 @@ const UserProvider = ({children}) => {
 
      */
 
-    const login = async (userName) => {
+    const extractSurveyInfo = (respondentInfo: RespondentDetails) => ({
+        journalStart: respondentInfo.diaryStart,
+        journalEnd: respondentInfo.diaryEnd,
+    });
+
+
+    const login = async (respondentInfo: RespondentDetails) => {
         if (!auth) {
             console.log('firebase auth not ready ...');
             return;
         }
 
-        if (!userName) {
-            await router.push('/login');
-        } else {
+        if (respondentInfo && respondentInfo.respondentId) {
             setIsLoggingIn(true);
             const res = await axios.post(LOGIN_URL, {
-                user: userName
+                respondentInfo
             });
 
             if ((res.status >= 200) && (res.status < 300)) {
@@ -81,10 +86,11 @@ const UserProvider = ({children}) => {
                             const loginInfo = {
                                 ...authInfo.userInfo,
                                 userName: authInfo.userInfo.id,
-                                surveyInfo: DUMMY_SURVEY_INFO,
+                                surveyInfo: extractSurveyInfo(respondentInfo),
                             };
 
                             setUserInfo(loginInfo);
+                            setRespondentDetails(authInfo.respondentDetails);
 
                             firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
                                 .set(loginInfo)
@@ -107,6 +113,8 @@ const UserProvider = ({children}) => {
             }
 
             setIsLoggingIn(false);
+        } else {
+            await router.push('/login');
         }
     };
 
@@ -214,6 +222,7 @@ const UserProvider = ({children}) => {
             value={{
                 isAuthenticated,
                 userInfo,
+                respondentDetails,
                 login,
                 logout,
                 isLoggingIn,

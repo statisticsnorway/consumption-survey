@@ -23,7 +23,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            await login(userName);
+            await login(null);
             setError(null);
         } catch (err) {
             console.log(err);

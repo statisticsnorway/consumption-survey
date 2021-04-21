@@ -1,19 +1,10 @@
 import styles from './user.module.scss';
-
-export type UserDetails = {
-    pid: string;
-    respondentId: string;
-    ioNumber: number;
-    diaryStart: string;
-    diaryEnd: string;
-    name: string;
-    gender: string;
-    dateOfBirth: string;
-}
+import { RespondentDetails } from '../../contexts';
 
 export type UserCardProps = {
-    details: UserDetails;
-}
+    details: RespondentDetails;
+};
+
 const UserCard = ({details}: UserCardProps) => {
     const {name, respondentId, ioNumber, diaryStart, diaryEnd, pid: fnr} = details;
     return (

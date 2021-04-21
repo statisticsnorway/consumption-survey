@@ -20,9 +20,21 @@ export type UserInfoType = {
     surveyInfo: SurveyInfo;
 };
 
+export type RespondentDetails = {
+    pid: string;
+    respondentId: string;
+    ioNumber: number;
+    diaryStart: string;
+    diaryEnd: string;
+    name: string;
+    gender: string;
+    dateOfBirth: string;
+};
+
 export type UserContextType = {
     userInfo: UserInfoType;
-    login: (userName: string) => Promise<void>;
+    respondentDetails: RespondentDetails;
+    login: (respondentDetails: RespondentDetails) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
     isLoggingIn: boolean;
