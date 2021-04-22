@@ -153,7 +153,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     <a
                         className={headerStyles.actionLink}
                         onClick={() => {
-                            router.push(`${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${DASHBOARD_TABS.ENTRIES}`);
+                            router.push(`${PATHS.PURCHASES}`);
                         }}
                     >
                         <ArrowLeft width={16} height={16} className={headerStyles.actionIcon}/>
