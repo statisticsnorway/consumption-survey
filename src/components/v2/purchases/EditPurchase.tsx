@@ -391,7 +391,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         .then(res => {
                             console.log('Purchase deleted', purchase);
                             clearPurchaseDelete();
-                            router.push(PATHS.DASHBOARD);
+                            router.push(PATHS.PURCHASES);
                         });
                 }}
                 onCancel={clearPurchaseDelete}
