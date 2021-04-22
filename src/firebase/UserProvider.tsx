@@ -70,7 +70,9 @@ const UserProvider = ({children}) => {
             return;
         }
 
-        if (respondentInfo && respondentInfo.respondentId) {
+        console.log('trying to obtain firebase token for ', respondentInfo, isLoggingIn, LOGIN_URL);
+
+        if (respondentInfo && respondentInfo.respondentId && !isLoggingIn) {
             setIsLoggingIn(true);
             const res = await axios.post(LOGIN_URL, {
                 respondentInfo
@@ -79,8 +81,10 @@ const UserProvider = ({children}) => {
             if ((res.status >= 200) && (res.status < 300)) {
                 const {data: authInfo} = res;
 
+                console.log('authInfo from BFF', authInfo);
+
                 if (authInfo && authInfo.firebaseToken && authInfo.userInfo) {
-                    auth.signInWithCustomToken(authInfo.firebaseToken)
+                    return auth.signInWithCustomToken(authInfo.firebaseToken)
                         .then((user) => {
                             console.log('Successfully logged in as', user);
                             const loginInfo = {
@@ -120,6 +124,7 @@ const UserProvider = ({children}) => {
 
     useEffect(() => {
         if (auth) {
+            console.log('[UP] auth changed');
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     console.log('[Auth] current user',
@@ -162,6 +167,8 @@ const UserProvider = ({children}) => {
                     console.log('User logged out ?');
                 }
             });
+        } else {
+            console.log('[UP] auth empty');
         }
     }, [auth]);
 
@@ -199,8 +206,10 @@ const UserProvider = ({children}) => {
 
                     try {
                         await reset();
-                        await router.push('/login');
-                        window.location.reload();
+                        console.log('cleared firebase, initiaing idp logout');
+                        setIsAuthenticated(false);
+                        await router.push('/logout');
+                        // window.location.reload();
                     } catch (err) {
                         console.log('could not reset app', err);
                         setLoginLogoutErrors(err);

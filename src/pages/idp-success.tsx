@@ -64,11 +64,13 @@ const IDPSuccess = () => {
         if (isAuthenticated && respondentDetails) {
             router.push(`${PATHS.PURCHASES}`);
         }
-    }, [isAuthenticated && respondentDetails]);
+    }, [isAuthenticated, respondentDetails]);
 
     return (
         <>
             <h3>IDPorten :: BFF </h3>
+            <p>isAuthenticated: {isAuthenticated}</p>
+            <p>details: {JSON.stringify(respondentDetails)}</p>
             {isLoggingIn && <Loader />}
             {isAuthenticated && respondentDetails && <UserCard details={respondentDetails} />}
             {idPortenError && <p>IDP Errors: {JSON.stringify(idPortenError)}</p>}

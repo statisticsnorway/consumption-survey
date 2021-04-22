@@ -57,7 +57,7 @@ const FireProvider = ({config, children}) => {
         setFirestore(firebase.firestore());
         setRtdb(firebase.database());
         setStorage(firebase.storage());
-        console.log('firebase components initialized');
+        console.log('firebase components initialized', fireAuth, firestore, rtdb, storage);
     };
 
     const resetFirebaseComponents = () => {

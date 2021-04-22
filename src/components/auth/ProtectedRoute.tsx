@@ -10,18 +10,20 @@ const appConfig = getConfig();
 const EXCLUDE_AUTH = [
     '/',
     '/login',
+    '/logout',
     '/idp-success',
+    '/idp-logout',
     '/welcome',
     '/support/onboarding'
 ];
 
 const ProtectedRoute = (props) => {
     const router = useRouter();
-    const {isAuthenticated, isLoggingIn} = useContext(UserContext);
+    const {isAuthenticated, isLoggingIn, isLoggingOut} = useContext(UserContext);
 
     const getAuthUrl = () => {
         const {envVars} = appConfig.publicRuntimeConfig;
-        const { NEXT_PUBLIC_APP_NAME, NEXT_PUBLIC_AUTH_URL, NEXT_PUBLIC_AUTH_LOGIN_PATH} = envVars;
+        const {NEXT_PUBLIC_APP_NAME, NEXT_PUBLIC_AUTH_URL, NEXT_PUBLIC_AUTH_LOGIN_PATH} = envVars;
         return `${NEXT_PUBLIC_AUTH_URL}${NEXT_PUBLIC_AUTH_LOGIN_PATH}/${NEXT_PUBLIC_APP_NAME}`;
     };
 
@@ -30,7 +32,7 @@ const ProtectedRoute = (props) => {
         console.log('path', router.pathname);
         console.log('check2', !EXCLUDE_AUTH.includes(router.pathname));
         console.log('final', (!isAuthenticated && (!EXCLUDE_AUTH.includes(router.pathname))));
-        if (!isAuthenticated && (!EXCLUDE_AUTH.includes(router.pathname))) {
+        if (!isAuthenticated && !isLoggingOut && (!EXCLUDE_AUTH.includes(router.pathname))) {
             console.log('Auth url', getAuthUrl());
             router.push(getAuthUrl());
         } else {
@@ -44,9 +46,9 @@ const ProtectedRoute = (props) => {
 
              */
         }
-    }, [isLoggingIn, isAuthenticated, router.pathname]);
+    }, [isLoggingIn, isLoggingOut, isAuthenticated, router.pathname]);
 
-    if (isAuthenticated) {
+    if (isAuthenticated && !isLoggingOut) {
         return (
             <PouchDBProvider>
                 {props.children}
@@ -59,9 +61,7 @@ const ProtectedRoute = (props) => {
     }
 };
 
-ProtectedRoute.getInitialProps = () => {
-    return {};
-};
+ProtectedRoute.getInitialProps = () => ({});
 
 export default ProtectedRoute;
 
