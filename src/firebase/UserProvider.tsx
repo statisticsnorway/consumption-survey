@@ -117,9 +117,9 @@ const UserProvider = ({children}) => {
             }
 
             setIsLoggingIn(false);
-        } else {
+        } /* else {
             await router.push('/login');
-        }
+        } */
     };
 
     useEffect(() => {
