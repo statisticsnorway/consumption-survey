@@ -17,7 +17,7 @@ const Welcome = () => {
 
     useEffect(() => {
         if (isPWA()) {
-            router.push(PATHS.DASHBOARD);
+            router.push(PATHS.PURCHASES);
         }
     }, []);
 
