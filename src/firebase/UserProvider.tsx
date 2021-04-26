@@ -208,7 +208,7 @@ const UserProvider = ({children}) => {
                         await reset();
                         console.log('cleared firebase, initiaing idp logout');
                         setIsAuthenticated(false);
-                        await router.push('/logout');
+                        await router.push('/login');
                         // window.location.reload();
                     } catch (err) {
                         console.log('could not reset app', err);

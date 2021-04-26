@@ -66,16 +66,29 @@ const IDPSuccess = () => {
         }
     }, [isAuthenticated, respondentDetails]);
 
-    return (
+    const traceInfo = false ? (
         <>
             <h3>IDPorten :: BFF </h3>
             <p>isAuthenticated: {isAuthenticated}</p>
             <p>idpInfo: {JSON.stringify(respondentInfo)}</p>
             <p>details: {JSON.stringify(respondentDetails)}</p>
-            {isLoggingIn && <Loader />}
-            {isAuthenticated && respondentDetails && <UserCard details={respondentDetails} />}
             {idPortenError && <p>IDP Errors: {JSON.stringify(idPortenError)}</p>}
             {loginLogoutErrors && <p>Firebase Auth Errors: {loginLogoutErrors}</p>}
+        </>
+    ) : null;
+
+    return (
+        <>
+            {traceInfo}
+            {(!isAuthenticated || isLoggingIn) && <Loader/>}
+            {isAuthenticated && respondentInfo && !respondentDetails &&
+            <p>
+                IDPorten innlogging vellykket, men vi kunne ikke finne
+                survey info (respondentId, føringsperiode) fra auth/backend
+                moduler.
+            </p>
+            }
+            {isAuthenticated && respondentDetails && <UserCard details={respondentDetails}/>}
         </>
     );
 };
