@@ -1,0 +1,13 @@
+{
+  "home": {
+    "title": "Hjem"
+  },
+
+  "purchases": {
+    "title": "Utgifter"
+  },
+
+  "settings": {
+    "title": "Innstillinger"
+  }
+}

@@ -23,6 +23,7 @@ import Loader from '../../common/Loader';
 
 export type AddPurchaseProps = {
     onDate: string;
+    startScan?: boolean;
 };
 
 
@@ -34,7 +35,7 @@ const INIT_STATE: PurchaseType = {
     items: null,
 };
 
-const AddPurchase = ({onDate}: AddPurchaseProps) => {
+const AddPurchase = ({onDate, startScan = true}: AddPurchaseProps) => {
     const router = useRouter();
     const {t} = useTranslation('purchases');
     const {searchTerms, searchTermsErrors} = useSearchTerms();
@@ -57,7 +58,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                         className={headerStyles.actionLink}
                         onClick={() => {
                             cleanup();
-                            router.push(`${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${DASHBOARD_TABS.ENTRIES}`)
+                            router.push(PATHS.PURCHASES);
                         }}
                     >
                         <ArrowLeft width={16} height={16} className={headerStyles.actionIcon}/>
@@ -130,9 +131,9 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
 
     const onSuccessfulAdd = ({highlight}) => {
         cleanup();
-        const highlightParam = highlight ? `&highlight=${highlight}` : '';
+        const highlightParam = highlight ? `highlight=${highlight}` : '';
         console.log(`Purchase ${highlight} should be listed and highlighted`);
-        router.push(`/dashboard/Dashboard?selectedTab=entries${highlightParam}`);
+        router.push(`${PATHS.PURCHASES}?${highlightParam}`);
     };
 
     const savePurchaseByReceipt = (receipt: ReceiptInfo) => {
@@ -149,7 +150,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                     .then((uploadSnapshot: UploadTaskSnapshot) => {
                         console.log('upload details', uploadSnapshot);
                         const {bucket, fullPath, name} = uploadSnapshot.metadata;
-                        const metadata = {bucket, fullPath, name};
+                        const metadata = {bucket, fullPath, name, contentType};
                         console.log('metadata', metadata);
 
                         notifyReceipt(docRef.id, imageName, metadata)
@@ -278,6 +279,7 @@ const AddPurchase = ({onDate}: AddPurchaseProps) => {
                         });
                     }}
                     errors={errors}
+                    launchCamera={startScan}
                 />
                 <ItemsTable
                     items={values.items}

@@ -209,3 +209,19 @@ section {
   display: flex;
   justify-content: center;
 }
+
+/**
+ * things i could not fix with CSS Modules
+ */
+.ocrStatus_OCR_COMPLETE,
+.ocrStatus_OCR_WAITING_NETWORK {
+  border-left: 3px solid $ssb-blue-3 !important;
+}
+
+.ocrStatus_OCR_IN_PROGRESS {
+}
+
+.ocrStatus_OCR_ERROR,
+.ocrStatus_OCR_UPLOAD_FAILED {
+  border-left: 4px solid $ssb-red-4;
+}

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import { Camera, Edit } from 'react-feather';
 import styles from '../../pages/dashboard/dashboard.module.scss';
-import PurchasesList from '../purchases/PurchasesList';
+import PurchasesList from '../v2/purchases/PurchasesList';
 import PurchasesByDate from '../purchases/PurchasesByDate';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';

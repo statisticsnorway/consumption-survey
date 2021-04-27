@@ -1,12 +1,20 @@
 version: '3'
 
 services:
-#  auth:
-#    build:
-#      context: ../forbruk-security-test
-#    ports:
-#      - 8443:8443
-#      - 8080:8080
+  auth:
+    build:
+      context: ../auth-idporten
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8443:8443
+      - 8080:8080
+    environment:
+      - idporten.client-id=3498eb5b-ec88-43dc-a736-5e6fc904f96e
+      - idporten.client-secret=4955bd47-5855-4e78-88a4-3bfdf89caa81
+      - spring.profile.active=local
+      - idporten.baseurl=https://oidc-ver1.difi.no
+      - idporten.client-redirect-uri=https://fbu.ssb.no/idp-success
+      - survey-service.baseurl=http://backend:8080
 
   nextjs:
     build:

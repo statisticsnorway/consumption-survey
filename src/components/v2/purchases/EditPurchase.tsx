@@ -153,7 +153,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     <a
                         className={headerStyles.actionLink}
                         onClick={() => {
-                            router.push(`${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${DASHBOARD_TABS.ENTRIES}`);
+                            router.push(`${PATHS.PURCHASES}`);
                         }}
                     >
                         <ArrowLeft width={16} height={16} className={headerStyles.actionIcon}/>
@@ -391,7 +391,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         .then(res => {
                             console.log('Purchase deleted', purchase);
                             clearPurchaseDelete();
-                            router.push(PATHS.DASHBOARD);
+                            router.push(PATHS.PURCHASES);
                         });
                 }}
                 onCancel={clearPurchaseDelete}

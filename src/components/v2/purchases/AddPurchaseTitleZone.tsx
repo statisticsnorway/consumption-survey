@@ -29,6 +29,7 @@ export type AddPurchaseTitleZoneProps = {
     updateName: (newName: string) => void;
     updateDate: (newDate: Date) => void;
     errors: AddPurchaseErrors,
+    launchCamera?: boolean;
 };
 
 const dayPickerInputClassNames = (isError = false) => ({
@@ -47,11 +48,25 @@ const AddPurchaseTitleZone = ({
                                   updateName, updateDate,
                                   receipts, onAddReceipt,
                                   errors,
+                                  launchCamera = false,
                               }: AddPurchaseTitleZoneProps) => {
     const {t} = useTranslation('purchases');
     const mediaInputRef = useRef(null);
     const [showReceiptPopup, setShowReceiptPopup] = useState<boolean>(false);
     const dayPickerRef = useRef(null);
+
+    useEffect(() => {
+        if (launchCamera) {
+            if (mediaInputRef && mediaInputRef.current) {
+                console.log('launching camera..');
+                mediaInputRef.current.click();
+            } else {
+                console.log('waiting for mount..');
+            }
+        } else {
+            console.log('!launch camera');
+        }
+    }, [launchCamera]);
 
     const classes = noBorderStyles();
 

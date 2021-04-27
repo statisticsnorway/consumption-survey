@@ -16,11 +16,9 @@ const Welcome = () => {
     const {t} = useTranslation('welcome');
 
     useEffect(() => {
-        /*
         if (isPWA()) {
-            router.push(PATHS.DASHBOARD);
+            router.push(PATHS.PURCHASES);
         }
-         */
     }, []);
 
     return (

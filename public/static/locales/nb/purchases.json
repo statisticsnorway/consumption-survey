@@ -1,4 +1,5 @@
 {
+  "title": "Utgifter",
   "when": "når",
   "noRecords": "Ingen registreringer",
   "back": "Tilbake",
@@ -35,6 +36,9 @@
     "cancel": "Avbryt",
     "save": "Lagre",
     "saveByReceipt": "Start skanning",
+
+    "fromReceipt": "Les kvittering med kamera",
+    "manually": "Registrer utgift manuet",
 
     "receiptScanning": {
       "start": "Det kan ta litt tid å skanne kvitteringen. Du får beskjed når den er klar."

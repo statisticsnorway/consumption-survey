@@ -2,11 +2,15 @@ import { useContext, useEffect } from 'react';
 import { FireContext, PurchasesContext, UserContext } from '../contexts';
 import { PurchaseStatus, PurchaseType, isPurchaseComplete } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
+import useReceipts from './useReceipts';
+import usePouch from '../pouchdb/usePouch';
+import { PouchDBContext } from '../uiContexts';
 
 const usePurchases = () => {
         const {firestore} = useContext(FireContext);
         const {userInfo} = useContext(UserContext);
         const {purchases, purchasesByDate, setPurchases, setPurchasesByDate, clearPurchases} = useContext(PurchasesContext);
+        const {receiptsDBReady, getReceiptWithImageUrl} = useReceipts();
 
         useEffect(() => {
             if (!userInfo) {
@@ -21,15 +25,54 @@ const usePurchases = () => {
         };
 
         useEffect(() => {
-            console.log('v2 fetching purchases');
+            if (receiptsDBReady) {
+                console.log('receipts db is ready, v2 fetching purchases');
+                loadPurchases();
+            }
+        }, [receiptsDBReady]);
+
+        const loadPurchases = () => {
             try {
                 firestore
                     .collection(`/users/${userInfo.userName}/purchases`)
                     .onSnapshot(ps => {
                         const pRecords = ps.docs.map(p => {
                             const {purchaseDate} = p.data();
+                            const purchase = p.data() as PurchaseType;
+
+                            const withImgs = [];
+                            if (purchase.receipts) {
+                                purchase.receipts.forEach(r => {
+                                    console.log('loading image', r.imageId, r.imageName, r.contentType);
+                                    if (r.imageId && r.imageName) {
+                                        getReceiptWithImageUrl(r.imageId, r.imageName)
+                                            .then(withImg => {
+                                                const afterImgLoad = {
+                                                    ...purchase,
+                                                    receipts: [{...r, ...withImg}],
+                                                };
+
+                                                console.log('yy new state', afterImgLoad);
+                                                withImgs.push({ ...r, ...withImg });
+                                            })
+                                            .catch((err) => {
+                                                console.log('Could not load', r.imageId, r.imageName, err);
+                                                console.log('Ignoring for now ...');
+                                                return r;
+                                            });
+                                    }
+                                });
+                            }
+
+                            if (withImgs.length < 1) {
+                                console.log('------> could not read previews');
+                            } else {
+                                console.log('~~~~> ', withImgs);
+                            }
+
                             return {
-                                ...(p.data() as PurchaseType),
+                                ...purchase,
+                                // receipts: purchase.receipts,
                                 purchaseDate: purchaseDate ? extractDate(purchaseDate) : null,
                                 // ensure id is set *AFTER* the doc content to ensure we use firebase id all places
                                 id: p.id,
@@ -54,8 +97,7 @@ const usePurchases = () => {
             } catch (err) {
                 console.log('Could not fetch purchases', err);
             }
-        }, []);
-
+        };
 
         useEffect(() => {
             if (purchases) {

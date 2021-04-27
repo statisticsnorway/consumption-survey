@@ -11,7 +11,7 @@ import { DATABASE_RECEIPTS, POUCH_DATABASES } from '../uiConfig';
 import usePouch from '../pouchdb/usePouch';
 
 const useReceipts = () => {
-    const {ready, getDB} = usePouch({dbNames: POUCH_DATABASES}); // useContext(PouchDBContext);
+    const {ready, getDB} = useContext(PouchDBContext);
     const {storage, firestore} = useContext(FireContext);
     const {userInfo} = useContext(UserContext);
 
@@ -143,6 +143,7 @@ const useReceipts = () => {
     };
 
     return {
+        receiptsDBReady: !!receiptsDB,
         saveImageBlobToPouchDB,
         saveImageUrlToPouchDB,
         uploadToFireStorage,

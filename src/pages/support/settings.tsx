@@ -6,16 +6,8 @@ import { WorkspacePanel } from '../../components/layout/Workspace';
 import { LANGUAGES } from '../../utils/jsUtils';
 import { useLoader } from '../../hocs/globalLoader';
 
-const Settings = ({t}) => {
-    const router = useRouter();
-    const {setLoading} = useLoader();
-
-    return (
-        <>
-            <h3>{t('title')}</h3>
-            <p>{t('test')}</p>
-            <WorkspacePanel>
-                <SettingsPanel
+/*
+<SettingsPanel
                     title={t('pin.title')}
                     description={t('pin.description')}
                     onClick={() => {
@@ -44,6 +36,18 @@ const Settings = ({t}) => {
                         )}
                     />
                 </SettingsPanel>
+ */
+
+const Settings = ({t}) => {
+    const router = useRouter();
+    const {setLoading} = useLoader();
+
+    return (
+        <>
+            <h3>{t('title')}</h3>
+            <p>{t('test')}</p>
+            <WorkspacePanel>
+                Settings
             </WorkspacePanel>
         </>
     );

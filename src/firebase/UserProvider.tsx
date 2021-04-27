@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 // import { FireContext, UserContext } from '../contexts';
-import { FireContext, SurveyInfo, UserContext, UserInfoType } from '../contexts';
+import { FireContext, RespondentDetails, SurveyInfo, UserContext, UserInfoType } from '../contexts';
 import { i18n } from '../../i18n';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -32,6 +32,7 @@ const UserProvider = ({children}) => {
     const router = useRouter();
     const {auth, firestore, reset} = useContext(FireContext);
     const [userInfo, setUserInfo] = useState<UserInfoType>(null);
+    const [respondentDetails, setRespondentDetails] = useState<RespondentDetails>(null);
     const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -57,34 +58,43 @@ const UserProvider = ({children}) => {
 
      */
 
-    const login = async (userName) => {
+    const extractSurveyInfo = (respondentInfo: RespondentDetails) => ({
+        journalStart: respondentInfo.diaryStart,
+        journalEnd: respondentInfo.diaryEnd,
+    });
+
+
+    const login = async (respondentInfo: RespondentDetails) => {
         if (!auth) {
             console.log('firebase auth not ready ...');
             return;
         }
 
-        if (!userName) {
-            await router.push('/login');
-        } else {
+        console.log('trying to obtain firebase token for ', respondentInfo, isLoggingIn, LOGIN_URL);
+
+        if (respondentInfo && respondentInfo.respondentId && !isLoggingIn) {
             setIsLoggingIn(true);
             const res = await axios.post(LOGIN_URL, {
-                user: userName
+                respondentInfo
             });
 
             if ((res.status >= 200) && (res.status < 300)) {
                 const {data: authInfo} = res;
 
+                console.log('authInfo from BFF', authInfo);
+
                 if (authInfo && authInfo.firebaseToken && authInfo.userInfo) {
-                    auth.signInWithCustomToken(authInfo.firebaseToken)
+                    return auth.signInWithCustomToken(authInfo.firebaseToken)
                         .then((user) => {
                             console.log('Successfully logged in as', user);
                             const loginInfo = {
                                 ...authInfo.userInfo,
                                 userName: authInfo.userInfo.id,
-                                surveyInfo: DUMMY_SURVEY_INFO,
+                                surveyInfo: extractSurveyInfo(respondentInfo),
                             };
 
                             setUserInfo(loginInfo);
+                            setRespondentDetails(authInfo.respondentDetails);
 
                             firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
                                 .set(loginInfo)
@@ -107,11 +117,14 @@ const UserProvider = ({children}) => {
             }
 
             setIsLoggingIn(false);
-        }
+        } /* else {
+            await router.push('/login');
+        } */
     };
 
     useEffect(() => {
         if (auth) {
+            console.log('[UP] auth changed');
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     console.log('[Auth] current user',
@@ -140,6 +153,11 @@ const UserProvider = ({children}) => {
                                     ...snapshot.data(),
                                     language: 'nb',
                                 } as UserPreferences);
+                            }, (err) => {
+                                console.log('could not get preferences', err);
+                                setUserPreferences({
+                                    language: 'nb',
+                                } as UserPreferences);
                             })
                     } catch (err) {
                         console.log('Could not fetch user info/preferences');
@@ -149,15 +167,24 @@ const UserProvider = ({children}) => {
                     console.log('User logged out ?');
                 }
             });
+        } else {
+            console.log('[UP] auth empty');
         }
     }, [auth]);
 
     useEffect(() => {
         if (userPreferences) {
+            console.log('user preferences change', userPreferences);
             i18n.changeLanguage(userPreferences.language)
                 .then((res) => {
                     console.log('User language changed', res);
                 });
+        } else {
+            console.log('awaiting user preferences..');
+            i18n.changeLanguage('nb')
+                .then((res) => {
+                    console.log('initial language', res);
+                })
         }
     }, [userPreferences]);
 
@@ -179,13 +206,16 @@ const UserProvider = ({children}) => {
 
                     try {
                         await reset();
-                        window.location.reload();
+                        console.log('cleared firebase, initiaing idp logout');
+                        setIsAuthenticated(false);
+                        await router.push('/login');
+                        // window.location.reload();
                     } catch (err) {
                         console.log('could not reset app', err);
                         setLoginLogoutErrors(err);
                     }
 
-                    router.push('/login');
+
                 })
                 .catch((err) => {
                     console.log('could not signout cleanly', err);
@@ -201,6 +231,7 @@ const UserProvider = ({children}) => {
             value={{
                 isAuthenticated,
                 userInfo,
+                respondentDetails,
                 login,
                 logout,
                 isLoggingIn,

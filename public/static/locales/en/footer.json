@@ -1,0 +1,13 @@
+{
+  "home": {
+    "title": "Home"
+  },
+
+  "purchases": {
+    "title": "Expenses"
+  },
+
+  "settings": {
+    "title": "Settings"
+  }
+}
