@@ -13,8 +13,8 @@ services:
       context: ./
       dockerfile: Dockerfile.dev
     depends_on:
-      - backend
       - bff
+      #- backend
 
   bff:
     build:
@@ -24,14 +24,14 @@ services:
       - 3005:3005
     environment:
       - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey-gcp.json
-      - FIREBASE_CONFIG_JSON=/app/secure/config-gcp.js
+      - FIREBASE_CONFIG_JSON=/app/secure/config-gcp.json
       - DEPLOYMENT_ENV=local
 
-  backend:
-    build:
-      context: ../survey-service
-    ports:
-      - 8081:8080
+#  backend:
+#    build:
+#      context: ../survey-service
+#    ports:
+#      - 8081:8080
 
   nginx:
     build: ./nginx
