@@ -192,35 +192,32 @@ const UserProvider = ({children}) => {
         setIsAuthenticated(!!userInfo);
     }, [userInfo]);
 
-
     const logout = async () => {
         if (auth && isAuthenticated) {
             setIsLoggingOut(true);
-            auth.signOut()
-                .then(async (res) => {
-                    console.log('successfully signed out', res);
-                    setUserInfo(null);
-                    setIsLoggingIn(false);
-                    setUserPreferences(null);
-                    setIsLoggingOut(false);
 
-                    try {
-                        await reset();
-                        console.log('cleared firebase, initiaing idp logout');
-                        setIsAuthenticated(false);
-                        await router.push('/login');
-                        // window.location.reload();
-                    } catch (err) {
-                        console.log('could not reset app', err);
-                        setLoginLogoutErrors(err);
-                    }
+            try{
+                const sign = await auth.signOut()
 
+                console.log('successfully signed out', sign);
 
-                })
-                .catch((err) => {
-                    console.log('could not signout cleanly', err);
-                    setIsLoggingOut(false);
-                });
+                setUserInfo(null);
+                setIsLoggingIn(false);
+                setUserPreferences(null);
+                setIsLoggingOut(false);
+
+                // fireReset();
+                setIsAuthenticated(false);
+                // await router.push('/login');
+            } catch (err){
+                console.log('could not signout cleanly', err);
+                setIsLoggingOut(false);
+            }
+                // await router.push('/auth/logout');
+                // await router.push('/logout')
+                // window.location.reload();
+                // window.location.href = "https://fbu.ssb.no/auth/logout"
+
         } else {
             console.log('not authenticated, skipping...', auth, isAuthenticated);
         }

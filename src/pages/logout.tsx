@@ -2,13 +2,11 @@ import { useRouter } from 'next/router';
 import getConfig from 'next/config';
 import { useContext, useEffect } from 'react';
 import Loader from '../components/common/Loader';
-import { UserContext } from '../contexts';
 
 const appConfig = getConfig();
 
 const Logout = () => {
     const router = useRouter();
-    const { logout } = useContext(UserContext);
 
     const getLogoutUrl = () => {
         const {envVars} = appConfig.publicRuntimeConfig;
@@ -17,13 +15,11 @@ const Logout = () => {
     };
 
     useEffect(() => {
-        const doLogout = async () => {
-            await logout();
-            console.log('trying idporten logout now', getLogoutUrl());
-            router.push(getLogoutUrl());
+        const doIdportenLogout = async () => {
+            window.location.href = "https://fbu.ssb.no/auth/logout"     //TODO Must be done dynamically
         };
 
-        doLogout();
+        doIdportenLogout();
     }, []);
 
     return <Loader />;
