@@ -31,10 +31,14 @@ export type RespondentDetails = {
     dateOfBirth: string;
 };
 
+export type IDPortenTokenInfo = {
+
+};
+
 export type UserContextType = {
     userInfo: UserInfoType;
     respondentDetails: RespondentDetails;
-    login: (respondentDetails: RespondentDetails) => Promise<void>;
+    login: (respondentDetails: RespondentDetails, idPortenTokenInfo: IDPortenTokenInfo) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
     isLoggingIn: boolean;

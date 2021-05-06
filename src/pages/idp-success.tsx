@@ -50,7 +50,7 @@ const IDPSuccess = () => {
 
     useEffect(() => {
         if (respondentInfo) {
-            login(respondentInfo)
+            login(respondentInfo, idPortenInfo)
                 .then(() => {
                     console.log('Firebase token obtained!');
                 })

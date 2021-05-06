@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 // import { FireContext, UserContext } from '../contexts';
-import { FireContext, RespondentDetails, SurveyInfo, UserContext, UserInfoType } from '../contexts';
+import { FireContext, IDPortenTokenInfo, RespondentDetails, SurveyInfo, UserContext, UserInfoType } from '../contexts';
 import { i18n } from '../../i18n';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
@@ -64,7 +64,7 @@ const UserProvider = ({children}) => {
     });
 
 
-    const login = async (respondentInfo: RespondentDetails) => {
+    const login = async (respondentInfo: RespondentDetails, idPortenInfo: IDPortenTokenInfo) => {
         if (!auth) {
             console.log('firebase auth not ready ...');
             return;
@@ -75,7 +75,8 @@ const UserProvider = ({children}) => {
         if (respondentInfo && respondentInfo.respondentId && !isLoggingIn) {
             setIsLoggingIn(true);
             const res = await axios.post(LOGIN_URL, {
-                respondentInfo
+                respondentInfo,
+                idPortenInfo,
             });
 
             if ((res.status >= 200) && (res.status < 300)) {
@@ -192,35 +193,32 @@ const UserProvider = ({children}) => {
         setIsAuthenticated(!!userInfo);
     }, [userInfo]);
 
-
     const logout = async () => {
         if (auth && isAuthenticated) {
             setIsLoggingOut(true);
-            auth.signOut()
-                .then(async (res) => {
-                    console.log('successfully signed out', res);
-                    setUserInfo(null);
-                    setIsLoggingIn(false);
-                    setUserPreferences(null);
-                    setIsLoggingOut(false);
 
-                    try {
-                        await reset();
-                        console.log('cleared firebase, initiaing idp logout');
-                        setIsAuthenticated(false);
-                        await router.push('/login');
-                        // window.location.reload();
-                    } catch (err) {
-                        console.log('could not reset app', err);
-                        setLoginLogoutErrors(err);
-                    }
+            try{
+                const sign = await auth.signOut()
 
+                console.log('successfully signed out', sign);
 
-                })
-                .catch((err) => {
-                    console.log('could not signout cleanly', err);
-                    setIsLoggingOut(false);
-                });
+                setUserInfo(null);
+                setIsLoggingIn(false);
+                setUserPreferences(null);
+                setIsLoggingOut(false);
+
+                // fireReset();
+                setIsAuthenticated(false);
+                // await router.push('/login');
+            } catch (err){
+                console.log('could not signout cleanly', err);
+                setIsLoggingOut(false);
+            }
+                // await router.push('/auth/logout');
+                // await router.push('/logout')
+                // window.location.reload();
+                // window.location.href = "https://fbu.ssb.no/auth/logout"
+
         } else {
             console.log('not authenticated, skipping...', auth, isAuthenticated);
         }

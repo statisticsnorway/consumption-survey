@@ -69,7 +69,7 @@ const Layout = (props: LayoutProps) => {
     useEffect(() => {
         // setup cleanup of idleTimer
         return () => {
-            reset();
+            //reset();  TODO This reset triggered multiple renders at random places
         }
     }, []);
 
