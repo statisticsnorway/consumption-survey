@@ -32,7 +32,10 @@ export type RespondentDetails = {
 };
 
 export type IDPortenTokenInfo = {
-
+    accessToken: any;
+    refreshToken: any;
+    idToken: any;
+    idTokenUserInfo: any;
 };
 
 export type UserContextType = {

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import getConfig from 'next/config';
-import { RespondentDetails, UserContext } from '../contexts';
+import { IDPortenTokenInfo, RespondentDetails, UserContext } from '../contexts';
 import UserCard from '../components/user/UserCard';
 import Loader from '../components/common/Loader';
 import { DASHBOARD_TABS, PATHS } from '../uiConfig';
@@ -14,7 +14,7 @@ const IDPSuccess = () => {
     const {state, code} = router.query;
 
     const {login, loginLogoutErrors, isAuthenticated, isLoggingIn, userInfo, respondentDetails} = useContext(UserContext);
-    const [idPortenInfo, setIdPortenInfo] = useState<object>(null);
+    const [idPortenInfo, setIdPortenInfo] = useState<IDPortenTokenInfo>(null);
     const [respondentInfo, setRespondentInfo] = useState<RespondentDetails>(null);
     const [idPortenError, setIdPortenError] = useState<Error>(null);
 
@@ -83,7 +83,7 @@ const IDPSuccess = () => {
             {(!isAuthenticated || isLoggingIn) && <Loader/>}
             {isAuthenticated && respondentInfo && !respondentDetails &&
             <p>
-                IDPorten innlogging vellykket, men vi kunne ikke finne
+                IDPorten innlogging vellykket, men vi kunne ikke finne hente
                 survey info (respondentId, føringsperiode) fra auth/backend
                 moduler.
             </p>
