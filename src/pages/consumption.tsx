@@ -1,11 +1,11 @@
 import LayoutWithFooter from '../components/layout/LayoutWithFooter';
 
-const Home = () => {
+const Consumption = () => {
     return (
         <LayoutWithFooter>
-            <p>Home</p>
+            <p>Consumption</p>
         </LayoutWithFooter>
     );
 };
 
-export default Home;
+export default Consumption;

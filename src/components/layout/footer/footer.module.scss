@@ -1,0 +1,22 @@
+@import '../../../styles/common';
+
+$footer-height: 4.25rem;
+$footer-background-color: $ssb-white;
+$footer-border-color: $ssb-dark-5;
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+
+  height: $footer-height;
+
+  background-color: $footer-background-color;
+  border-top: 1px solid $footer-border-color
+}

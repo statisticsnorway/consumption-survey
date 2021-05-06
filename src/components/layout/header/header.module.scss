@@ -1,0 +1,44 @@
+@import 'src/styles/common';
+
+$header-height: 4.25rem;
+$logo-height: 3rem;
+$header-padding: 0 1rem;
+$header-border-color: $ssb-dark-5;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: $default-padding-width;
+
+  height: $header-height;
+  padding: $header-padding;
+
+  border-bottom: 1px solid $header-border-color;
+
+  .identity {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .logo {
+      height: $logo-height;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        height: $logo-height;
+      }
+    }
+
+    .banner {
+
+    }
+  }
+
+  .topMenu {
+
+  }
+}

@@ -1,7 +1,4 @@
-const fs = require('fs');
 const {createServer} = require('http');
-const {join} = require('path');
-const {parse} = require('url');
 const next = require('next');
 
 const app = next({dev: false});

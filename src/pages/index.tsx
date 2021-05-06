@@ -1,11 +1,32 @@
-import dynamic from 'next/dynamic';
+import { useTranslation, withTranslation } from 'react-i18next';
+import Layout from '../components/layout/Layout';
 
-const WelcomeNoSSR = dynamic(
-    () => import('../components/Welcome'),
-    { ssr: false }
-);
+const Index = () => {
+    const {t, i18n} = useTranslation('welcome');
 
-export default function Home() {
-    console.log('Home', WelcomeNoSSR);
-    return <WelcomeNoSSR />
+    const langComp = ['en', 'nb', 'nn'].map(l => (
+        <div style={{margin: '0 1rem'}} key={l}>
+            <a onClick={async () => {
+                console.log('setting new locale', l);
+                await i18n.changeLanguage(l);
+            }}>{l.toUpperCase()}</a>
+        </div>
+    ));
+
+    return (
+        <Layout>
+            <h2>{t('title')}</h2>
+            {langComp}
+            <hr/>
+        </Layout>
+    );
 };
+
+export const getStaticProps = async () => ({
+    props: {
+        namespacesRequired: ['welcome'],
+    },
+});
+
+export default Index;
+

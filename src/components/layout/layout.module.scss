@@ -1,0 +1,16 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+
+  .headerZone {
+    order: 10;
+  }
+
+  .workspaceZone {
+    order: 20;
+  }
+
+  .footerZone {
+    order: 30;
+  }
+}
