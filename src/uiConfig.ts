@@ -2,11 +2,14 @@ import { add, sub } from 'date-fns';
 import { ChangeEvent } from 'react';
 
 export const PATHS = {
+    HOME: '/home',
+    PURCHASES: '/v2/purchases',
     DASHBOARD: '/dashboard/Dashboard',
     ADD_PURCHASE: '/v2/purchases/addPurchase',
     EDIT_PURCHASE: '/v2/purchases/editPurchase',
     EDIT_EXPENSE: `/`,
-    AUTH_IDP: '/auth/api'
+    AUTH_IDP: '/auth/api',
+    QUESTIONNAIRE: '/questionnaire'
 };
 
 export const TABS_PARAMS = {

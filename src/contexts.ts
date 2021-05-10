@@ -20,12 +20,26 @@ export type UserInfoType = {
     surveyInfo: SurveyInfo;
 };
 
+export type RespondentDetails = {
+    pid: string;
+    respondentId: string;
+    ioNumber: number;
+    diaryStart: string;
+    diaryEnd: string;
+    name: string;
+    gender: string;
+    dateOfBirth: string;
+};
+
 export type UserContextType = {
     userInfo: UserInfoType;
-    login: (userName: string) => Promise<void>;
+    respondentDetails: RespondentDetails;
+    login: (respondentDetails: RespondentDetails) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
     isLoggingIn: boolean;
+    isLoggingOut: boolean;
+    loginLogoutErrors: any;
 };
 
 export const UserContext = createContext({} as UserContextType);
@@ -35,6 +49,7 @@ export type FireContextType = {
     firestore: FirebaseFirestore;
     storage: FirebaseStorage;
     rtdb: FirebaseDatabase;
+    reset: () => void;
 };
 
 export const FireContext = createContext({} as FireContextType);
@@ -44,6 +59,7 @@ export type PurchasesContextType = {
     setPurchases: (purchases: PurchaseType[]) => void;
     purchasesByDate: PurchasesByDate;
     setPurchasesByDate: (PurchasesByDate) => void;
+    clearPurchases: () => void;
 };
 
 export const PurchasesContext = createContext({} as PurchasesContextType);
@@ -51,6 +67,7 @@ export const PurchasesContext = createContext({} as PurchasesContextType);
 export type ExpensesContextType = {
     expenses: RegularExpenseType[];
     setExpenses: (expense: RegularExpenseType[]) => void;
+    clearExpenses: () => void;
 };
 
 export const ExpensesContext = createContext({} as ExpensesContextType);
@@ -64,5 +81,4 @@ export type SearchTermsContextType = {
 };
 
 export const SearchTermsContext = createContext({} as SearchTermsContextType);
-
 

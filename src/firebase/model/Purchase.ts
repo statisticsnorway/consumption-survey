@@ -21,6 +21,9 @@ export enum PurchaseStatus {
     /** from receipt: status is complete only after ocr_validated */
     COMPLETE = 'COMPLETE',
 
+    /** Saved to backend service */
+    FBU_COMPLETE = 'FBU_COMPLETE',
+
     /**
      * when created from a receipt:
      * - waiting for network: device is offline we could not upload
@@ -43,6 +46,9 @@ export enum PurchaseStatus {
     /** abandoned registration */
     DISCARDED = 'DISCARDED',
 };
+
+export const isPurchaseComplete = (status: PurchaseStatus) =>
+    [PurchaseStatus.COMPLETE, PurchaseStatus.FBU_COMPLETE].includes(status);
 
 /**
  * ToDo: This looks exactly like PurchaseStatus right  now.

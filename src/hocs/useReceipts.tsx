@@ -7,7 +7,8 @@ import { FireContext, UserContext } from '../contexts';
 
 import { base64ToBlob, getContentType } from '../utils/imgUtils';
 import { Receipt, ReceiptStatus } from '../firebase/model/Purchase';
-import { DATABASE_RECEIPTS } from '../uiConfig';
+import { DATABASE_RECEIPTS, POUCH_DATABASES } from '../uiConfig';
+import usePouch from '../pouchdb/usePouch';
 
 const useReceipts = () => {
     const {ready, getDB} = useContext(PouchDBContext);
@@ -18,9 +19,17 @@ const useReceipts = () => {
 
     useEffect(() => {
         if (ready) {
-            setReceiptsDB(getDB(DATABASE_RECEIPTS));
+            const rdb = getDB(DATABASE_RECEIPTS);
+            console.log('receipts db: ', rdb);
+            setReceiptsDB(rdb);
         }
     }, [ready]);
+
+    useEffect(() => {
+        if (receiptsDB) {
+            console.log('receipts db should be ready for use now');
+        }
+    }, [receiptsDB]);
 
     const saveImageBlobToPouchDB = (id: string, name: string, image: Blob) => {
         return receiptsDB.put({
@@ -86,7 +95,7 @@ const useReceipts = () => {
         receiptsDB.getAttachment(id, name);
 
     const getReceiptWithImageUrl = async (id: string, name: string) => {
-        const doc = await receiptsDB.get(id, { attachments: true });
+        const doc = await receiptsDB.get(id, {attachments: true});
         const attachmens = doc._attachments;
 
         const att = attachmens[name];
@@ -125,15 +134,16 @@ const useReceipts = () => {
 
 
     const notifyReceipt = (purchaseId, receiptId, metadata) => {
-      const path = `/users/${userInfo.userName}/receipts/${purchaseId}`;
-      return firestore.doc(path)
-          .set({
-              receiptId,
-              receiptMetadata: metadata,
-          })
+        const path = `/users/${userInfo.userName}/receipts/${purchaseId}`;
+        return firestore.doc(path)
+            .set({
+                receiptId,
+                receiptMetadata: metadata,
+            })
     };
 
     return {
+        receiptsDBReady: !!receiptsDB,
         saveImageBlobToPouchDB,
         saveImageUrlToPouchDB,
         uploadToFireStorage,

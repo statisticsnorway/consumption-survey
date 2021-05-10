@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ArrowRight, Camera, Edit, Plus, X } from 'react-feather';
 import { Tag } from '@statisticsnorway/ssb-component-library';
-import PurchasesList from '../purchases/PurchasesList';
+import PurchasesList from '../v2/purchases/PurchasesList';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
 import { DASHBOARD_TABS, PATHS, getModifiers } from '../../uiConfig';
@@ -45,7 +45,7 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
     const {purchases} = usePurchases();
     const {expenses} = useExpenses();
     const {initialLoadComplete} = useContext(SearchTermsContext);
-    const {userInfo: {surveyInfo}, isAuthenticated} = useContext(UserContext);
+    const {userInfo, isAuthenticated} = useContext(UserContext);
 
     const [sectionNav, setSectionNav] = useState<ReactNode>();
 
@@ -113,14 +113,14 @@ const HomeTab = ({setActiveTab, onDayClick}) => {
         );
     };
 
-    return (isAuthenticated && initialLoadComplete) ? (
+    return (isAuthenticated && userInfo && initialLoadComplete) ? (
         <>
             <DiaryViz
                 renderDay={onDayClick}
-                modifiers={getModifiers(purchases, surveyInfo)}
+                modifiers={getModifiers(purchases, userInfo.surveyInfo)}
                 className={styles.dashboardDiary}
-                surveyStart={simpleFormat(surveyInfo.journalStart)}
-                surveyEnd={simpleFormat(surveyInfo.journalEnd)}
+                surveyStart={simpleFormat(userInfo.surveyInfo.journalStart)}
+                surveyEnd={simpleFormat(userInfo.surveyInfo.journalEnd)}
             />
             {sectionNav}
             <>

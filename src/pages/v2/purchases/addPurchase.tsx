@@ -5,7 +5,7 @@ const AddPurchasePage = () => {
     const router = useRouter();
     const onDate = router.query.onDate as string;
 
-    return <AddPurchase onDate={onDate} />
+    return <AddPurchase onDate={onDate}/>;
 };
 
 export default AddPurchasePage;

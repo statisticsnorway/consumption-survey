@@ -1,6 +1,8 @@
 {
   "menu": {
-    "label": "Meny"
+    "label": "Meny",
+     "logout": "Logg ut",
+    "login": "Logg inn"
   },
 
   "links": {
