@@ -1,16 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import RadioButtonAlt from "./RadioButtonAlt";
 
 const RadioGroup = ({ id, className, groupName, header, items, onChange, orientation, selectedValue, disabled=false }) => {
-	const [selected, updateSelected] = useState(selectedValue);
-
-	useEffect(() => {
-		onChange(selected);
-	}, [selected]);
-
-	console.log({selectedValue})
-	console.log({selected})
 
 	return (
 		<div id={id} className={`ssb-radio-group width-100 ${className ? ` ${className}` : ''}`}>
@@ -26,7 +18,7 @@ const RadioGroup = ({ id, className, groupName, header, items, onChange, orienta
 						value={it.value}
 						name={groupName || header}
 						callback={ e => {
-							updateSelected(e)
+							onChange(e)
 						}}
 						disabled={it.disabled || disabled}
 					>{it.label}

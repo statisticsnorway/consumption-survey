@@ -1,10 +1,12 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const HUS1: QuestionFormType =
     {
         id: 'hus1',
         order: 1,
-        questionText: 'Hva slags hustype bor du/dere i ?',
+        theme: Theme.dwelling,
+        questionText: 'Bor [du/dere] i?',
         hasAnswered: false,
         answerValue: {
             answers: [
@@ -17,40 +19,29 @@ export const HUS1: QuestionFormType =
                 {
                     id: 'hus1_2',
                     value: "2",
-                    descriptionValue: 'Rekke',
+                    descriptionValue: 'Rekke- eller tomannsbolig',
                     chosen: false
                 },
                 {
                     id: 'hus1_3',
                     value: "3",
-                    descriptionValue: 'Tre',
+                    descriptionValue: 'Tre-, eller firemannsbolig',
                     chosen: false
                 },
                 {
                     id: 'hus1_4',
                     value: "4",
-                    descriptionValue: 'Leilighet',
+                    descriptionValue: 'Leilighet i blokk, bygård eller annet hus med mange boliger',
                     chosen: false
                 },
                 {
                     id: 'hus1_5',
                     value: "5",
-                    descriptionValue: 'Båt',
+                    descriptionValue: 'Bor i båt, campingvogn eller bil',
                     chosen: false
                 }
             ]
         },
-        defaultNextQuestion: "bol1",
-        alternativeNextQuestionCriteria: [{
-            currentQuestionValue: "4",
-            nextQuestionId: "hus2",
-            nextQuestionDependencies: [
-                {
-                    questionId: "hus1",
-                    questionValue: "4"
-                }
-            ]
-        }],
         inputType: "radio"
     } as QuestionFormType
 

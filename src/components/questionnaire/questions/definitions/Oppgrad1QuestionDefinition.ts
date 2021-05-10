@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const OPPGRAD1: QuestionFormType = {
     id: 'oppgrad1',
+    theme: Theme.renovationDwelling,
     order: 36,
-    questionText: 'Nå kommer noen spørsmål om utgifter du/dere har hatt til reparasjon, vedlikehold, oppussing eller oppgradering av boligen de siste 12 månedene.',
+    questionText: 'Har du/dere hatt utgifter til oppgradering av boligen  som har bidratt til å øke boligens verdi de siste 12 månedene.',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -40,41 +42,48 @@ export const OPPGRAD1: QuestionFormType = {
             {
                 id: 'oppgrad1_6',
                 value: "6",
-                descriptionValue: 'Etterisolering?',
+                descriptionValue: 'Etterisolering',
                 chosen: false
             },
             {
                 id: 'oppgrad1_7',
                 value: "7",
-                descriptionValue: 'Varmepumpe',
+                descriptionValue: 'Nytt oppvarmingssytem',
                 chosen: false
             },
             {
                 id: 'oppgrad1_8',
                 value: "8",
-                descriptionValue: 'Sentralvarme',
+                descriptionValue: 'Utskifting av det elektriske anlegget',
                 chosen: false
             },
             {
                 id: 'oppgrad1_9',
                 value: "9",
-                descriptionValue: 'Utskifting av det elektriske anlegget?',
+                descriptionValue: 'Nytt tak',
                 chosen: false
             },
             {
                 id: 'oppgrad1_10',
                 value: "10",
-                descriptionValue: 'Ny kledning utvending?',
+                descriptionValue: 'Annet',
                 chosen: false
             },
             {
                 id: 'oppgrad1_11',
                 value: "11",
-                descriptionValue: 'Nytt tak?',
+                descriptionValue: 'Nei, ingen av disse',
                 chosen: false
             },
         ]
     },
-    defaultNextQuestion: "oppgrad2",
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "eier1",
+                questionValue: "1"
+            }
+        ]
+    ],
     inputType: "checkbox"
 } as QuestionFormType

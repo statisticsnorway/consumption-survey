@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const FUTG_MULTI3: QuestionFormType = {
     id: 'futg3',
-    order: 22,
+    theme: Theme.rentDwelling,
+    order: 22,  // NOT IN USE
     questionText: 'Omfatter husleien/fellesutgiftene …. ',
     hasAnswered: false,
     answerValue: {

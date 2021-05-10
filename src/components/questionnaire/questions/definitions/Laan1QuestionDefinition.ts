@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const LAAN1: QuestionFormType = {
     id: 'laan1',
+    theme: Theme.mortgage,
     order: 7,
-    questionText: 'Har [du/dere] boliglån og / eller andre lån med sikkerhet i boligen nå?',
+    questionText: 'Har [du/dere] boliglån eller annet lån med sikkerhet i bolig?',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -25,5 +27,13 @@ export const LAAN1: QuestionFormType = {
         title: "Lån",
         content: "Regn med alle lån med sikkerhet i boligen du bor i. Regn ikke med fellesgjeld."
     },
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "eier1",
+                questionValue: "1"
+            }
+        ]
+    ],
     inputType: "radio"
 } as QuestionFormType

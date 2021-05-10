@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const TOMT1: QuestionFormType = {
     id: 'tomt1',
+    theme: Theme.renovationDwelling,
     order: 40,
     questionText: 'Har du/dere i løpet av de siste 12 månedene hatt utgifter til',
     hasAnswered: false,
@@ -43,8 +45,27 @@ export const TOMT1: QuestionFormType = {
                 descriptionValue: 'å oppføre eller vedlikeholde garasje eller uthus?',
                 chosen: false
             },
+            {
+                id: 'tomt1_7',
+                value: "7",
+                descriptionValue: 'Annet',
+                chosen: false
+            },
+            {
+                id: 'tomt1_8',
+                value: "8",
+                descriptionValue: 'Ingen av disse',
+                chosen: false
+            },
         ]
     },
-    defaultNextQuestion: "tomt2",
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "eier1",
+                questionValue: "1",
+            },
+        ],
+    ],
     inputType: "checkbox"
 } as QuestionFormType

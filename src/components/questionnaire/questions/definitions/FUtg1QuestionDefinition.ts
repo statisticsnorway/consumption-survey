@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const FUTG1: QuestionFormType = {
     id: 'futg1',
+    theme: Theme.rentDwelling,
     order: 20,
-    questionText: 'Har [du/dere] fellesutgifter gjennom sameie eller lignende?',
+    questionText: 'Betaler dere [du/dere] fellesutgifter til borettslag eller sameie?',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -24,10 +26,10 @@ export const FUTG1: QuestionFormType = {
     dependentOnQuestionCriteria: [
         [
             {
-                questionId: "eier2",
+                questionId: "eier1",
                 questionValue: "1"
-            }
-        ]
+            },
+        ],
     ],
     defaultNextQuestion: "futg2",
     inputType: "radio"

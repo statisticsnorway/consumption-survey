@@ -25,7 +25,7 @@ const Input = ({
                    id,
                    label,
                    negative,
-                    ...props
+                   ...props
                }: Props) => {
     return (
         <div
@@ -33,6 +33,7 @@ const Input = ({
             {label && <label htmlFor={id}>{label}</label>}
             <div className="input-wrapper">
                 <input
+                    autoFocus={props.autoFocus ? true : false}
                     id={id}
                     className={error ? ' with-icon' : ''}
                     {...props}

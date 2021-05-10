@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import {ConsumptionForm} from "../../components/questionnaire/questions/ConsumptionForm";
 import React from 'react';
+import {ConsumptionForm} from "../../components/questionnaire/ConsumptionForm";
 
 function Questionnaire() {
     const {t} = useTranslation('purchases');

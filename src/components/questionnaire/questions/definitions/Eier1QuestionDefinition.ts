@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const EIER1: QuestionFormType = {
     id: 'eier1',
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 5,
     questionText: 'Eier eller leier du/dere boligen?',
     hasAnswered: false,
@@ -10,7 +12,7 @@ export const EIER1: QuestionFormType = {
             {
                 id: 'eier1_1',
                 value: "1",
-                descriptionValue: 'Eier(Selv- / andelseier)',
+                descriptionValue: 'Eier',
                 chosen: false
             },
             {
@@ -21,10 +23,5 @@ export const EIER1: QuestionFormType = {
             }
         ]
     },
-    defaultNextQuestion: "laan1",
-    alternativeNextQuestionCriteria: [{
-        currentQuestionValue: "1",
-        nextQuestionId: "eier2"
-    }],
     inputType: "radio"
 } as QuestionFormType

@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const EIER2: QuestionFormType = {
     id: 'eier2',
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 6,
     questionText: 'Eier [du/dere] som selveier eller gjennom borettslag?',
     hasAnswered: false,

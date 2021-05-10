@@ -1,23 +1,32 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const HUSLEIE1A: QuestionFormType = {
     id: 'husleie1a',
+    theme: Theme.rentDwelling,
     order: 16,
-    questionText: 'Betaler [du/dere] vanlig markedsleie',
+    questionText: 'Er husleien',
     hasAnswered: false,
     answerValue: {
         answers: [
             {
                 id: 'husleie1a_1',
                 value: "1",
-                descriptionValue: 'Ja',
+                descriptionValue: 'Vanlig markedspris',
                 chosen: false
             },
             {
                 id: 'husleie1a_2',
                 value: "2",
-                descriptionValue: 'Nei',
+                descriptionValue: 'Til redusert pris',
                 chosen: false
+            },
+            {
+                id: 'husleie1a_3',
+                value: "3",
+                descriptionValue: 'Vet ikke',
+                chosen: false,
+                hidden: true
             }
         ]
     },

@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const BOFEST1: QuestionFormType = {
     id: 'bofest1',
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 13,
     questionText: 'Står boligen på selveiertomt eller festet tomt?',
     hasAnswered: false,
@@ -23,16 +25,18 @@ export const BOFEST1: QuestionFormType = {
                 id: 'bofest1_3',
                 value: "3",
                 descriptionValue: 'Vet ikke',
-                chosen: false
+                chosen: false,
+                hidden: true
             }
         ]
     },
-    defaultNextQuestion: "husleie1",
-    alternativeNextQuestionCriteria: [{
-        currentQuestionValue: "2",
-        nextQuestionId: "bofest1b"
-    }],
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "eier2",
+                questionValue: "1"
+            },
+        ]
+    ],
     inputType: "radio"
 } as QuestionFormType
-
-export default BOFEST1;

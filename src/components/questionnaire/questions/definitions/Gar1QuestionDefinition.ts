@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const GAR1: QuestionFormType = {
     id: 'gar1',
+    theme: Theme.garageExpendatures,
     order: 33,
     questionText: 'Eier eller leier du/dere tilgang til garasje, carport eller biloppstillingsplass?',
     hasAnswered: false,
@@ -27,6 +29,5 @@ export const GAR1: QuestionFormType = {
             }
         ]
     },
-    defaultNextQuestion: "gar1a",
     inputType: "radio"
 } as QuestionFormType

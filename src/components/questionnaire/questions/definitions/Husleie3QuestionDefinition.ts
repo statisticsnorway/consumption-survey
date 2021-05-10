@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const HUSLEIE3: QuestionFormType = {
     id: 'husleie3',
+    theme: Theme.rentDwelling,
     order: 19,
     questionText: 'Er elektrisitet inkludert i husleien?',
     hasAnswered: false,
@@ -21,7 +23,6 @@ export const HUSLEIE3: QuestionFormType = {
             }
         ]
     },
-    defaultNextQuestion: "futg1",
     dependentOnQuestionCriteria: [
         [
             {

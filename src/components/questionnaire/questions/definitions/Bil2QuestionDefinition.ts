@@ -1,0 +1,26 @@
+import {QuestionFormType} from "../QuestionFormType";
+
+export const BIL2: QuestionFormType = {
+    id: 'bil2',
+    order: 83,
+    questionText: 'Kjøpte eller fikk du/dere ny eller brukt bil',
+    hasAnswered: false,
+    answerValue: {
+        answers: [
+            {
+                id: 'bil2_1',
+                value: "",
+                descriptionValue: 'Ny. Antall',
+                chosen: true
+            },
+            {
+                id: 'bil2_2',
+                value: "",
+                descriptionValue: 'Brukt. Antall',
+                chosen: true
+            }
+        ]
+    },
+    inputType: "multifield-number",
+    inputPostfix: "amount"
+} as QuestionFormType

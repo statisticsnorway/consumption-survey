@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const LUTG1: QuestionFormType = {
     id: 'lutg1',
+    theme: Theme.mortgage,
     order: 9,
-    questionText: 'Hvor mye betaler [du/dere] samlet i renter og avdrag for dette lånet pr. måned? ',
+    questionText: 'Hvor mye betaler [du/dere] for dette lånet per måned?',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -15,10 +17,14 @@ export const LUTG1: QuestionFormType = {
             }
         ]
     },
-    defaultNextQuestion: "bofest1",
-    alternativeNextQuestionCriteria: [{
-        currentQuestionValue: "2",
-        nextQuestionId: "lret2"
-    }],
-    inputType: "text"
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "laan1",
+                questionValue: "1"
+            }
+        ]
+    ],
+    inputType: "number",
+    inputPostfix: "cash"
 } as QuestionFormType

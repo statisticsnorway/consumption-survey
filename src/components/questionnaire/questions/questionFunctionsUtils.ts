@@ -21,6 +21,7 @@ export const findCurrentChosenAnswerValueByAnswers = (answerValues: AnswerValueT
 
 export const getRadioButtonOptionsForQuestion = (question: QuestionFormType): RadioButtonOption[] => {
     return (question?.answerValue.answers as AnswerValueType[])
+        .filter(answer => !answer.hidden)
         .map(answer => {
             return {"label": answer.descriptionValue, "value": answer.value} as RadioButtonOption
         })
@@ -28,6 +29,7 @@ export const getRadioButtonOptionsForQuestion = (question: QuestionFormType): Ra
 
 export const getRadioButtonOptionsForQuestionWithAnswerIds = (question: QuestionFormType): RadioButtonOption[] => {
     return (question?.answerValue.answers as AnswerValueType[])
+        .filter(answer => !answer.hidden)
         .map(answer => {
             return {"label": answer.descriptionValue, "value": answer.value, "id": answer.id} as RadioButtonOption
         })
@@ -35,6 +37,7 @@ export const getRadioButtonOptionsForQuestionWithAnswerIds = (question: Question
 
 export const getRadioButtonOptionsForQuestionByAnswers = (answers: AnswerValueType[]): RadioButtonOption[] => {
     return answers
+        .filter(answer => !answer.hidden)
         .map(answer => {
             return {"label": answer.descriptionValue, "value": answer.value} as RadioButtonOption
         })
@@ -58,7 +61,7 @@ export const extractCriteria = (questionsDependedOn: QuestionFormType[] | undefi
             return {
                 question: questionDependentOn,
                 dependentAnswer: {
-                    id: `${criteria?.questionId}_${criteria?.questionValue}`,
+                    id: criteria.answerId ? criteria.answerId : `${criteria?.questionId}_${criteria?.questionValue}`,
                     value: criteria?.questionValue,
                     chosen: true
                 }
@@ -109,17 +112,18 @@ export const isAlternativeNextQuestionPathCriteriaFulfilled = (critera: NextQues
     return criterasMatched.length === questionsInCriteria.length ? critera.nextQuestionId : "";
 }
 
-export const getNextQuestionByOrder = (currentQuestion: QuestionFormType, questions: QuestionFormType[]) => {
+export const getNextQuestionByOrder = (currentQuestion: QuestionFormType, questions: QuestionFormType[]): QuestionFormType => {
     const order = currentQuestion.order;
 
     const availableQuestions = questions
         .filter(q => q.order > order)
         .filter(q => {
-            if(!q.dependentOnQuestionCriteria) {
-                return true
-            }
-            return isOneOfTheDependecyCriteriasFulfilled(q.dependentOnQuestionCriteria, questions)
+            return isOneOfTheDependecyCriteriasFulfilled(q, questions)
         })
+
+    if(!availableQuestions || availableQuestions.length === 0) {
+        throw new Error("Not any available question after " + currentQuestion.id)
+    }
 
     return getLowestOrderQuestion(availableQuestions);
 };
@@ -137,10 +141,29 @@ const getLowestOrderQuestion = (questions: QuestionFormType[]): QuestionFormType
     return questions.find(q => q.order === lowValue) as QuestionFormType;
 }
 
-export const isOneOfTheDependecyCriteriasFulfilled = (critera: DependentOnQuestionCriteria[][], questions: QuestionFormType[]): boolean => {
-    const boolListOfFulfilledCriteria = critera.map(d => isDependecyFulfilled(d, questions));
+export const isOneOfTheDependecyCriteriasFulfilled = (question: QuestionFormType, questions: QuestionFormType[]): boolean => {
+    if(!question.dependentOnQuestionCriteria) {
+        return true
+    }
+    /*if(question.dependentOnQuestionCriteria && question.inputType === "multifield-text-dependent") {
+        return true
+    }*/
+
+    const boolListOfFulfilledCriteria = (question.dependentOnQuestionCriteria as DependentOnQuestionCriteria[][])
+        .map(d => isDependecyFulfilled(d, questions));
 
     return boolListOfFulfilledCriteria.includes(true)
+}
+
+export const getAnsweredValues = (questions: QuestionFormType[]): string[] => {
+    const boolListOfFulfilledCriteria = questions
+        .map(d => d.answerValue)
+        .flatMap(a => {
+            const anny = a.answers as AnswerValueType[]
+            return anny.filter(b => b.chosen && b.value && b.value !== "").map(ba => `${ba.id} == ${ba.value as string}`)
+        })
+
+    return boolListOfFulfilledCriteria
 }
 
 export const isAllDependecyCriteriasFulfilled = (critera: DependentOnQuestionCriteria[][], questions: QuestionFormType[]): boolean => {
@@ -150,6 +173,7 @@ export const isAllDependecyCriteriasFulfilled = (critera: DependentOnQuestionCri
 }
 
 const isDependecyFulfilled = (critera: DependentOnQuestionCriteria[], questions: QuestionFormType[]): boolean => {
+
     const fullfilledCriteria = critera.filter(criteria => {
         return isCriteriaForfilled(criteria, questions)
     });
@@ -157,12 +181,106 @@ const isDependecyFulfilled = (critera: DependentOnQuestionCriteria[], questions:
     return critera.length === fullfilledCriteria.length;
 }
 
+export const isQuestionAnswered = (question: QuestionFormType, questions: QuestionFormType[]) => {
+    const answers = question.answerValue.answers as AnswerValueType[]
+
+    if(question.inputType === 'multifield-number-dependent-with-sum' || question.inputType === 'multifield-number-dependent') {
+        const regex = /^(\D+)(?=\d*)/g
+        // @ts-ignore
+        const questId = question.id.match(regex)[0]
+        let crit: DependentOnQuestionCriteria | null  = null
+        question.dependentOnQuestionCriteria?.forEach(c => {
+            for(let i = 0; i < c.length; i++) {
+                const idHit = c[i].questionId.match(regex)
+                if(idHit != null) {
+                    if(idHit[0] === questId) {
+                        if(crit) {
+                            if(crit?.questionId < c[i].questionId) {
+                                crit = c[i]
+                            }
+                        }
+                        else{
+                            crit = c[i]
+                        }
+                    }
+                }
+            }
+        })
+
+        const priorQuestion = questions.find(q => crit?.questionId === q.id)
+        const pAnswers = priorQuestion?.answerValue.answers as AnswerValueType[]
+        const priorAnsweredQuestions = pAnswers.filter((a : AnswerValueType) => a.chosen)
+        const sameQuestions = answers.filter(a => priorAnsweredQuestions.find(p =>  a.id.split('_')[1] === p.id.split('_')[1]))
+        if(question.inputType === 'multifield-number-dependent-with-sum') {
+            for (let i = 0; i < sameQuestions.length; i = i + 2) {
+                if ((!sameQuestions[i].value) && (!sameQuestions[i + 1].value)) {
+                    return false
+                }
+            }
+            return true
+        }
+        else {
+            for (let i = 0; i < sameQuestions.length; i++) {
+                if ((!sameQuestions[i].value)) {
+                    return false
+                }
+            }
+            return true
+        }
+
+    }
+
+    //other types
+    else {
+        const answersChecked = answers.filter(a => a.chosen && a.value)
+        return answersChecked.length > 0
+    }
+}
+
 const isCriteriaForfilled = (critera: DependentOnQuestionCriteria, questions: QuestionFormType[]): boolean => {
     const criteriaQuestion = questions.find(q => q.id === critera.questionId);
     const questionAnswer = (criteriaQuestion?.answerValue.answers as AnswerValueType[]);
-    const chosenAnswerForQuestion = questionAnswer.find(a => a.chosen)
+    const chosenAnswerMultiple = questionAnswer.filter(a => a.chosen)
 
-    return chosenAnswerForQuestion?.value as string === critera.questionValue;
+    if(critera.answerId && critera.answerId !== "") {
+        return chosenAnswerMultiple.filter(a => {
+            if(critera.answerId === a.id){
+                if(critera.specialCompare === "moreThan"){
+                    return parseInt(a.value as string) > parseInt(critera.questionValue)
+                } else if(critera.specialCompare === "lessThan") {
+                    return parseInt(a.value as string) < parseInt(critera.questionValue)
+                } else {
+                    return a.value as string === critera.questionValue
+                }
+            }
+
+            return false
+        })
+            .length > 0;
+    }
+
+    if(critera.specialCompare === "logicNot") {
+        return chosenAnswerMultiple.filter(answer => {
+            const codeId = `${critera.questionId}_${critera.questionValue}`;
+            return answer.id === codeId;
+        })
+            .length === 0;
+    }
+
+    if(critera.specialCompare === "moreThan") {
+        return chosenAnswerMultiple.filter(answer => {
+            if(answer.value && answer.value !== "") {
+                return parseInt(answer.value as string) > parseInt(critera.questionValue)
+            }
+            return false;
+        })
+            .length > 0;
+    }
+    return chosenAnswerMultiple
+        .filter(answer => {
+           return answer?.value as string  === critera.questionValue || critera.questionValue === ""
+        })
+        .length > 0;
 }
 
 export const isQuestionNestedWithAdditionalQuestions = (answer: AnswerValueType[] | QuestionAnswerType[]): boolean => {
@@ -194,7 +312,7 @@ export const animateUp = (previousQuestionId: string, currentQuestionId: string)
     const currentQElement = document.getElementById(`main-container-question-${currentQuestionId}`);
 
     if (dependentElement) {
-        const pos = cumulativeOffset(dependentElement)
+        // const pos = cumulativeOffset(dependentElement)
         const heightEle = dependentElement.offsetHeight;
         // const posBeforeMove = pos.top + 40      // Vil ikke virke fordi POS den endres når elementet flyttes
         const addy = (heightEle - 240) < 0 ? (heightEle - 240) * -1 : (heightEle - 240);
@@ -234,4 +352,21 @@ export const removeAnimationCssClasses = (questionid: string) => {
         removeEle.classList.remove("margin-tp-50", "padding-tp-70px", "padding-bm-40px", "trans-all")
         removeEle.style.background = 'white'
     }
+}
+
+export const getInputPostfix = (inputPostfixType: "text" | "kvm" | "percent" | "l" | "cash" | "amount") => {
+    if(inputPostfixType === "text") return "";
+    if(inputPostfixType === "kvm") return "kvm";
+    if(inputPostfixType === "percent") return "%";
+    if(inputPostfixType === "l") return "l";
+    if(inputPostfixType === "cash") return "kr";
+    if(inputPostfixType === "amount") return "Antall";
+
+    return ""
+}
+export const doesQuestionHaveVetIkkeOptionAndIsHidden = (currentQuestion: QuestionFormType) => {
+    return (currentQuestion.answerValue.answers as AnswerValueType[]).filter((a: AnswerValueType) => {
+        return a.descriptionValue?.toLowerCase() === 'vet ikke' && a.hidden
+    })
+        .length > 0
 }

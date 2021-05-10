@@ -1,27 +1,24 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const GAR1A: QuestionFormType = {
     id: 'gar1a',
+    theme: Theme.garageExpendatures,
     order: 34,
-    questionText: 'Har dere utgifter for tilgang til garasje, carport eller biloppstillingsplass?',
+    questionText: 'Har dere faste utgifter til parkering?\n' +
+        'Ta med utgifter til garasje, carport eller biloppstillingsplass som ikke er dekket av husleie.',
     hasAnswered: false,
     answerValue: {
         answers: [
             {
                 id: 'gar1a_1',
                 value: "1",
-                descriptionValue: 'Ja, separat/spesifisert',
+                descriptionValue: 'Ja',
                 chosen: false
             },
             {
                 id: 'gar1a_2',
                 value: "2",
-                descriptionValue: 'Ja, gjennom husleie/fellesutgifter',
-                chosen: false
-            },
-            {
-                id: 'gar1a_3',
-                value: "3",
                 descriptionValue: 'Nei',
                 chosen: false
             }
@@ -33,6 +30,12 @@ export const GAR1A: QuestionFormType = {
                 questionId: "gar1",
                 questionValue: "1"
             }
+        ],
+        [
+        {
+            questionId: "gar1",
+            questionValue: "2"
+        }
         ]
     ],
     inputType: "radio"

@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const LRENT2: QuestionFormType = {
     id: 'lrent2',
+    theme: Theme.mortgage,
     order: 12,
-    questionText: 'Hva er rentesatsen for boliglånet /lånene med sikkerhet i boligen nå?',
+    questionText: 'Hva er rentesatsen for boliglånet /lånene med sikkerhet i boligen nå? Oppgi i prosent',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -12,21 +14,16 @@ export const LRENT2: QuestionFormType = {
                 value: "",
                 descriptionValue: 'Rentesats for boliglånet',
                 chosen: true
+            },
+            {
+                id: 'lrent2_2',
+                value: "2",
+                descriptionValue: 'Vet ikke',
+                chosen: false,
+                hidden: true
             }
         ]
     },
-    dependentOnQuestionCriteria: [
-        [
-            {
-                questionId: "laan1",
-                questionValue: "1"
-            },
-            {
-                questionId: "lrent1",
-                questionValue: "2"
-            },
-        ]
-    ],
-    defaultNextQuestion: "husleie1",
-    inputType: "text"
+    inputType: "number-checkbox",
+    inputPostfix: "percent"
 } as QuestionFormType

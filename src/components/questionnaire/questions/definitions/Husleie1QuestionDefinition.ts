@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const HUSLEIE1: QuestionFormType = {
     id: 'husleie1',
+    theme: Theme.rentDwelling,
     order: 15,
-    questionText: 'Betaler [du/dere] fellesutgifter eller husleie',
+    questionText: 'Betaler [du/dere] husleie',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -21,36 +23,13 @@ export const HUSLEIE1: QuestionFormType = {
             }
         ]
     },
-    alternativeNextQuestionCriteria: [
-        {
-            currentQuestionValue: "4",
-            nextQuestionId: "husleie1a",
-            nextQuestionDependencies: [
-                {
-                    questionId: "eier1",
-                    questionValue: "2"
-                },
-                {
-                    questionId: "husleie1",
-                    questionValue: "1"
-                }
-            ]
-        },
-        {
-            currentQuestionValue: "4",
-            nextQuestionId: "futg1",
-            nextQuestionDependencies: [
-                {
-                    questionId: "eier1",
-                    questionValue: "1"
-                },
-                {
-                    questionId: "eier2",
-                    questionValue: "1"
-                }
-            ]
-        },
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "eier1",
+                questionValue: "2"
+            }
+        ]
     ],
-    defaultNextQuestion: "futg1",
     inputType: "radio"
 } as QuestionFormType

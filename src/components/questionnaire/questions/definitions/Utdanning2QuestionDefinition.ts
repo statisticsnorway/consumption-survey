@@ -1,0 +1,83 @@
+import {QuestionFormType} from "../QuestionFormType";
+
+export const UTDANNING2: QuestionFormType = {
+    id: 'utdanning2',
+    order: 109,
+    questionText: 'Hvor mye betaler [du/dere] hver måned for....?' +
+        'Hvis du/dere ikke betaler per måned, ber vi deg om å anslå hva utgiften er per måned.',
+    hasAnswered: false,
+    answerValue: {
+        answers: [
+            {
+                id: 'utdanning2_1',
+                value: "",
+                descriptionValue: 'Privat barneskole eller ungdomsskole',
+                chosen: true
+            },
+            {
+                id: 'utdanning2_2',
+                value: "",
+                descriptionValue: 'Videregående skole',
+                chosen: true
+            },
+            {
+                id: 'utdanning2_3',
+                value: "",
+                descriptionValue: 'Høyskole eller universitet',
+                chosen: true
+            },
+            {
+                id: 'utdanning2_4',
+                value: "",
+                descriptionValue: 'Folkehøyskole',
+                chosen: true
+            },
+            {
+                id: 'utdanning2_5',
+                value: "",
+                descriptionValue: 'Annen utdanning',
+                chosen: true
+            },
+            {
+                id: 'utdanning2_6',
+                value: "",
+                descriptionValue: 'Nei',
+                chosen: true
+            },
+        ]
+    },
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "utdanning1",
+                questionValue: "1",
+            }
+        ],
+        [
+            {
+                questionId: "utdanning1",
+                questionValue: "2",
+            }
+        ],
+        [
+            {
+                questionId: "utdanning1",
+                questionValue: "3",
+            }
+        ],
+        [
+            {
+                questionId: "utdanning1",
+                questionValue: "4",
+            }
+        ],
+        [
+            {
+                questionId: "utdanning1",
+                questionValue: "5",
+            }
+        ],
+    ],
+    inputType: "multifield-number-dependent",
+    inputPostfix: "cash"
+} as QuestionFormType

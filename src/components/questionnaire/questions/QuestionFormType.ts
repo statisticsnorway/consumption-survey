@@ -1,6 +1,7 @@
 
 export interface QuestionFormType {
     id: string
+    theme: string,
     order: number,
     questionText: string
     hasAnswered: boolean
@@ -9,9 +10,12 @@ export interface QuestionFormType {
     alternativeNextQuestionCriteria?: NextQuestionCriteria[]
     dependentOnQuestionCriteria?: DependentOnQuestionCriteria[][]
     helperText?: HelperBox
-    inputType?: "radio" | "text" | "checkbox" |
-        "text-optional-timeperiod" | "multifield-text" |
-        "multifield-text-with-sum" | "text-checkbox"
+    inputType?: "radio" | "text" | "number" | "checkbox" |
+        "text-optional-timeperiod" | "number-optional-timeperiod" | "number-optional-timeperiod-checkbox" | "multifield-text" | "multifield-number" |
+        "multifield-text-with-sum" | "multifield-number-with-sum" | "text-checkbox" | "number-checkbox" |"multifield-text-dependent" |
+        "multifield-number-dependent" | "multifield-text-dependent-with-sum" | "multifield-number-dependent-with-sum" |
+        "multifield-number-siffer-dependent"
+    inputPostfix?: "text" | "kvm" | "percent" | "l" | "cash" | "amount"
 }
 
 export interface HelperBox {
@@ -28,7 +32,8 @@ export interface AnswerValueType {
     id: string
     value: string | undefined
     descriptionValue?: string | null
-    chosen: boolean
+    chosen: boolean,
+    hidden?: boolean
 }
 
 export interface QuestionDependency {
@@ -54,6 +59,8 @@ export interface ListOfDependentOnQuestionCriteria {
 export interface DependentOnQuestionCriteria {
     questionId: string
     questionValue: string
+    answerId?: string
+    specialCompare?: "logicNot" | "moreThan" | "lessThan"
 }
 
 export interface HeaderTextDependentOnQuestionCriteria {
@@ -63,6 +70,7 @@ export interface HeaderTextDependentOnQuestionCriteria {
 
 export interface QuestionProps {
     questionId: string
+    questions?: QuestionAnswerType[]
     defaultNextQuestionId?: string
     dependentOnQuestionCriteria?: DependentOnQuestionCriteria[]
     alternativeNextQuestionCriteria?: NextQuestionCriteria
@@ -76,3 +84,5 @@ export interface RadioButtonOption {
     value: string
     id?: string
 }
+
+

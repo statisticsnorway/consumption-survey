@@ -1,6 +1,5 @@
 import React, {ReactElement} from "react";
-import {ArrowLeft, ArrowRight} from "react-feather";
-// import {Collapse} from "react-collapse";
+import {ArrowLeft} from "react-feather";
 
 export const AppHeader = (): ReactElement => {
     return (

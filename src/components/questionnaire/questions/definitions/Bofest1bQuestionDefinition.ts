@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const BOFEST1B: QuestionFormType = {
     id: 'bofest1b',
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 14,
     questionText: 'Hvor mye har du/dere betalt de siste 12 månedene i festeavgift',
     hasAnswered: false,
@@ -12,7 +14,7 @@ export const BOFEST1B: QuestionFormType = {
                 id: 'bofest1b_1',
                 value: "Måned",
                 descriptionValue: 'Velg period mnd/kvartal/år',
-                chosen: true
+                chosen: false
             },
             {
                 id: 'bofest1b_2',
@@ -30,5 +32,6 @@ export const BOFEST1B: QuestionFormType = {
             },
         ]
     ],
-    inputType: "text-optional-timeperiod"
+    inputType: "number-optional-timeperiod",
+    inputPostfix: "cash"
 } as QuestionFormType

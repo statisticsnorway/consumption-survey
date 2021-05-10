@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import CheckboxAlt from "./CheckboxAlt";
 
@@ -7,9 +7,9 @@ const CheckboxGroup = ({
                        }) => {
     const [selected, updateSelected] = useState(selectedValues);
 
-    useEffect(() => {
-        onChange(selected);
-    }, [selected]);
+    // useEffect(() => {
+    //     onChange(selected);
+    // }, [selected]);
 
     const setSelected = sel => {
         const newArr = [...selected];
@@ -19,6 +19,7 @@ const CheckboxGroup = ({
             newArr.push(sel);
         }
         updateSelected(newArr);
+        onChange(newArr)
     };
 
     return (
@@ -30,7 +31,7 @@ const CheckboxGroup = ({
                         id={`${id}-${it.label}`}
                         key={it.value}
                         index={index}
-                        selected={selected.includes(it.value)}
+                        selected={selectedValues.includes(it.value)}
                         value={it.value}
                         callback={setSelected}
                         disabled={it.disabled}

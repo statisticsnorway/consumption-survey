@@ -111,10 +111,95 @@ export const updateQuestionAnswerToStoreText = (eventValue: string, currentQuest
     dispatch(changeFormValue(updatedQuestion))
 }
 
-export const updateMultipleQuestionAnswerToStoreText = (eventValue: string, currentQuestion: QuestionFormType, dispatch: Dispatch<any>) => {
+export const updateCheckboxTextQuestionAnswerToStore = (eventValue: string, currentQuestion: QuestionFormType, dispatch: Dispatch<any>) => {
     const valueFromForm: string | number | boolean = eventValue;
     if (!eventValue) {
         return;
+    }
+    const checked = valueFromForm.includes((currentQuestion.answerValue.answers as AnswerValueType[])[1].value as string)
+    const updatedQuestion = {
+        ...currentQuestion,
+        answerValue: {
+            answers: [
+                {
+                    id: (currentQuestion.answerValue.answers as AnswerValueType[])[0].id,
+                    value: (currentQuestion.answerValue.answers as AnswerValueType[])[0].value,
+                    descriptionValue: (currentQuestion.answerValue.answers as AnswerValueType[])[0].descriptionValue,
+                    chosen: !checked
+                },
+                {
+                    id: (currentQuestion.answerValue.answers as AnswerValueType[])[1].id,
+                    value: (currentQuestion.answerValue.answers as AnswerValueType[])[1].value,
+                    descriptionValue: (currentQuestion.answerValue.answers as AnswerValueType[])[1].descriptionValue,
+                    chosen: checked
+                },
+
+            ]
+        },
+        hasAnswered: (valueFromForm.length > 1) //TODO Kan bare ha gått forbi spørsmålet
+    }
+    dispatch(changeFormValue(updatedQuestion))
+}
+
+export const updateCheckboxTextQuestionWithTimePeriodAnswerToStore = (eventValue: string, currentQuestion: QuestionFormType, dispatch: Dispatch<any>) => {
+    const valueFromForm: string | number | boolean = eventValue;
+    if (!eventValue) {
+        return;
+    }
+    const checked = valueFromForm.includes((currentQuestion.answerValue.answers as AnswerValueType[])[2].value as string)
+    const updatedQuestion = {
+        ...currentQuestion,
+        answerValue: {
+            answers: [
+                {
+                    id: (currentQuestion.answerValue.answers as AnswerValueType[])[0].id,
+                    value: (currentQuestion.answerValue.answers as AnswerValueType[])[0].value,
+                    descriptionValue: (currentQuestion.answerValue.answers as AnswerValueType[])[0].descriptionValue,
+                    chosen: checked ? false : (!!(currentQuestion.answerValue.answers as AnswerValueType[])[1].value)
+                },
+                {
+                    id: (currentQuestion.answerValue.answers as AnswerValueType[])[1].id,
+                    value: (currentQuestion.answerValue.answers as AnswerValueType[])[1].value,
+                    descriptionValue: (currentQuestion.answerValue.answers as AnswerValueType[])[1].descriptionValue,
+                    chosen: !checked
+                },
+                {
+                    id: (currentQuestion.answerValue.answers as AnswerValueType[])[2].id,
+                    value: (currentQuestion.answerValue.answers as AnswerValueType[])[2].value,
+                    descriptionValue: (currentQuestion.answerValue.answers as AnswerValueType[])[2].descriptionValue,
+                    chosen: checked
+                }
+
+            ]
+        },
+        hasAnswered: (valueFromForm.length > 1) //TODO Kan bare ha gått forbi spørsmålet
+    }
+    dispatch(changeFormValue(updatedQuestion))
+}
+
+export const updateMultipleQuestionAnswerToStoreText = (eventValue: string, currentQuestion: QuestionFormType, dispatch: Dispatch<any>) => {
+    const valueFromForm: string | number | boolean | string[] = eventValue;
+    if (!eventValue) {
+        return;
+    }
+
+    let arrayOfNoneOfThese: string[] = [];
+    if(valueFromForm && Array.isArray(valueFromForm)) {
+         arrayOfNoneOfThese = valueFromForm.filter(v => {
+            const a = (currentQuestion.answerValue.answers as AnswerValueType[]).find(a => {
+                if (v && v !== "") {
+                    return (a.value as string).toLowerCase() === v
+                }
+                return false;
+            }) as AnswerValueType
+
+            if (a) {
+                return (a.descriptionValue as string).toLowerCase().includes("ingen av disse") ||
+                    (a.descriptionValue as string).toLowerCase() === "nei"
+            } else {
+                return false;
+            }
+        })
     }
 
     const updatedQuestion = {
@@ -122,13 +207,91 @@ export const updateMultipleQuestionAnswerToStoreText = (eventValue: string, curr
         answerValue: {
             answers: (currentQuestion.answerValue.answers as AnswerValueType[])
                 .map((answerValue: AnswerValueType) => {
-                    return {
-                        ...answerValue,
-                        chosen: valueFromForm.includes(answerValue.value as string)
+                    if(arrayOfNoneOfThese.length > 0 && Array.isArray(valueFromForm)) {
+                        const chose = arrayOfNoneOfThese.filter(v => {
+                            return valueFromForm.includes(v) && answerValue.value === v
+                        }).length > 0;
+
+                        return {
+                            ...answerValue,
+                            chosen: chose
+                        }
+                    } else {
+                        return {
+                            ...answerValue,
+                            chosen: valueFromForm.includes(answerValue.value as string)
+                        }
                     }
                 }),
         },
-        hasAnswered: (valueFromForm.length > 1)
+        hasAnswered: (valueFromForm.length > 1) //TODO Kan ha besvart men ingen relevante
+    }
+
+    dispatch(changeFormValue(updatedQuestion))
+}
+
+export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponent = (eventValue: string, currentQuestion: QuestionFormType, dispatch: Dispatch<any>) => {
+    const valueFromForm: string | number | boolean | string[] = eventValue;
+    if (!eventValue) {
+        return;
+    }
+
+    const ingenAvDisseValgIsPressed = (currentQuestion.answerValue.answers as AnswerValueType[]).filter(a => {
+        if(a.descriptionValue && (a.descriptionValue.toLowerCase().includes("ingen av disse") || (a.descriptionValue as string).toLowerCase() === "nei")){
+            return a.value === eventValue
+        }
+        return false;
+    }).length > 0
+
+    let ingenAvDisseIsAlreadyTicked = (currentQuestion.answerValue.answers as AnswerValueType[]).filter(a => {
+        if(a.descriptionValue && (a.descriptionValue.toLowerCase().includes("ingen av disse") || (a.descriptionValue as string).toLowerCase() === "nei")){
+            return a.chosen
+        }
+        return false;
+    }).length > 0
+
+
+    const updatedQuestion = {
+        ...currentQuestion,
+        answerValue: {
+            answers: (currentQuestion.answerValue.answers as AnswerValueType[])
+                .map((answerValue: AnswerValueType) => {
+                    const currentAnswerIsIngenAvDisse = ((answerValue.descriptionValue as string).toLowerCase().includes("ingen av disse") ||
+                        (answerValue.descriptionValue as string).toLowerCase() === "nei")
+
+                    if(ingenAvDisseValgIsPressed) {
+                        if(currentAnswerIsIngenAvDisse){
+                            const tickIt = answerValue.value === eventValue
+                            return {
+                                ...answerValue,
+                                chosen: ingenAvDisseIsAlreadyTicked ? !tickIt : tickIt
+                            }
+                        } else {
+                            return {
+                                ...answerValue,
+                                chosen: false
+                            }
+                        }
+                    } else {
+                        const tickIt = valueFromForm === answerValue.value as string
+                        const chosen = answerValue.chosen ? !tickIt : tickIt
+
+                        if(ingenAvDisseIsAlreadyTicked){
+                            return {
+                                ...answerValue,
+                                chosen: currentAnswerIsIngenAvDisse ? false : chosen,
+                            } as AnswerValueType
+                        } else {
+
+                            return {
+                                ...answerValue,
+                                chosen: chosen
+                            } as AnswerValueType
+                        }
+                    }
+                }),
+        },
+        hasAnswered: (valueFromForm.length > 1) //TODO Kan ha besvart men ingen relevante
     }
 
     dispatch(changeFormValue(updatedQuestion))

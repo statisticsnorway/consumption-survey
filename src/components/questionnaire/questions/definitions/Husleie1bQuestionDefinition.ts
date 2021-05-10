@@ -1,49 +1,40 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const HUSLEIE1B: QuestionFormType = {
     id: 'husleie1b',
+    theme: Theme.rentDwelling,
     order: 17,
-    questionText: 'Har du redusert leie fordi du leier av ...',
+    questionText: 'Har du redusert leie fordi..',
     hasAnswered: false,
     answerValue: {
         answers: [
             {
                 id: 'husleie1b_1',
                 value: "1",
-                descriptionValue: 'kommunen, eller får dekket husleie av det offentlige ',
+                descriptionValue: 'Får dekket husleie av det offentlige ',
                 chosen: false
             },
             {
                 id: 'husleie1b_2',
                 value: "2",
-                descriptionValue: 'arbeidsgiver',
+                descriptionValue: 'Får dekket husleie eller leier av arbeidsgiver',
                 chosen: false
             },
             {
                 id: 'husleie1b_3',
                 value: "3",
-                descriptionValue: 'venner eller familie',
+                descriptionValue: 'Leier av familie eller venner',
                 chosen: false
             },
             {
                 id: 'husleie1b_r',
                 value: "4",
-                descriptionValue: 'eller, av andre grunner?',
+                descriptionValue: 'Av andre grunner?',
                 chosen: false
             }
         ]
     },
-    defaultNextQuestion: "husleie3",
-    alternativeNextQuestionCriteria: [{
-        currentQuestionValue: "4",
-        nextQuestionId: "husleie2",
-        nextQuestionDependencies: [
-            {
-                questionId: "husleie1",
-                questionValue: "1"
-            },
-        ]
-    }],
     dependentOnQuestionCriteria: [
         [
             {

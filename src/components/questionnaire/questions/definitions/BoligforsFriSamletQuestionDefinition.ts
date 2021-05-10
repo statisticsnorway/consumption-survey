@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const BOLIGFORSFRISAMLET: QuestionFormType = {
     id: 'boligforsfrisamlet',
+    theme: Theme.insuranceHolidayHome,
     order: 65,
     questionText: 'Hvor mye har du/dere betalt samlet for bolig- og innboforsikring for fritidsboligen de siste 12 månedene?',
     hasAnswered: false,
@@ -23,7 +25,8 @@ export const BOLIGFORSFRISAMLET: QuestionFormType = {
             },
         ]
     ],
-    inputType: "text"
+    inputType: "number",
+    inputPostfix: "cash"
 } as QuestionFormType
 
 // 1. Sum

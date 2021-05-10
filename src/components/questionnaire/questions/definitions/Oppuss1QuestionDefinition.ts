@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const OPPUSS1: QuestionFormType = {
     id: 'oppuss1',
+    theme: Theme.renovationDwelling,
     order: 38,
-    questionText: 'Har du/dere i løpet av de siste 12 månedene hatt utgifter til?',
+    questionText: 'Har du/dere hatt utgifter til vedlikehold av boligens standard de siste 12 månedene?',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -55,8 +57,22 @@ export const OPPUSS1: QuestionFormType = {
                 descriptionValue: 'Annen oppussing eller vedlikehold av huset?',
                 chosen: false
             },
+            {
+                id: 'oppuss1_9',
+                value: "9",
+                descriptionValue: 'Ingen av disse',
+                chosen: false
+
+            },
         ]
     },
-    defaultNextQuestion: "oppgrad2",
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "eier1",
+                questionValue: "1",
+            },
+        ],
+    ],
     inputType: "checkbox"
 } as QuestionFormType

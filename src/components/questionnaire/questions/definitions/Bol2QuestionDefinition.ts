@@ -1,7 +1,9 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const BOL2: QuestionFormType = {
     id: 'bol2',
+    theme: Theme.dwelling,
     order: 4,
     questionText: 'Omtrent hvor mange kvadratmeter er boligen?',
     hasAnswered: false,
@@ -15,6 +17,11 @@ export const BOL2: QuestionFormType = {
             }
         ]
     },
+    helperText: {
+        title: "Info",
+        content: "I kjeller og loft skal bare beboelsesrom regnes med."
+    },
     defaultNextQuestion: "eier1",
-    inputType: "text"
+    inputType: "number",
+    inputPostfix: "kvm"
 } as QuestionFormType

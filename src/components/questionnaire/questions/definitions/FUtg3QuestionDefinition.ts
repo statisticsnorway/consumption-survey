@@ -1,58 +1,48 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const FUTG3: QuestionFormType = {
     id: 'futg3',
+    theme: Theme.rentDwelling,
     order: 22,
     questionText: 'Omfatter husleien/fellesutgiftene …. ',
     hasAnswered: false,
     answerValue: {
         answers: [
             {
-                id: 'futg3_1_1',
-                value: "1_1",
+                id: 'futg3_1',
+                value: "1",
                 descriptionValue: 'Elektrisitet',
                 chosen: false
             },
             {
-                id: 'futg3_2_1',
-                value: "2_1",
+                id: 'futg3_2',
+                value: "2",
                 descriptionValue: 'Oppvarming',
                 chosen: false
             },
             {
-                id: 'futg3_3_1',
-                value: "3_1",
-                descriptionValue: 'Varmtvann',
-                chosen: false
-            },
-            {
-                id: 'futg3_4_1',
-                value: "4_1",
-                descriptionValue: 'Garasje/Parkering',
-                chosen: false
-            },
-            {
-                id: 'futg3_5_1',
-                value: "5_1",
-                descriptionValue: 'Kabel-TV',
-                chosen: false
-            },
-            {
-                id: 'futg3_6_1',
-                value: "6_1",
-                descriptionValue: 'Boligforsikring',
-                chosen: false
-            },
-            {
-                id: 'futg3_7_1',
-                value: "7_1",
+                id: 'futg3_3',
+                value: "3",
                 descriptionValue: 'Kommunale avgifter',
                 chosen: false
             },
             {
-                id: 'futg3_8_1',
-                value: "8_1",
-                descriptionValue: 'Renter og avdrag på fellesgjeld',
+                id: 'futg3_4',
+                value: "4",
+                descriptionValue: 'Varmtvann',
+                chosen: false
+            },
+            {
+                id: 'futg3_5',
+                value: "5",
+                descriptionValue: 'Garasje/parkering',
+                chosen: false
+            },
+            {
+                id: 'futg3_6',
+                value: "6",
+                descriptionValue: 'TV/internett',
                 chosen: false
             },
         ]
@@ -62,12 +52,6 @@ export const FUTG3: QuestionFormType = {
             {
                 questionId: "eier2",
                 questionValue: "1"
-            },
-        ],
-        [
-            {
-                questionId: "eier2",
-                questionValue: "2"
             },
             {
                 questionId: "futg1",

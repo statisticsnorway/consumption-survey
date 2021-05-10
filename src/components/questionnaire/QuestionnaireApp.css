@@ -1,16 +1,11 @@
-.section-questionnaire {
-  height: 90vh;
-}
-
-.section-questionnaire h4 {
-    font-size: 1.2em;
+.App {
+  height: 100vh;
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -94,6 +89,9 @@
 .margin-tp-50 {
   margin-top: 50px;
 }
+.margin-bt-10 {
+  margin-bottom: 10px;
+}
 
 .padding-10 {
   padding: 10px
@@ -143,6 +141,10 @@
   padding-right: 10px;
 }
 
+.padding-lt-10px {
+  padding-left: 10px;
+}
+
 .padding-lt-rt-20px {
   padding-right: 20px;
   padding-left: 20px;
@@ -163,14 +165,6 @@
   padding-bottom: 30px;
 }
 
-.pdg-tp-10px {
-  padding-top: 10px;
-}
-
-.pdg-bm-30px {
-  padding-bottom: 30px;
-}
-
 .margin-lt-rt-10px {
   margin: 0 10px 0 10px;
 }
@@ -181,6 +175,10 @@
 
 .fsize-20 {
   font-size: 20px;
+}
+
+.fsize-18 {
+  font-size: 18px;
 }
 
 .flex-container {
@@ -197,6 +195,10 @@
 
 .height-50 {
   height: 50px;
+}
+
+.height-16 {
+  height: 16px;
 }
 
 .hide-behind-top-n5-lt-10 {
@@ -228,8 +230,8 @@
 }
 
 .absolute-top-n5px {
-    top: 20px;
-    left: 30px;
+  top: 20px;
+  left: 30px;
 }
 
 .bg-white {
@@ -407,4 +409,7 @@
   to {
     transform: rotate(360deg);
   }
+}
+.number-format {
+  text-align: right;
 }

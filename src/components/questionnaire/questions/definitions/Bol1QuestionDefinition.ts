@@ -1,9 +1,11 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const BOL1: QuestionFormType = {
     id: 'bol1',
+    theme: Theme.dwelling,
     order: 3,
-    questionText: 'Hvor mange rom er det i boligen?',
+    questionText: 'Hvor mange rom disponerer [du/husholdningen din] til eget bruk?',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -15,6 +17,10 @@ export const BOL1: QuestionFormType = {
             }
         ]
     },
-    defaultNextQuestion: "bol2",
-    inputType: "text"
+    helperText: {
+        title: "Info",
+        content: "Ta ikke med kjøkken, bad, entre, vaskerom eller små rom under 6 kvadratmeter."
+    },
+    inputType: "number",
+    inputPostfix: "amount"
 } as QuestionFormType
