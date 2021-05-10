@@ -18,6 +18,7 @@ next-env.d.ts
 **/service-worker.js
 **/*.map
 **/workbox-*.js
+**/worker-*.js
 
 # dont know what this is
 worker-development.js
@@ -27,13 +28,12 @@ src/firebase/config.js
 firebase-config-gcp*.json
 
 # misc
+localhost.*
 secure/
 video/
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+**/.env*
+**/.env.*
 **/*.map
 
 # firebase

@@ -4,7 +4,7 @@ const withSourceMaps = require('@zeit/next-source-maps');
 // const withOffline = require('next-offline');
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
-const { nextI18NextRewrites } = require('next-i18next/rewrites');
+const { nextI18NextRewrites } = require('next-i18next/rewrites')
 
 const localeSubpaths = {};
 
@@ -32,13 +32,17 @@ const offlineOpts = {
 };
 */
 
-const extractEnvVars = (vars, prefix, removePrefix = false) =>
-  Object.keys(vars)
-      .filter(name => prefix ? name.startsWith(prefix) : true)
-      .reduce((acc, name) => ({
-          ...acc,
-          [(prefix && removePrefix) ? name.replace(prefix, '') : name]: vars[name]
-      }), {});
+const extractEnvVars = (vars, prefix, removePrefix = false) => {
+    const filtered = Object.keys(vars)
+        .filter(name => prefix ? name.startsWith(prefix) : true)
+        .reduce((acc, name) => ({
+            ...acc,
+            [(prefix && removePrefix) ? name.replace(prefix, '') : name]: vars[name]
+        }), {});
+
+    console.log(filtered);
+    return filtered;
+};
 
 runtimeCaching[0].handler = 'CacheFirst';
 const nextConfig = {
@@ -47,7 +51,8 @@ const nextConfig = {
         dest: 'public',
         register: false,            // we will be registering our own SW
         skipWaiting: false,         // we will register SW as soon as it is installed
-        runtimeCaching
+        runtimeCaching,
+        disable: process.env.NODE_ENV !== 'production'
     },
     serverRuntimeConfig: {
         serverEnvVars: extractEnvVars(process.env, 'FORBRUK_SERVER_VAR_')

@@ -23,4 +23,3 @@ export const loadFromEnvVars = (envVars, prefix = null, removePrefix = true) =>
             ...acc,
             [(prefix && removePrefix) ? key.replace(prefix, '') : key]: envVars[key]
         }), {});
-

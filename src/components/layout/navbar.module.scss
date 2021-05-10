@@ -1,0 +1,32 @@
+@import '../../styles/common';
+
+$navbar-item-color: $ssb-dark-6;
+$navbar-current-color: $ssb-dark-6;
+$navbar-current-highlight-color: $ssb-green-3;
+
+$navbar-item-minwidth: 6rem;
+$navbar-item-bottom-padding: 0.5rem;
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .navbarItem {
+    color: $navbar-item-color;
+    min-width: $navbar-item-minwidth;
+    padding-bottom: $navbar-item-bottom-padding;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .navbarItem + .navbarItem {
+    margin-left: $default-margin-width;
+  }
+
+  .current {
+    color: $navbar-current-color;
+    border-bottom: 3px solid $navbar-current-highlight-color;
+  }
+}

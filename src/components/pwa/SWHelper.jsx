@@ -7,8 +7,7 @@ const readyForReload = (state) =>
     ['installed', 'externalinstalled', 'waiting', 'externalwaiting']
         .includes(state);
 
-
-const SWHelper = ({ isOnline, firstVisitWeb }) => {
+const SWHelper = ({isOnline}) => {
     const router = useRouter();
     const [registration, setRegistration] = useState(null);
     const [showReload, setShowReload] = useState(false);
@@ -38,7 +37,7 @@ const SWHelper = ({ isOnline, firstVisitWeb }) => {
                 })
             });
         }
-    }, [registration, firstVisitWeb])
+    }, [registration])
 
     useEffect(() => {
         if (isWorkboxActive()) {
@@ -51,7 +50,7 @@ const SWHelper = ({ isOnline, firstVisitWeb }) => {
         }
     }, []);
 
-    return <VersionUpdateSnackbar open={showReload} />;
+    return <VersionUpdateSnackbar open={showReload}/>;
 };
 
 export default SWHelper;

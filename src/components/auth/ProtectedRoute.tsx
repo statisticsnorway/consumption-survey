@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts';
 import Loader from '../common/Loader';
-import PouchDBProvider from '../../pouchdb/PouchDBProvider';
+// import PouchDBProvider from '../../pouchdb/PouchDBProvider';
 import getConfig from 'next/config';
 
 const appConfig = getConfig();
@@ -20,9 +20,9 @@ const EXCLUDE_AUTH = [
 const ProtectedRoute = (props) => {
     const router = useRouter();
     const {isAuthenticated, isLoggingIn, isLoggingOut} = useContext(UserContext);
+    const {envVars} = appConfig.publicRuntimeConfig;
 
     const getAuthUrl = () => {
-        const {envVars} = appConfig.publicRuntimeConfig;
         const {NEXT_PUBLIC_APP_NAME, NEXT_PUBLIC_AUTH_URL, NEXT_PUBLIC_AUTH_LOGIN_PATH} = envVars;
         return `${NEXT_PUBLIC_AUTH_URL}${NEXT_PUBLIC_AUTH_LOGIN_PATH}/${NEXT_PUBLIC_APP_NAME}`;
     };
@@ -50,9 +50,14 @@ const ProtectedRoute = (props) => {
 
     if (isAuthenticated && !isLoggingOut) {
         return (
+            /*
             <PouchDBProvider>
                 {props.children}
             </PouchDBProvider>
+             */
+            <>
+                {props.children}
+            </>
         );
     } else if (EXCLUDE_AUTH.includes(router.pathname)) {
         return props.children;
@@ -64,4 +69,3 @@ const ProtectedRoute = (props) => {
 ProtectedRoute.getInitialProps = () => ({});
 
 export default ProtectedRoute;
-

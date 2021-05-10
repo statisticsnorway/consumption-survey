@@ -2,10 +2,11 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { ReactNode, useContext, useEffect, useState } from 'react';
 import getConfig from 'next/config';
-import { RespondentDetails, UserContext } from '../contexts';
+import { IDPortenTokenInfo, RespondentDetails, UserContext } from '../contexts';
 import UserCard from '../components/user/UserCard';
 import Loader from '../components/common/Loader';
-import { DASHBOARD_TABS, PATHS } from '../uiConfig';
+import { PATHS } from '../uiConfig';
+import Workspace from '../components/layout/workspace/Workspace';
 
 const appConfig = getConfig();
 
@@ -14,11 +15,9 @@ const IDPSuccess = () => {
     const {state, code} = router.query;
 
     const {login, loginLogoutErrors, isAuthenticated, isLoggingIn, userInfo, respondentDetails} = useContext(UserContext);
-    const [idPortenInfo, setIdPortenInfo] = useState<object>(null);
+    const [idPortenInfo, setIdPortenInfo] = useState<IDPortenTokenInfo>(null);
     const [respondentInfo, setRespondentInfo] = useState<RespondentDetails>(null);
     const [idPortenError, setIdPortenError] = useState<Error>(null);
-
-    console.log('IDP success');
 
     const getAuthTokenEndpoint = () => {
         const {envVars} = appConfig.publicRuntimeConfig;
@@ -50,46 +49,49 @@ const IDPSuccess = () => {
 
     useEffect(() => {
         if (respondentInfo) {
-            login(respondentInfo)
+            console.log('[IDP-S] trying to fetch fb token', respondentInfo, idPortenInfo);
+            login(respondentInfo, idPortenInfo)
                 .then(() => {
                     console.log('Firebase token obtained!');
                 })
                 .catch((err) => {
                     console.log('error obtaining firebase token', err);
                 });
+        } else {
+            console.log('[IDP-S] No respondent info');
         }
     }, [respondentInfo]);
 
     useEffect(() => {
-        if (isAuthenticated && respondentDetails) {
-            router.push(`${PATHS.PURCHASES}`);
+        if (isAuthenticated && userInfo) {
+            router.push(PATHS.HOME);
         }
-    }, [isAuthenticated, respondentDetails]);
+    }, [isAuthenticated, userInfo]);
 
     const traceInfo = false ? (
         <>
             <h3>IDPorten :: BFF </h3>
             <p>isAuthenticated: {isAuthenticated}</p>
             <p>idpInfo: {JSON.stringify(respondentInfo)}</p>
-            <p>details: {JSON.stringify(respondentDetails)}</p>
+            <p>details: {JSON.stringify(userInfo)}</p>
             {idPortenError && <p>IDP Errors: {JSON.stringify(idPortenError)}</p>}
             {loginLogoutErrors && <p>Firebase Auth Errors: {loginLogoutErrors}</p>}
         </>
     ) : null;
 
     return (
-        <>
+        <Workspace showFooter={false}>
             {traceInfo}
             {(!isAuthenticated || isLoggingIn) && <Loader/>}
-            {isAuthenticated && respondentInfo && !respondentDetails &&
+            {isAuthenticated && !userInfo &&
             <p>
-                IDPorten innlogging vellykket, men vi kunne ikke finne
+                IDPorten innlogging vellykket, men vi kunne ikke finne hente
                 survey info (respondentId, føringsperiode) fra auth/backend
                 moduler.
             </p>
             }
-            {isAuthenticated && respondentDetails && <UserCard details={respondentDetails}/>}
-        </>
+            {isAuthenticated && userInfo && userInfo.respondentDetails && <UserCard details={userInfo.respondentDetails}/>}
+        </Workspace>
     );
 };
 

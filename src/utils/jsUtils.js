@@ -1,13 +1,13 @@
 import NumberFormat from "react-number-format";
 
 export const hasKey = (obj, key) => {
-  return obj && key && obj.hasOwnProperty(key);
+    return obj && key && obj.hasOwnProperty(key);
 };
 
 export const LANGUAGES = {
-  en: 'English',
-  nb: 'Bokmål',
-  nn: 'Nynorsk',
+    en: 'English',
+    nb: 'Bokmål',
+    nn: 'Nynorsk',
 };
 
 // Functions
@@ -23,3 +23,8 @@ export const krCents = (amt) =>
 // string
 export const notEmptyString = (str) =>
     str && str !== '';
+
+export const capitalizeString = (str) => {
+    const lcStr = str.toLowerCase();
+    return `${lcStr.charAt(0).toUpperCase()}${lcStr.slice(1)}`;
+};
