@@ -28,10 +28,10 @@ const ProtectedRoute = (props) => {
     };
 
     useEffect(() => {
-        console.log('isAuthenticated', isAuthenticated);
-        console.log('path', router.pathname);
-        console.log('check2', !EXCLUDE_AUTH.includes(router.pathname));
-        console.log('final', (!isAuthenticated && (!EXCLUDE_AUTH.includes(router.pathname))));
+        // console.log('isAuthenticated', isAuthenticated);
+        // console.log('path', router.pathname);
+        // console.log('check2', !EXCLUDE_AUTH.includes(router.pathname));
+        // console.log('final', (!isAuthenticated && (!EXCLUDE_AUTH.includes(router.pathname))));
         if (!isAuthenticated && !isLoggingOut && (!EXCLUDE_AUTH.includes(router.pathname))) {
             console.log('Auth url', getAuthUrl());
             router.push(getAuthUrl());
