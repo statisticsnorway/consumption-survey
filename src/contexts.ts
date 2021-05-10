@@ -18,6 +18,7 @@ export type UserInfoType = {
     lastName?: string;
     email: string;
     surveyInfo: SurveyInfo;
+    respondentDetails: RespondentDetails;
 };
 
 export type RespondentDetails = {

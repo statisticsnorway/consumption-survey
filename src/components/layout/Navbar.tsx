@@ -2,6 +2,19 @@ import styles from './navbar.module.scss';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+const DEFAULT_NAV_ITEMS = [
+    {
+        id: 'home',
+        path: '/home',
+    }, {
+        id: 'consumption',
+        path: '/consumption',
+    }, {
+        id: 'tasks',
+        path: '/tasks',
+    },
+];
+
 export type NavbarItem = {
     id: string;
     title: string;

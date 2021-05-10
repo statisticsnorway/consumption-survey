@@ -1,0 +1,14 @@
+{
+  "title": "Home",
+  "surveyInfo": "Your journal period is",
+
+  "registerNew": {
+    "fromReceipt": "Scan receipt",
+    "manually": "Register purchase manually",
+    "regularExpense": "Register regular expense"
+  },
+
+  "questionnaire": {
+    "title": "Questionnaire"
+  }
+}

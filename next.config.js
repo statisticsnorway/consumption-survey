@@ -51,7 +51,8 @@ const nextConfig = {
         dest: 'public',
         register: false,            // we will be registering our own SW
         skipWaiting: false,         // we will register SW as soon as it is installed
-        runtimeCaching
+        runtimeCaching,
+        disable: process.env.NODE_ENV !== 'production'
     },
     serverRuntimeConfig: {
         serverEnvVars: extractEnvVars(process.env, 'FORBRUK_SERVER_VAR_')

@@ -1,10 +1,13 @@
-import LayoutWithFooter from '../components/layout/LayoutWithFooter';
+import { useTranslation } from 'react-i18next';
+import Workspace from '../components/layout/workspace/Workspace';
+import PageTitle from '../components/common/PageTitle';
 
 const Consumption = () => {
+    const {t} = useTranslation('expenses');
     return (
-        <LayoutWithFooter>
-            <p>Consumption</p>
-        </LayoutWithFooter>
+        <Workspace showFooter={true}>
+            <PageTitle title={t('title')} />
+        </Workspace>
     );
 };
 

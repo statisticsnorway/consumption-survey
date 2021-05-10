@@ -1,5 +1,7 @@
 import { useTranslation, withTranslation } from 'react-i18next';
 import Layout from '../components/layout/Layout';
+import Workspace from '../components/layout/workspace/Workspace';
+import PageTitle from '../components/common/PageTitle';
 
 const Index = () => {
     const {t, i18n} = useTranslation('welcome');
@@ -14,11 +16,11 @@ const Index = () => {
     ));
 
     return (
-        <Layout>
-            <h2>{t('title')}</h2>
+        <Workspace showFooter={false}>
+            <PageTitle title={t('title')} />
             {langComp}
             <hr/>
-        </Layout>
+        </Workspace>
     );
 };
 
