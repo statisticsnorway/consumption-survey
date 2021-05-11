@@ -1,16 +1,19 @@
 import { useTranslation } from 'react-i18next';
 import React from 'react';
-import {ConsumptionForm} from "../../components/questionnaire/ConsumptionForm";
+import {ConsumptionForm} from "../components/questionnaire/ConsumptionForm";
+import Workspace from "../components/layout/workspace/Workspace";
 
 function Questionnaire() {
     const {t} = useTranslation('purchases');
 
     return (
-        <div className="section-questionnaire">
-            <ConsumptionForm>
+        <Workspace>
+            <div className="section-questionnaire">
+                <ConsumptionForm>
 
-            </ConsumptionForm>
-        </div>
+                </ConsumptionForm>
+            </div>
+        </Workspace>
     );
 }
 

@@ -12,6 +12,9 @@ const DEFAULT_NAV_ITEMS = [
     }, {
         id: 'progress',
         path: '/progress',
+    }, {
+        id: 'questionnaire',
+        path: '/questionnaire',
     },
 ];
 

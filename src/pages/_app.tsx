@@ -6,10 +6,22 @@ import { useTranslation } from 'react-i18next';
 import Layout from '../components/layout/Layout';
 
 import '../styles/globals.scss'
+import '../styles/QuestionnaireApp.css'
 import { useEffect, useState } from 'react';
 import FireProvider from '../firebase/FireProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import UserProvider from '../firebase/UserProvider';
+import {applyMiddleware, createStore, Store} from "redux";
+import reducer, {QuestionState} from "../store/reducers/questionReducer";
+import {DispatchType, QuestionAction} from "../store/actionCreators";
+import thunk from "redux-thunk"
+import {Provider} from "react-redux";
+
+const store: Store<QuestionState, QuestionAction> & {
+    dispatch: DispatchType
+} = createStore(reducer,
+    applyMiddleware(thunk)
+)
 
 const appConfig = getConfig();
 const getCfg = () => {
@@ -38,13 +50,15 @@ const MyApp = ({Component, pageProps}) => {
     try {
         return (
             <FireProvider config={firebaseConfig}>
-                <UserProvider>
-                    <Layout>
-                        <ProtectedRoute>
-                            <Component {...pageProps} />
-                        </ProtectedRoute>
-                    </Layout>
-                </UserProvider>
+                <Provider store={store}>
+                    <UserProvider>
+                        <Layout>
+                            <ProtectedRoute>
+                                <Component {...pageProps} />
+                            </ProtectedRoute>
+                        </Layout>
+                    </UserProvider>
+                </Provider>
             </FireProvider>
         );
     } catch (err) {
