@@ -10,7 +10,7 @@ export type HeaderProps = {
 
 const Header = ({showAppBanner = false}: HeaderProps) => {
     return (
-        <div className={layoutStyles.headerZone}>
+        <div className={layoutStyles.headerZone} id={"ssb-main-header"}>
             <div className={styles.header}>
                 <div className={styles.identity}>
                     <div className={styles.logo}>
