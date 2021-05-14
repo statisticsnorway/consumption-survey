@@ -1,0 +1,16 @@
+@import '../../styles/colours';
+
+.questionnaireCTA {
+  background-color: $ssb-dark-1 !important;
+  border: 2px solid $ssb-dark-1 !important;
+  padding-top: 2.5rem !important;
+  padding-bottom: 0 !important;
+
+  .icon {
+    color: $ssb-green-4;
+  }
+
+  .text {
+    color: $ssb-dark-5;
+  }
+}

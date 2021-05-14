@@ -16,7 +16,7 @@ const Index = () => {
     ));
 
     return (
-        <Workspace showFooter={false}>
+        <Workspace>
             <PageTitle title={t('title')} />
             {langComp}
             <hr/>

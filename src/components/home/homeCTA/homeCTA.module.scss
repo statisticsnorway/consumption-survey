@@ -1,0 +1,44 @@
+@import 'src/styles/colours';
+
+.homeCTAGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .homeCTA {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 12.5rem;
+    border: 2px solid $ssb-green-4;
+
+    /**
+     * OBS:
+     *  the value subtracted in flex-basis MUST be exactly (2x times the left-margin + the padding)
+     */
+    flex-basis: calc(50% - 5.25rem);
+    margin: 0 0 2rem 2rem;
+    padding: 1.25rem;
+
+    .icon {
+      width: 68px;
+      height: 80px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .text {
+      font-family: Roboto;
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.75rem;
+
+      text-align: center;
+      margin-top: 1.25rem;
+    }
+  }
+}

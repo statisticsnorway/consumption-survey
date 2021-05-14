@@ -1,0 +1,39 @@
+@import '../../../styles/colours';
+
+.purchasesCTAGroup {
+  display: flex;
+  flex-wrap: wrap;
+
+  .purchaessCTA {
+    background-color: $ssb-green-1;
+    border: 0 !important;
+
+    height: 2.25rem;
+
+    display: flex;
+    flex-direction: row;
+
+    flex-basis: calc(50% - 4.25rem);
+    margin: 0 0 1rem 1rem;
+    padding: 0.5rem 1.25rem;
+
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      color: $ssb-dark-5;
+      width: 1.25rem;
+      height: 1.25rem;
+
+      margin-right: 0.5rem;
+    }
+
+    .text {
+      color: $ssb-dark-5;
+      font-size: 0.875rem;
+      font-family: Roboto;
+      font-weight: 400;
+      line-height: 1.5rem;
+    }
+  }
+}
