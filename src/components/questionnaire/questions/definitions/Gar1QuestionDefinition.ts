@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const GAR1: QuestionFormType = {
     id: 'gar1',
-    theme: Theme.garageExpendatures,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 33,
     questionText: 'Eier eller leier du/dere tilgang til garasje, carport eller biloppstillingsplass?',
     hasAnswered: false,

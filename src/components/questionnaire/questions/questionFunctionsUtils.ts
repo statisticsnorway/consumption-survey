@@ -128,6 +128,18 @@ export const getNextQuestionByOrder = (currentQuestion: QuestionFormType, questi
     return getLowestOrderQuestion(availableQuestions);
 };
 
+export const isLastQuestionInSchema = (currentQuestion: QuestionFormType, questions: QuestionFormType[]): boolean => {
+    const order = currentQuestion.order;
+
+    const availableQuestions = questions
+        .filter(q => q.order > order)
+        .filter(q => {
+            return isOneOfTheDependecyCriteriasFulfilled(q, questions)
+        })
+
+    return !availableQuestions || availableQuestions.length === 0
+};
+
 const getLowestOrderQuestion = (questions: QuestionFormType[]): QuestionFormType => {
     let lowestOrderQuestion = questions[0]
     let lowValue = lowestOrderQuestion.order;

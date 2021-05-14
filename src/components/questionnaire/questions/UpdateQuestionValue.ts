@@ -202,7 +202,7 @@ export const updateMultipleQuestionAnswerToStoreText = (eventValue: string, curr
         })
     }
 
-    const updatedQuestion = {
+    let updatedQuestion = {
         ...currentQuestion,
         answerValue: {
             answers: (currentQuestion.answerValue.answers as AnswerValueType[])
@@ -223,8 +223,12 @@ export const updateMultipleQuestionAnswerToStoreText = (eventValue: string, curr
                         }
                     }
                 }),
-        },
-        hasAnswered: (valueFromForm.length > 1) //TODO Kan ha besvart men ingen relevante
+        }
+    }
+
+    updatedQuestion = {
+        ...updatedQuestion,
+        hasAnswered: (updatedQuestion.answerValue.answers as AnswerValueType[]).filter(a => a.chosen).length > 0
     }
 
     dispatch(changeFormValue(updatedQuestion))
@@ -250,8 +254,7 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponent = (ev
         return false;
     }).length > 0
 
-
-    const updatedQuestion = {
+    let updatedQuestion = {
         ...currentQuestion,
         answerValue: {
             answers: (currentQuestion.answerValue.answers as AnswerValueType[])
@@ -291,8 +294,15 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponent = (ev
                     }
                 }),
         },
-        hasAnswered: (valueFromForm.length > 1) //TODO Kan ha besvart men ingen relevante
     }
+
+    updatedQuestion = {
+        ...updatedQuestion,
+        hasAnswered: (updatedQuestion.answerValue.answers as AnswerValueType[]).filter(a => a.chosen).length > 0
+    }
+
+    console.log(currentQuestion.id)
+    console.log({valueFromForm})
 
     dispatch(changeFormValue(updatedQuestion))
 }

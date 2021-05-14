@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const SEPREGNFRI: QuestionFormType = {
     id: 'sepregnfri',
     order: 68,
+    theme: Theme.powerHolidayHome,
     questionText: 'Er det enklest for deg å oppgi utgifter til elektrisitet og nettleie samlet eller ønsker du å oppgi utgiftene samlet? ',
     hasAnswered: false,
     answerValue: {

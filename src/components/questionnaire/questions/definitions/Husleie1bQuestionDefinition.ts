@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const HUSLEIE1B: QuestionFormType = {
     id: 'husleie1b',
-    theme: Theme.rentDwelling,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 17,
     questionText: 'Har du redusert leie fordi..',
     hasAnswered: false,

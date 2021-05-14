@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const BIL2: QuestionFormType = {
     id: 'bil2',
     order: 83,
+    theme: Theme.carPurchase,
     questionText: 'Kjøpte eller fikk du/dere ny eller brukt bil',
     hasAnswered: false,
     answerValue: {

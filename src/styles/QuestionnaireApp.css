@@ -33,6 +33,10 @@
   border-image-repeat: initial !important;
 }
 
+.border-bm-green-05 {
+  border-bottom: solid 0.5px green;
+}
+
 .main-container {
   display: flex;
   flex-flow: column;
@@ -213,6 +217,10 @@
   transition: all 0.5s linear;
 }
 
+.font-color-unactive {
+  color: #62919A;
+}
+
 .hide {
   visibility: hidden;
 }
@@ -242,6 +250,14 @@
   align-items: center;
 }
 
+.flex-row-items-end {
+  justify-content: flex-end;
+}
+
+.flex-restOfSpace {
+  flex-grow: 1;
+}
+
 .flex-fill-remaining-vertical {
   flex-grow: 1;
   flex-shrink: 1;
@@ -260,6 +276,11 @@
 
 .fw-normal {
   font-weight: normal;
+}
+
+.overview-line:focus {
+  outline: rgb(146, 114, 252) solid 2px;
+  outline-offset: 2px;
 }
 
 .radio-alt-container input[type="radio"] {

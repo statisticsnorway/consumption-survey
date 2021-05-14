@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const KOMAVG3: QuestionFormType = {
     id: 'komavg3',
     order: 26,
+    theme: Theme.ownerExpedenaturesEconomy,
     questionText: 'Hvor mye betaler du/dere i',
     hasAnswered: false,
     answerValue: {

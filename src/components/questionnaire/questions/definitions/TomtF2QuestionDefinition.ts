@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const TOMTF2: QuestionFormType = {
     id: 'tomtf2',
-    theme: Theme.renovationDwelling,
+    theme: Theme.renovationHolidayHome,
     order: 63,
     questionText: 'Hvor store utgifter hadde du/dere til disse tiltakene? Dersom betaling til håndverkere også dekket materialer eller innredning, kan du oppgi alt under «til håndverkere».',
     hasAnswered: false,

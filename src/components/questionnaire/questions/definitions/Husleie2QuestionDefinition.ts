@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const HUSLEIE2: QuestionFormType = {
     id: 'husleie2',
-    theme: Theme.rentDwelling,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 18,
     questionText: 'Hvor mye betaler [du/dere] i fellesutgifter eller husleie pr. måned',
     hasAnswered: false,

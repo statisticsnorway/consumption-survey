@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const UTDANNING1: QuestionFormType = {
     id: 'utdanning1',
     order: 108,
+    theme: Theme.education,
     questionText: 'Har du eller noen i husholdningen betalt skolepenger for noen av de følgende utdanninger de siste 12 månedene?',
     hasAnswered: false,
     answerValue: {

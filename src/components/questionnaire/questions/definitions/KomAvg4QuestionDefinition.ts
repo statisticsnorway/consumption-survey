@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const KOMAVG4: QuestionFormType = {
     id: 'komavg4',
     order: 32,
+    theme: Theme.ownerExpedenaturesEconomy,
     questionText: 'Hvor mye betaler du/dere i kommunale avgifter?',
     hasAnswered: false,
     answerValue: {

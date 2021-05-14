@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const FGJELD: QuestionFormType = {
     id: 'fgjeld',
     order: 22.5,
+    theme: Theme.ownerExpedenaturesEconomy,
     questionText: 'Hva er den samlede fellesgjelden på din/deres bolig?',
     hasAnswered: false,
     answerValue: {

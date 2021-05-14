@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const VARIGFRITID2: QuestionFormType = {
     id: 'varigfritid2',
     order: 118,
+    theme: Theme.rarePurchases,
     questionText: 'Hvor mye betalte du/dere for...Dersom dette var en gave, anslå verdien',
     hasAnswered: false,
     answerValue: {

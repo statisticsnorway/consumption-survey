@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const BILVERDIBRUKT: QuestionFormType = {
     id: 'bilverdibrukt',
     order: 85,
+    theme: Theme.carPurchase,
     questionText: 'Hvor mye betalte du/dere for bilen(e) dere kjøpte BRUKT(E)? \n' +
         'Ta også med registrerings- eller omregistreringsavgift.\n' +
         'Hvis bilen var en gave, anslå verdien  ',

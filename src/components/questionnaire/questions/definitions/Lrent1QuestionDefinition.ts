@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const LRENT1: QuestionFormType = {
     id: 'lrent1',
-    theme: Theme.mortgage,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 11,
     questionText: 'Hvor mye av dette er renter',
     hasAnswered: false,

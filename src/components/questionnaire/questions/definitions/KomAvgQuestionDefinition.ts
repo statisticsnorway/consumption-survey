@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const KOMAVG: QuestionFormType = {
     id: 'komavg',
-    theme: Theme.municipalExpenditure,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 24,
     questionText: 'Betaler dere noen av disse kommunale avgiftene?',
     hasAnswered: false,

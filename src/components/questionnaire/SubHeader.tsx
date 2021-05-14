@@ -1,12 +1,12 @@
 import React, {ReactElement} from "react";
-import {Link} from "@statisticsnorway/ssb-component-library";
 
 interface QProps {
     cat: string
+    clicker: Function
 }
 
 export function SubHeader ({
-                             cat
+                               cat, clicker
 }:QProps): ReactElement {
     return (
         <div id="subheader"
@@ -17,7 +17,7 @@ export function SubHeader ({
             {!cat && <p className={"p-lineHeight-05"}>
                 Generelle spørsmål
             </p>}
-            {cat && <Link href="">{cat}</Link>}
+            {cat && <p style={{color: 'green', textDecoration: "underline"}} onClick={() => clicker()}>{cat}</p>}
         </div>
     )
 }
