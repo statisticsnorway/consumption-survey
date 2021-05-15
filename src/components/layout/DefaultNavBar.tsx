@@ -1,17 +1,18 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import Navbar from './Navbar';
+import { PATHS } from '../../uiConfig';
 
 const DEFAULT_NAV_ITEMS = [
     {
         id: 'home',
-        path: '/home',
+        path: PATHS.HOME,
     }, {
         id: 'consumption',
-        path: '/consumption',
+        path: PATHS.CONSUMPTION,
     }, {
         id: 'progress',
-        path: '/progress',
+        path: PATHS.PROGRESS,
     },
 ];
 

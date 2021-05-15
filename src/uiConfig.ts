@@ -3,13 +3,23 @@ import { ChangeEvent } from 'react';
 
 export const PATHS = {
     HOME: '/home',
+    CONSUMPTION: '/consumption',
     EXPENSE: '/expenses',
-    ADD_PURCHASE: '/expenses/add-purchase',
-    EDIT_PURCHASE: '/expenses/edit-purchase',
+    ADD_PURCHASE: '/purchases/add-purchase',
+    EDIT_PURCHASE: '/purchases/edit-purchase',
     ADD_REGULAR_EXPENSE: '/expenses/add-regular-expense',
     EDIT_REGULAR_EXPENSE: '/expenses/edit-regular-expense',
     QUESTIONNAIRE: '/questionnaire',
     TASKS: '/tasks',
+    PROGRESS: '/progress',
+};
+
+export const addPurchasePath = (mode) =>
+    `${PATHS.ADD_PURCHASE}?mode=${mode}`;
+
+export const ADD_PURCHASE_MODES = {
+    MANUAL: 'manual',
+    SCAN: 'scan',
 };
 
 export type DeleteConfirmProps = {
