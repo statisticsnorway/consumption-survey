@@ -16,11 +16,12 @@
 
     /**
      * OBS:
-     *  the value subtracted in flex-basis MUST be exactly (2x times the left-margin + the padding)
+     *   the value 3.3875rem was arrived at by trial and error. seems to be related to the
+     *   left margin of .homeCTA:nth-child(even), but unable to elucidate how exactly
      */
-    flex-basis: calc(50% - 5.25rem);
-    margin: 0 0 2rem 2rem;
-    padding: 1.25rem;
+    flex-basis: calc(50% - 3.3875rem);
+    margin: 0 0 1.25rem 0;
+    padding: 0 1.25rem;
 
     .icon {
       width: 68px;
@@ -40,5 +41,9 @@
       text-align: center;
       margin-top: 1.25rem;
     }
+  }
+
+  .homeCTA:nth-child(even) {
+    margin-left: 1.25rem;
   }
 }
