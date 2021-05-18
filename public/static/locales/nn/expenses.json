@@ -1,3 +1,13 @@
 {
-  "title": "Utgifter"
+  "title": "Utgifter",
+
+  "registerNew": {
+    "fromReceipt": "Skann kvittering",
+    "manually": "Registrer kjøp manuelt",
+    "regularExpense": "Registrer regning"
+  },
+
+  "questionnaire": {
+    "title": "Svar på spørreskjema"
+  }
 }
