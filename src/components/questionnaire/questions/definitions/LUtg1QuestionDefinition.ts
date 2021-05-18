@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const LUTG1: QuestionFormType = {
     id: 'lutg1',
-    theme: Theme.mortgage,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 9,
     questionText: 'Hvor mye betaler [du/dere] for dette lånet per måned?',
     hasAnswered: false,

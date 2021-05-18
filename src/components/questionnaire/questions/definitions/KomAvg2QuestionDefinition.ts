@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const KOMAVG2: QuestionFormType = {
     id: 'komavg2',
-    theme: Theme.rentDwelling,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 25,
     questionText: 'Betaler du/dere de kommunale avgiftene separat, eller som en samlet sum?',
     hasAnswered: false,

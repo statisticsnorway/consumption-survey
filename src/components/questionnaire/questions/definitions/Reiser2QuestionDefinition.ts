@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const REISER2: QuestionFormType = {
     id: 'reiser2',
-    theme: Theme.firewood,
+    theme: Theme.travels,
     order: 93,
     questionText: 'Hvor mye betalte du/dere for reisene?',
     hasAnswered: false,

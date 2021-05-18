@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const FORS2: QuestionFormType = {
     id: 'fors2',
     order: 125,
+    theme: Theme.insuranceCost,
     questionText: 'Hvor mye har du betalt siste 12 månedene?',
     hasAnswered: false,
     answerValue: {

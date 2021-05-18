@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const GAR1B: QuestionFormType = {
     id: 'gar1b',
-    theme: Theme.garageExpendatures,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 35,
     questionText: 'Hvor store er utgiftene til parkering?',
     hasAnswered: false,

@@ -266,7 +266,7 @@ export const updateMultipleQuestionAnswerToStoreText = (
 		})
 	}
 
-	const updatedQuestion = {
+	let updatedQuestion = {
 		...currentQuestion,
 		answerValue: {
 			answers: (currentQuestion.answerValue.answers as AnswerValueType[]).map(
@@ -290,7 +290,14 @@ export const updateMultipleQuestionAnswerToStoreText = (
 				}
 			),
 		},
-		hasAnswered: valueFromForm.length > 1, //TODO Kan ha besvart men ingen relevante
+	}
+
+	updatedQuestion = {
+		...updatedQuestion,
+		hasAnswered:
+			(updatedQuestion.answerValue.answers as AnswerValueType[]).filter(
+				(a) => a.chosen
+			).length > 0,
 	}
 
 	dispatch(changeFormValue(updatedQuestion))
@@ -329,8 +336,8 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponent = (
 			}
 			return false
 		}).length > 0
-	console.log(currentQuestion, "current question")
-	const updatedQuestion = {
+
+	let updatedQuestion = {
 		...currentQuestion,
 		answerValue: {
 			answers: (currentQuestion.answerValue.answers as AnswerValueType[]).map(
@@ -357,17 +364,6 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponent = (
 					} else {
 						const tickIt = valueFromForm === (answerValue.value as string)
 						const chosen = answerValue.chosen ? !tickIt : tickIt
-						console.log(
-							currentQuestion.id,
-							"current value",
-							valueFromForm,
-							"matched against",
-							answerValue.value,
-							"is the same",
-							tickIt,
-							"then choose",
-							chosen
-						)
 
 						if (ingenAvDisseIsAlreadyTicked) {
 							return {
@@ -384,8 +380,18 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponent = (
 				}
 			),
 		},
-		hasAnswered: valueFromForm.length > 1, //TODO Kan ha besvart men ingen relevante
 	}
+
+	updatedQuestion = {
+		...updatedQuestion,
+		hasAnswered:
+			(updatedQuestion.answerValue.answers as AnswerValueType[]).filter(
+				(a) => a.chosen
+			).length > 0,
+	}
+
+	console.log(currentQuestion.id)
+	console.log({ valueFromForm })
 
 	dispatch(changeFormValue(updatedQuestion))
 }
@@ -405,8 +411,7 @@ export const updateQuestionToNotAnsweredToStore = (
 
 export const updateQuestionAnswerToStoreFromExternal = (
 	eventValue: string,
-	currentQuestion: QuestionFormType,
-	dispatch: Dispatch<any>
+	currentQuestion: QuestionFormType
 ) => {
 	const chosenValue: string | number | boolean = eventValue
 	if (!eventValue) {
@@ -439,8 +444,7 @@ export const updateQuestionAnswerToStoreFromExternal = (
 
 export const updateNestedQuestionAnswerToStoreFromExternal = (
 	eventValue: string,
-	currentQuestion: QuestionFormType,
-	dispatch: Dispatch<any>
+	currentQuestion: QuestionFormType
 ) => {
 	const chosenValue: string | number | boolean = eventValue
 	if (!eventValue) {
@@ -493,7 +497,6 @@ export const updateNestedQuestionAnswerToStoreFromExternal = (
 export const updateQuestionAnswerToStoreTextFromExternal = (
 	eventValue: string,
 	currentQuestion: QuestionFormType,
-	dispatch: Dispatch<any>,
 	answerId?: string
 ) => {
 	const valueFromForm: string | number | boolean = eventValue
@@ -534,8 +537,7 @@ export const updateQuestionAnswerToStoreTextFromExternal = (
 
 export const updateCheckboxTextQuestionAnswerToStoreFromExternal = (
 	eventValue: string,
-	currentQuestion: QuestionFormType,
-	dispatch: Dispatch<any>
+	currentQuestion: QuestionFormType
 ) => {
 	const valueFromForm: string | number | boolean = eventValue
 	if (!eventValue) {
@@ -575,11 +577,7 @@ export const updateCheckboxTextQuestionAnswerToStoreFromExternal = (
 }
 
 export const updateCheckboxTextQuestionWithTimePeriodAnswerToStoreFromExternal =
-	(
-		eventValue: string,
-		currentQuestion: QuestionFormType,
-		dispatch: Dispatch<any>
-	) => {
+	(eventValue: string, currentQuestion: QuestionFormType) => {
 		const valueFromForm: string | number | boolean = eventValue
 		if (!eventValue) {
 			return
@@ -634,8 +632,7 @@ export const updateCheckboxTextQuestionWithTimePeriodAnswerToStoreFromExternal =
 
 export const updateMultipleQuestionAnswerToStoreTextFromExternal = (
 	eventValue: string,
-	currentQuestion: QuestionFormType,
-	dispatch: Dispatch<any>
+	currentQuestion: QuestionFormType
 ) => {
 	const valueFromForm: string | number | boolean | string[] = eventValue
 	if (!eventValue) {
@@ -698,11 +695,7 @@ export const updateMultipleQuestionAnswerToStoreTextFromExternal = (
 }
 
 export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponentFromExternal =
-	(
-		eventValue: string,
-		currentQuestion: QuestionFormType,
-		dispatch: Dispatch<any>
-	) => {
+	(eventValue: string, currentQuestion: QuestionFormType) => {
 		const valueFromForm: string | number | boolean | string[] = eventValue
 		if (!eventValue) {
 			return
@@ -791,3 +784,93 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponentFromEx
 
 		return updatedQuestion
 	}
+export const hydrateQuestionnaire = (answers, questions) => {
+	const hydratedQuestions = questions.map((question) => {
+		answers.forEach((answer) => {
+			const splitAnswer = answer.split("_")
+			if (question.id === splitAnswer[0]) {
+				const value = answer.split(" == ")[1]
+
+				switch (question.inputType) {
+					case "radio":
+						question = updateQuestionAnswerToStoreFromExternal(value, question)
+						break
+					case "checkbox":
+						question =
+							updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponentFromExternal(
+								value,
+								question
+							)
+						break
+					case "number-optional-timeperiod":
+					case "text-optional-timeperiod":
+						;(question.answerValue.answers as AnswerValueType[])[0].chosen =
+							true
+						question = updateQuestionAnswerToStoreTextFromExternal(
+							value,
+							question,
+
+							(question.answerValue.answers as AnswerValueType[])[
+								Number(splitAnswer[1][0]) - 1
+							].id
+						)
+						break
+					case "number-optional-timeperiod-checkbox":
+						if (answer.includes("_3")) {
+							question =
+								updateCheckboxTextQuestionWithTimePeriodAnswerToStoreFromExternal(
+									value,
+									question
+								)
+						} else {
+							;(question.answerValue.answers as AnswerValueType[])[0].chosen =
+								true
+							question = updateQuestionAnswerToStoreTextFromExternal(
+								value,
+								question,
+
+								(question.answerValue.answers as AnswerValueType[])[
+									Number(splitAnswer[1][0]) - 1
+								].id
+							)
+						}
+						break
+					case "number-checkbox":
+					case "text-checkbox":
+						if (answer.includes("_2")) {
+							question = updateCheckboxTextQuestionAnswerToStoreFromExternal(
+								value,
+								question
+							)
+						} else {
+							question = updateQuestionAnswerToStoreTextFromExternal(
+								value,
+								question,
+								(question.answerValue.answers as AnswerValueType[])[0].id
+							)
+						}
+						break
+					case "multifield-number-dependent-with-sum":
+					case "multifield-text-dependent-with-sum":
+					case "multifield-number-siffer-dependent":
+					case "multifield-number-dependent":
+					case "multifield-text-dependent":
+					case "multifield-number-with-sum":
+					case "multifield-text-with-sum":
+					case "multifield-number":
+					case "multifield-text":
+					case "number":
+					case "text":
+						question = updateQuestionAnswerToStoreTextFromExternal(
+							value,
+							question,
+							answer.split(" == ")[0]
+						)
+				}
+				console.log(question)
+			}
+		})
+		return question
+	})
+	return hydratedQuestions
+}

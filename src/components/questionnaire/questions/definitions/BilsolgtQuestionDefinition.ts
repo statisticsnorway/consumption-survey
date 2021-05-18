@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const BILSOLGT: QuestionFormType = {
     id: 'bilsolgt',
-    theme: Theme.car,
+    theme: Theme.carPurchase,
     order: 86,
     questionText: 'Har du/dere solgt eller byttet inn bil i løpet av de siste 12 månedene?\n' +
         'Ikke ta med bil som brukes som firma- eller tjenestebil, men som også disponeres til privat bruk.',

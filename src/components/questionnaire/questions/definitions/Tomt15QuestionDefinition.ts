@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const TOMT15: QuestionFormType = {
     id: 'tomt15',
     order: 40.5,
+    theme: Theme.renovationDwelling,
     questionText: 'Du svarte "Annet" på forrige spørsmål. Spesifiser kort hva Annet var i dette tilfellet',
     hasAnswered: false,
     answerValue: {

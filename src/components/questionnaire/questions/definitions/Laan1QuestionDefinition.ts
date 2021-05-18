@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const LAAN1: QuestionFormType = {
     id: 'laan1',
-    theme: Theme.mortgage,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 7,
     questionText: 'Har [du/dere] boliglån eller annet lån med sikkerhet i bolig?',
     hasAnswered: false,

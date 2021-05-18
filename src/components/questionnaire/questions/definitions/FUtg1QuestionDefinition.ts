@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const FUTG1: QuestionFormType = {
     id: 'futg1',
-    theme: Theme.rentDwelling,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 20,
     questionText: 'Betaler dere [du/dere] fellesutgifter til borettslag eller sameie?',
     hasAnswered: false,

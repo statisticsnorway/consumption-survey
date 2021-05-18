@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const VARIGUNDERH1: QuestionFormType = {
     id: 'varigunderh1',
     order: 115,
+    theme: Theme.rarePurchases,
     questionText: 'Elektriske artikler og underholdningsartikler\n' +
         'Har du/dere i løpet av de siste 12 månedene kjøpt eller fått…',
     hasAnswered: false,

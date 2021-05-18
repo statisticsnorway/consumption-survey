@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const VARIGMØBLER2: QuestionFormType = {
     id: 'varigmøbler2',
-    theme: Theme.powerDwelling,
+    theme: Theme.rarePurchases,
     order: 112,
     questionText: 'Hvor mye betalte du/dere?Dersom dette var en gave, anslå verdien' ,
     hasAnswered: false,

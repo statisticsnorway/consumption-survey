@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const REISER1: QuestionFormType = {
     id: 'reiser1',
     order: 92,
+    theme: Theme.travels,
     questionText: 'Har du/dere hatt utgifter til fritidsresier de siste 12 månedene?\n' +
         'Ta ikke med pakketurer' ,
     hasAnswered: false,

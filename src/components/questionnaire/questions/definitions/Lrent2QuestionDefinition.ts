@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const LRENT2: QuestionFormType = {
     id: 'lrent2',
-    theme: Theme.mortgage,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 12,
     questionText: 'Hva er rentesatsen for boliglånet /lånene med sikkerhet i boligen nå? Oppgi i prosent',
     hasAnswered: false,

@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const FUTG4: QuestionFormType = {
     id: 'futg4',
-    theme: Theme.rentDwelling,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 23,
     questionText: 'Hvor mye av husleien/fellesutgiftene går til å dekke renter og avdrag på fellesgjeld?',
     hasAnswered: false,

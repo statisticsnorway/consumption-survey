@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const FUTG3: QuestionFormType = {
     id: 'futg3',
-    theme: Theme.rentDwelling,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 22,
     questionText: 'Omfatter husleien/fellesutgiftene …. ',
     hasAnswered: false,

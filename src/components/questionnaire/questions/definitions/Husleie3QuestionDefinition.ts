@@ -3,7 +3,7 @@ import {Theme} from "../themes";
 
 export const HUSLEIE3: QuestionFormType = {
     id: 'husleie3',
-    theme: Theme.rentDwelling,
+    theme: Theme.ownerExpedenaturesEconomy,
     order: 19,
     questionText: 'Er elektrisitet inkludert i husleien?',
     hasAnswered: false,

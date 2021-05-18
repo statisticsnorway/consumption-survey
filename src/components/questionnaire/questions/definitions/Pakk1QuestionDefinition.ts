@@ -1,8 +1,10 @@
 import {QuestionFormType} from "../QuestionFormType";
+import {Theme} from "../themes";
 
 export const PAKK1: QuestionFormType = {
     id: 'pakk1',
     order: 95,
+    theme: Theme.travels,
     questionText: 'Har du/dere kjøpt eller fått pakketurer, charterturer, cruise eller gruppereiser i løpet av de siste 12 månedene.',
     hasAnswered: false,
     answerValue: {
