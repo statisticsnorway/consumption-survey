@@ -24,6 +24,8 @@ const Index = () => {
     );
 };
 
+export const getInitialProps = async () => ({});
+
 export const getStaticProps = async () => ({
     props: {
         namespacesRequired: ['welcome'],

@@ -249,5 +249,7 @@ const UserProvider = ({children}) => {
     );
 };
 
+export const getInitialProps = () => ({});
+
 export default UserProvider;
 
