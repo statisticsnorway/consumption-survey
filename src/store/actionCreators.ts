@@ -1,70 +1,93 @@
-import {CHANGE_FOCUS, CHANGE_FORM_VALUE} from "./actionTypes";
-import {Dispatch} from "redux";
-import {HistoryBlock} from "./reducers/questionReducer";
-import {AnswerValueType, QuestionFormType} from "../components/questionnaire/questions/QuestionFormType";
+import {
+	CHANGE_FOCUS,
+	CHANGE_FORM_VALUE,
+	CHANGE_QUESTION_LIST,
+} from "./actionTypes"
+import { Dispatch } from "redux"
+import { HistoryBlock } from "./reducers/questionReducer"
+import {
+	AnswerValueType,
+	QuestionFormType,
+} from "../components/questionnaire/questions/QuestionFormType"
 
 export type QuestionAction = {
-    type: string
-    question?: QuestionFormType
-    focus?: string,
-    history?: HistoryBlock
+	type: string
+	question?: QuestionFormType
+	questions?: QuestionFormType[]
+	focus?: string
+	history?: HistoryBlock
 }
 
 export type FocusAction = {
-    type: string
-    focus: string
+	type: string
+	focus: string
 }
 
 export type AppAction = {
-    type: string
-    question: QuestionFormType
-    focus: string
+	type: string
+	question: QuestionFormType
+	focus: string
 }
 
 export type DispatchType = (args: QuestionAction) => QuestionAction
 export type DispatchTypeFocus = (args: FocusAction) => FocusAction
 
-export const changeFormValue = (question: QuestionFormType) => (dispatch: Dispatch) => {
-    const action: QuestionAction = {
-        type: CHANGE_FORM_VALUE,
-        question
-    }
+export const changeQuestionList =
+	(questions: QuestionFormType[]) => (dispatch: Dispatch) => {
+		const action: QuestionAction = {
+			type: CHANGE_QUESTION_LIST,
+			questions,
+		}
+		dispatch(action)
+	}
 
-    dispatch(action)
-}
-export const changeFocus = (focusId: string, history: HistoryBlock) => (dispatch: Dispatch) => {
-    const action: QuestionAction = {
-        type: CHANGE_FOCUS,
-        focus: focusId,
-        history: history
-    }
+export const changeFormValue =
+	(question: QuestionFormType) => (dispatch: Dispatch) => {
+		const action: QuestionAction = {
+			type: CHANGE_FORM_VALUE,
+			question,
+		}
 
-    dispatch(action)
-}
+		dispatch(action)
+	}
+export const changeFocus =
+	(focusId: string, history: HistoryBlock) => (dispatch: Dispatch) => {
+		const action: QuestionAction = {
+			type: CHANGE_FOCUS,
+			focus: focusId,
+			history: history,
+		}
 
-export const unhideAnswerOption = (question: QuestionFormType) => (dispatch: Dispatch) => {
-    (question.answerValue.answers as AnswerValueType[]).forEach((a: AnswerValueType) => {
-        if(a.descriptionValue?.toLowerCase() === 'vet ikke'){
-            a.hidden = false;
-        }
-    })
+		dispatch(action)
+	}
 
-    console.log({question})
+export const unhideAnswerOption =
+	(question: QuestionFormType) => (dispatch: Dispatch) => {
+		;(question.answerValue.answers as AnswerValueType[]).forEach(
+			(a: AnswerValueType) => {
+				if (a.descriptionValue?.toLowerCase() === "vet ikke") {
+					a.hidden = false
+				}
+			}
+		)
 
-    const action: QuestionAction = {
-        type: CHANGE_FORM_VALUE,
-        question
-    }
+		console.log({ question })
 
-    dispatch(action)
-}
+		const action: QuestionAction = {
+			type: CHANGE_FORM_VALUE,
+			question,
+		}
 
-export const backNavigation = (focusId: string, history: HistoryBlock) => (dispatch: Dispatch) => {
-    const action: QuestionAction = {
-        type: CHANGE_FOCUS,
-        focus: focusId,
-        history: history
-    }
+		dispatch(action)
+	}
 
-    dispatch(action)
-}
+export const backNavigation =
+	(focusId: string, history: HistoryBlock) => (dispatch: Dispatch) => {
+		const action: QuestionAction = {
+			type: CHANGE_FOCUS,
+			focus: focusId,
+			history: history,
+		}
+
+		dispatch(action)
+	}
