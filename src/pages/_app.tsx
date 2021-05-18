@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import FireProvider from '../firebase/FireProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import UserProvider from '../firebase/UserProvider';
+import Loader from '../components/common/Loader';
 
 const appConfig = getConfig();
 const getCfg = () => {
@@ -28,7 +29,7 @@ const getCfg = () => {
 
 const MyApp = ({Component, pageProps}) => {
     const {i18n} = useTranslation('welcome');
-    const [firebaseConfig, setFirebaseConfig] = useState<object>();
+    const [firebaseConfig, setFirebaseConfig] = useState<object>(null);
 
     useEffect(() => {
         setFirebaseConfig(getCfg());
@@ -36,7 +37,7 @@ const MyApp = ({Component, pageProps}) => {
 
 
     try {
-        return (
+        return firebaseConfig ? (
             <FireProvider config={firebaseConfig}>
                 <UserProvider>
                     <Layout>
@@ -46,7 +47,7 @@ const MyApp = ({Component, pageProps}) => {
                     </Layout>
                 </UserProvider>
             </FireProvider>
-        );
+        ) : <Loader />;
     } catch (err) {
         console.log('Error while rendering app', err);
         return <>{JSON.stringify(err)}</>;
