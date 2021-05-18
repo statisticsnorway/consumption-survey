@@ -113,7 +113,13 @@ export const ConsumptionForm: React.FC = () => {
             <div style={{position: 'absolute', right: '0', backgroundColor: 'white', zIndex: 0, padding: '30px', border: '2px solid #7cc'}}>
                 {`current question: ${currentQuestion.id}`}
                 <ul>
-                {getAnsweredValues(questions).map(val => <li>{val}</li>)}
+                    {getAnsweredValues(questions).map(val => {
+                        return (
+                            <li key={`${val}-id`}>
+                                {val}
+                            </li>)
+                    })
+                    }
                 </ul>
             </div>
         <div className="height-100 flex-container-column"

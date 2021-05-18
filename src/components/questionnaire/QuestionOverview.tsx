@@ -38,6 +38,7 @@ export const QuestionOverview = (
 
             return (
                 <div id={`section-${section}`}
+                     key={`section-${section}`}
                     className={"overview-line"}
                     onClick={() => {
                     if(isDoneWithSection || index === 0) {
