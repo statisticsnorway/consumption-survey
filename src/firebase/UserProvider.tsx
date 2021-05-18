@@ -13,11 +13,10 @@ import { add, sub } from "date-fns"
 import { useRouter } from "next/router"
 import { useTranslation } from "react-i18next"
 import { useStore } from "react-redux"
-import { useQuestionnaire } from "../hocs/useQuestionnaire"
 import { getAnsweredValues } from "../components/questionnaire/questions/questionFunctionsUtils"
 import { hydrateQuestionnaire } from "../components/questionnaire/questions/UpdateQuestionValue"
 import { changeQuestionList } from "../store/actionCreators"
-import { CHANGE_QUESTION_LIST } from "../store/actionTypes"
+import { CHANGE_ALL, CHANGE_QUESTION_LIST } from "../store/actionTypes"
 
 export enum CommunicationPreference {
 	EMAIL = "EMAIL",
@@ -46,7 +45,6 @@ const UserProvider = ({ children }) => {
 	const { i18n } = useTranslation()
 	const { auth, firestore, reset } = useContext(FireContext)
 	const store = useStore()
-	const { updateQuestionnaire } = useQuestionnaire()
 	const [userInfo, setUserInfo] = useState<UserInfoType>(null)
 	const [respondentDetails, setRespondentDetails] =
 		useState<RespondentDetails>(null)
@@ -128,37 +126,43 @@ const UserProvider = ({ children }) => {
 							store.subscribe(() => {
 								const state = store.getState()
 								const quesetionsState = state.questions
+								const history = state.history
+								const currentFocus = state.currentFocus
 								const answers = getAnsweredValues(quesetionsState)
 								firestore
-									.doc(`/users/${authInfo.userInfo.id}/questionnaire/info`)
+									.doc(`/users/${authInfo.userInfo.id}/questionnaire/data`)
 									.set(
 										{
 											status: "STARTED",
 											answers,
+											history,
+											currentFocus,
 										},
 										{ merge: true }
 									)
 							})
 							firestore
 								.collection(`/users/${authInfo.userInfo.id}/questionnaire`)
-								.doc("info")
+								.doc("data")
 								.get()
 								.then((doc) => {
 									const data = doc.data()
-									if (data.answers) {
+									if (data && data.answers) {
 										const curState = store.getState()
 										const hydrated = hydrateQuestionnaire(
 											data.answers,
 											curState.questions
 										)
 										store.dispatch({
-											type: CHANGE_QUESTION_LIST,
+											type: CHANGE_ALL,
 											questions: hydrated,
+											allHistory: data.history,
+											focus: data.currentFocus,
 										})
 									}
 								})
 								.catch((err) => {
-									console.log("cannot update answers")
+									console.log("cannot update answers", err)
 								})
 
 							firestore

@@ -16,6 +16,7 @@ export type QuestionAction = {
 	questions?: QuestionFormType[]
 	focus?: string
 	history?: HistoryBlock
+	allHistory?: HistoryBlock[]
 }
 
 export type FocusAction = {

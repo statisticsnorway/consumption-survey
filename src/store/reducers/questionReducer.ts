@@ -1,4 +1,5 @@
 import {
+	CHANGE_ALL,
 	CHANGE_FOCUS,
 	CHANGE_FORM_VALUE,
 	CHANGE_QUESTION_LIST,
@@ -334,6 +335,18 @@ const questionReducer = (
 	action: QuestionAction
 ): QuestionState => {
 	switch (action.type) {
+		case CHANGE_ALL: {
+			if (!action.questions) {
+				throw DOMException
+			}
+			console.log(action.questions)
+			return {
+				...state,
+				questions: action.questions,
+				currentFocus: action.focus,
+				history: action.allHistory,
+			}
+		}
 		case CHANGE_QUESTION_LIST:
 			if (!action.questions) {
 				throw DOMException

@@ -55,14 +55,8 @@ export const ConsumptionForm: React.FC = ({}) => {
 	}, [questions])
 
 	useEffect(() => {
-		const focusList = questions.map((q) => {
-			return {
-				id: q.id,
-				element: <BaseQuestion questionId={`${q.id}`} />,
-			}
-		})
-		setFocusList(focusList)
-	}, [questions])
+		if (questions) setIsStarted(true)
+	}, [])
 
 	const handleNext = (currentQuestion: QuestionFormType) => {
 		if (isQuestionAnswered(currentQuestion, questions)) {
