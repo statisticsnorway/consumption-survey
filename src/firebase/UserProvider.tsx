@@ -6,6 +6,8 @@ import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 
+import getConfig from 'next/config';
+
 export enum CommunicationPreference {
     EMAIL = 'EMAIL',
     IN_APP = 'IN-APP',
@@ -13,7 +15,12 @@ export enum CommunicationPreference {
     PHONE = 'PHONE',
 };
 
-const LOGIN_URL = `${process.env.NEXT_PUBLIC_BFF_HOST}/login`;
+const appConfig = getConfig();
+
+const getLoginUrl = () => {
+    const {envVars} = appConfig.publicRuntimeConfig;
+    return `${envVars.NEXT_PUBLIC_BFF_HOST}/login`;
+};
 
 export type UserPreferences = {
     language: string;
@@ -75,11 +82,11 @@ const UserProvider = ({children}) => {
             return;
         }
 
-        console.log('trying to obtain firebase token for ', respondentInfo, isLoggingIn, LOGIN_URL);
+        console.log('trying to obtain firebase token for ', respondentInfo, isLoggingIn, getLoginUrl());
 
         if (respondentInfo && respondentInfo.respondentId && !isLoggingIn) {
             setIsLoggingIn(true);
-            const res = await axios.post(LOGIN_URL, {
+            const res = await axios.post(getLoginUrl(), {
                 respondentInfo,
                 idPortenInfo,
             });
