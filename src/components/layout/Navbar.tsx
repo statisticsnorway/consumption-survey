@@ -41,8 +41,6 @@ const Navbar = ({navbarItems, selection}: NavbarProps) => {
 
             if (match) {
                 setCurrSelection(match.id);
-            } else {
-                setCurrSelection(navbarItems[0].id);
             }
         }
     }, [selection, router.pathname]);
