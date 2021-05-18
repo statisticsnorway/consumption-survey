@@ -3,32 +3,23 @@ import { ChangeEvent } from 'react';
 
 export const PATHS = {
     HOME: '/home',
-    PURCHASES: '/v2/purchases',
-    DASHBOARD: '/dashboard/Dashboard',
-    ADD_PURCHASE: '/v2/purchases/addPurchase',
-    EDIT_PURCHASE: '/v2/purchases/editPurchase',
-    EDIT_EXPENSE: `/`,
-    AUTH_IDP: '/auth/api',
-    QUESTIONNAIRE: '/questionnaire'
+    CONSUMPTION: '/consumption',
+    EXPENSE: '/expenses',
+    ADD_PURCHASE: '/purchases/add-purchase',
+    EDIT_PURCHASE: '/purchases/edit-purchase',
+    ADD_REGULAR_EXPENSE: '/expenses/add-regular-expense',
+    EDIT_REGULAR_EXPENSE: '/expenses/edit-regular-expense',
+    QUESTIONNAIRE: '/questionnaire',
+    TASKS: '/tasks',
+    PROGRESS: '/progress',
 };
 
-export const TABS_PARAMS = {
-    SELECTED_TAB: 'selectedTab',
-    SELECTED_DATE: 'selectedDate',
-};
+export const addPurchasePath = (mode) =>
+    `${PATHS.ADD_PURCHASE}?mode=${mode}`;
 
-export const DASHBOARD_TABS = {
-    HOME: 'diary',
-    ENTRIES: 'entries',
-    REGULAR_EXPENSES: 'regularExpenses',
-    OTHER: 'otherExpenses',
-};
-
-export const makeDashboardPath = (selectedTab, additionalParams) => {
-    const queryStr = Object.keys(additionalParams)
-        .reduce((acc, key) => `${acc}&${key}=${additionalParams[key]}`, '');
-
-    return `${PATHS.DASHBOARD}?${TABS_PARAMS.SELECTED_TAB}=${selectedTab}${queryStr}`;
+export const ADD_PURCHASE_MODES = {
+    MANUAL: 'manual',
+    SCAN: 'scan',
 };
 
 export type DeleteConfirmProps = {

@@ -1,0 +1,22 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+
+  .headerZone {
+    order: 10;
+  }
+
+  .workspaceZone {
+    order: 20;
+  }
+
+  .footerZone {
+    order: 30;
+
+    /**
+     * not sure how this works, but without it, content does not scroll beyond the footer,
+     * when there is not enough data in the workspaceZone below the footer
+     */
+    margin-top: 3rem !important;
+  }
+}

@@ -1,0 +1,21 @@
+.workspace {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0 1.25rem;
+
+  .pageTitle {
+    margin: 2.5rem 0;
+
+    h1 {
+      font-family: "Roboto Condensed";
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin: 0;
+    }
+
+    .subText {
+      font-size: 1rem;
+    }
+  }
+}

@@ -18,6 +18,7 @@ export type UserInfoType = {
     lastName?: string;
     email: string;
     surveyInfo: SurveyInfo;
+    respondentDetails: RespondentDetails;
 };
 
 export type RespondentDetails = {
@@ -31,10 +32,17 @@ export type RespondentDetails = {
     dateOfBirth: string;
 };
 
+export type IDPortenTokenInfo = {
+    accessToken: any;
+    refreshToken: any;
+    idToken: any;
+    idTokenUserInfo: any;
+};
+
 export type UserContextType = {
     userInfo: UserInfoType;
     respondentDetails: RespondentDetails;
-    login: (respondentDetails: RespondentDetails) => Promise<void>;
+    login: (respondentDetails: RespondentDetails, idPortenTokenInfo: IDPortenTokenInfo) => Promise<void>;
     logout: () => void;
     isAuthenticated: boolean;
     isLoggingIn: boolean;

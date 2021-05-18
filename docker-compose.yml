@@ -34,6 +34,7 @@ services:
       - FIREBASE_SERVICE_ACCOUNT_JSON=/app/secure/serviceAccountKey-gcp.json
       - FIREBASE_CONFIG_JSON=/app/secure/config-gcp.js
       - DEPLOYMENT_ENV=local
+      - AUTH_URL=http://auth:8080
 
   backend:
     build:

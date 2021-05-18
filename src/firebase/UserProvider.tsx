@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 // import { FireContext, UserContext } from '../contexts';
-import { FireContext, RespondentDetails, SurveyInfo, UserContext, UserInfoType } from '../contexts';
-import { i18n } from '../../i18n';
+import { FireContext, IDPortenTokenInfo, RespondentDetails, SurveyInfo, UserContext, UserInfoType } from '../contexts';
 import { add, sub } from 'date-fns';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 
 export enum CommunicationPreference {
     EMAIL = 'EMAIL',
@@ -30,6 +30,7 @@ export const DUMMY_SURVEY_INFO: SurveyInfo = {
 
 const UserProvider = ({children}) => {
     const router = useRouter();
+    const {i18n} = useTranslation();
     const {auth, firestore, reset} = useContext(FireContext);
     const [userInfo, setUserInfo] = useState<UserInfoType>(null);
     const [respondentDetails, setRespondentDetails] = useState<RespondentDetails>(null);
@@ -38,6 +39,10 @@ const UserProvider = ({children}) => {
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
     const [loginLogoutErrors, setLoginLogoutErrors] = useState<any>(null);
+
+    useEffect(() => {
+        setIsAuthenticated(false);
+    }, []);
 
     /*
     const login = async (userName) => {
@@ -64,7 +69,7 @@ const UserProvider = ({children}) => {
     });
 
 
-    const login = async (respondentInfo: RespondentDetails) => {
+    const login = async (respondentInfo: RespondentDetails, idPortenInfo: IDPortenTokenInfo) => {
         if (!auth) {
             console.log('firebase auth not ready ...');
             return;
@@ -75,13 +80,14 @@ const UserProvider = ({children}) => {
         if (respondentInfo && respondentInfo.respondentId && !isLoggingIn) {
             setIsLoggingIn(true);
             const res = await axios.post(LOGIN_URL, {
-                respondentInfo
+                respondentInfo,
+                idPortenInfo,
             });
+
+            console.log('response from BFF', res);
 
             if ((res.status >= 200) && (res.status < 300)) {
                 const {data: authInfo} = res;
-
-                console.log('authInfo from BFF', authInfo);
 
                 if (authInfo && authInfo.firebaseToken && authInfo.userInfo) {
                     return auth.signInWithCustomToken(authInfo.firebaseToken)
@@ -91,10 +97,10 @@ const UserProvider = ({children}) => {
                                 ...authInfo.userInfo,
                                 userName: authInfo.userInfo.id,
                                 surveyInfo: extractSurveyInfo(respondentInfo),
+                                respondentDetails: authInfo.respondentDetails,
                             };
 
                             setUserInfo(loginInfo);
-                            setRespondentDetails(authInfo.respondentDetails);
 
                             firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
                                 .set(loginInfo)
@@ -111,6 +117,7 @@ const UserProvider = ({children}) => {
                     setLoginLogoutErrors('No token in BFF response');
                 }
             } else {
+                console.log('[Login Err]: could not get auth token from BFF', res);
                 setLoginLogoutErrors(res);
                 setIsLoggingIn(false);
                 throw new Error(JSON.stringify(res));
@@ -133,6 +140,7 @@ const UserProvider = ({children}) => {
                         user.refreshToken);
 
                     setIsLoggingIn(true);
+                    // setIsAuthenticated(true);
 
                     try {
                         firestore
@@ -192,35 +200,32 @@ const UserProvider = ({children}) => {
         setIsAuthenticated(!!userInfo);
     }, [userInfo]);
 
-
     const logout = async () => {
         if (auth && isAuthenticated) {
             setIsLoggingOut(true);
-            auth.signOut()
-                .then(async (res) => {
-                    console.log('successfully signed out', res);
-                    setUserInfo(null);
-                    setIsLoggingIn(false);
-                    setUserPreferences(null);
-                    setIsLoggingOut(false);
 
-                    try {
-                        await reset();
-                        console.log('cleared firebase, initiaing idp logout');
-                        setIsAuthenticated(false);
-                        await router.push('/login');
-                        // window.location.reload();
-                    } catch (err) {
-                        console.log('could not reset app', err);
-                        setLoginLogoutErrors(err);
-                    }
+            try {
+                const sign = await auth.signOut()
 
+                console.log('successfully signed out', sign);
 
-                })
-                .catch((err) => {
-                    console.log('could not signout cleanly', err);
-                    setIsLoggingOut(false);
-                });
+                setUserInfo(null);
+                setIsLoggingIn(false);
+                setUserPreferences(null);
+                setIsLoggingOut(false);
+
+                // fireReset();
+                setIsAuthenticated(false);
+                // await router.push('/login');
+            } catch (err) {
+                console.log('could not signout cleanly', err);
+                setIsLoggingOut(false);
+            }
+            // await router.push('/auth/logout');
+            // await router.push('/logout')
+            // window.location.reload();
+            // window.location.href = "https://fbu.ssb.no/auth/logout"
+
         } else {
             console.log('not authenticated, skipping...', auth, isAuthenticated);
         }
