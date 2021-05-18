@@ -143,7 +143,7 @@ export const ConsumptionForm: React.FC = ({}) => {
 				{`current question: ${currentQuestion.id}`}
 				<ul>
 					{getAnsweredValues(questions).map((val) => (
-						<li>{val}</li>
+						<li key={`${val}-id`}>{val}</li>
 					))}
 				</ul>
 			</div>

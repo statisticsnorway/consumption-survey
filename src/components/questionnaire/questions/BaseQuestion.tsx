@@ -144,43 +144,43 @@ export function BaseQuestion(
                 }
                 {!isMultipleQuestionsInOne && currentQuestion.inputType === 'number' &&
                 <div className={"flex-container flex-row-center-vertical"}>
-                        <InputNumberFormat value={currentChosenValue as string}
-                                           label={""}
-                                           autoFocus={true}
-                                           onChange={(event :ChangeEvent<HTMLInputElement>) => {
+                    <InputNumberFormat value={currentChosenValue as string}
+                                       label={""}
+                                       autoFocus={true}
+                                       onChange={(event :ChangeEvent<HTMLInputElement>) => {
+                                           updateQuestionAnswerToStoreText(
+                                               event.target.value,
+                                               currentQuestion,
+                                               dispatch,
+                                               (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
+                                           )
+                                       }
+                                       } id={`answer-input-select-${questionId}-id`}/>
+                    <div className={"fsize-18 padding-lt-10px"}>
+                        {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
+                    </div>
+                </div>
+                }
+                {!isMultipleQuestionsInOne && (currentQuestion.inputType === 'text') &&
+                <div className={"flex-container flex-row-center-vertical"}>
+                    <InputAlt
+                        id={`answer-input-${questionId}-id`}
+                        label={""}
+                        autoFocus={true}
+                        value={currentChosenValue}
+                        type={currentQuestion.inputType}
+                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
                             updateQuestionAnswerToStoreText(
                                 event.target.value,
                                 currentQuestion,
                                 dispatch,
                                 (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
                             )
-                        }
-                        } id={`answer-input-select-${questionId}-id`}/>
-                        <div className={"fsize-18 padding-lt-10px"}>
-                            {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
-                        </div>
-                    </div>
-                }
-                {!isMultipleQuestionsInOne && (currentQuestion.inputType === 'text') &&
-                <div className={"flex-container flex-row-center-vertical"}>
-                    <InputAlt
-                    id={`answer-input-${questionId}-id`}
-                    label={""}
-                    autoFocus={true}
-                    value={currentChosenValue}
-                    type={currentQuestion.inputType}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                        updateQuestionAnswerToStoreText(
-                            event.target.value,
-                            currentQuestion,
-                            dispatch,
-                            (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
-                        )
-                    }}
-                />
+                        }}
+                    />
 
                     <div className={"fsize-18 padding-lt-10px"}>
-                {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
+                        {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
                     </div>
                 </div>
                 }
@@ -195,11 +195,11 @@ export function BaseQuestion(
                     items={availableAnswerOptions}
                     selectedValues={(
                         () => {
-                        const checkboxArray = ((currentQuestion.answerValue.answers) as AnswerValueType[]).map(a => {
-                            return a.chosen ? a.value : ""
-                        })
-                        return [...checkboxArray]
-                    })()
+                            const checkboxArray = ((currentQuestion.answerValue.answers) as AnswerValueType[]).map(a => {
+                                return a.chosen ? a.value : ""
+                            })
+                            return [...checkboxArray]
+                        })()
                     }
                 />
                 }
@@ -209,36 +209,36 @@ export function BaseQuestion(
 
                     <div className={"flex-container flex-row-center-vertical"}>
                         <InputAlt
-                        id={`answer-input-checkbox-${questionId}-id`}
-                        label={""}
-                        autoFocus={true}
-                        value={(currentQuestion.answerValue.answers as AnswerValueType[])[0].value}
-                        onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            updateQuestionAnswerToStoreText(
-                                event.target.value,
-                                currentQuestion,
-                                dispatch,
-                                (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
-                            )
-                        }}
-                    />
+                            id={`answer-input-checkbox-${questionId}-id`}
+                            label={""}
+                            autoFocus={true}
+                            value={(currentQuestion.answerValue.answers as AnswerValueType[])[0].value}
+                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                updateQuestionAnswerToStoreText(
+                                    event.target.value,
+                                    currentQuestion,
+                                    dispatch,
+                                    (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
+                                )
+                            }}
+                        />
                         <div className={"fsize-18 padding-lt-10px"}>
                             {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
                         </div>
                     </div>
                     <div className={"flex-container-column padding-tp-bm-20px"}>
-                    <CheckboxGroupAlt
-                        id={`answer-text-checkbox-${questionId}-id`}
-                        orientation="column"
-                        onChange={(eventValue: string) => {
-                            updateCheckboxTextQuestionAnswerToStore(eventValue, currentQuestion, dispatch)
-                        }}
-                        items={availableAnswerOptionsWithAnswerIds.filter(a => (a.id as string).includes("_2"))}
-                        selectedValues={((currentQuestion.answerValue.answers) as AnswerValueType[])
-                            .filter(a => (a.id as string).includes("_2"))
-                            .map(a => a.chosen ? a.value : "")
-                        }
-                    />
+                        <CheckboxGroupAlt
+                            id={`answer-text-checkbox-${questionId}-id`}
+                            orientation="column"
+                            onChange={(eventValue: string) => {
+                                updateCheckboxTextQuestionAnswerToStore(eventValue, currentQuestion, dispatch)
+                            }}
+                            items={availableAnswerOptionsWithAnswerIds.filter(a => (a.id as string).includes("_2"))}
+                            selectedValues={((currentQuestion.answerValue.answers) as AnswerValueType[])
+                                .filter(a => (a.id as string).includes("_2"))
+                                .map(a => a.chosen ? a.value : "")
+                            }
+                        />
                     </div>
                 </div>
                 }
@@ -247,19 +247,19 @@ export function BaseQuestion(
                 <div>
 
                     <div className={"flex-container flex-row-center-vertical"}>
-                    <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[0].value as string}
-                                       label={""}
-                                       autoFocus={true}
-                                       onChange={(event :ChangeEvent<HTMLInputElement>) => {
-                        updateQuestionAnswerToStoreText(
-                            event.target.value,
-                            currentQuestion,
-                            dispatch,
-                            (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
-                        )
-                    }
-                    }
-                                       id={`answer-input-select-${questionId}-id`}/>
+                        <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[0].value as string}
+                                           label={""}
+                                           autoFocus={true}
+                                           onChange={(event :ChangeEvent<HTMLInputElement>) => {
+                                               updateQuestionAnswerToStoreText(
+                                                   event.target.value,
+                                                   currentQuestion,
+                                                   dispatch,
+                                                   (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
+                                               )
+                                           }
+                                           }
+                                           id={`answer-input-select-${questionId}-id`}/>
 
                         <div className={"fsize-18 padding-lt-10px"}>
                             {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
@@ -308,30 +308,30 @@ export function BaseQuestion(
                     </div>
 
                     <div className={"flex-container flex-row-center-vertical"}>
-                    <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[1].value as string}
-                                       label={""}
-                                       autoFocus={true}
-                                       onChange={(event :ChangeEvent<HTMLInputElement>) => {
-                                           if((currentQuestion.answerValue.answers as AnswerValueType[])[2].chosen) {
+                        <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[1].value as string}
+                                           label={""}
+                                           autoFocus={true}
+                                           onChange={(event :ChangeEvent<HTMLInputElement>) => {
+                                               if((currentQuestion.answerValue.answers as AnswerValueType[])[2].chosen) {
+                                                   updateQuestionAnswerToStoreText(
+                                                       event.target.value,
+                                                       currentQuestion,
+                                                       dispatch,
+                                                       (currentQuestion.answerValue.answers as AnswerValueType[])[1].id
+                                                   )
+                                                   return
+                                               }
+                                               if(event.target.value) (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = true
+                                               else (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = false
                                                updateQuestionAnswerToStoreText(
                                                    event.target.value,
                                                    currentQuestion,
                                                    dispatch,
                                                    (currentQuestion.answerValue.answers as AnswerValueType[])[1].id
                                                )
-                                               return
                                            }
-                                           if(event.target.value) (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = true
-                                           else (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = false
-                                           updateQuestionAnswerToStoreText(
-                                               event.target.value,
-                                               currentQuestion,
-                                               dispatch,
-                                               (currentQuestion.answerValue.answers as AnswerValueType[])[1].id
-                                           )
-                                       }
-                                       }
-                                       id={`answer-input-select-${questionId}-id`}/>
+                                           }
+                                           id={`answer-input-select-${questionId}-id`}/>
                         <div className={"fsize-18 padding-lt-10px"}>
                             {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
                         </div>
@@ -360,7 +360,7 @@ export function BaseQuestion(
                         {
                             availableAnswerOptionsWithAnswerIds.map((a, index) => {
                                 return (
-                                    <div className={"padding-tp-bm-20px"}>
+                                    <div className={"padding-tp-bm-20px"} key={`${a.id}-multifield-radio`}>
                                         <div className={"flex-container flex-row-center-vertical"}>
                                             <InputAlt
                                                 type={"text"}
@@ -388,20 +388,20 @@ export function BaseQuestion(
                                 {
                                     (
                                         <div className={"flex-container flex-row-center-vertical"}>
-                                        <InputAlt
-                                            label={"Sum"}
-                                            id={`answer-input-${questionId}-sum-id`}
-                                            disabled={true}
-                                            value={String(
-                                                availableAnswerOptionsWithAnswerIds.map(a => a.value ? parseInt(a.value) : 0)
-                                                    .reduce((previousValue, currentValue) => {
-                                                        const prevVal = previousValue ? previousValue : 0;
-                                                        const currVal = currentValue ? currentValue : 0;
-                                                        return prevVal + currVal
-                                                    })
-                                            )
-                                            }
-                                        />
+                                            <InputAlt
+                                                label={"Sum"}
+                                                id={`answer-input-${questionId}-sum-id`}
+                                                disabled={true}
+                                                value={String(
+                                                    availableAnswerOptionsWithAnswerIds.map(a => a.value ? parseInt(a.value) : 0)
+                                                        .reduce((previousValue, currentValue) => {
+                                                            const prevVal = previousValue ? previousValue : 0;
+                                                            const currVal = currentValue ? currentValue : 0;
+                                                            return prevVal + currVal
+                                                        })
+                                                )
+                                                }
+                                            />
                                             <div className={"fsize-18 padding-lt-10px"}>
                                                 {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
                                             </div>
@@ -420,23 +420,23 @@ export function BaseQuestion(
                         {
                             availableAnswerOptionsWithAnswerIds.map((a, index) => {
                                 return (
-                                    <div className={"padding-tp-bm-20px"}>
+                                    <div className={"padding-tp-bm-20px"} key={`${a.id}-multifield-number-radio`}>
 
                                         <div className={"flex-container flex-row-center-vertical"}>
-                                        <InputNumberFormat
-                                            value={a.value}
-                                            label={a.label}
-                                            autoFocus={index === 0}
-                                            onChange={(event :ChangeEvent<HTMLInputElement>) => {
-                                                               updateQuestionAnswerToStoreText(
-                                                                   event.target.value,
-                                                                   currentQuestion,
-                                                                   dispatch,
-                                                                   a.id)
-                                            }
-                                            }
-                                                           id={`answer-input-select-${questionId}-id`}
-                                        />
+                                            <InputNumberFormat
+                                                value={a.value}
+                                                label={a.label}
+                                                autoFocus={index === 0}
+                                                onChange={(event :ChangeEvent<HTMLInputElement>) => {
+                                                    updateQuestionAnswerToStoreText(
+                                                        event.target.value,
+                                                        currentQuestion,
+                                                        dispatch,
+                                                        a.id)
+                                                }
+                                                }
+                                                id={`answer-input-select-${questionId}-id`}
+                                            />
 
                                             <div className={"fsize-18 padding-lt-10px"}>
                                                 <div className={"flex-container-column"}>
@@ -455,51 +455,51 @@ export function BaseQuestion(
 
                 {!isMultipleQuestionsInOne && (currentQuestion.inputType === 'multifield-number-siffer-dependent') &&
                 (
-                            <div className={`padding-tp-bm-20px`}>
-                                {
-                                    availableAnswerOptionsWithAnswerIds
-                                        .filter(a => {
-                                            if(currentQuestion?.dependentOnQuestionCriteria) {
-                                                const criteriaForQuestion = currentQuestion?.dependentOnQuestionCriteria[0] as DependentOnQuestionCriteria[]
-                                                const criteriaQuestion = questions.find(q => criteriaForQuestion[0].questionId === q.id) as QuestionFormType
-                                                const previousQuestionList = [criteriaQuestion] as QuestionFormType[]
-                                                const criteria = extractCriteria(previousQuestionList, criteriaForQuestion)
+                    <div className={`padding-tp-bm-20px`}>
+                        {
+                            availableAnswerOptionsWithAnswerIds
+                                .filter(a => {
+                                    if(currentQuestion?.dependentOnQuestionCriteria) {
+                                        const criteriaForQuestion = currentQuestion?.dependentOnQuestionCriteria[0] as DependentOnQuestionCriteria[]
+                                        const criteriaQuestion = questions.find(q => criteriaForQuestion[0].questionId === q.id) as QuestionFormType
+                                        const previousQuestionList = [criteriaQuestion] as QuestionFormType[]
+                                        const criteria = extractCriteria(previousQuestionList, criteriaForQuestion)
 
-                                                const answerV = (criteriaQuestion.answerValue.answers as AnswerValueType[]).find(a => a.id === criteria[0]?.dependentAnswer.id) as AnswerValueType
-                                                const answerId = a.id as string;
-                                                const idNumber = answerId.split("_")[1];
-                                                const intVal = parseInt(answerV.value as string);
-                                                return parseInt(idNumber) <= intVal;
-                                            }
+                                        const answerV = (criteriaQuestion.answerValue.answers as AnswerValueType[]).find(a => a.id === criteria[0]?.dependentAnswer.id) as AnswerValueType
+                                        const answerId = a.id as string;
+                                        const idNumber = answerId.split("_")[1];
+                                        const intVal = parseInt(answerV.value as string);
+                                        return parseInt(idNumber) <= intVal;
+                                    }
 
-                                            return false;
-                                        })
-                                        .map((a, index) => {
-                                            return (
-                                                <div className={"padding-tp-bm-20px"}>
-                                                    <div className={"flex-container flex-row-center-vertical"}>
-                                                        <InputNumberFormat
-                                                            label={a.label}
-                                                            autoFocus={index === 0}
-                                                            id={`answer-input-${questionId}-${a.id}-id`}
-                                                            value={a.value}
-                                                            onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                                                                updateQuestionAnswerToStoreText(event.target.value, currentQuestion, dispatch, a.id)
-                                                            }}
-                                                        />
+                                    return false;
+                                })
+                                .map((a, index) => {
+                                    return (
+                                        <div className={"padding-tp-bm-20px"} key={`${a.id}-multifield-number-siffer-dep`}>
+                                            <div className={"flex-container flex-row-center-vertical"}>
+                                                <InputNumberFormat
+                                                    label={a.label}
+                                                    autoFocus={index === 0}
+                                                    id={`answer-input-${questionId}-${a.id}-id`}
+                                                    value={a.value}
+                                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                                        updateQuestionAnswerToStoreText(event.target.value, currentQuestion, dispatch, a.id)
+                                                    }}
+                                                />
 
-                                                        <div className={"fsize-18 padding-lt-10px"}>
-                                                            <div className={"flex-container-column"}>
-                                                                <div className={"height-16"}></div>
-                                                                {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
-                                                            </div>
-                                                        </div>
+                                                <div className={"fsize-18 padding-lt-10px"}>
+                                                    <div className={"flex-container-column"}>
+                                                        <div className={"height-16"}></div>
+                                                        {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
                                                     </div>
                                                 </div>
-                                            )
-                                        })
-                                }
-                            </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                        }
+                    </div>
                 )}
 
                 {!isMultipleQuestionsInOne && (currentQuestion.inputType === 'multifield-text-dependent' || currentQuestion.inputType === 'multifield-number-dependent') && currentQuestion.dependentOnQuestionCriteria &&
@@ -507,9 +507,9 @@ export function BaseQuestion(
                     <div className={"flex-container-column padding-tp-bm-20px"}>
                         {
                             (extractCriteria(questions, currentQuestion.dependentOnQuestionCriteria[0] as DependentOnQuestionCriteria[])[0]
-                                .question
-                                .answerValue
-                                .answers as AnswerValueType[]
+                                    .question
+                                    .answerValue
+                                    .answers as AnswerValueType[]
                             )
                                 .filter(a => a.chosen && currentQuestionContainsAlternative(a.descriptionValue as string, currentQuestion.answerValue.answers as AnswerValueType[]))
                                 .map((a, index) => {
@@ -551,7 +551,7 @@ export function BaseQuestion(
                                             }
                                         </div>
                                     )
-                            })
+                                })
                         }
                     </div>
                 )}
@@ -577,7 +577,7 @@ export function BaseQuestion(
                                     const inputFields = answers.map((a, innerIndex) => {
                                         const focus = innerIndex === 0 && outerIndex === 0;
                                         return (
-                                            <div className={"padding-tp-bm-20px"}>
+                                            <div className={"padding-tp-bm-20px"} key={`${a.id}-multifield-number-siffer-dep-with-sum`}>
                                                 {currentQuestion.inputType === 'multifield-text-dependent-with-sum' && <InputAlt
                                                     type={"text"}
                                                     label={a.descriptionValue as string}
@@ -613,7 +613,7 @@ export function BaseQuestion(
                                     })
 
                                     const sum =  (
-                                        <div className={`padding-tp-bm-20px`}>
+                                        <div className={`padding-tp-bm-20px`} key={`${a.id}-multifield-number-siffer-dep-sum-field`}>
                                             {currentQuestion.inputType === 'multifield-text-dependent-with-sum' ?
                                                 (
 
@@ -637,24 +637,23 @@ export function BaseQuestion(
                                                         </div>
                                                     </div>
                                                 )
-                                            :
+                                                :
                                                 (
-
                                                     <div className={"flex-container flex-row-center-vertical"}>
-                                                    <InputNumberFormat
-                                                        label={"Sum"}
-                                                        id={`answer-input-${a.id}-sum-id`}
-                                                        disabled={true}
-                                                        value={String(
-                                                            answers.map(a => a.value ? parseInt(a.value) : 0)
-                                                                .reduce((previousValue, currentValue) => {
-                                                                    const prevVal = previousValue ? previousValue : 0;
-                                                                    const currVal = currentValue ? currentValue : 0;
-                                                                    return prevVal + currVal
-                                                                })
-                                                        )
-                                                        }
-                                                    />
+                                                        <InputNumberFormat
+                                                            label={"Sum"}
+                                                            id={`answer-input-${a.id}-sum-id`}
+                                                            disabled={true}
+                                                            value={String(
+                                                                answers.map(a => a.value ? parseInt(a.value) : 0)
+                                                                    .reduce((previousValue, currentValue) => {
+                                                                        const prevVal = previousValue ? previousValue : 0;
+                                                                        const currVal = currentValue ? currentValue : 0;
+                                                                        return prevVal + currVal
+                                                                    })
+                                                            )
+                                                            }
+                                                        />
                                                         <div className={"fsize-18 padding-lt-10px"}>
                                                             {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
                                                         </div>
@@ -681,25 +680,25 @@ export function BaseQuestion(
                     <div className={"flex-container-column padding-tp-bm-20px"}>
                         <div className={`padding-tp-bm-20px`}>
                             <Dropdown
-                        header={`${(currentQuestion.answerValue.answers[0] as AnswerValueType).descriptionValue}`}
-                        selectedItem={{
-                                title: (currentQuestion.answerValue.answers[0] as AnswerValueType).value,
-                                id: `${(currentQuestion.answerValue.answers[0] as AnswerValueType).value}-id-${questionId}`,
-                            }}
-                        items={[
-                            {"id": `mnd-id-${questionId}`, "title": "Måned"},
-                            {"id": `kvrt-id-${questionId}`, "title": "Kvartal"},
-                            {"id": `aar-id-${questionId}`, "title": "År"},
-                        ]}
-                        onSelect={(item: {id: string, title: string}) => {
-                            updateQuestionAnswerToStoreText(
-                                item.title,
-                                currentQuestion,
-                                dispatch,
-                                (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
-                            )
-                        }}
-                    />
+                                header={`${(currentQuestion.answerValue.answers[0] as AnswerValueType).descriptionValue}`}
+                                selectedItem={{
+                                    title: (currentQuestion.answerValue.answers[0] as AnswerValueType).value,
+                                    id: `${(currentQuestion.answerValue.answers[0] as AnswerValueType).value}-id-${questionId}`,
+                                }}
+                                items={[
+                                    {"id": `mnd-id-${questionId}`, "title": "Måned"},
+                                    {"id": `kvrt-id-${questionId}`, "title": "Kvartal"},
+                                    {"id": `aar-id-${questionId}`, "title": "År"},
+                                ]}
+                                onSelect={(item: {id: string, title: string}) => {
+                                    updateQuestionAnswerToStoreText(
+                                        item.title,
+                                        currentQuestion,
+                                        dispatch,
+                                        (currentQuestion.answerValue.answers as AnswerValueType[])[0].id
+                                    )
+                                }}
+                            />
                         </div>
                         <div className={`padding-tp-bm-20px`}>
                             {currentQuestion.inputType === 'text-optional-timeperiod' && <InputAlt
@@ -721,21 +720,21 @@ export function BaseQuestion(
 
                                 <div className={"flex-container flex-row-center-vertical"}>
                                     <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[1].value as string}
-                                                   label={""}
+                                                       label={""}
                                                        autoFocus={true}
-                                                   onChange={(event :ChangeEvent<HTMLInputElement>) => {
-                                                       if(event.target.value) (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = true
-                                                       else (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = false
-                                                       updateQuestionAnswerToStoreText(
-                                                           event.target.value,
-                                                           currentQuestion,
-                                                           dispatch,
-                                                           (currentQuestion.answerValue.answers as AnswerValueType[])[1].id
-                                                       )
-                                                   }
+                                                       onChange={(event :ChangeEvent<HTMLInputElement>) => {
+                                                           if(event.target.value) (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = true
+                                                           else (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = false
+                                                           updateQuestionAnswerToStoreText(
+                                                               event.target.value,
+                                                               currentQuestion,
+                                                               dispatch,
+                                                               (currentQuestion.answerValue.answers as AnswerValueType[])[1].id
+                                                           )
+                                                       }
 
-                                                   }
-                                                   id={`answer-input-select-${questionId}-id`}
+                                                       }
+                                                       id={`answer-input-select-${questionId}-id`}
                                     />
                                     <div className={"fsize-18 padding-lt-10px"}>
                                         {currentQuestion.inputPostfix ? getInputPostfix(currentQuestion.inputPostfix) : "" }
@@ -745,7 +744,7 @@ export function BaseQuestion(
                             }
                         </div>
                     </div>
-                    )
+                )
                 }
 
                 {isMultipleQuestionsInOne && (

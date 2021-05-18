@@ -38,6 +38,7 @@ export const QuestionOverview = (
 
             return (
                 <div id={`section-${section}`}
+                     key={`section-${section}`}
                     className={"overview-line"}
                     onClick={() => {
                     if(isDoneWithSection || index === 0) {
@@ -62,11 +63,18 @@ export const QuestionOverview = (
                 </h1>
             </div>
             <div className="width-100">
-                <p>
-                    Spørreskjema inneholder spørsmål om enkeltstående utgifter som faller utenom føringsperioden,
-                    eller utgifter som kan være vanskelig å huske at man har.
-                    I tillegg er det noen spørsmål om boliglån og renter som kanskje krever at du har denne informasjonen tilgjengelig.
-                </p>
+                <div className="width-100">
+                    <p>
+                        Du er allerede godt i gang. Forsett slik!
+                    </p>
+                    <p>
+                        Listen under viser til en hver tid hvor langt du har kommet i spørreskjema.
+                        Når hele spørreskjema er besvart må du bekrefte svarene dine ved å sende inn med knappen nederst på denne siden.
+                    </p>
+                    <p>
+                        Fortsett spørreskjema ved å trykke på en kategori
+                    </p>
+                </div>
             </div>
             {isSchemaFinished && (
                 <div>

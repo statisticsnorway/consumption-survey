@@ -246,6 +246,10 @@
   background: white;
 }
 
+.bg-darkblue {
+  background: #F0F8F9;
+}
+
 .flex-row-center-vertical {
   align-items: center;
 }
