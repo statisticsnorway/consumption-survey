@@ -15,6 +15,7 @@ import Loader from '../components/common/Loader';
 const appConfig = getConfig();
 const getCfg = () => {
     const {envVars} = appConfig.publicRuntimeConfig;
+    console.log('envVars', envVars);
     if (envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON) {
         // config available as json object
         const cfg = JSON.parse(envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
