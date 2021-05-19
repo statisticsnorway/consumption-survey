@@ -5,7 +5,7 @@ export const OPPGRADF2: QuestionFormType = {
     id: 'oppgradf2',
     theme: Theme.renovationHolidayHome,
     order: 59,
-    questionText: 'Hvor store utgifter hadde du/dere til disse.....',
+    questionText: 'Hvor store utgifter hadde du/dere til',
     hasAnswered: false,
     answerValue: {
         answers: [

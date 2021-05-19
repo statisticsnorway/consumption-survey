@@ -3,13 +3,11 @@
 import {QuestionFormType} from "../QuestionFormType";
 import {Theme} from "../themes";
 
-
-
 export const FRITIDSUTL3: QuestionFormType = {
     id: 'fritidsutl3',
     theme: Theme.holidayHomeAbroad,
     order: 72,
-    questionText: 'Hvor store utgifter har du/dere til..',
+    questionText: 'Hvor store utgifter hadde du/dere til',
     hasAnswered: false,
     answerValue: {
         answers: [

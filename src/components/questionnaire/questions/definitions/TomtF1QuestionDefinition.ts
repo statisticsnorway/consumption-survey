@@ -18,25 +18,25 @@ export const TOMTF1: QuestionFormType = {
             {
                 id: 'tomtf1_2',
                 value: "2",
-                descriptionValue: 'Oppføre eller vedlikeholde uteplass?',
+                descriptionValue: 'Oppføring eller vedlikehold av uteplass?',
                 chosen: false
             },
             {
                 id: 'tomtf1_3',
                 value: "3",
-                descriptionValue: 'Oppføre eller vedlikeholde støttemur eller gjerder?',
+                descriptionValue: 'Oppføring eller vedlikehold av støttemur eller gjerder?',
                 chosen: false
             },
             {
                 id: 'tomtf1_4',
                 value: "4",
-                descriptionValue: 'Oppføre eller vedlikeholde adkomstvei?',
+                descriptionValue: 'Oppføring eller vedlikehold av adkomstvei?',
                 chosen: false
             },
             {
                 id: 'tomtf1_5',
                 value: "5",
-                descriptionValue: 'Oppføre eller vedlikeholde garasje eller uthus?',
+                descriptionValue: 'Oppføring eller vedlikehold av garasje eller uthus?',
                 chosen: false
             },
             {

@@ -23,6 +23,14 @@ export const BIL2: QuestionFormType = {
             }
         ]
     },
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "bil1",
+                questionValue: "1",
+            },
+        ]
+    ],
     inputType: "multifield-number",
     inputPostfix: "amount"
 } as QuestionFormType

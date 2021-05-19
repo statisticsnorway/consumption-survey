@@ -5,7 +5,7 @@ export const SEPREGNFRI: QuestionFormType = {
     id: 'sepregnfri',
     order: 68,
     theme: Theme.powerHolidayHome,
-    questionText: 'Er det enklest for deg å oppgi utgifter til elektrisitet og nettleie samlet eller ønsker du å oppgi utgiftene samlet? ',
+    questionText: 'Er det enklest for deg å oppgi utgifter til elektrisitet og nettleie samlet eller ønsker du å oppgi utgiftene separat?',
     hasAnswered: false,
     answerValue: {
         answers: [

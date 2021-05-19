@@ -5,7 +5,7 @@ export const FYRUTG2: QuestionFormType = {
     id: 'fyrutg2',
     theme: Theme.powerDwelling,
     order: 43,
-    questionText: 'Hvor store utgifter har du/dere til..',
+    questionText: 'Hvor store utgifter har du/dere hatt i løpet av de siste 12 mnd til',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -69,9 +69,57 @@ export const FYRUTG2: QuestionFormType = {
         [
             {
                 questionId: "fyrutg1",
-                questionValue: ""
+                questionValue: "1"
             }
-        ]
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "2"
+            }
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "3"
+            }
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "4"
+            }
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "5"
+            }
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "6"
+            }
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "7"
+            }
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "8"
+            }
+        ],
+        [
+            {
+                questionId: "fyrutg1",
+                questionValue: "9"
+            }
+        ],
     ],
     inputType: "multifield-number-dependent",
     inputPostfix: "cash"

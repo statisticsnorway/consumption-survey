@@ -110,6 +110,7 @@ import { FYRUTG15 } from "../../components/questionnaire/questions/definitions/F
 import { FYRUTGFRI15 } from "../../components/questionnaire/questions/definitions/FyrutgFri15QuestionDefinition"
 import { FRITIDSUTL15 } from "../../components/questionnaire/questions/definitions/FritidsUtl15QuestionDefinition"
 import { QuestionFormType } from "../../components/questionnaire/questions/QuestionFormType"
+import {VED315} from "../../components/questionnaire/questions/definitions/Ved315QuestionDefinition";
 
 export type HistoryBlock = {
 	fromQuestionId: string
@@ -243,6 +244,7 @@ export const defaultState: QuestionState = {
 		VED1,
 		VED2,
 		VED3,
+		VED315,
 
 		BIL1,
 		BIL2,
