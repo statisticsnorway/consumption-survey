@@ -19,6 +19,7 @@ const Logout = () => {
     };
 
     useEffect(() => {
+        //not sure if necessary
         const defState = defaultState
         store.dispatch({
             type: CHANGE_ALL,
