@@ -19,6 +19,7 @@ import { changeQuestionList } from "../store/actionCreators"
 import { CHANGE_ALL, CHANGE_QUESTION_LIST } from "../store/actionTypes"
 
 import getConfig from 'next/config';
+import {defaultState} from "../store/reducers/questionReducer";
 
 export enum CommunicationPreference {
     EMAIL = 'EMAIL',
@@ -128,6 +129,7 @@ const UserProvider = ({ children }) => {
 								const history = state.history
 								const currentFocus = state.currentFocus
 								const answers = getAnsweredValues(quesetionsState)
+                                console.log('trying to store to firebase')
 								firestore
 									.doc(`/users/${authInfo.userInfo.id}/questionnaire/data`)
 									.set(
@@ -146,6 +148,7 @@ const UserProvider = ({ children }) => {
 								.get()
 								.then((doc) => {
 									const data = doc.data()
+                                    console.log('DATA', data)
 									if (data && data.answers) {
 										const curState = store.getState()
 										const hydrated = hydrateQuestionnaire(
@@ -215,7 +218,49 @@ const UserProvider = ({ children }) => {
                                 });
                                 setIsLoggingIn(false);
                             });
-
+                        /*store.subscribe(() => {
+                            const state = store.getState()
+                            const quesetionsState = state.questions
+                            const history = state.history
+                            const currentFocus = state.currentFocus
+                            const answers = getAnsweredValues(quesetionsState)
+                            console.log('trying to store to firebase')
+                            firestore
+                                .doc(`/users/${user.uid}/questionnaire/data`)
+                                .set(
+                                    {
+                                        status: "STARTED",
+                                        answers,
+                                        history,
+                                        currentFocus,
+                                    },
+                                    { merge: true }
+                                )
+                        })
+                        firestore
+                            .collection(`/users/${user.uid}/questionnaire`)
+                            .doc("data")
+                            .get()
+                            .then((doc) => {
+                                const data = doc.data()
+                                console.log('DATA', data)
+                                if (data && data.answers) {
+                                    const curState = store.getState()
+                                    const hydrated = hydrateQuestionnaire(
+                                        data.answers,
+                                        curState.questions
+                                    )
+                                    store.dispatch({
+                                        type: CHANGE_ALL,
+                                        questions: hydrated,
+                                        allHistory: data.history,
+                                        focus: data.currentFocus,
+                                    })
+                                }
+                            })
+                            .catch((err) => {
+                                console.log("cannot update answers", err)
+                            })*/
                         firestore
                             .doc(`/users/${user.uid}/profile/preferences`)
                             .onSnapshot(snapshot => {
@@ -275,6 +320,7 @@ const UserProvider = ({ children }) => {
                 setIsLoggingIn(false);
                 setUserPreferences(null);
                 setIsLoggingOut(false);
+
 
                 // fireReset();
                 setIsAuthenticated(false);
