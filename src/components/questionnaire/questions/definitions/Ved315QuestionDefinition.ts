@@ -1,41 +1,41 @@
 import {QuestionFormType} from "../QuestionFormType";
 import {Theme} from "../themes";
 
-export const VED3: QuestionFormType = {
-    id: 'ved3',
+export const VED315: QuestionFormType = {
+    id: 'ved315',
     theme: Theme.firewood,
-    order: 79,
-    questionText: 'For å kunne beregne en verdi av veden du har fått eller hugget , vil vi gjerne vite omtrent hvor mye ved du har fått/hugget',
+    order: 79.1,
+    questionText: 'Spesifiser antall innenfor hver kategori',
     hasAnswered: false,
     answerValue: {
         answers: [
             {
                 id: 'ved3_1',
-                value: "1",
+                value: "",
                 descriptionValue: 'Små sekker opptil 40 liter',
                 chosen: false
             },
             {
                 id: 'ved3_2',
-                value: "2",
+                value: "",
                 descriptionValue: 'Små sekker opptil 60 liter',
                 chosen: false
             },
             {
                 id: 'ved3_3',
-                value: "3",
+                value: "",
                 descriptionValue: 'Store sekker opptil 1000 liter',
                 chosen: false
             },
             {
                 id: 'ved3_4',
-                value: "4",
+                value: "",
                 descriptionValue: 'Sekker, store ca 1500 liter',
                 chosen: false
             },
             {
                 id: 'ved3_5',
-                value: "5",
+                value: "",
                 descriptionValue: 'Kubikk',
                 chosen: false
             },
@@ -44,10 +44,36 @@ export const VED3: QuestionFormType = {
     dependentOnQuestionCriteria: [
         [
             {
-                questionId: "ved2",
+                questionId: "ved3",
+                questionValue: "1"
+            }
+        ],
+        [
+            {
+                questionId: "ved3",
                 questionValue: "2"
             }
-        ]
+        ],
+        [
+            {
+                questionId: "ved3",
+                questionValue: "3"
+            }
+        ],
+        [
+            {
+                questionId: "ved3",
+                questionValue: "4"
+            }
+        ],
+
+        [
+            {
+                questionId: "ved3",
+                questionValue: "5"
+            }
+        ],
     ],
-    inputType: "checkbox",
+    inputPostfix: "amount",
+    inputType: "multifield-number-dependent",
 } as QuestionFormType

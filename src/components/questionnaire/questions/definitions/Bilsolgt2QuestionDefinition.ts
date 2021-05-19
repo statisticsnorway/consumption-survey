@@ -5,7 +5,7 @@ export const BILSOLGT2: QuestionFormType = {
     id: 'bilsolgt2',
     order: 86.2,
     theme: Theme.carPurchase,
-    questionText: 'Hva ble bilen/bilene solgt for/verdsatt til ved innbyttet?',
+    questionText: 'Hva ble bilen/bilene solgt for/verdsatt til ved innbytte?',
     hasAnswered: false,
     answerValue: {
         answers: [
