@@ -68,7 +68,7 @@ const IDPSuccess = () => {
         }
     }, [isAuthenticated, userInfo]);
 
-    const traceInfo = false ? (
+    const traceInfo = true ? (
         <>
             <h3>IDPorten :: BFF </h3>
             <p>isAuthenticated: {isAuthenticated}</p>

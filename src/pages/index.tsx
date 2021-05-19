@@ -1,5 +1,4 @@
-import { useTranslation, withTranslation } from 'react-i18next';
-import Layout from '../components/layout/Layout';
+import { useTranslation } from 'react-i18next';
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
 
@@ -16,19 +15,15 @@ const Index = () => {
     ));
 
     return (
-        <Workspace showFooter={false}>
-            <PageTitle title={t('title')} />
+        <Workspace>
+            <PageTitle title={t('title')}/>
             {langComp}
             <hr/>
         </Workspace>
     );
 };
 
-export const getStaticProps = async () => ({
-    props: {
-        namespacesRequired: ['welcome'],
-    },
-});
+export const getInitialProps = async () => ({});
 
 export default Index;
 

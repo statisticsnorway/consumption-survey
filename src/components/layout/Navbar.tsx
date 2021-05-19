@@ -37,12 +37,12 @@ const Navbar = ({navbarItems, selection}: NavbarProps) => {
                 setCurrSelection(selection);
             }
         } else if (navbarItems && navbarItems.length > 0) {
+            console.log('router.path', router.pathname);
             const match = navbarItems.find(item => router.pathname.startsWith(`/${item.id}`));
+            console.log('match', match);
 
             if (match) {
                 setCurrSelection(match.id);
-            } else {
-                setCurrSelection(navbarItems[0].id);
             }
         }
     }, [selection, router.pathname]);

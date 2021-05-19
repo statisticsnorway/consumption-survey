@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import FireProvider from '../firebase/FireProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import UserProvider from '../firebase/UserProvider';
+import Loader from '../components/common/Loader';
 import {applyMiddleware, createStore, Store} from "redux";
 import reducer, {QuestionState} from "../store/reducers/questionReducer";
 import {DispatchType, QuestionAction} from "../store/actionCreators";
@@ -26,6 +27,7 @@ const store: Store<QuestionState, QuestionAction> & {
 const appConfig = getConfig();
 const getCfg = () => {
     const {envVars} = appConfig.publicRuntimeConfig;
+    console.log('envVars', envVars);
     if (envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON) {
         // config available as json object
         const cfg = JSON.parse(envVars.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
@@ -40,7 +42,7 @@ const getCfg = () => {
 
 const MyApp = ({Component, pageProps}) => {
     const {i18n} = useTranslation('welcome');
-    const [firebaseConfig, setFirebaseConfig] = useState<object>();
+    const [firebaseConfig, setFirebaseConfig] = useState<object>(null);
 
     useEffect(() => {
         setFirebaseConfig(getCfg());
@@ -48,7 +50,7 @@ const MyApp = ({Component, pageProps}) => {
 
 
     try {
-        return (
+        return firebaseConfig ? (
             <FireProvider config={firebaseConfig}>
                 <Provider store={store}>
                     <UserProvider>
@@ -60,7 +62,7 @@ const MyApp = ({Component, pageProps}) => {
                     </UserProvider>
                 </Provider>
             </FireProvider>
-        );
+        ) : <Loader />;
     } catch (err) {
         console.log('Error while rendering app', err);
         return <>{JSON.stringify(err)}</>;

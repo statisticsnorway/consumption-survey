@@ -1,16 +1,34 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { isWorkboxActive } from '../../utils/pwaUtils';
-import { VersionUpdateSnackbar } from '../common/dialog/Snackbar';
+import { isBrowser, isWorkboxActive } from '../utils/pwaUtils'
 
 const readyForReload = (state) =>
     ['installed', 'externalinstalled', 'waiting', 'externalwaiting']
         .includes(state);
 
-const SWHelper = ({isOnline}) => {
+const useServiceWorkerHelper = () => {
     const router = useRouter();
     const [registration, setRegistration] = useState(null);
-    const [showReload, setShowReload] = useState(false);
+    const [isOnline, setIsOnline] = useState<boolean>(false);
+    const [showUpdateSnackbar, setShowUpdateSnackBar] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (isBrowser() && ('ononline' in window) && ('onoffline' in window)) {
+            setIsOnline(window.navigator.onLine);
+
+            if (!window.ononline) {
+                window.addEventListener('online', () => {
+                    setIsOnline(true);
+                });
+            }
+
+            if (!window.onoffline) {
+                window.addEventListener('offline', () => {
+                    setIsOnline(false);
+                });
+            }
+        }
+    }, []);
 
     useEffect(() => {
         if (isWorkboxActive() && isOnline) {
@@ -32,7 +50,7 @@ const SWHelper = ({isOnline}) => {
                 const newSW = registration.installing;
                 newSW.addEventListener('statechange', (stateChgEvt) => {
                     if (stateChgEvt.target && readyForReload(stateChgEvt.target.state)) {
-                        setShowReload(true);
+                        setShowUpdateSnackBar(true);
                     }
                 })
             });
@@ -41,6 +59,7 @@ const SWHelper = ({isOnline}) => {
 
     useEffect(() => {
         if (isWorkboxActive()) {
+            // @ts-ignore
             const wb = window.workbox;
             wb.register()
                 .then((reg) => {
@@ -50,7 +69,7 @@ const SWHelper = ({isOnline}) => {
         }
     }, []);
 
-    return <VersionUpdateSnackbar open={showReload}/>;
+    return {showUpdateSnackbar};
 };
 
-export default SWHelper;
+export default useServiceWorkerHelper;

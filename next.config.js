@@ -40,7 +40,6 @@ const extractEnvVars = (vars, prefix, removePrefix = false) => {
             [(prefix && removePrefix) ? name.replace(prefix, '') : name]: vars[name]
         }), {});
 
-    console.log(filtered);
     return filtered;
 };
 
