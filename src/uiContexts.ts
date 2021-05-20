@@ -5,3 +5,10 @@ export type LayoutContextType = {
 };
 
 export const LayoutContext = createContext({} as LayoutContextType);
+
+export type PouchDBContextType = {
+    getDB: (name: string) => PouchDB.Database;
+    ready: boolean;
+};
+
+export const PouchDBContext = createContext({} as PouchDBContextType);

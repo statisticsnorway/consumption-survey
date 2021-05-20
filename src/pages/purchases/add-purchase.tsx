@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Workspace from '../../components/layout/workspace/Workspace';
-import AddPurchase from '../../components/purchases/AddPurchase';
+import AddPurchase from '../../components/purchases/addPurchase/AddPurchase';
 import { useTranslation } from 'react-i18next';
 import PageTitle from '../../components/common/PageTitle';
 import { PATHS } from '../../uiConfig';

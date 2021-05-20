@@ -7,6 +7,7 @@ import { ReactNode, ReactNodeArray } from 'react';
 import { ArrowLeft } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
+import FbuIcon from '../../common/icons/FbuIcon';
 
 export type HeaderProps = {
     showAppBanner?: boolean;
@@ -53,9 +54,9 @@ export const OpHeader = ({showBack = true, title, action = null}: OpHeaderProps)
     return (
         <div className={styles.header}>
             <div className={styles.back} onClick={() => { router.back(); }}>
-                <ArrowLeft className={styles.backIcon}/>{t('links.back')}
-                <div className={styles.pageTitle}>{title}</div>
+                <FbuIcon name={'ArrowLeft'} size={20} className={styles.icon}/>{t('links.back')}
             </div>
+            <div className={styles.pageTitle}>{title}</div>
             {action && <span className={styles.actionLink} onClick={action.onClick}>{action.title}</span>}
         </div>
     );
