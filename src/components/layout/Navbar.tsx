@@ -37,6 +37,7 @@ const Navbar = ({navbarItems, selection}: NavbarProps) => {
                 setCurrSelection(selection);
             }
         } else if (navbarItems && navbarItems.length > 0) {
+            // @ToDo: use item.path instead of id for a more precise match
             const match = navbarItems.find(item => router.pathname.startsWith(`/${item.id}`));
 
             if (match) {

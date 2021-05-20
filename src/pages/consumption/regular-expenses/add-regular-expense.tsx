@@ -1,5 +1,5 @@
-import Workspace from '../../components/layout/workspace/Workspace';
-import PageTitle from '../../components/common/PageTitle';
+import Workspace from '../../../components/layout/workspace/Workspace';
+import PageTitle from '../../../components/common/PageTitle';
 import { useTranslation } from 'react-i18next';
 
 const AddRegularExpensePage = () => {

@@ -39,28 +39,28 @@ const Home = () => {
             <PageTitle title={greeting} subText={subText}/>
             <HomeCTAButtonGroup>
                 <HomeCTA
-                    text="Skann kvittering"
+                    text={t('registerNew.fromReceipt')}
                     iconComponent={<ScanReceiptIcon/>}
                     onClick={() => {
                         router.push(addPurchasePath(ADD_PURCHASE_MODES.SCAN));
                     }}
                 />
                 <HomeCTA
-                    text="Registrer kjøp manuelt"
+                    text={t('registerNew.manually')}
                     iconComponent={<AddPurchaseManualIcon/>}
                     onClick={() => {
                         router.push(addPurchasePath(ADD_PURCHASE_MODES.MANUAL));
                     }}
                 />
                 <HomeCTA
-                    text="Legg inn regning"
+                    text={t('registerNew.regularExpense')}
                     iconComponent={<AddRegularExpenseIcon/>}
                     onClick={() => {
                         router.push(PATHS.ADD_REGULAR_EXPENSE);
                     }}
                 />
                 <HomeCTA
-                    text="Svar på spørreskjema"
+                    text={t('questionnaire.title')}
                     styleClass={styles.questionnaireCTA}
                     onClick={() => {
                         router.push(PATHS.QUESTIONNAIRE);

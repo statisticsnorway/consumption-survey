@@ -4,6 +4,7 @@ import { UserContext } from '../../contexts';
 import Loader from '../common/Loader';
 // import PouchDBProvider from '../../pouchdb/PouchDBProvider';
 import getConfig from 'next/config';
+import PouchDBProvider from '../../pouchdb/PouchDBProvider';
 
 const appConfig = getConfig();
 
@@ -50,14 +51,9 @@ const ProtectedRoute = (props) => {
 
     if (isAuthenticated && !isLoggingOut) {
         return (
-            /*
             <PouchDBProvider>
                 {props.children}
             </PouchDBProvider>
-             */
-            <>
-                {props.children}
-            </>
         );
     } else if (EXCLUDE_AUTH.includes(router.pathname)) {
         return props.children;

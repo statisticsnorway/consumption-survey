@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
-import Workspace from '../../components/layout/workspace/Workspace';
-import AddPurchase from '../../components/purchases/addPurchase/AddPurchase';
+import Workspace from '../../../components/layout/workspace/Workspace';
+import AddPurchase from '../../../components/purchases/addPurchase/AddPurchase';
 import { useTranslation } from 'react-i18next';
-import PageTitle from '../../components/common/PageTitle';
-import { PATHS } from '../../uiConfig';
-import { OpHeader } from '../../components/layout/header/Header';
-import OpLayout from '../../components/layout/OpLayout';
+import PageTitle from '../../../components/common/PageTitle';
+import { PATHS } from '../../../uiConfig';
+import { OpHeader } from '../../../components/layout/header/Header';
+import OpLayout from '../../../components/layout/OpLayout';
 
 const AddPurchasePage = () => {
     const router = useRouter();

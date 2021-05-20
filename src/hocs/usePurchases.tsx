@@ -38,6 +38,7 @@ const usePurchases = () => {
                             const {purchaseDate} = p.data();
                             const purchase = p.data() as PurchaseType;
 
+                            /*
                             const withImgs = [];
                             if (purchase.receipts) {
                                 purchase.receipts.forEach(r => {
@@ -68,6 +69,8 @@ const usePurchases = () => {
                                 console.log('~~~~> ', withImgs);
                             }
 
+                             */
+
                             return {
                                 ...purchase,
                                 // receipts: purchase.receipts,
@@ -77,18 +80,21 @@ const usePurchases = () => {
                             };
                         });
 
+                        console.log('records from firestore', pRecords);
                         setPurchases(pRecords);
 
                         const pbd = pRecords.reduce((acc, p) => {
                             if (isPurchaseComplete(p.status)) {
                                 return acc;
                             } else {
-                                const dt = simpleFormat(new Date(p.purchaseDate));
+                                const dt = simpleFormat(new Date(p.purchaseDate || p.registeredTime));
                                 const curr = acc[dt] || [];
                                 acc[dt] = curr.concat(p);
                                 return acc;
                             }
                         }, {});
+
+                        console.log('pbd', pbd);
 
                         setPurchasesByDate(pbd);
                     });
