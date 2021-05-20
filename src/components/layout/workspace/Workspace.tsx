@@ -2,7 +2,7 @@ import { ReactElement, ReactNode, ReactNodeArray, useContext, useEffect, useStat
 import { useRouter } from 'next/router';
 import DefaultNavBar from '../DefaultNavBar';
 import Footer from '../footer/Footer';
-import {VersionUpdateSnackbar} from '../../common/dialog/Snackbar';
+import { VersionUpdateSnackbar } from '../../common/dialog/Snackbar';
 
 import layoutStyles from '../layout.module.scss';
 import styles from './workspace.module.scss';
@@ -11,19 +11,21 @@ import { LayoutContext } from '../../../uiContexts';
 export type WorkspaceProps = {
     children?: ReactNode | ReactNodeArray | ReactElement;
     showFooter?: boolean;
+    headerComp?: ReactNode | ReactNodeArray | null;
     footerComp?: ReactNode | ReactNodeArray | ReactElement;
     stickyFooter?: boolean;
 };
 
-const Workspace = ({children, showFooter = true, footerComp, stickyFooter = true}: WorkspaceProps) => {
+const Workspace = ({children, showFooter = true, headerComp, footerComp, stickyFooter = true}: WorkspaceProps) => {
     const router = useRouter();
     const {showUpdateSnackbar} = useContext(LayoutContext);
 
     return (
         <>
+            {headerComp}
             <div className={layoutStyles.workspaceZone}>
                 <div className={styles.workspace}>
-                    <VersionUpdateSnackbar  open={showUpdateSnackbar}/>
+                    <VersionUpdateSnackbar open={showUpdateSnackbar}/>
                     {children}
                 </div>
             </div>

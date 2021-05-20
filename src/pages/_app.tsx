@@ -31,6 +31,8 @@ const MyApp = ({Component, pageProps}) => {
     const {i18n} = useTranslation('welcome');
     const [firebaseConfig, setFirebaseConfig] = useState<object>(null);
 
+    const getLayout = Component.getLayout || (comp => <Layout>{comp}</Layout>);
+
     useEffect(() => {
         setFirebaseConfig(getCfg());
     }, []);
@@ -40,14 +42,14 @@ const MyApp = ({Component, pageProps}) => {
         return firebaseConfig ? (
             <FireProvider config={firebaseConfig}>
                 <UserProvider>
-                    <Layout>
+                    {getLayout(
                         <ProtectedRoute>
                             <Component {...pageProps} />
                         </ProtectedRoute>
-                    </Layout>
+                    )}
                 </UserProvider>
             </FireProvider>
-        ) : <Loader />;
+        ) : <Loader/>;
     } catch (err) {
         console.log('Error while rendering app', err);
         return <>{JSON.stringify(err)}</>;

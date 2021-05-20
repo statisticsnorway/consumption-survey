@@ -37,6 +37,8 @@
     "save": "Lagre",
     "saveByReceipt": "Start skanning",
 
+    "addReceipt": "Legge til kvittering",
+
     "fromReceipt": "Les kvittering med kamera",
     "manually": "Registrer utgift manuet",
 
