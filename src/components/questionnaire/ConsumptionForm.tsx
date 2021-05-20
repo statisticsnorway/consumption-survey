@@ -28,8 +28,11 @@ interface QuestionInfo {
 	id: string
 	element: ReactElement | null
 }
+type ChildProps = {
+	onFinished: () => void
+}
 
-export const ConsumptionForm: React.FC = ({}) => {
+export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 	const questions: QuestionFormType[] = useSelector((state: QuestionState) => {
 		return state.questions
 	})
@@ -130,23 +133,6 @@ export const ConsumptionForm: React.FC = ({}) => {
 
 	return (
 		<>
-			<div
-				style={{
-					position: "absolute",
-					right: "0",
-					backgroundColor: "white",
-					zIndex: 0,
-					padding: "30px",
-					border: "2px solid #7cc",
-				}}
-			>
-				{`current question: ${currentQuestion.id}`}
-				<ul>
-					{getAnsweredValues(questions).map((val) => (
-						<li key={`${val}-id`}>{val}</li>
-					))}
-				</ul>
-			</div>
 			<div
 				className='height-100 flex-container-column'
 				onKeyPress={(event: React.KeyboardEvent<HTMLDivElement>): void => {
@@ -268,6 +254,7 @@ export const ConsumptionForm: React.FC = ({}) => {
 						handleElementClick={setFocusToClickedSection}
 						questions={questions}
 						isSchemaFinished={isLastQuestion}
+						onFinishedClicked={onFinished}
 					/>
 				)}
 			</div>

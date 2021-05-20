@@ -147,21 +147,34 @@ const UserProvider = ({ children }) => {
 								.doc("data")
 								.get()
 								.then((doc) => {
-									const data = doc.data()
-                                    console.log('DATA', data)
-									if (data && data.answers) {
-										const curState = store.getState()
-										const hydrated = hydrateQuestionnaire(
-											data.answers,
-											curState.questions
-										)
-										store.dispatch({
-											type: CHANGE_ALL,
-											questions: hydrated,
-											allHistory: data.history,
-											focus: data.currentFocus,
-										})
-									}
+								    if(doc.exists){
+                                        const data = doc.data()
+                                        console.log('DATA', data)
+                                        if (data && data.answers) {
+                                            const curState = store.getState()
+                                            const hydrated = hydrateQuestionnaire(
+                                                data.answers,
+                                                curState.questions
+                                            )
+                                            store.dispatch({
+                                                type: CHANGE_ALL,
+                                                questions: hydrated,
+                                                allHistory: data.history,
+                                                focus: data.currentFocus,
+                                            })
+                                        }
+
+                                    }
+                                    else {
+                                        firestore
+                                            .doc(`/users/${authInfo.userInfo.id}/questionnaire/data`)
+                                            .set(
+                                                {
+                                                    status: "NOT_STARTED",
+                                                },
+                                                { merge: true }
+                                            )
+                                    }
 								})
 								.catch((err) => {
 									console.log("cannot update answers", err)

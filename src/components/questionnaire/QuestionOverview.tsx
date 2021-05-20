@@ -7,14 +7,16 @@ import {Button} from "@statisticsnorway/ssb-component-library";
 export interface StartpageProps {
     handleElementClick: Function,
     questions: QuestionFormType[],
-    isSchemaFinished?: boolean
+    isSchemaFinished?: boolean,
+    onFinishedClicked: () => void
 }
 
 export const QuestionOverview = (
     {
         handleElementClick,
         questions,
-        isSchemaFinished
+        isSchemaFinished,
+        onFinishedClicked
     }: StartpageProps): ReactElement => {
 
     const questionWithFullfilledCrit = [...questions].filter(q => {
@@ -80,7 +82,7 @@ export const QuestionOverview = (
                 <div>
                     <Button primary onClick={(event: React.MouseEvent<HTMLElement>) => {
                         event.preventDefault()
-                        console.log("Click")
+                        onFinishedClicked()
                     }}>
                        Avslutt undersøkelse
                     </Button>
