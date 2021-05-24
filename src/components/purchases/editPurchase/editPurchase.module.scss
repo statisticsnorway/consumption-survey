@@ -1,0 +1,55 @@
+@import '../../../styles/mixins';
+
+.editPurchase {
+  display: flex;
+  flex-direction: column;
+
+  .receiptPreview {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 0.75rem 1.25rem;
+
+    img.thumbnail {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    .infoText {
+      @include normalText();
+    }
+
+    .thumbnail + .infoText {
+      margin-left: 0.75rem;
+    }
+  }
+
+  .purchaseMeta {
+    border-top: 1px solid $ssb-dark-5;
+    padding: 1.25rem;
+
+    display: flex;
+    flex-direction: column;
+
+    .purchaseDate {
+      @include normalText();
+    }
+
+    .name {
+      @include normalText();
+    }
+
+    .purchaseDate + .name {
+      margin-top: 1.25rem;
+    }
+  }
+
+  .items {
+
+  }
+
+  .purchaseMeta + .items {
+    margin-top: 2.5rem;
+  }
+}

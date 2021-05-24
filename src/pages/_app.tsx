@@ -11,6 +11,7 @@ import FireProvider from '../firebase/FireProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import UserProvider from '../firebase/UserProvider';
 import Loader from '../components/common/Loader';
+import PurchasesProvider from '../firebase/PurchasesProvider';
 
 const appConfig = getConfig();
 const getCfg = () => {
@@ -42,11 +43,13 @@ const MyApp = ({Component, pageProps}) => {
         return firebaseConfig ? (
             <FireProvider config={firebaseConfig}>
                 <UserProvider>
+                    <PurchasesProvider>
                     {getLayout(
                         <ProtectedRoute>
                             <Component {...pageProps} />
                         </ProtectedRoute>
                     )}
+                    </PurchasesProvider>
                 </UserProvider>
             </FireProvider>
         ) : <Loader/>;

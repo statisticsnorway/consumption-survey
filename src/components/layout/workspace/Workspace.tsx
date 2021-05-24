@@ -14,9 +14,19 @@ export type WorkspaceProps = {
     headerComp?: ReactNode | ReactNodeArray | null;
     footerComp?: ReactNode | ReactNodeArray | ReactElement;
     stickyFooter?: boolean;
+    styleClass?: string;
+    style?: object;
 };
 
-const Workspace = ({children, showFooter = true, headerComp, footerComp, stickyFooter = true}: WorkspaceProps) => {
+const Workspace = ({
+                       children,
+                       showFooter = true,
+                       headerComp,
+                       footerComp,
+                       stickyFooter = true,
+                       style = {},
+                       styleClass = '',
+                   }: WorkspaceProps) => {
     const router = useRouter();
     const {showUpdateSnackbar} = useContext(LayoutContext);
 
@@ -24,7 +34,7 @@ const Workspace = ({children, showFooter = true, headerComp, footerComp, stickyF
         <>
             {headerComp}
             <div className={layoutStyles.workspaceZone}>
-                <div className={styles.workspace}>
+                <div className={`${styles.workspace} ${styleClass}`} style={style}>
                     <VersionUpdateSnackbar open={showUpdateSnackbar}/>
                     {children}
                 </div>

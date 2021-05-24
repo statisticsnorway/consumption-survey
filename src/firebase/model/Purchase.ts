@@ -41,6 +41,7 @@ export enum PurchaseStatus {
     OCR_IN_PROGRESS = 'OCR_IN_PROGRESS',
     OCR_ERROR = 'OCR_ERROR',
     OCR_COMPLETE = 'OCR_COMPLETE',
+    OCR_PENDING_USER_APPROVAL = 'OCR_PENDING_USER_APPROVAL',
     OCR_VALIDATED = 'OCR_VALIDATED',
 
     /** abandoned registration */

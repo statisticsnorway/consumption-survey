@@ -70,8 +70,10 @@ export const sanitizeDate = (date) => {
 export const formatDate = (date, fmt) =>
     format(date, fmt, {locale: nbLocale});
 
-export const simpleFormat = (date, fmt = SIMPLE_DATE_FORMAT) =>
-    formatDate(sanitizeDate(date), fmt);
+export const simpleFormat = (date, fmt = SIMPLE_DATE_FORMAT) => {
+    console.log('trying to format', date, typeof date);
+    return formatDate(sanitizeDate(date), fmt);
+}
 
 export const dateFormatMonthDate = (date, fmt = DASHBOARD_DATE_GROUPING_FORMAT) =>
     formatDate(date, fmt);

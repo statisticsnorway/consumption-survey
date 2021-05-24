@@ -47,5 +47,11 @@
     },
 
     "addAnotherItem": "Legge til ny"
+  },
+
+  "editPurchase": {
+    "title": "Rediger kjøp",
+    "delete": "Slett",
+    "scannedReceipt": "Skannet kvittering"
   }
 }

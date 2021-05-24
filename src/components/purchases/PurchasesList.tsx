@@ -19,6 +19,7 @@ import NoRecords from '../common/blocks/NoRecords';
 import { isPurchaseComplete, PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
 import OcrStatus from './status/OcrStatus';
 import Loader from '../common/Loader';
+import { extractPurchaseInfo } from '../../utils/receiptUtils';
 
 const prepForDisplay = (date) => {
     const [dt, month] =
@@ -69,7 +70,7 @@ export type PurchasesListProps = {
 
 const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) => {
     const {t} = useTranslation('purchases');
-    const {purchases, purchasesByDate} = usePurchases();
+    const {purchases, purchasesByDate, editPurchase} = usePurchases();
     const [sorted, setSorted] = useState([]);
     const [datesForDisplay, setDatesForDisplay] = useState([]);
     const [highlightPurchase, setHighlightPurchase] = useState(undefined);
@@ -86,6 +87,39 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
         }
     }, []);
 
+    useEffect(() => {
+        if (purchases) {
+            purchases.forEach(purchase => {
+                const {status, ocrResults, registeredTime} = purchase;
+                if ((status === PurchaseStatus.OCR_COMPLETE) && ocrResults) {
+                    const {purchase: extracted, errors} = extractPurchaseInfo(ocrResults, registeredTime);
+                    const errorItems = Object.keys(errors)
+                        .find(item => errors[item] === 'error');
+
+                    if (errorItems && errorItems.length > 0) {
+                        editPurchase(purchase.id, {
+                            status: PurchaseStatus.OCR_PENDING_USER_APPROVAL,
+                        }).then(()=> {
+                            console.log('purchase moved to pending approval due to errors', errors);
+                        }).catch(err => {
+                            console.log('could not updated pending approval status on purchase', purchase, err);
+                        });
+                    } else {
+                        editPurchase(purchase.id, {
+                            ...extracted,
+                            status: PurchaseStatus.COMPLETE,
+                        })
+                            .then(() => {
+                                console.log('purchase updated with new values (complete)');
+                            })
+                            .catch(err => {
+                                console.log('could not updated complete status on purchase', purchase, err);
+                            });
+                    }
+                }
+            });
+        }
+    }, [purchases]);
 
     useEffect(() => {
         if (purchases) {
@@ -191,12 +225,11 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
 
     return (purchases && purchasesByDate) ? (
         <div className={styles.purchasesList}>
-            <p>Should show {purchases.length} {Object.keys(purchasesByDate).length} {sorted.length} entries</p>
             {(waitingApproval.length > 0) && makeListing(waitingApproval)}
             {(beingScanned.length > 0) && makeListing(beingScanned)}
             {dfdComp}
         </div>
-    ) : <Loader />;
+    ) : <Loader/>;
 };
 
 export default PurchasesList;

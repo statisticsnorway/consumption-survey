@@ -4,9 +4,8 @@ import { ChangeEvent } from 'react';
 export const PATHS = {
     HOME: '/home',
     CONSUMPTION: '/consumption',
-    EXPENSE: '/expenses',
     ADD_PURCHASE: '/consumption/purchases/add-purchase',
-    EDIT_PURCHASE: '/purchases/edit-purchase',
+    EDIT_PURCHASE: '/consumption/purchases/edit-purchase',
     ADD_REGULAR_EXPENSE: '/consumption/expenses/add-regular-expense',
     EDIT_REGULAR_EXPENSE: '/consumption/expenses/edit-regular-expense',
     QUESTIONNAIRE: '/questionnaire',

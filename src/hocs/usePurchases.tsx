@@ -1,8 +1,9 @@
 import { useContext, useEffect } from 'react';
 import { FireContext, PurchasesContext, UserContext } from '../contexts';
-import { PurchaseStatus, PurchaseType, isPurchaseComplete } from '../firebase/model/Purchase';
+import { isPurchaseComplete, PurchaseStatus, PurchaseType } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
 import useReceipts from './useReceipts';
+import { extractPurchaseInfo } from '../utils/receiptUtils';
 
 const usePurchases = () => {
         const {firestore} = useContext(FireContext);
@@ -33,52 +34,36 @@ const usePurchases = () => {
             try {
                 firestore
                     .collection(`/users/${userInfo.userName}/purchases`)
-                    .onSnapshot(ps => {
-                        const pRecords = ps.docs.map(p => {
+                    .onSnapshot(async ps => {
+                        const pRecords = await Promise.all(ps.docs.map(async p => {
                             const {purchaseDate} = p.data();
                             const purchase = p.data() as PurchaseType;
 
-                            /*
-                            const withImgs = [];
-                            if (purchase.receipts) {
-                                purchase.receipts.forEach(r => {
-                                    console.log('loading image', r.imageId, r.imageName, r.contentType);
-                                    if (r.imageId && r.imageName) {
-                                        getReceiptWithImageUrl(r.imageId, r.imageName)
-                                            .then(withImg => {
-                                                const afterImgLoad = {
-                                                    ...purchase,
-                                                    receipts: [{...r, ...withImg}],
-                                                };
-
-                                                console.log('yy new state', afterImgLoad);
-                                                withImgs.push({ ...r, ...withImg });
-                                            })
-                                            .catch((err) => {
-                                                console.log('Could not load', r.imageId, r.imageName, err);
-                                                console.log('Ignoring for now ...');
-                                                return r;
-                                            });
+                            const receiptImages = await Promise.all((purchase.receipts || [])
+                                .map(async (receipt) => {
+                                    if (receipt.imageId && receipt.imageName) {
+                                        try {
+                                            return await getReceiptWithImageUrl(receipt.imageId, receipt.imageName);
+                                        } catch (err) {
+                                            console.log('could not load', receipt.imageId, receipt.imageName, err);
+                                            console.log('ignoring for now');
+                                            return receipt;
+                                        }
+                                    } else {
+                                        return receipt;
                                     }
-                                });
-                            }
+                                }));
 
-                            if (withImgs.length < 1) {
-                                console.log('------> could not read previews');
-                            } else {
-                                console.log('~~~~> ', withImgs);
-                            }
-
-                             */
+                            console.log('with receipt imgs', receiptImages);
 
                             return {
                                 ...purchase,
-                                // receipts: purchase.receipts,
+                                receipts: receiptImages,
                                 purchaseDate: purchaseDate ? extractDate(purchaseDate) : null,
                                 // ensure id is set *AFTER* the doc content to ensure we use firebase id all places
                                 id: p.id,
                             };
-                        });
+                        }));
 
                         console.log('records from firestore', pRecords);
                         setPurchases(pRecords);
@@ -87,7 +72,7 @@ const usePurchases = () => {
                             if (isPurchaseComplete(p.status)) {
                                 return acc;
                             } else {
-                                const dt = simpleFormat(new Date(p.purchaseDate || p.registeredTime));
+                                const dt = simpleFormat(new Date(p.purchaseDate ? p.purchaseDate : p.registeredTime));
                                 const curr = acc[dt] || [];
                                 acc[dt] = curr.concat(p);
                                 return acc;
@@ -119,6 +104,8 @@ const usePurchases = () => {
                 setPurchasesByDate(pbd);
             }
         }, [purchases]);
+
+
 
         /*
         useEffect(() => {

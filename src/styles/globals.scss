@@ -33,3 +33,47 @@ section {
 p {
   margin: 0;
 }
+
+.ssb-accordion {
+  .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-text {
+      font-size: 1rem;
+      line-height: 1.75rem;
+    }
+  }
+
+  .accordion-body {
+    padding: 0 0 1rem;
+  }
+}
+
+.install-instructions {
+  .accordion-body {
+    padding: 0;
+  }
+}
+
+.ssb-btn {
+  display: flex;
+  justify-content: center;
+}
+
+/**
+ * things i could not fix with CSS Modules
+ */
+.ocrStatus_OCR_COMPLETE,
+.ocrStatus_OCR_WAITING_NETWORK {
+  color: $ssb-blue-3;
+}
+
+.ocrStatus_OCR_IN_PROGRESS {
+}
+
+.ocrStatus_OCR_ERROR,
+.ocrStatus_OCR_UPLOAD_FAILED {
+  color: $ssb-red-4;
+}
