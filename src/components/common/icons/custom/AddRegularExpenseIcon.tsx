@@ -26,7 +26,6 @@ const AddRegularExpenseIcon = ({width = 64, height = 80}: AddRegularExpenseProps
             d="M37.5 67C39.433 67 41 65.433 41 63.5C41 61.567 39.433 60 37.5 60C35.567 60 34 61.567 34 63.5C34 65.433 35.567 67 37.5 67Z"
             fill="#274247"/>
     </svg>
-
 );
 
 export default AddRegularExpenseIcon;

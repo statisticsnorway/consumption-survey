@@ -16,7 +16,7 @@ export type HeaderProps = {
 
 const Header = ({headerComp, showAppBanner = false}: HeaderProps) => {
     return (
-        <div className={layoutStyles.headerZone}>
+        <div className={layoutStyles.headerZone} id={"ssb-main-header"}>
             {headerComp}
             {!headerComp &&
             <div className={styles.header}>
