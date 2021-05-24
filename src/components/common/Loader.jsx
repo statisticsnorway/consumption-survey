@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import BarLoader from 'react-spinners/BarLoader';
 
-const Loader = ({show = true, width = '25%'}) => {
+const Loader = ({show = true, width = '25%', styleClass = ''}) => {
     const [showLoader, setShowLoader] = useState(show);
 
     useEffect(() => {
@@ -14,6 +14,7 @@ const Loader = ({show = true, width = '25%'}) => {
             color={'#1A9D49'}
             height={'0.5rem'}
             width={width}
+            className={styleClass}
         />
     );
 };

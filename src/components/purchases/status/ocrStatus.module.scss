@@ -1,0 +1,59 @@
+@import '../../../styles/colours';
+
+.ocrStatus {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  padding: 0.5rem 1.25rem;
+  background-color: $ssb-dark-1;
+
+  .receiptAndMessage {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    img.receiptPreview {
+      order: 1;
+
+      width: 36px !important;
+      height: 36px !important;
+    }
+
+    .message {
+      order: 2;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .messageIcon {
+        width: 20px !important;
+        height: 20px !important;
+      }
+
+      .messageText {
+        font-family: Roboto;
+        font-weight: 400;
+        color: $ssb-dark-6;
+        font-size: 0.875rem;
+      }
+
+      .messageIcon + .messageText {
+        margin-left: 0.5rem;
+      }
+    }
+
+    .receiptPreview + .message {
+      margin-left: 0.75rem;
+    }
+  }
+
+  .infoIcon {
+    order: 3;
+    color: $ssb-dark-5;
+  }
+
+}
+

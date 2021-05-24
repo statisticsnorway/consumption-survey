@@ -14,7 +14,6 @@
     },
     "addNew": "Legge til vare/tjeneste",
     "total": "Totalt",
-
     "editItem": {
       "addNew": "Legge til",
       "save": "Lagre",
@@ -36,24 +35,20 @@
     "cancel": "Avbryt",
     "save": "Lagre",
     "saveByReceipt": "Start skanning",
-
+    "addReceipt": "Legge til kvittering",
     "fromReceipt": "Les kvittering med kamera",
     "manually": "Registrer utgift manuet",
-
     "receiptScanning": {
       "start": "Det kan ta litt tid å skanne kvitteringen. Du får beskjed når den er klar."
     },
-
     "progress": {
       "saveImage": "Lagrer bilde",
       "uploadReceipt": "Laster opp kvittering for skanning"
     },
-
     "status": {
       "OCR_IN_PROGRESS": "Skanner",
       "OCR_COMPLETE": "Venter på kontroll"
     },
-
     "purchaseDate": {
       "label": "Dato",
       "placeholder": "Dato"
@@ -95,6 +90,11 @@
       }
     },
     "addAnotherItem": "Legge til ny vare eller tjeneste"
+  },
+  "editPurchase": {
+    "title": "Rediger kjøp",
+    "delete": "Slett",
+    "scannedReceipt": "Skannet kvittering"
   },
   "deleteItem": {
     "title": "Slett vare ?",

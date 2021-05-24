@@ -12,6 +12,7 @@ import FireProvider from '../firebase/FireProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
 import UserProvider from '../firebase/UserProvider';
 import Loader from '../components/common/Loader';
+import PurchasesProvider from '../firebase/PurchasesProvider';
 import {applyMiddleware, createStore, Store} from "redux";
 import reducer, {QuestionState} from "../store/reducers/questionReducer";
 import {DispatchType, QuestionAction} from "../store/actionCreators";
@@ -44,6 +45,8 @@ const MyApp = ({Component, pageProps}) => {
     const {i18n} = useTranslation('welcome');
     const [firebaseConfig, setFirebaseConfig] = useState<object>(null);
 
+    const getLayout = Component.getLayout || (comp => <Layout>{comp}</Layout>);
+
     useEffect(() => {
         setFirebaseConfig(getCfg());
     }, []);
@@ -52,17 +55,19 @@ const MyApp = ({Component, pageProps}) => {
     try {
         return firebaseConfig ? (
             <FireProvider config={firebaseConfig}>
-                <Provider store={store}>
-                    <UserProvider>
-                        <Layout>
-                            <ProtectedRoute>
-                                <Component {...pageProps} />
-                            </ProtectedRoute>
-                        </Layout>
-                    </UserProvider>
-                </Provider>
+              <Provider store={store}>
+                <UserProvider>
+                    <PurchasesProvider>
+                    {getLayout(
+                        <ProtectedRoute>
+                            <Component {...pageProps} />
+                        </ProtectedRoute>
+                    )}
+                    </PurchasesProvider>
+                </UserProvider>
+              </Provider>
             </FireProvider>
-        ) : <Loader />;
+        ) : <Loader/>;
     } catch (err) {
         console.log('Error while rendering app', err);
         return <>{JSON.stringify(err)}</>;
