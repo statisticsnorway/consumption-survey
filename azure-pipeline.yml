@@ -4,6 +4,9 @@ trigger:
   branches:
     include:
       - master
+      - develop
+      - feature-*
+      - release-*
   tags:
     include:
       - '*'
@@ -21,9 +24,9 @@ variables:
   - name: fullSha
     value: '$(Build.SourceVersion)'
   - name: imageName
-    value: 'eu.gcr.io/prod-bip/ssb/forbruk/consumptionsurvey'
+    value: 'eu.gcr.io/prod-bip/ssb/forbruk/consumption-survey'
   - name: repoName
-    value: 'prod-bip/ssb/forbruk/consumptionsurvey'
+    value: 'prod-bip/ssb/forbruk/consumption-survey'
 
 resources:
   repositories:
@@ -48,7 +51,7 @@ jobs:
           command: 'build'
           Dockerfile: 'Dockerfile'
           tags: |
-            $(Build.SourceBranchName)-imagescan-$(fullSha)
+            $(Build.SourceBranchName)-consumption-survey-$(fullSha)
 
       # Authenticate Docker to GCR using predefined service connection
       - task: Docker@2
@@ -66,7 +69,7 @@ jobs:
           repository: $(repoName)
           command: 'push'
           tags: |
-            $(Build.SourceBranchName)-imagescan-$(fullSha)
+            $(Build.SourceBranchName)-consumption-survey-$(fullSha)
 
       # Download file with json-key to GCR as a later task needs to
       # authenticate in a different way than using service connection
@@ -96,4 +99,4 @@ jobs:
 
   - template: docker/docker-tag-for-production.yml@templates
     parameters:
-      tagToTag: 'master-imagescan-$(fullSha)'
+      tagToTag: '$(Build.SourceBranchName)-consumption-survey-$(fullSha)'
