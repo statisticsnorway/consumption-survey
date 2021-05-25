@@ -4,7 +4,7 @@ export const isServiceWorker = () =>
     isBrowser() && ('serviceWorker' in navigator)
 
 export const isWorkboxActive = () =>
-    isServiceWorker() && window.workbox !== undefined
+    isServiceWorker() && window.workbox !== undefined;
 
 export const isPWA = () => {
     if (!isBrowser()) {
