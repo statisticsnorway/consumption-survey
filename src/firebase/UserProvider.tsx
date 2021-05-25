@@ -1,10 +1,25 @@
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 // import { FireContext, UserContext } from '../contexts';
-import { FireContext, IDPortenTokenInfo, RespondentDetails, SurveyInfo, UserContext, UserInfoType } from '../contexts';
-import { add, sub } from 'date-fns';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'react-i18next';
+import {
+	FireContext,
+	IDPortenTokenInfo,
+	RespondentDetails,
+	SurveyInfo,
+	UserContext,
+	UserInfoType,
+} from "../contexts"
+import { add, sub } from "date-fns"
+import { useRouter } from "next/router"
+import { useTranslation } from "react-i18next"
+import { useStore } from "react-redux"
+import { getAnsweredValues } from "../components/questionnaire/questions/questionFunctionsUtils"
+import { hydrateQuestionnaire } from "../components/questionnaire/questions/UpdateQuestionValue"
+import { changeQuestionList } from "../store/actionCreators"
+import { CHANGE_ALL, CHANGE_QUESTION_LIST } from "../store/actionTypes"
+
+import getConfig from 'next/config';
+import {defaultState} from "../store/reducers/questionReducer";
 
 export enum CommunicationPreference {
     EMAIL = 'EMAIL',
@@ -13,7 +28,12 @@ export enum CommunicationPreference {
     PHONE = 'PHONE',
 };
 
-const LOGIN_URL = `${process.env.NEXT_PUBLIC_BFF_HOST}/login`;
+const appConfig = getConfig();
+
+const getLoginUrl = () => {
+    const {envVars} = appConfig.publicRuntimeConfig;
+    return `${envVars.NEXT_PUBLIC_BFF_HOST}/login`;
+};
 
 export type UserPreferences = {
     language: string;
@@ -28,17 +48,19 @@ export const DUMMY_SURVEY_INFO: SurveyInfo = {
     journalEnd: add(TODAY, {days: 12}),
 }
 
-const UserProvider = ({children}) => {
-    const router = useRouter();
-    const {i18n} = useTranslation();
-    const {auth, firestore, reset} = useContext(FireContext);
-    const [userInfo, setUserInfo] = useState<UserInfoType>(null);
-    const [respondentDetails, setRespondentDetails] = useState<RespondentDetails>(null);
-    const [userPreferences, setUserPreferences] = useState<UserPreferences>(null);
-    const [isLoggingIn, setIsLoggingIn] = useState(false);
-    const [isLoggingOut, setIsLoggingOut] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [loginLogoutErrors, setLoginLogoutErrors] = useState<any>(null);
+const UserProvider = ({ children }) => {
+	const router = useRouter()
+	const { i18n } = useTranslation()
+	const { auth, firestore, reset } = useContext(FireContext)
+	const store = useStore()
+	const [userInfo, setUserInfo] = useState<UserInfoType>(null)
+	const [respondentDetails, setRespondentDetails] =
+		useState<RespondentDetails>(null)
+	const [userPreferences, setUserPreferences] = useState<UserPreferences>(null)
+	const [isLoggingIn, setIsLoggingIn] = useState(false)
+	const [isLoggingOut, setIsLoggingOut] = useState(false)
+	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+	const [loginLogoutErrors, setLoginLogoutErrors] = useState<any>(null)
 
     useEffect(() => {
         setIsAuthenticated(false);
@@ -75,11 +97,11 @@ const UserProvider = ({children}) => {
             return;
         }
 
-        console.log('trying to obtain firebase token for ', respondentInfo, isLoggingIn, LOGIN_URL);
+        console.log('trying to obtain firebase token for ', respondentInfo, isLoggingIn, getLoginUrl());
 
         if (respondentInfo && respondentInfo.respondentId && !isLoggingIn) {
             setIsLoggingIn(true);
-            const res = await axios.post(LOGIN_URL, {
+            const res = await axios.post(getLoginUrl(), {
                 respondentInfo,
                 idPortenInfo,
             });
@@ -100,7 +122,63 @@ const UserProvider = ({children}) => {
                                 respondentDetails: authInfo.respondentDetails,
                             };
 
-                            setUserInfo(loginInfo);
+							setUserInfo(loginInfo)
+							store.subscribe(() => {
+								const state = store.getState()
+								const quesetionsState = state.questions
+								const history = state.history
+								const currentFocus = state.currentFocus
+								const answers = getAnsweredValues(quesetionsState)
+                                console.log('trying to store to firebase')
+								firestore
+									.doc(`/users/${authInfo.userInfo.id}/questionnaire/data`)
+									.set(
+										{
+											status: "STARTED",
+											answers,
+											history,
+											currentFocus,
+										},
+										{ merge: true }
+									)
+							})
+							firestore
+								.collection(`/users/${authInfo.userInfo.id}/questionnaire`)
+								.doc("data")
+								.get()
+								.then((doc) => {
+								    if(doc.exists){
+                                        const data = doc.data()
+                                        console.log('DATA', data)
+                                        if (data && data.answers) {
+                                            const curState = store.getState()
+                                            const hydrated = hydrateQuestionnaire(
+                                                data.answers,
+                                                curState.questions
+                                            )
+                                            store.dispatch({
+                                                type: CHANGE_ALL,
+                                                questions: hydrated,
+                                                allHistory: data.history,
+                                                focus: data.currentFocus,
+                                            })
+                                        }
+
+                                    }
+                                    else {
+                                        firestore
+                                            .doc(`/users/${authInfo.userInfo.id}/questionnaire/data`)
+                                            .set(
+                                                {
+                                                    status: "NOT_STARTED",
+                                                },
+                                                { merge: true }
+                                            )
+                                    }
+								})
+								.catch((err) => {
+									console.log("cannot update answers", err)
+								})
 
                             firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
                                 .set(loginInfo)
@@ -153,7 +231,49 @@ const UserProvider = ({children}) => {
                                 });
                                 setIsLoggingIn(false);
                             });
-
+                        /*store.subscribe(() => {
+                            const state = store.getState()
+                            const quesetionsState = state.questions
+                            const history = state.history
+                            const currentFocus = state.currentFocus
+                            const answers = getAnsweredValues(quesetionsState)
+                            console.log('trying to store to firebase')
+                            firestore
+                                .doc(`/users/${user.uid}/questionnaire/data`)
+                                .set(
+                                    {
+                                        status: "STARTED",
+                                        answers,
+                                        history,
+                                        currentFocus,
+                                    },
+                                    { merge: true }
+                                )
+                        })
+                        firestore
+                            .collection(`/users/${user.uid}/questionnaire`)
+                            .doc("data")
+                            .get()
+                            .then((doc) => {
+                                const data = doc.data()
+                                console.log('DATA', data)
+                                if (data && data.answers) {
+                                    const curState = store.getState()
+                                    const hydrated = hydrateQuestionnaire(
+                                        data.answers,
+                                        curState.questions
+                                    )
+                                    store.dispatch({
+                                        type: CHANGE_ALL,
+                                        questions: hydrated,
+                                        allHistory: data.history,
+                                        focus: data.currentFocus,
+                                    })
+                                }
+                            })
+                            .catch((err) => {
+                                console.log("cannot update answers", err)
+                            })*/
                         firestore
                             .doc(`/users/${user.uid}/profile/preferences`)
                             .onSnapshot(snapshot => {
@@ -214,6 +334,7 @@ const UserProvider = ({children}) => {
                 setUserPreferences(null);
                 setIsLoggingOut(false);
 
+
                 // fireReset();
                 setIsAuthenticated(false);
                 // await router.push('/login');
@@ -248,6 +369,8 @@ const UserProvider = ({children}) => {
         </UserContext.Provider>
     );
 };
+
+export const getInitialProps = () => ({});
 
 export default UserProvider;
 

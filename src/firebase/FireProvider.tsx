@@ -5,9 +5,7 @@ import 'firebase/database';
 import 'firebase/storage';
 
 import { useState, useEffect } from 'react';
-import { getConfig } from './init';
 import { FireContext } from '../contexts';
-import { isBrowser } from '../utils/pwaUtils';
 
 const FireProvider = ({config, children}) => {
     const [firebase, setFirebase] = useState(null);
@@ -16,7 +14,6 @@ const FireProvider = ({config, children}) => {
     const [rtdb, setRtdb] = useState(null);
     const [storage, setStorage] = useState(null);
     const [initComplete, setInitComplete] = useState(false);
-    const [reinitFlag, setReinitFlag] = useState(false);
 
     useEffect(() => {
         /*

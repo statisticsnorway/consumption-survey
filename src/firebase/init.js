@@ -8,9 +8,3 @@ const sanitizeConfig = (config) =>
             [key]: protectSecretValue(config[key]),
         }), {});
 
-export const getConfig = async () => {
-    const { default: firebaseConfig } = await import(process.env.NEXT_PUBLIC_FIREBASE_CONFIG_JSON);
-    console.log('Initializiing firebase with config: ', sanitizeConfig(firebaseConfig));
-    return firebaseConfig;
-};
-
