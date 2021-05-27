@@ -12,7 +12,7 @@ export const FORS1: QuestionFormType = {
             {
                 id: 'fors1_1',
                 value: "1",
-                descriptionValue: 'Boligfosikring (også for fritidsbolig)',
+                descriptionValue: 'Boligforsikring (også for fritidsbolig)',
                 chosen: false
             },
             {

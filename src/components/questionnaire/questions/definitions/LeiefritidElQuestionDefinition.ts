@@ -23,5 +23,13 @@ export const LEIEFRITIDEL: QuestionFormType = {
             },
         ]
     },
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "fritidsn2",
+                questionValue: "1"
+            },
+        ]
+    ],
     inputType: "radio"
 } as QuestionFormType

@@ -12,7 +12,7 @@ export const OPPGRAD1: QuestionFormType = {
             {
                 id: 'oppgrad1_1',
                 value: "1",
-                descriptionValue: 'Påbygg eller tilbygg på boligen?',
+                descriptionValue: 'Påbygg eller tilbygg på boligen',
                 chosen: false
             },
             {
@@ -24,19 +24,19 @@ export const OPPGRAD1: QuestionFormType = {
             {
                 id: 'oppgrad1_3',
                 value: "3",
-                descriptionValue: 'Totalrenovering av boligen innvendig? ',
+                descriptionValue: 'Totalrenovering av boligen innvendig',
                 chosen: false
             },
             {
                 id: 'oppgrad1_4',
                 value: "4",
-                descriptionValue: 'Nytt kjøkken?',
+                descriptionValue: 'Nytt kjøkken',
                 chosen: false
             },
             {
                 id: 'oppgrad1_5',
                 value: "5",
-                descriptionValue: 'Bygging av nytt bad eller totalrenovering av gammelt bad?',
+                descriptionValue: 'Bygging av nytt bad eller totalrenovering av gammelt bad',
                 chosen: false
             },
             {

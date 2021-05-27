@@ -64,6 +64,11 @@ export const SEPREGNFRI: QuestionFormType = {
                         questionId: "utgiftfritid1",
                         questionValue: "1",
                     },
+                    {
+                        questionId: "leiefritidel",
+                        questionValue: "2",
+                        specialCompare: "logicNot"
+                    },
                 ],
                 [
                     {

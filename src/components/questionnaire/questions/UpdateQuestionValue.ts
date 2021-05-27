@@ -1,5 +1,5 @@
 import {
-	AnswerValueType,
+	AnswerValueType, DependentOnQuestionCriteria,
 	QuestionAnswerType,
 	QuestionFormType,
 } from "./QuestionFormType"
@@ -873,4 +873,86 @@ export const hydrateQuestionnaire = (answers, questions) => {
 		return question
 	})
 	return hydratedQuestions
+}
+
+export const getAllQuestionsThatAreDependentOnCurrent = (currentQuestion: QuestionFormType, questions: QuestionFormType[]): QuestionFormType[] => {
+	const quest = [...questions].filter(q => {
+		if(q.dependentOnQuestionCriteria){
+			const dependencies = q.dependentOnQuestionCriteria as DependentOnQuestionCriteria[][]
+			const ret = dependencies.filter((innerOneDependency: DependentOnQuestionCriteria[]) => {
+				const innerDependency = innerOneDependency.filter((oneDependency: DependentOnQuestionCriteria) => {
+					return oneDependency.questionId === currentQuestion.id
+				})
+				return innerDependency && innerDependency.length > 0;
+			})
+
+			return ret && ret.length > 0;
+		} else {
+			return false
+		}
+	})
+
+	return resetValuesInQuestions(currentQuestion, quest,  questions)
+}
+
+export const resetValuesInQuestions = (currentQuestion: QuestionFormType, questions: QuestionFormType[], allQuestions: QuestionFormType[]): QuestionFormType[] => {
+	const answeredQuestions = [...questions].filter(q => {
+		return q.hasAnswered
+	})
+
+
+	if(!answeredQuestions || answeredQuestions.length === 0){
+		return []
+	}
+
+	let finalQuestionChanges = [] as QuestionFormType[];
+
+	answeredQuestions.forEach((q: QuestionFormType) => {
+
+		if(q.hasAnswered) {
+			q.hasAnswered = false;
+			const subQuestionChanges = getAllQuestionsThatAreDependentOnCurrent(q, allQuestions)
+			subQuestionChanges.forEach(r => finalQuestionChanges.push(r))
+
+			const a = q.answerValue.answers as AnswerValueType[]
+
+			a.forEach((a: AnswerValueType) => {
+				a.chosen = false;
+
+
+				if(
+					q.inputType === "text" || q.inputType === "number" || q.inputType === "text-optional-timeperiod" ||
+					q.inputType === "number-optional-timeperiod" || q.inputType === "number-optional-timeperiod-checkbox"  || q.inputType === "number-checkbox" ||
+					q.inputType === "text-checkbox"  || q.inputType === "multifield-text-dependent"
+					|| q.inputType === "multifield-number-dependent" || q.inputType === "multifield-text-dependent-with-sum"
+					|| q.inputType === "multifield-number-siffer-dependent" || q.inputType === "multifield-number-dependent-with-sum"
+					|| q.inputType === "multifield-number" || q.inputType === "multifield-text"
+				){
+					if(a.descriptionValue && a.descriptionValue.toLowerCase().includes("mnd/kvartal/år")){
+						a.value = "Måned"
+					} else if(a.descriptionValue && a.descriptionValue.toLowerCase().includes("vet ikke")) {
+
+					} else if(a.value === '2' || a.value === '3') {
+
+					} else if(
+						q.inputType === "text" || q.inputType === "number" || q.inputType === "multifield-text-dependent"
+						|| q.inputType === "multifield-number-dependent" || q.inputType === "multifield-text-dependent-with-sum"
+						|| q.inputType === "multifield-number-siffer-dependent" || q.inputType === "multifield-number-dependent-with-sum"
+						|| q.inputType === "number-checkbox" || q.inputType === "text-checkbox"
+						|| q.inputType === "multifield-number" || q.inputType === "multifield-text"
+						|| q.inputType === "number-optional-timeperiod-checkbox" || q.inputType === "number-optional-timeperiod"
+					) {
+						a.value = ""
+						a.chosen = true
+					} else {
+						a.value = ""
+					}
+				}
+			})
+		}
+	})
+
+	answeredQuestions.forEach(p => finalQuestionChanges.push(p))
+
+	return finalQuestionChanges
 }

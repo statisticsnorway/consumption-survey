@@ -5,7 +5,7 @@ export const FRITIDSN2: QuestionFormType = {
     id: 'fritidsn2',
     theme: Theme.holidayHome,
     order: 49,
-    questionText: 'Har du/dere leid fritidsbolig på langtidsleie (mer enn 6 mnd) i Norge, de siste 12 månedene?',
+    questionText: 'Har du/dere leid fritidsbolig på langtidsleie i Norge, de siste 12 månedene? Med langtidsleie menes mer enn tre måneder',
     hasAnswered: false,
     answerValue: {
         answers: [

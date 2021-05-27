@@ -1,7 +1,7 @@
 import {
 	CHANGE_ALL,
 	CHANGE_FOCUS,
-	CHANGE_FORM_VALUE,
+	CHANGE_FORM_VALUE, CHANGE_MULTIPLE_QUESTIONS_AND_FOCUS,
 	CHANGE_QUESTION_LIST,
 } from "../actionTypes"
 import { QuestionAction } from "../actionCreators"
@@ -109,13 +109,16 @@ import { TOMT15 } from "../../components/questionnaire/questions/definitions/Tom
 import { FYRUTG15 } from "../../components/questionnaire/questions/definitions/Fyrutg15QuestionDefinition"
 import { FYRUTGFRI15 } from "../../components/questionnaire/questions/definitions/FyrutgFri15QuestionDefinition"
 import { FRITIDSUTL15 } from "../../components/questionnaire/questions/definitions/FritidsUtl15QuestionDefinition"
-import { QuestionFormType } from "../../components/questionnaire/questions/QuestionFormType"
+import {AnswerValueType, QuestionFormType} from "../../components/questionnaire/questions/QuestionFormType"
 import {VED315} from "../../components/questionnaire/questions/definitions/Ved315QuestionDefinition";
+import {UTDANNING15} from "../../components/questionnaire/questions/definitions/Utdanning15QuestionDefinition";
 
 export type HistoryBlock = {
 	fromQuestionId: string
+	fromQuestionIdAnswers?: AnswerValueType[]
 	toQuestionId: string
 	stepDirection: "forward" | "back"
+	stepCount: number
 }
 
 export type QuestionState = {
@@ -222,7 +225,10 @@ export const defaultState: QuestionState = {
 		FYRUTGFRI15,
 		FYRUTGFRI2,
 
+
 		SEPREGNFRI,
+
+
 
 		ELUTGFRI1A,
 		ELUTGFRI1B,
@@ -236,6 +242,8 @@ export const defaultState: QuestionState = {
 
 		LEIEFRITIDU1,
 		LEIEFRITIDU2,
+
+
 
 		// MAngler FritidsN2 ??? Feil navn på spørsmål
 
@@ -270,6 +278,7 @@ export const defaultState: QuestionState = {
 		PAKK2,
 
 		UTDANNING1,
+		UTDANNING15,
 		UTDANNING2,
 
 		VARIGMØBLER1,
@@ -322,70 +331,64 @@ export const defaultState: QuestionState = {
 
         */
 	],
-	currentFocus: "hus1",
-	history: [
-		{
-			fromQuestionId: "beginning",
-			toQuestionId: "hus1",
-			stepDirection: "forward",
-		},
-	],
-} as QuestionState
+	currentFocus: 'hus1',
+	history: [{
+		fromQuestionId: 'beginning',
+		toQuestionId: 'hus1',
+		stepDirection: "forward"
+	}
+	]
+} as QuestionState;
 
-const questionReducer = (
-	state: QuestionState = defaultState,
-	action: QuestionAction
-): QuestionState => {
+const questionReducer = (state: QuestionState = defaultState, action: QuestionAction): QuestionState => {
 	switch (action.type) {
-		case CHANGE_ALL: {
-			if (!action.questions) {
-				throw DOMException
-			}
-			console.log(action.questions)
-			return {
-				...state,
-				questions: action.questions,
-				currentFocus: action.focus,
-				history: action.allHistory,
-			}
-		}
-		case CHANGE_QUESTION_LIST:
-			if (!action.questions) {
-				throw DOMException
-			}
-			console.log(action.questions)
-			return {
-				...state,
-				questions: action.questions,
-			}
-
 		case CHANGE_FORM_VALUE:
-			if (!action.question) {
+			if(!action.question) {
 				throw DOMException
 			}
 
-			const changeQ: QuestionFormType = action.question
+			const changeQ: QuestionFormType = action.question;
 
-			const qNewList = state.questions.filter((s) => s.id !== changeQ.id)
-			qNewList.push(changeQ)
+			const qNewList = state.questions.filter(s => s.id !== changeQ.id);
+			qNewList.push(changeQ);
 
 			return {
 				...state,
-				questions: qNewList,
-			}
+				questions: qNewList
+			};
 		case CHANGE_FOCUS:
-			if (!action.focus) {
+			if(!action.focus) {
 				throw DOMException
 			}
 
-			const focusId: string = action.focus
-			const nextHistory: HistoryBlock = action.history as HistoryBlock
+			const focusId: string = action.focus;
+			const nextHistory: HistoryBlock = action.history as HistoryBlock;
 
 			return {
 				...state,
 				currentFocus: focusId,
-				history: [...state.history, nextHistory],
+				history: [...state.history, nextHistory]
+			};
+		case CHANGE_MULTIPLE_QUESTIONS_AND_FOCUS:
+			if(!action.questions || !action.history) {
+				throw DOMException
 			}
+
+			const updatedQuestions = action.questions as QuestionFormType[];
+			const nextHistory2: HistoryBlock = action.history as HistoryBlock;
+
+			const updatedQuestionList = state.questions.filter(questionsFromState => {
+				return !(updatedQuestions.filter(updatedQuestion => updatedQuestion.id === questionsFromState.id).length > 0)
+			});
+
+			updatedQuestions.forEach(q => updatedQuestionList.push(q))
+
+			return {
+				...state,
+				currentFocus: action.focus as string,
+				history: [...state.history, nextHistory2],
+				questions: updatedQuestionList
+			};
 	}
 
 	return state

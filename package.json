@@ -24,6 +24,8 @@
     "axios-hooks": "^2.6.1",
     "date-fns": "^2.21.2",
     "firebase": "^8.5.0",
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.isequal": "^4.5.0",
     "highcharts": "^9.1.0",
     "highcharts-react-official": "^3.0.0",
     "moment": "^2.29.1",

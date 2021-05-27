@@ -5,8 +5,8 @@ export const FRITIDSN1: QuestionFormType = {
     id: 'fritidsn1',
     theme: Theme.holidayHome,
     order: 48,
-    questionText: 'Eier eller disponerer du/dere hytte eller hus som brukes til fritidsbolig i Norge?' +
-        'Dersom du både eier og disponerer kryss av for de aktuelle',
+    questionText: 'Eier eller disponerer du/dere hytte eller hus som brukes til fritidsbolig i Norge?',
+    subText: 'Dersom du både eier og disponerer kryss av for de aktuelle',
     hasAnswered: false,
     answerValue: {
         answers: [
