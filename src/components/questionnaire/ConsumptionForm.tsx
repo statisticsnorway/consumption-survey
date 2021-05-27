@@ -85,6 +85,9 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 
 			const runNext = () => {
 				const nextQuestion = checkLast()
+				if(!nextQuestion) {
+					return
+				}
 				setIsLastQuestion(false)
 
 				dispatch(changeFocus(
