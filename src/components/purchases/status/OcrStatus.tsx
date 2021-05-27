@@ -18,6 +18,8 @@ const getStyleForStatus = (status: PurchaseStatus) => {
             return styles.ocrStatus_OCR_ERROR;
         case PurchaseStatus.OCR_IN_PROGRESS:
             return styles.ocrStatus_OCR_IN_PROGRESS;
+        case PurchaseStatus.OCR_PENDING_USER_APPROVAL:
+            return styles.ocrStatus_OCR_PENDING_USER_APPROVAL;
         default:
             return status;
     }
@@ -33,6 +35,7 @@ export const getMessageIcon = (status: PurchaseStatus): IconName => {
         case PurchaseStatus.OCR_COMPLETE:
         case PurchaseStatus.OCR_ERROR:
         case PurchaseStatus.OCR_UPLOAD_FAILED:
+        case PurchaseStatus.OCR_PENDING_USER_APPROVAL:
             return 'AlertTriangle';
         case PurchaseStatus.OCR_WAITING_NETWORK:
             return 'Info';
@@ -62,7 +65,7 @@ const OcrStatus = ({purchase}: OcrStatusProps) => {
             {(purchase.status === PurchaseStatus.OCR_IN_PROGRESS) &&
             <Loader show={true} width="100px" styleClass={styles.infoIcon}/>
             }
-            {(purchase.status === PurchaseStatus.OCR_COMPLETE) &&
+            {(purchase.status === PurchaseStatus.OCR_PENDING_USER_APPROVAL) &&
             <div className={styles.infoIcon}>
                 <FileText/>
                 <ArrowRight/>
