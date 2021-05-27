@@ -390,9 +390,6 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponent = (
 			).length > 0,
 	}
 
-	console.log(currentQuestion.id)
-	console.log({ valueFromForm })
-
 	dispatch(changeFormValue(updatedQuestion))
 }
 
@@ -724,8 +721,8 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponentFromEx
 				}
 				return false
 			}).length > 0
-		console.log(currentQuestion, "current question")
-		const updatedQuestion = {
+
+		let updatedQuestion = {
 			...currentQuestion,
 			answerValue: {
 				answers: (currentQuestion.answerValue.answers as AnswerValueType[]).map(
@@ -752,17 +749,6 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponentFromEx
 						} else {
 							const tickIt = valueFromForm === (answerValue.value as string)
 							const chosen = answerValue.chosen ? !tickIt : tickIt
-							console.log(
-								currentQuestion.id,
-								"current value",
-								valueFromForm,
-								"matched against",
-								answerValue.value,
-								"is the same",
-								tickIt,
-								"then choose",
-								chosen
-							)
 
 							if (ingenAvDisseIsAlreadyTicked) {
 								return {
@@ -778,8 +764,15 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponentFromEx
 						}
 					}
 				),
-			},
-			hasAnswered: valueFromForm.length > 1, //TODO Kan ha besvart men ingen relevante
+			}
+		}
+
+		updatedQuestion = {
+			...updatedQuestion,
+			hasAnswered:
+				(updatedQuestion.answerValue.answers as AnswerValueType[]).filter(
+					(a) => a.chosen
+				).length > 0,
 		}
 
 		return updatedQuestion

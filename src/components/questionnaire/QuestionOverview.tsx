@@ -34,7 +34,12 @@ export const QuestionOverview = (
         const questionsWithinSection = questionsSortedByOrder.filter(q => q.theme && q.theme === section)
         const isDoneWithSection = questionsWithinSection.filter(q => q.hasAnswered).length === questionsWithinSection.length
         const firstQuestionInSection = questionsSortedByOrder.find(q => q.theme && q.theme === section)
-        return {isDoneWithSection, firstQuestionInSection, section, index}
+        return {
+            isDoneWithSection,
+            firstQuestionInSection,
+            section,
+            index
+        }
     });
 
     return (

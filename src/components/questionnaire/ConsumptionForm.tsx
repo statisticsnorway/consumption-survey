@@ -70,34 +70,44 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 		if (isQuestionAnswered(currentQuestion, questions)) {
 			setNoAnswers(false)
 
-			const runNext = () => {
+			const checkLast = () => {
 				try {
-					const nextQuestion = getNextQuestionByOrder(currentQuestion, questions);
-					setIsLastQuestion(false)
-
-					dispatch(changeFocus(
-						nextQuestion.id as string,
-						{
-							fromQuestionId: currentQuestionId,
-							fromQuestionIdAnswers: currentQuestion.answerValue.answers,
-							toQuestionId: nextQuestion.id,
-							stepDirection: "forward",
-							stepCount: history ? history.length + 1 : 1
-						} as HistoryBlock
-					))
+					return getNextQuestionByOrder(currentQuestion, questions);
 				} catch (e: any) {
 					const isLastQuestion = isLastQuestionInSchema(currentQuestion, questions)
 					if(isLastQuestion) {
 						setIsLastQuestion(true)
 						setIsOverview(true)
 					}
+					return undefined;
 				}
+			}
+
+			const runNext = () => {
+				const nextQuestion = checkLast()
+				setIsLastQuestion(false)
+
+				dispatch(changeFocus(
+					nextQuestion.id as string,
+					{
+						fromQuestionId: currentQuestionId,
+						fromQuestionIdAnswers: currentQuestion.answerValue.answers,
+						toQuestionId: nextQuestion.id,
+						stepDirection: "forward",
+						stepCount: history ? history.length + 1 : 1
+					} as HistoryBlock
+				))
 			}
 
 			if(
 				(history.filter(h => h.fromQuestionId === currentQuestion.id).length > 0) &&
 				(currentQuestion.inputType !== "number" && currentQuestion.inputType !== "text")    //TODO Temp. Bedre løning etter pilot
 			){
+
+				const nextQuestion = checkLast()
+				if(!nextQuestion) {
+					return
+				}
 				let lastHistoryEntry: HistoryBlock;
 				history.forEach(h => {
 					if(h.fromQuestionId === currentQuestion.id){
@@ -159,8 +169,10 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 				firstQuestionInSection.id as string,
 				{
 					fromQuestionId: currentQuestionId,
+					fromQuestionIdAnswers: currentQuestion.answerValue.answers as AnswerValueType[],
 					toQuestionId: firstQuestionInSection.id,
 					stepDirection: "forward",
+					stepCount: history ? history.length + 1 : 1
 				} as HistoryBlock
 			)
 		)
@@ -230,13 +242,16 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 														history
 													)
 												setNoAnswers(false)
-												dispatch(
-													changeFocus(questionToNavigateTo, {
+												dispatch(changeFocus(
+													questionToNavigateTo,
+													{
 														fromQuestionId: currentQuestionId,
+														fromQuestionIdAnswers: currentQuestion.answerValue.answers as AnswerValueType[],
 														toQuestionId: questionToNavigateTo,
 														stepDirection: "back",
-													} as HistoryBlock)
-												)
+														stepCount: history ? history.length + 1 : 1
+													} as HistoryBlock
+												))
 											}}
 										>
 											<div className='flex-container'>

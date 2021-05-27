@@ -369,6 +369,25 @@ const questionReducer = (state: QuestionState = defaultState, action: QuestionAc
 				currentFocus: focusId,
 				history: [...state.history, nextHistory]
 			};
+		case CHANGE_ALL: {
+			if (!action.questions) {
+				throw DOMException
+			}
+			return {
+				...state,
+				questions: action.questions,
+				currentFocus: action.focus,
+				history: action.allHistory,
+			}
+		}
+		case CHANGE_QUESTION_LIST:
+			if (!action.questions) {
+				throw DOMException
+			}
+			return {
+				...state,
+				questions: action.questions,
+			}
 		case CHANGE_MULTIPLE_QUESTIONS_AND_FOCUS:
 			if(!action.questions || !action.history) {
 				throw DOMException

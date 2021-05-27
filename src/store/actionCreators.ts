@@ -66,25 +66,30 @@ export const changeQuestionListAndFocus = (
 
 	updatedQuestions.forEach(q => updatedQuestionList.push(q))
 
-	const nextQuestion = getNextQuestionByOrder(currentQuestion, updatedQuestionList);
+	try{
+		const nextQuestion = getNextQuestionByOrder(currentQuestion, updatedQuestionList);
 
-	const focusQuestionId = nextQuestion.id
-	const newHistoryEntry = {
-		fromQuestionId: currentQuestion.id,
-		fromQuestionIdAnswers: currentQuestion.answerValue.answers,
-		toQuestionId: nextQuestion.id,
-		stepDirection: "forward",
-		stepCount: history ? history.length + 1 : 1
-	} as HistoryBlock
+		const focusQuestionId = nextQuestion.id
+		const newHistoryEntry = {
+			fromQuestionId: currentQuestion.id,
+			fromQuestionIdAnswers: currentQuestion.answerValue.answers,
+			toQuestionId: nextQuestion.id,
+			stepDirection: "forward",
+			stepCount: history ? history.length + 1 : 1
+		} as HistoryBlock
 
-	const action: QuestionAction = {
-		type: CHANGE_MULTIPLE_QUESTIONS_AND_FOCUS,
-		questions: questions,
-		focus: focusQuestionId,
-		history: newHistoryEntry
+		const action: QuestionAction = {
+			type: CHANGE_MULTIPLE_QUESTIONS_AND_FOCUS,
+			questions: questions,
+			focus: focusQuestionId,
+			history: newHistoryEntry
+		}
+
+		dispatch(action)
+	} catch (e: any) {
+		console.log("Error in dispatch")
+		console.log({e})
 	}
-
-	dispatch(action)
 }
 
 
