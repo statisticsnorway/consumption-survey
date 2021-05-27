@@ -124,7 +124,7 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
     useEffect(() => {
         if (purchases) {
             setBeingScanned(purchases.filter(p => p.status === PurchaseStatus.OCR_IN_PROGRESS));
-            setWaitingApproval(purchases.filter(p => p.status === PurchaseStatus.OCR_COMPLETE));
+            setWaitingApproval(purchases.filter(p => p.status === PurchaseStatus.OCR_PENDING_USER_APPROVAL));
             setErrorCases(purchases.filter(p => ERROR_CASES.includes(p.status)));
         }
     }, [purchases]);
