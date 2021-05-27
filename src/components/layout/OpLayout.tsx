@@ -18,6 +18,9 @@ const FULL_SCREEN_INIT_STATE = {
     msg: '',
 };
 
+/**
+ * TODO: DRY: eliminate duplication here
+ */
 const OpLayout = ({showAppHeader = false, children}: OpLayoutProps) => {
     const {showUpdateSnackbar} = useServiceWorkerHelper();
     const [fullScreenLoaderState, setFullScreenLoaderState] = useState(FULL_SCREEN_INIT_STATE);
