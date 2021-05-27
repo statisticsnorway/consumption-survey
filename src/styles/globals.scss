@@ -65,7 +65,7 @@ p {
 /**
  * things i could not fix with CSS Modules
  */
-.ocrStatus_OCR_COMPLETE,
+.ocrStatus_OCR_PENDING_USER_APPROVAL,
 .ocrStatus_OCR_WAITING_NETWORK {
   color: $ssb-blue-3;
 }

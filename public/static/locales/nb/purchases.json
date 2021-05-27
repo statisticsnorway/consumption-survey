@@ -47,7 +47,7 @@
     },
     "status": {
       "OCR_IN_PROGRESS": "Skanner",
-      "OCR_COMPLETE": "Venter på kontroll"
+      "OCR_PENDING_USER_APPROVAL": "Venter på kontroll"
     },
     "purchaseDate": {
       "label": "Dato",

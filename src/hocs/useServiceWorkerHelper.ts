@@ -32,12 +32,22 @@ const useServiceWorkerHelper = () => {
 
     useEffect(() => {
         if (isWorkboxActive() && isOnline) {
-            // skip index route (already cached as start_url)
+            // check for updates
             if (registration) {
                 console.log('Route change and registration is active - checking for updates');
                 registration.update();
             } else {
                 console.log('Route change but no registrations found or is offline. skipping.. ');
+            }
+
+            // ensure caching
+            if (router.route !== '/') {
+                // @ts-ignore
+                const wb = window.workbox;
+                wb.active.then(worker => {
+                    console.log('sending cache request for', router.route);
+                    wb.messageSW({ action: 'CACHE_NEW_ROUTE' });
+                });
             }
         } else {
         }

@@ -135,6 +135,7 @@ const useReceipts = () => {
 
 
     const notifyReceipt = (purchaseId, receiptId, metadata) => {
+        console.log('notifying receipt..', receiptId, metadata);
         const path = `/users/${userInfo.userName}/receipts/${purchaseId}`;
         return firestore.doc(path)
             .set({
