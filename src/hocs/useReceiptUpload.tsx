@@ -15,22 +15,12 @@ const useReceiptUpload = (onSuccessfulAdd) => {
     const {showMessage, clearMessages} = useContext(LayoutContext);
     const [receipt, setReceipt] = useState<ReceiptInfo>(null);
     const inputRef = useRef(null);
-    const [showOpenFileDialog, setShowOpenFileDialog] = useState(false);
-
-    useEffect(() => {
-        console.log('[HOC RU]', showOpenFileDialog, hiddenUploadComponent, inputRef);
-        if (showOpenFileDialog) {
-            inputRef.current.click();
-        }
-    }, [showOpenFileDialog]);
 
     const onFileChange = (e) => {
         if (e.target.files && e.target.files.length > 0) {
             const image = e.target.files[0];
             onReceiptAdded(image.name, image);
         }
-
-        setShowOpenFileDialog(false);
     };
 
     const onReceiptAdded = async (imageName, image) => {
@@ -109,15 +99,11 @@ const useReceiptUpload = (onSuccessfulAdd) => {
         />
     );
 
-    const openFileDialog = () => {
+    const captureReceiptFromCameraOrLibrary = () => {
         inputRef.current.click();
     };
 
-    const closeFileDialog = () => {
-        setShowOpenFileDialog(false);
-    };
-
-    return {onReceiptAdded, savePurchaseByReceipt, openFileDialog, closeFileDialog, hiddenUploadComponent};
+    return {onReceiptAdded, savePurchaseByReceipt, captureReceiptFromCameraOrLibrary, hiddenUploadComponent};
 };
 
 export default useReceiptUpload;

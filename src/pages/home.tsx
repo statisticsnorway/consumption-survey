@@ -41,7 +41,7 @@ const Home = () => {
         await router.push(`${PATHS.CONSUMPTION}?highlight=${purchaseId}`);
     };
 
-    const {hiddenUploadComponent, openFileDialog} = useReceiptUpload(onSuccessfulAdd);
+    const {hiddenUploadComponent, captureReceiptFromCameraOrLibrary} = useReceiptUpload(onSuccessfulAdd);
 
     console.log('hiddenComponent', hiddenUploadComponent);
 
@@ -53,7 +53,7 @@ const Home = () => {
                     text={t('registerNew.fromReceipt')}
                     iconComponent={<ScanReceiptIcon/>}
                     onClick={() => {
-                        openFileDialog();
+                        captureReceiptFromCameraOrLibrary();
                     }}
                 />
                 <HomeCTA

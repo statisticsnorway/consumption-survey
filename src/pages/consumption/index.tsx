@@ -6,6 +6,7 @@ import PurchasesCTAGroup from '../../components/purchases/cta/PurchasesCTAGroup'
 import PurchaseCTA from '../../components/purchases/cta/PurchasesCTA';
 import { useRouter } from 'next/router';
 import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../../uiConfig';
+import useReceiptUpload from '../../hocs/useReceiptUpload';
 
 const PurchasesListNoSSR = dynamic(
     () => import('../../components/purchases/PurchasesList'),
@@ -16,6 +17,16 @@ const Consumption = () => {
     const router = useRouter();
     const {t: ht} = useTranslation('home');
     const {t} = useTranslation('expenses');
+
+    const onSuccessfulAdd = async (purchaseId) => {
+        console.log('receipt uploaded, redirecting', purchaseId);
+        await router.push(`${PATHS.CONSUMPTION}?highlight=${purchaseId}`);
+    };
+
+    const {hiddenUploadComponent, captureReceiptFromCameraOrLibrary} = useReceiptUpload(onSuccessfulAdd);
+
+    console.log('hiddenComponent', hiddenUploadComponent);
+
     return (
         <Workspace showFooter={true}>
             <PageTitle title={t('title')}/>
@@ -25,7 +36,7 @@ const Consumption = () => {
                     iconName={'Camera'}
                     text={ht('registerNew.fromReceipt')}
                     onClick={() => {
-                        router.push(addPurchasePath(ADD_PURCHASE_MODES.SCAN));
+                        captureReceiptFromCameraOrLibrary();
                     }}
                 />
                 <PurchaseCTA
@@ -43,7 +54,7 @@ const Consumption = () => {
                     }}
                 />
             </PurchasesCTAGroup>
-
+            {hiddenUploadComponent}
             <PurchasesListNoSSR />
         </Workspace>
     );
