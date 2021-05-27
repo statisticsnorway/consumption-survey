@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import { UploadTaskSnapshot } from '@firebase/storage-types'
@@ -31,8 +31,7 @@ const AddPurchase = ({onDate = null, mode = ADD_PURCHASE_MODES.SCAN}: AddPurchas
     // main state
     const [values, setValues] = useState<PurchaseType>(INIT_STATE(onDate || new Date().toISOString()));
 
-    // receipts UI
-    const [launchCamera, setLaunchCamera] = useState(mode === ADD_PURCHASE_MODES.SCAN);
+
 
     // receipts & purchases handling
     const {saveImageBlobToPouchDB, uploadToFireStorage, notifyReceipt} = useReceipts();
@@ -43,6 +42,17 @@ const AddPurchase = ({onDate = null, mode = ADD_PURCHASE_MODES.SCAN}: AddPurchas
      * ----------------------------- */
     const [showLoader, setShowLoader] = useState(false);
     const [loaderMessge, setLoaderMessage] = useState<string>(null);
+
+
+    // receipts UI
+    const inputRef = useRef(null);
+    const dummyBtn = useRef(null);
+    useLayoutEffect(() => {
+        console.log('mode', mode, mode === ADD_PURCHASE_MODES.SCAN);
+        if ((mode === ADD_PURCHASE_MODES.SCAN) && dummyBtn && dummyBtn.current) {
+            dummyBtn.current.click();
+        }
+    }, [mode]);
 
     const clearMessages = () => {
         setShowLoader(false);
@@ -65,7 +75,6 @@ const AddPurchase = ({onDate = null, mode = ADD_PURCHASE_MODES.SCAN}: AddPurchas
      */
     const onReceiptAdded = (imageName, image) => {
         console.log('[rcpt added]');
-        setLaunchCamera(false);
 
         showMessage(t('addPurchase.progress.saveImage'));
 
@@ -92,7 +101,6 @@ const AddPurchase = ({onDate = null, mode = ADD_PURCHASE_MODES.SCAN}: AddPurchas
     };
 
     const onCancel = () => {
-        setLaunchCamera(false);
         router.back();
     };
 
@@ -134,28 +142,46 @@ const AddPurchase = ({onDate = null, mode = ADD_PURCHASE_MODES.SCAN}: AddPurchas
                             })
                     })
             })
-    }
+    };
 
     const savePurchaseByReceipts = () => {
         savePurchaseByReceipt(values.receipts[0]);
-    }
+    };
+
+    const onFileChange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const image = e.target.files[0];
+            onReceiptAdded(image.name, image);
+        }
+    };
+
+    const onFileClick = (e) => {
+        console.log('file click called', e.target);
+    };
 
     return (
         <>
             {(mode === ADD_PURCHASE_MODES.SCAN) &&
             <>
-                <ScanReceiptBlock launchCamera={launchCamera} onReceiptAdded={onReceiptAdded}/>
+                <input
+                    id="receiptUpload"
+                    ref={inputRef}
+                    type="file"
+                    accept="image/*;capture=camera"
+                    onChange={onFileChange}
+                />
+                <button onClick={() => {inputRef.current.click(); }} ref={dummyBtn}>ABC</button>
                 {values.receipts && (values.receipts.length > 0) &&
-                    <button className={`ssb-btn primary-btn`} onClick={savePurchaseByReceipts}>
-                        Registrer utgift
-                    </button>
+                <button className={`ssb-btn primary-btn`} onClick={savePurchaseByReceipts}>
+                    Registrer utgift
+                </button>
                 }
             </>
             }
             {(mode === ADD_PURCHASE_MODES.MANUAL) &&
             <p>Manual</p>
             }
-            <FullscreenLoader show={showLoader} loaderMessage={loaderMessge}/>
+
         </>
     );
 };

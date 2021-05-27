@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Camera } from 'react-feather';
 import MediaInput from '../../common/media/MediaInput';
@@ -10,11 +10,19 @@ export type ScanReceiptBlockProps = {
     onReceiptAdded: (imageName: string, imageBlob: Blob) => void;
 }
 
-const ScanReceiptBlock = ({launchCamera, onReceiptAdded}) => {
+const ScanReceiptBlock = ({launchCamera = true, onReceiptAdded}: ScanReceiptBlockProps) => {
     const {t} = useTranslation('purchases');
 
     const receiptRef = useRef<HTMLInputElement>();
     const [receiptName, setReceiptName] = useState<string>(null);
+
+    const addReceiptButtonRef = useRef<HTMLButtonElement>();
+    useEffect(() => {
+        if (launchCamera) {
+            console.log('launching camera');
+            addReceiptButtonRef.current.click();
+        }
+    }, []);
 
     const handleFileSelect = (imageName, imageBlob) => {
         setReceiptName(imageName);
@@ -31,15 +39,16 @@ const ScanReceiptBlock = ({launchCamera, onReceiptAdded}) => {
                     handleFileSelect={handleFileSelect}
                     launchCamera={launchCamera}
                 />
-                <div
+                <button
                     className={styles.addReceiptBlock}
+                    ref={addReceiptButtonRef}
                     onClick={() => {
                         receiptRef.current && receiptRef.current.click();
                     }}
                 >
                     <Camera className={styles.icon}/>
                     <span className={styles.text}>{t('addPurchase.addReceipt')}</span>
-                </div>
+                </button>
             </>
             }
             {!launchCamera && receiptName && <p>{receiptName}</p>}

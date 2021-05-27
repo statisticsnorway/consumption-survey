@@ -1,6 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight } from 'react-feather';
+import uuid from 'uuid';
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
 import { UserContext } from '../contexts';
@@ -16,6 +17,7 @@ import HomeCTAButtonGroup from '../components/home/homeCTA/HomeCTAButtonGroup';
 import styles from './styles/home.module.scss';
 import { useRouter } from 'next/router';
 import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../uiConfig';
+import useReceiptUpload from '../hocs/useReceiptUpload';
 
 const dateMonth = (dateStr) => {
     const date = notEmptyString(dateStr) ? new Date(dateStr) : new Date();
@@ -34,6 +36,15 @@ const Home = () => {
     const [firstName,] = name.split(',');
     const greeting = `Hei ${capitalizeString(firstName)}`;
 
+    const onSuccessfulAdd = async (purchaseId) => {
+        console.log('receipt uploaded, redirecting', purchaseId);
+        await router.push(`${PATHS.CONSUMPTION}?highlight=${purchaseId}`);
+    };
+
+    const {hiddenUploadComponent, openFileDialog} = useReceiptUpload(onSuccessfulAdd);
+
+    console.log('hiddenComponent', hiddenUploadComponent);
+
     return (
         <Workspace showFooter={true}>
             <PageTitle title={greeting} subText={subText}/>
@@ -42,7 +53,7 @@ const Home = () => {
                     text={t('registerNew.fromReceipt')}
                     iconComponent={<ScanReceiptIcon/>}
                     onClick={() => {
-                        router.push(addPurchasePath(ADD_PURCHASE_MODES.SCAN));
+                        openFileDialog();
                     }}
                 />
                 <HomeCTA
@@ -69,6 +80,7 @@ const Home = () => {
                     iconPosition={IconPosition.AFTER}
                 />
             </HomeCTAButtonGroup>
+            {hiddenUploadComponent}
         </Workspace>
     );
 };

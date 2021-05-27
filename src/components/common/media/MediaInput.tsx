@@ -7,7 +7,7 @@ export type MediaInputProps = {
     launchCamera?: boolean;
 };
 
-const MediaInput = ({ inputRef, handleFileSelect, launchCamera = true, accept = 'image/*;capture=camera'}: MediaInputProps) => {
+const MediaInput = ({inputRef, handleFileSelect, launchCamera = true, accept = 'image/*;capture=camera'}: MediaInputProps) => {
     useEffect(() => {
         console.log('MI porps', launchCamera, inputRef, inputRef?.current)
         if (launchCamera && inputRef && inputRef.current) {
@@ -23,14 +23,17 @@ const MediaInput = ({ inputRef, handleFileSelect, launchCamera = true, accept = 
     };
 
     return (
-        <input
-            id="receiptUpload"
-            ref={inputRef}
-            type="file"
-            accept={accept}
-            style={{display: 'none'}}
-            onChange={onChange}
-        />
+        <>
+            <p>LC: {launchCamera}</p>
+            <input
+                id="receiptUpload"
+                ref={inputRef}
+                type="file"
+                accept={accept}
+                style={{display: 'none'}}
+                onChange={onChange}
+            />
+        </>
     );
 };
 
