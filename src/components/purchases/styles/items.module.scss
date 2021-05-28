@@ -1,4 +1,4 @@
-@import '../../../styles/colours';
+@import 'src/styles/mixins';
 
 .items {
   display: flex;
@@ -32,7 +32,7 @@
 
     .itemName {
       text-align: left;
-      padding: 0.75rem 0;
+      padding: 0.25rem 0;
     }
 
     .itemQtyGroup {
@@ -44,23 +44,37 @@
       text-align: right;
     }
 
-    .addNewRow {
-      td {
-        border-bottom: 0;
-        color: $ssb-green-4;
-        font-weight: 700;
-        font-family: "Roboto";
-        padding-bottom: 1rem;
+    td.addNewRow {
+      border-bottom: 0;
+      background-color: $ssb-green-1;
+      color: $ssb-green-4;
+      font-weight: 700;
+      font-family: "Roboto";
 
-        display: flex;
-        align-items: center;
+      display: flex;
+      align-items: center;
 
-        .icon {
-          width: 20px;
-          height: 20px;
-          margin-left: 0.25rem;
-        }
+      padding: 0.25rem;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 0.25rem;
       }
+
+      .text {
+        @include roboto();
+        color: $ssb-dark-6;
+        font-weight: 400;
+      }
+
+      .icon + .text {
+        margin: 0.5rem;
+      }
+    }
+
+    td.addNewRowEmptyCol {
+      background-color: $ssb-green-1;
     }
 
     .totalRow {

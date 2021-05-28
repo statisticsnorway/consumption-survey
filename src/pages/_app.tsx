@@ -13,11 +13,12 @@ import ProtectedRoute from '../components/auth/ProtectedRoute';
 import UserProvider from '../firebase/UserProvider';
 import Loader from '../components/common/Loader';
 import PurchasesProvider from '../firebase/PurchasesProvider';
-import {applyMiddleware, createStore, Store} from "redux";
-import reducer, {QuestionState} from "../store/reducers/questionReducer";
-import {DispatchType, QuestionAction} from "../store/actionCreators";
-import thunk from "redux-thunk"
-import {Provider} from "react-redux";
+import { applyMiddleware, createStore, Store } from 'redux';
+import reducer, { QuestionState } from '../store/reducers/questionReducer';
+import { DispatchType, QuestionAction } from '../store/actionCreators';
+import thunk from 'redux-thunk'
+import { Provider } from 'react-redux';
+import SearchTermsProvider from '../firebase/SearchTermsProvider';
 
 const store: Store<QuestionState, QuestionAction> & {
     dispatch: DispatchType
@@ -55,17 +56,19 @@ const MyApp = ({Component, pageProps}) => {
     try {
         return firebaseConfig ? (
             <FireProvider config={firebaseConfig}>
-              <Provider store={store}>
-                <UserProvider>
-                    <PurchasesProvider>
-                    {getLayout(
-                        <ProtectedRoute>
-                            <Component {...pageProps} />
-                        </ProtectedRoute>
-                    )}
-                    </PurchasesProvider>
-                </UserProvider>
-              </Provider>
+                <Provider store={store}>
+                    <UserProvider>
+                        <SearchTermsProvider>
+                            <PurchasesProvider>
+                                {getLayout(
+                                    <ProtectedRoute>
+                                        <Component {...pageProps} />
+                                    </ProtectedRoute>
+                                )}
+                            </PurchasesProvider>
+                        </SearchTermsProvider>
+                    </UserProvider>
+                </Provider>
             </FireProvider>
         ) : <Loader/>;
     } catch (err) {

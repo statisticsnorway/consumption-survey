@@ -3,9 +3,7 @@ import Workspace from '../../layout/workspace/Workspace';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
 import usePurchases from '../../../hocs/usePurchases';
-import { PurchaseStatus, PurchaseType, ReceiptInfo } from '../../../firebase/model/Purchase';
-
-import styles from './editPurchase.module.scss'
+import { ItemType, PurchaseStatus, PurchaseType, ReceiptInfo } from '../../../firebase/model/Purchase';
 import { OpHeader } from '../../layout/header/Header';
 import PurchaseMeta from './PurchaseMeta';
 import ItemsTable from './ItemsTable';
@@ -14,6 +12,9 @@ import { LayoutContext } from '../../../uiContexts';
 import { MessagePanelType } from '../../common/blocks/MessagePanel';
 import DeletePurchaseDialog from '../support/DeletePurchaseDialog';
 import { PATHS } from '../../../uiConfig';
+import { krCents } from '../../../utils/jsUtils';
+
+import styles from '../styles/editPurchase.module.scss'
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -59,7 +60,6 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 initializeReceiptPreview(receipts[0]);
             }
 
-            initializeLineItems(items);
             initializeCTAComp();
         }
     }, [values]);
@@ -74,6 +74,66 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             ...change,
         });
         setDirty(true);
+    };
+
+    const computeTotal = (items) =>
+        items.reduce((acc, item) =>
+            acc + (Number(item.amount)* Number(item.qty)), 0);
+
+    const removeItem = (item) => {
+        const {idx, id} = item;
+        const {items: orig} = values;
+        const items = orig.filter(it =>
+                it.id ? (it.id !== id) : (it.idx !== idx));
+
+        const amount = computeTotal(items);
+
+        onUpdate({ items, amount });
+    };
+
+    const onItemQtyChange = (item: ItemType, newQty: number) => {
+        if (newQty === 0) {
+            console.log('item will be removed');
+            removeItem(item);
+        } else {
+            const items = values.items.map(i => {
+                const match = (x) =>
+                    x.id ? x.id === item.id : x.idx === item.idx;
+
+                return match(i) ? {...i, qty: `${newQty}`} : i;
+            });
+
+            const amount = computeTotal(items);
+
+            onUpdate({items, amount})
+        }
+    };
+
+    const onItemUpdate = (oldValues: ItemType, newValues: ItemType) => {
+        console.log(oldValues, '=>', newValues);
+
+        const items = values.items.map(i => {
+            const match = (x) =>
+                x.id ? x.id === oldValues.id : x.idx === oldValues.idx;
+
+            return match(i) ? newValues : i;
+        });
+
+        const amount = computeTotal(items);
+
+        onUpdate({ items, amount });
+    };
+
+    const onItemAdd = (newItem: ItemType) => {
+        const items = [
+            ...values.items,
+            {...newItem, idx: values.items.length},
+        ];
+
+        onUpdate({
+            items,
+            amount: computeTotal(items)
+        });
     };
 
     const initializeHeader = () => {
@@ -113,12 +173,6 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 />
             </div>
         )
-    };
-
-    const initializeLineItems = (lineItems) => {
-        setLineItemsComp(
-            <ItemsTable items={lineItems}/>
-        );
     };
 
     const validateAllFields = () => {
@@ -192,7 +246,6 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const [headerComp, setHeaderComp] = useState<ReactNode>();
     const [receiptPreviewComp, setReceiptPreviewComp] = useState<ReactNode>();
     const [purchaseMetaComp, setPurchaseMetaComp] = useState<ReactNode>();
-    const [lineItemsComp, setLineItemsComp] = useState<ReactNode>();
     const [editPurchaseCTAComp, setEditPurchaseCTAComp] = useState<ReactNode>();
 
     console.log('current', values);
@@ -212,7 +265,13 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     }}
                 />
                 {purchaseMetaComp}
-                {lineItemsComp}
+                <ItemsTable
+                    items={values.items}
+                    ocrTotal={krCents(values.amount)}
+                    onItemQtyChange={onItemQtyChange}
+                    onItemUpdate={onItemUpdate}
+                    onNewItem={onItemAdd}
+                />
                 {editPurchaseCTAComp}
             </div>
             <DeletePurchaseDialog
@@ -232,7 +291,9 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         showMessagePanel(MessagePanelType.ERROR, msg + ' ' + err, false);
                     }
                 }}
-                onCancel={() => { setShowPurchaseDeleteConfirm(false); }}
+                onCancel={() => {
+                    setShowPurchaseDeleteConfirm(false);
+                }}
             />
         </Workspace>
     ) : null;
