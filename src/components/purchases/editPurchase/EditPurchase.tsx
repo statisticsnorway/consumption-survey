@@ -12,6 +12,8 @@ import ItemsTable from './ItemsTable';
 import ReceiptPopup from '../../receipts/ReceiptPopup';
 import { LayoutContext } from '../../../uiContexts';
 import { MessagePanelType } from '../../common/blocks/MessagePanel';
+import DeletePurchaseDialog from '../support/DeletePurchaseDialog';
+import { PATHS } from '../../../uiConfig';
 
 export type EditPurchaseProps = {
     purchaseId: string;
@@ -23,7 +25,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     const {t: ct} = useTranslation('common');
     const {t: ht} = useTranslation('home');
 
-    const {purchases, editPurchase} = usePurchases();
+    const {purchases, editPurchase, deletePurchase} = usePurchases();
     const [purchase, setPurchase] = useState<PurchaseType>();
 
     const [values, setValues] = useState<PurchaseType>();
@@ -31,6 +33,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
     const [showReceiptPopup, setShowReceiptPopup] = useState(false);
     const {showMessagePanel, hideMessagePanel} = useContext(LayoutContext);
+    const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>(false);
 
     useEffect(() => {
         if (purchaseId) {
@@ -80,7 +83,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 action={{
                     title: t('editPurchase.delete'),
                     onClick: () => {
-                        console.log('deleeting', purchaseId);
+                        setShowPurchaseDeleteConfirm(true);
                     }
                 }}
             />
@@ -212,6 +215,25 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 {lineItemsComp}
                 {editPurchaseCTAComp}
             </div>
+            <DeletePurchaseDialog
+                purchase={purchase}
+                show={showPurchaseDeleteConfirm}
+                onConfirm={() => {
+                    try {
+                        deletePurchase(values)
+                            .then(() => {
+                                console.log('purchase deleted', values.id);
+                                setShowPurchaseDeleteConfirm(false);
+                                router.push(PATHS.CONSUMPTION);
+                            });
+                    } catch (err) {
+                        const msg = t('deletePurchase.error');
+                        console.log(msg, err);
+                        showMessagePanel(MessagePanelType.ERROR, msg + ' ' + err, false);
+                    }
+                }}
+                onCancel={() => { setShowPurchaseDeleteConfirm(false); }}
+            />
         </Workspace>
     ) : null;
 };
