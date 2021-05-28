@@ -64,7 +64,7 @@ export const QuestionOverview = (
                 </p>
             </div>
             {contentList.filter(c => c.isDoneWithSection).length === sections.length && (
-                <div>
+                <div className={`padding-tp-bm-15px`}>
                     <Button primary onClick={(event: React.MouseEvent<HTMLElement>) => {
                         event.preventDefault()
                         onFinishedClicked()
