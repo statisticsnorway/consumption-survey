@@ -1,7 +1,8 @@
 @import '@statisticsnorway/ssb-component-library/src/main.scss';
 
 @import 'common';
-// @import 'vendor';
+@import 'vendors/material';
+@import 'vendors/daypicker';
 
 body {
   -moz-osx-font-smoothing: grayscale;
@@ -76,4 +77,24 @@ p {
 .ocrStatus_OCR_ERROR,
 .ocrStatus_OCR_UPLOAD_FAILED {
   color: $ssb-red-4;
+}
+
+.messagePanel--success {
+  background-color: $ssb-green-1;
+  color: $ssb-green-4;
+}
+
+.messagePanel--error {
+  background-color: $ssb-red-1;
+  color: $ssb-red-3;
+}
+
+.messagePanel--info {
+  background-color: lightblue;
+  color: $ssb-blue-3;
+}
+
+.messagePanel--warning {
+  background-color: $ssb-red-1;
+  color: $ssb-dark-4;
 }

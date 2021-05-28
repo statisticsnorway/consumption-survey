@@ -72,6 +72,7 @@ export const formatDate = (date, fmt) =>
 
 export const simpleFormat = (date, fmt = SIMPLE_DATE_FORMAT) => {
     console.log('trying to format', date, typeof date);
+    if (!date) { return null; }
     return formatDate(sanitizeDate(date), fmt);
 }
 

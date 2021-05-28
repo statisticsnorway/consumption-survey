@@ -101,9 +101,11 @@ const useReceipts = () => {
 
         const att = attachmens[name];
         return {
-            id,
-            name,
+            imageId: id,
+            imageName: name,
+            contentType: att.content_type,
             ...att,
+            status: ReceiptStatus.COMPLETE,
             previewUrl: `data:${att.content_type};base64, ${att.data}`,
         };
     };

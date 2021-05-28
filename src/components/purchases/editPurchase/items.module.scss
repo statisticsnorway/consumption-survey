@@ -21,6 +21,8 @@
     th {
       border-bottom: 1px solid $ssb-dark-5;
       font-size: 0.875rem;
+
+      padding: 0 !important;
     }
 
     td {
@@ -30,6 +32,7 @@
 
     .itemName {
       text-align: left;
+      padding: 0.75rem 0;
     }
 
     .itemQtyGroup {

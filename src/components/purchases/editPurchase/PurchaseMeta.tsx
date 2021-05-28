@@ -1,15 +1,43 @@
-import styles from './editPurchase.module.scss';
 import { simpleFormat } from '../../../utils/dateUtils';
+
+import styles from './editPurchase.module.scss';
+import LabelledInput from '../../common/form/LabelledInput';
+import { useTranslation } from 'react-i18next';
+import { notEmptyString } from '../../../utils/jsUtils';
+import LabelledDatePicker from '../../common/form/LabelledDatePicker';
 
 export type PurchaseMetaProps = {
     purchaseDate?: string;
+    registeredTime: string;
     name?: string;
+    onUpdate: (object) => void;
 }
-const PurchaseMeta = ({ purchaseDate, name }: PurchaseMetaProps) => {
+const PurchaseMeta = ({purchaseDate, registeredTime, name, onUpdate}: PurchaseMetaProps) => {
+    const {t} = useTranslation('purchases');
+
+    const handleUpdate = (key) => (value) => {
+        onUpdate({ [key]: value})
+    };
+
     return (
         <>
-            <span className={styles.purchaseDate}>{simpleFormat(new Date(purchaseDate))}</span>
-            <span className={styles.name}>{name}</span>
+            <LabelledDatePicker
+                id="purchaseDate"
+                label={t('addPurchase.purchaseDate.label')}
+                value={purchaseDate}
+                validate={(dt) => dt && dt !== registeredTime}
+                errorText={t('addPurchase.purchaseDate.error')}
+                onChange={handleUpdate('purchaseDate')}
+            />
+            <LabelledInput
+                id="name"
+                label={t('addPurchase.purchaseName.label')}
+                value={name}
+                validate={nm => notEmptyString(nm) && (nm !== '??')}
+                errorText={t('addPurchase.purchaseName.errorText')}
+                onChange={handleUpdate('name')}
+                styleClass={styles.name}
+            />
         </>
     );
 };

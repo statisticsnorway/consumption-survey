@@ -1,0 +1,59 @@
+@import '../mixins';
+
+// ** Fields --------------------------------
+.MuiInput-root {
+  padding: 0.5rem 1.25rem !important;
+}
+
+.MuiInput-underline:before {
+  border-bottom-color: $ssb-dark-2 !important;
+}
+
+// ** Errors --------------------------------
+
+@mixin errorText {
+  background-color: $ssb-red-3 !important;
+  color: $ssb-white !important;
+  text-align: center;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  @include errorText();
+
+  padding: 0.5rem 1.25rem;
+  margin-top: 0.5rem;
+  text-align: center;
+
+  p {
+    color: $ssb-white !important;
+  }
+
+  /**
+   * arrow styling
+   */
+  display: block;
+  position: relative;
+  border: 1px solid $ssb-red-3;
+}
+
+.MuiFormHelperText-root.Mui-error:before,
+.MuiFormHelperText-root.Mui-error:after {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 100%;
+  width: 0;
+  height: 0;
+}
+
+.MuiFormHelperText-root.Mui-error:before {
+  left: 50%;
+  border: 0.5rem solid transparent;
+  border-bottom-color: $ssb-red-3;
+}
+
+.MuiFormHelperText-root.Mui-error:after {
+  left: 50%;
+  border: 0.5rem solid transparent;
+  border-bottom-color: $ssb-red-3;
+}

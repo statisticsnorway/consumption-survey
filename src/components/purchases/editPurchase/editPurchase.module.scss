@@ -52,4 +52,17 @@
   .purchaseMeta + .items {
     margin-top: 2.5rem;
   }
+
+  .editPurchaseCTA {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    padding: 0 1.25rem;
+
+    .saveButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 }

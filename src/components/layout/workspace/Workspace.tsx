@@ -7,6 +7,7 @@ import { VersionUpdateSnackbar } from '../../common/dialog/Snackbar';
 import layoutStyles from '../layout.module.scss';
 import styles from './workspace.module.scss';
 import { LayoutContext } from '../../../uiContexts';
+import MessagePanel from '../../common/blocks/MessagePanel';
 
 export type WorkspaceProps = {
     children?: ReactNode | ReactNodeArray | ReactElement;
@@ -28,7 +29,13 @@ const Workspace = ({
                        styleClass = '',
                    }: WorkspaceProps) => {
     const router = useRouter();
-    const {showUpdateSnackbar} = useContext(LayoutContext);
+    const {
+        showUpdateSnackbar,
+        messagePanelVisible,
+        messagePanelType,
+        messagePanelMsg,
+        messagePanelAutoDisappear,
+    } = useContext(LayoutContext);
 
     return (
         <>
@@ -36,6 +43,12 @@ const Workspace = ({
             <div className={layoutStyles.workspaceZone}>
                 <div className={`${styles.workspace} ${styleClass}`} style={style}>
                     <VersionUpdateSnackbar open={showUpdateSnackbar}/>
+                    <MessagePanel
+                        show={messagePanelVisible}
+                        type={messagePanelType}
+                        message={messagePanelMsg}
+                        autoDisappear={messagePanelAutoDisappear}
+                    />
                     {children}
                 </div>
             </div>

@@ -50,11 +50,11 @@ export const listDayDate = (date, styles) => {
 export const getPurchaseName = (purchase) => {
     return notEmptyString(purchase.name) ? (
         <span className={styles.purchaseEntryName}>{purchase.name}</span>
-    ) : (
+    ) : null /* (
         <span className={`${styles.purchaseEntryName} ${styles.temporaryPurchaseName}`}>
             ({(purchase.items && purchase.items[0] && purchase.items[0].name) || '??'})
         </span>
-    );
+    )*/;
 };
 
 export const ERROR_CASES = [
@@ -96,26 +96,28 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
                     const errorItems = Object.keys(errors)
                         .find(item => errors[item] === 'error');
 
-                    if (errorItems && errorItems.length > 0) {
-                        editPurchase(purchase.id, {
-                            status: PurchaseStatus.OCR_PENDING_USER_APPROVAL,
-                        }).then(()=> {
-                            console.log('purchase moved to pending approval due to errors', errors);
-                        }).catch(err => {
-                            console.log('could not updated pending approval status on purchase', purchase, err);
-                        });
-                    } else {
-                        editPurchase(purchase.id, {
-                            ...extracted,
-                            status: PurchaseStatus.COMPLETE,
+                    const needsApproval = (errorItems && errorItems.length > 0);
+                    const newStatus = needsApproval
+                        ? PurchaseStatus.OCR_PENDING_USER_APPROVAL
+                        : PurchaseStatus.COMPLETE;
+
+                    editPurchase(purchase.id, {
+                        ...extracted,
+                        status: newStatus,
+                    })
+                        .then(() => {
+                            const msg = needsApproval
+                                ? 'purchase moved to pending approval due to errors'
+                                : 'purchase updated with new values (complete)';
+                            console.log(msg, errors);
                         })
-                            .then(() => {
-                                console.log('purchase updated with new values (complete)');
-                            })
-                            .catch(err => {
-                                console.log('could not updated complete status on purchase', purchase, err);
-                            });
-                    }
+                        .catch(err => {
+                            const msg = needsApproval
+                                ? 'could not updated pending approval status on purchase'
+                                : 'could not updated complete status on purchase';
+
+                            console.log(msg, purchase, err, errors);
+                        });
                 }
             });
         }
@@ -225,6 +227,7 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
 
     return (purchases && purchasesByDate) ? (
         <div className={styles.purchasesList}>
+            {(errorCases.length > 0) && makeListing(errorCases)}
             {(waitingApproval.length > 0) && makeListing(waitingApproval)}
             {(beingScanned.length > 0) && makeListing(beingScanned)}
             {dfdComp}

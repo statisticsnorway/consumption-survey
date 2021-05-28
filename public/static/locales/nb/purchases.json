@@ -34,6 +34,7 @@
     "total": "Sum",
     "cancel": "Avbryt",
     "save": "Lagre",
+    "approveChanges": "OK, det ser bra ut",
     "saveByReceipt": "Start skanning",
     "addReceipt": "Legge til kvittering",
     "fromReceipt": "Les kvittering med kamera",
@@ -55,7 +56,8 @@
     },
     "purchaseName": {
       "label": "Butikk/sted",
-      "placeholder": "Butikk/sted"
+      "placeholder": "Butikk/sted",
+      "errorText": "Vennligst oppgi butikk/sted"
     },
     "addNewItem": {
       "leaderText": "Legg til varer ved å skanne en kvittering eller manuelt nedenfor",
@@ -94,7 +96,9 @@
   "editPurchase": {
     "title": "Rediger kjøp",
     "delete": "Slett",
-    "scannedReceipt": "Skannet kvittering"
+    "scannedReceipt": "Skannet kvittering",
+    "saveSuccess": "Lagring av kjøp vellykket",
+    "saveError": "Kunne ikke lagre kjøpet"
   },
   "deleteItem": {
     "title": "Slett vare ?",
