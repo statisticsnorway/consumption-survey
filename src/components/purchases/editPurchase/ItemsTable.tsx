@@ -1,22 +1,50 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import NumberStepper from '../../common/form/NumberStepper';
+import EditItem from './EditItem';
 import { PlusCircle } from 'react-feather';
 import { ItemType } from '../../../firebase/model/Purchase';
-import NumberStepper from '../../common/form/NumberStepper';
 import { krCents } from '../../../utils/jsUtils';
 
-import styles from './items.module.scss';
+import styles from '../styles/items.module.scss';
 
 export type ItemsTableProps = {
     items: ItemType[];
     showTotal?: boolean;
     ocrTotal?: string;
     showAddNewItem?: boolean;
+    onItemQtyChange: (item: ItemType, newValue: number) => void;
+    onItemUpdate: (oldValues: ItemType, newValues: ItemType) => void;
+    onNewItem: (values: ItemType) => void;
 }
 
-const ItemsTable = ({items, ocrTotal = null, showTotal = true, showAddNewItem = true}: ItemsTableProps) => {
+const INIT_STATE: ItemType = {
+    id: null,
+    idx: -1,
+    name: '',
+    qty: '1',
+    units: 'stk',
+    amount: '',
+    code: null,
+    searchTermId: null,
+};
+
+const ItemsTable = ({
+                        items,
+                        ocrTotal,
+                        onItemQtyChange,
+                        onItemUpdate,
+                        showAddNewItem = true,
+                        onNewItem,
+                        showTotal = true
+                    }: ItemsTableProps) => {
     const {t} = useTranslation('purchases');
     const [totalAmount, setTotalAmount] = useState<number>(0);
+
+    const [showEditItem, setShowEditItem] = useState(false);
+    const [itemForEdit, setItemForEdit] = useState<ItemType>(null);
+    const [newItem, setNewItem] = useState<ItemType>(INIT_STATE);
+    const [showNewItem, setShowNewItem] = useState(false);
 
     useEffect(() => {
         if (items) {
@@ -25,6 +53,39 @@ const ItemsTable = ({items, ocrTotal = null, showTotal = true, showAddNewItem = 
             setTotalAmount(total);
         }
     }, [items]);
+
+    const onItemRowClick = (item) => {
+        console.log('should show item', item);
+        setItemForEdit(item);
+        setShowEditItem(true);
+    };
+
+    const onItemUpdated = (oldValues, newValues) => {
+        console.log(oldValues, '=>', newValues);
+        onItemUpdate(oldValues, newValues);
+    };
+
+    const clearNewItem = () => {
+        setShowNewItem(false);
+        setNewItem(INIT_STATE);
+    };
+
+    const onNewItemUpdated = (oldValues, newValues) => {
+        console.log('new Item', newValues);
+        clearNewItem();
+        onNewItem(newValues);
+    };
+
+    const onItemEditCancel = () => {
+        setShowEditItem(false);
+        setItemForEdit(null);
+    };
+
+    const onNewItemCancel = () => {
+        clearNewItem();
+    };
+
+    console.log('new item flag', showNewItem);
 
     return (
         <div className={styles.items}>
@@ -45,6 +106,7 @@ const ItemsTable = ({items, ocrTotal = null, showTotal = true, showAddNewItem = 
                         <td
                             className={styles.itemName}
                             onClick={() => {
+                                onItemRowClick(item);
                             }}
                         >
                             {item.name}
@@ -53,7 +115,7 @@ const ItemsTable = ({items, ocrTotal = null, showTotal = true, showAddNewItem = 
                             <NumberStepper
                                 initialValue={Number(item.qty)}
                                 onChange={(newValue) => {
-                                    // onItemQtyChange(item, newValue);
+                                    onItemQtyChange(item, newValue);
                                 }}
                                 min={1}
                                 deleteConfirmProps={{
@@ -69,7 +131,7 @@ const ItemsTable = ({items, ocrTotal = null, showTotal = true, showAddNewItem = 
                         <td
                             className={styles.unitPrice}
                             onClick={() => {
-                                // onItemRowClick(item);
+                                onItemRowClick(item);
                             }}
                         >
                             {krCents(item.amount)}
@@ -77,17 +139,18 @@ const ItemsTable = ({items, ocrTotal = null, showTotal = true, showAddNewItem = 
                     </tr>
                 ))}
                 {showAddNewItem &&
-                <tr className={styles.addNewRow}>
-                    <td
-                        colSpan={3}
+                <tr>
+                    <td className={styles.addNewRow}
                         onClick={() => {
                             console.log('toggling new item flag');
-                            // setShowNewItem(true);
+                            setShowNewItem(true);
                         }}
                     >
-                        {t('lineItems.addNew')}
                         <PlusCircle className={styles.icon}/>
+                        <span className={styles.text}>{t('lineItems.addNew')}</span>
                     </td>
+                    <td className={styles.addNewRowEmptyCol} />
+                    <td className={styles.addNewRowEmptyCol} />
                 </tr>
                 }
                 {items && showTotal &&
@@ -99,6 +162,8 @@ const ItemsTable = ({items, ocrTotal = null, showTotal = true, showAddNewItem = 
                 }
                 </tbody>
             </table>
+            <EditItem item={itemForEdit} show={showEditItem} onUpdate={onItemUpdated} onCancel={onItemEditCancel}/>
+            <EditItem item={newItem} show={showNewItem} onUpdate={onNewItemUpdated} onCancel={onNewItemCancel}/>
         </div>
     );
 };

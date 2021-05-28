@@ -28,7 +28,7 @@ export const extractPurchaseInfo = (ocrResults: OcrResults, registeredTime: stri
     const {line_items, date, vendor, total} = receiptInfo;
 
     const purchase = {
-        name: vendor.name || vendor.raw_name || '??',
+        name: vendor.name || vendor.raw_name || null,
         purchaseDate: date ? parseDate(date, OCR_DATE_FORMAT).toISOString() : registeredTime,
         amount: total,
         items: extractItems(line_items),

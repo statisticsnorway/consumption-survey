@@ -1,0 +1,19 @@
+@import '../../../styles/mixins';
+
+.labelledInput {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+
+  .label {
+    @include fieldLabel();
+  }
+
+  .input {
+    background-color: $ssb-dark-1;
+  }
+
+  .label + .input {
+    margin-top: 0.25rem;
+  }
+}
