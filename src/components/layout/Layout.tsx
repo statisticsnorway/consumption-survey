@@ -5,6 +5,7 @@ import { LayoutContext } from '../../uiContexts';
 
 import styles from './layout.module.scss';
 import FullscreenLoader from '../common/FullScreenLoader';
+import { MessagePanelType } from '../common/blocks/MessagePanel';
 
 export type LayoutProps = {
     children?: ReactNode | ReactNodeArray | ReactElement;
@@ -15,21 +16,47 @@ const FULL_SCREEN_INIT_STATE = {
     msg: '',
 };
 
+const MESSAGE_PANEL_INIT_STATE = {
+    show: false,
+    type: MessagePanelType.NONE,
+    msg: '',
+    autoDisappear: true,
+};
+
 const Layout = ({children}: LayoutProps) => {
     const {showUpdateSnackbar} = useServiceWorkerHelper();
     const [fullScreenLoaderState, setFullScreenLoaderState] = useState(FULL_SCREEN_INIT_STATE);
+    const [msgPanelState, setMsgPanelState] = useState(MESSAGE_PANEL_INIT_STATE);
 
     const showMessage = async (msg) => {
         setFullScreenLoaderState({ show: true, msg });
     };
 
     const clearMessages = async () => {
-        setFullScreenLoaderState({ show: false, msg: ''});
+        setFullScreenLoaderState(FULL_SCREEN_INIT_STATE);
+    };
+
+    const showMessagePanel = async (type, msg, autoDisappear = true) => {
+        setMsgPanelState({
+            show: true,
+            type,
+            msg,
+            autoDisappear,
+        });
+    };
+
+    const hideMessagePanel = async () => {
+        setMsgPanelState(MESSAGE_PANEL_INIT_STATE);
     };
 
     const contextValues = {
         showUpdateSnackbar,
         showMessage, clearMessages,
+        messagePanelVisible: msgPanelState.show,
+        messagePanelType: msgPanelState.type,
+        messagePanelMsg: msgPanelState.msg,
+        messagePanelAutoDisappear: msgPanelState.autoDisappear,
+        showMessagePanel, hideMessagePanel,
     };
 
     return (

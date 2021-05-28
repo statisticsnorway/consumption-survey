@@ -1,0 +1,180 @@
+@import '../common';
+
+/* Datepicker */
+.DayPicker {
+  background-color: transparent;
+  /* border: 1px solid #C3DCDC; */
+  /* #62919A; $ssb-dark-3 */
+  width: 100%;
+}
+
+.DayPicker-wrapper {
+  padding-bottom: 0 !important;
+}
+
+.DayPicker-NavButton--next {
+  right: 0 !important;
+}
+
+.DayPicker-NavButton--prev {
+  left: 0 !important;
+}
+
+.DayPicker-Month {
+  /*
+  width: 100% !important;
+  margin: 1rem 0 0 !important;
+  */
+  padding: 1rem !important;
+}
+
+.DayPicker-Caption {
+  div {
+    font-weight: bold;
+    font-family: "Roboto Condensed";
+    color: $ssb-dark-3;
+  }
+}
+
+/** workaround: the display is set to table-header-group, so padding/margin will not work */
+.DayPicker-Weekdays {
+  border-bottom: 0.5rem solid #fff;
+}
+
+.DayPicker-Weekday {
+  background-color: $ssb-dark-1;
+  width: 1.5rem;
+  padding: 0.25rem;
+  text-align: center;
+  display: inline-block;
+}
+
+.DayPicker-Day {
+  border-radius: 0px !important;
+  text-align: center;
+  display: inline-block;
+
+  div, a {
+    padding: 0.25rem;
+    border-radius: 50%;
+    width: 1.25rem;
+    line-height: 1.25rem;
+    display: inline-block;
+    margin: 0 auto;
+
+    color: $ssb-dark-3;
+    font-size: 1rem;
+    font-family: "Open Sans";
+  }
+}
+
+.DayPicker-Day, .DayPicker-WeekNumber {
+  width: 1.5rem;
+  padding: 0.25rem;
+}
+
+.DayPicker-Day--today {
+  div, a {
+    color: $ssb-green-4;
+    background-color: #FFF;
+    font-weight: bold;
+    border: 1px dashed $ssb-green-4;
+  }
+}
+
+.DayPicker-Day--selected {
+  div {
+    background-color: #00824D !important;
+  }
+}
+
+$survey-bg-color: $ssb-dark-1; /* rgba(236, 254, 237, .5); // #ECFEED; */
+
+.DayPicker-Day--surveyPeriod,
+.DayPicker-Day--surveyPeriod {
+  background-color: $survey-bg-color;
+
+  a, div {
+    color: #000;
+    font-weight: bold;
+  }
+}
+
+.DayPicker-Day--withEntries {
+  background-color: $survey-bg-color !important;
+
+  a, div {
+    background-color: $ssb-green-3 !important;
+    color: white !important;
+    font-weight: bold;
+    font-family: "Roboto Condensed";
+  }
+}
+
+.DayPicker-Day--surveyPeriodFirstDay {
+  background-color: $survey-bg-color;
+  border-top-left-radius: 50% !important;
+  border-bottom-left-radius: 50% !important;
+}
+
+.DayPicker-Day--surveyPeriodLastDay {
+  background-color: $survey-bg-color;
+  border-top-right-radius: 50% !important;
+  border-bottom-right-radius: 50% !important;
+}
+
+.DayPicker-Day--missingStretch {
+  div {
+    background-color: rgba(255, 204, 204, .25); /* #FFCCCC; */
+    color: #ED5935;
+    font-weight: bold;
+  }
+}
+
+.DayPicker-NavButton {
+  margin-top: 0.5rem;
+}
+
+.DayPicker-Caption,
+.DayPicker-Caption a {
+  text-align: center !important;
+  background-color: #fff;
+  padding: 0.25rem;
+}
+
+
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):not(.DayPicker-Day--surveyPeriod) {
+  /* background-color: transparent; */
+}
+
+.DayPicker-Day--selected.DayPicker-Day--surveyPeriod {
+  background-color: $survey-bg-color;
+}
+
+.DayPickerInput {
+  .DayPickerInput-OverlayWrapper {
+    color: #162327;
+    position: relative;
+
+    .DayPickerInput-Overlay {
+      position: absolute;
+      background-color: #fff;
+      padding: 0 0.5rem !important;
+      border: 1px solid #ccc;
+
+      .DayPicker-Day.DayPicker-Day--today {
+        background-color: $ssb-blue-3 !important;
+        color: #fff;
+      }
+
+      .DayPicker-Day.DayPicker-Day--selected {
+        background-color: $ssb-green-3 !important;
+        color: #fff !important;
+      }
+    }
+  }
+}
+
+abbr[title] {
+  text-decoration: none !important;
+}

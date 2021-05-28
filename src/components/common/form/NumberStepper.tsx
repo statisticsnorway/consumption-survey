@@ -1,10 +1,10 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { PlusCircle, MinusCircle } from 'react-feather';
 import { DO_NOTHING } from '../../../utils/jsUtils';
 import { DeleteConfirmProps } from '../../../uiConfig';
 
 import styles from './numberStepper.module.scss';
-// import DeleteConfirmDialog from '../dialog/DeleteConfirmDialog';
+import DeleteConfirmDialog from '../dialog/DeleteConfirmDialog';
 
 export type NumberStepperProps = {
     onChange: (newValue: number) => void;
@@ -54,8 +54,9 @@ const NumberStepper = ({
         cleanupDeleteOperation();
     };
 
-    /*
-    {showDeleteConfirm &&
+    return (
+        <div className={`${styles.numberStepper} ${className}`}>
+            {showDeleteConfirm &&
             <DeleteConfirmDialog
                 show={showDeleteConfirm}
                 onConfirm={onDeleteConfirm}
@@ -67,11 +68,6 @@ const NumberStepper = ({
                 cancelText={deleteConfirmProps.cancelText}
             />
             }
-     */
-
-    return (
-        <div className={`${styles.numberStepper} ${className}`}>
-
             <div className={`${styles.decrement} ${currValue === min ? styles.danger : ''}`}>
                 <MinusCircle
                     width={iconSize}
