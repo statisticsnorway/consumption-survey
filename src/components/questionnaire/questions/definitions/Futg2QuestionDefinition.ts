@@ -5,7 +5,7 @@ export const FUTG2: QuestionFormType = {
     id: 'futg2',
     theme: Theme.ownerExpedenaturesEconomy,
     order: 21,
-    questionText: 'Betaler dere [du/dere] fellesutgifter til borettslag eller sameie?',
+    questionText: 'Hvor mye betaler [du/dere] i fellesutgifter?',
     hasAnswered: false,
     answerValue: {
         answers: [

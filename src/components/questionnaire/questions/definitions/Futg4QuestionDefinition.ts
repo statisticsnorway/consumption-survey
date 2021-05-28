@@ -36,6 +36,10 @@ export const FUTG4: QuestionFormType = {
                 questionValue: '3',
                 specialCompare: "logicNot"
             },
+            {
+                questionId: 'futg1',
+                questionValue: '1',
+            },
         ],
     ],
     inputType: "number-checkbox",

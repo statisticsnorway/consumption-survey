@@ -5,7 +5,7 @@ export const KOMAVG3: QuestionFormType = {
     id: 'komavg3',
     order: 26,
     theme: Theme.ownerExpedenaturesEconomy,
-    questionText: 'Hvor mye betaler du/dere i',
+    questionText: 'Hvor mye har du/dere betalt de siste 12 månedene i',
     hasAnswered: false,
     answerValue: {
         answers: [

@@ -5,8 +5,8 @@ export const GAR1A: QuestionFormType = {
     id: 'gar1a',
     theme: Theme.ownerExpedenaturesEconomy,
     order: 34,
-    questionText: 'Har dere faste utgifter til parkering?\n' +
-        'Ta med utgifter til garasje, carport eller biloppstillingsplass som ikke er dekket av husleie.',
+    questionText: 'Har dere faste utgifter til parkering?',
+    subText: 'Ta med utgifter til garasje, carport eller biloppstillingsplass som ikke er dekket av husleie.',
     hasAnswered: false,
     answerValue: {
         answers: [

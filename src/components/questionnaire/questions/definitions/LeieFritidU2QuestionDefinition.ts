@@ -5,7 +5,7 @@ export const LEIEFRITIDU2: QuestionFormType = {
     id: 'leiefritidu2',
     theme: Theme.holidayHomeAbroad,
     order: 75,
-    questionText: 'Hvor mye har din husholdning betalt samlet for langtidsleie i utlandet?',
+    questionText: 'Hvor mye har din husholdning betalt samlet for langtidsleie i utlandet de siste 12 månedene?',
     hasAnswered: false,
     answerValue: {
         answers: [

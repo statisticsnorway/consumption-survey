@@ -124,11 +124,16 @@ export function BaseQuestion(
                     {currentQuestionDependsOnThisDomElement}
                 </div>
             )}
-            <div className={`${currentQuestionDependsOnThisDomElement ? "padding-lt-rt-20px" : ""}`}
+            <div className={`${currentQuestionDependsOnThisDomElement ? "padding-lt-rt-20px" : ""} question-content`}
                  id={`sub-container-${questionId}`}>
-                <h4 id={`header-text-${questionId}`}>
+                <h4 id={`header-text-${questionId}`} className={`${currentQuestion.subText ? "margin-bm-07em" : ""}`}>
                     {currentQuestion.questionText}
                 </h4>
+                {currentQuestion.subText && (
+                    <div id={`quesetion-sub-text-${currentQuestion.id}`} className={"padding-bm-15px"}>
+                        {currentQuestion.subText}
+                    </div>
+                )}
 
                 {!isMultipleQuestionsInOne && currentQuestion.inputType === 'radio' &&
                 <RadioGroup
@@ -147,6 +152,7 @@ export function BaseQuestion(
                     <InputNumberFormat value={currentChosenValue as string}
                                        label={""}
                                        autoFocus={true}
+                                       inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                        onChange={(event :ChangeEvent<HTMLInputElement>) => {
                                            updateQuestionAnswerToStoreText(
                                                event.target.value,
@@ -250,6 +256,7 @@ export function BaseQuestion(
                         <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[0].value as string}
                                            label={""}
                                            autoFocus={true}
+                                           inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                            onChange={(event :ChangeEvent<HTMLInputElement>) => {
                                                updateQuestionAnswerToStoreText(
                                                    event.target.value,
@@ -311,6 +318,7 @@ export function BaseQuestion(
                         <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[1].value as string}
                                            label={""}
                                            autoFocus={true}
+                                           inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                            onChange={(event :ChangeEvent<HTMLInputElement>) => {
                                                if((currentQuestion.answerValue.answers as AnswerValueType[])[2].chosen) {
                                                    updateQuestionAnswerToStoreText(
@@ -426,6 +434,7 @@ export function BaseQuestion(
                                             <InputNumberFormat
                                                 value={a.value}
                                                 label={a.label}
+                                                inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                                 autoFocus={index === 0}
                                                 onChange={(event :ChangeEvent<HTMLInputElement>) => {
                                                     updateQuestionAnswerToStoreText(
@@ -481,6 +490,7 @@ export function BaseQuestion(
                                                 <InputNumberFormat
                                                     label={a.label}
                                                     autoFocus={index === 0}
+                                                    inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                                     id={`answer-input-${questionId}-${a.id}-id`}
                                                     value={a.value}
                                                     onChange={(event: ChangeEvent<HTMLInputElement>) => {
@@ -532,6 +542,7 @@ export function BaseQuestion(
                                             {currentQuestion.inputType === 'multifield-number-dependent' && (
                                                 <div className={"flex-container flex-row-center-vertical"}>
                                                     <InputNumberFormat
+                                                        inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                                         label={answer.descriptionValue as string}
                                                         id={`answer-input-${currentQuestion.id}-${answer.id}-id`}
                                                         value={answer.value as string}
@@ -591,6 +602,7 @@ export function BaseQuestion(
 
                                                     <div className={"flex-container flex-row-center-vertical"}>
                                                         <InputNumberFormat
+                                                            inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                                             id={`answer-input-${currentQuestion.id}-${a.id}-id`}
                                                             autoFocus={focus}
                                                             onChange={(event: ChangeEvent<HTMLInputElement>) => {
@@ -642,6 +654,7 @@ export function BaseQuestion(
                                                     <div className={"flex-container flex-row-center-vertical"}>
                                                         <InputNumberFormat
                                                             label={"Sum"}
+                                                            inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                                             id={`answer-input-${a.id}-sum-id`}
                                                             disabled={true}
                                                             value={String(
@@ -721,6 +734,7 @@ export function BaseQuestion(
                                 <div className={"flex-container flex-row-center-vertical"}>
                                     <InputNumberFormat value={(currentQuestion.answerValue.answers as AnswerValueType[])[1].value as string}
                                                        label={""}
+                                                       inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                                        autoFocus={true}
                                                        onChange={(event :ChangeEvent<HTMLInputElement>) => {
                                                            if(event.target.value) (currentQuestion.answerValue.answers as AnswerValueType[])[0].chosen = true

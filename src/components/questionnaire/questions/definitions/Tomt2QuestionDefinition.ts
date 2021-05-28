@@ -5,7 +5,8 @@ export const TOMT2: QuestionFormType = {
     id: 'tomt2',
     theme: Theme.renovationDwelling,
     order: 41,
-    questionText: 'Hvor store utgifter hadde du/dere til disse tiltakene? Dersom betaling til håndverkere også dekket materialer eller innredning, kan du oppgi alt under «til håndverkere».',
+    questionText: 'Hvor store utgifter hadde du/dere til disse tiltakene?',
+    subText: 'Dersom betaling til håndverkere også dekket materialer eller innredning, kan du oppgi alt under «til håndverkere».',
     hasAnswered: false,
     answerValue: {
         answers: [

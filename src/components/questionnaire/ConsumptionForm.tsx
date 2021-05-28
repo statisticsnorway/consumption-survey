@@ -22,15 +22,20 @@ import {
 	QuestionState,
 } from "../../store/reducers/questionReducer"
 import { useFocus, useStateHistory } from "../../hocs/webform/hooks"
-import { changeFocus, unhideAnswerOption } from "../../store/actionCreators"
+import {changeFocus, changeQuestionListAndFocus, unhideAnswerOption} from "../../store/actionCreators"
+import {getAllQuestionsThatAreDependentOnCurrent} from "./questions/UpdateQuestionValue";
 
 interface QuestionInfo {
 	id: string
 	element: ReactElement | null
 }
+
 type ChildProps = {
 	onFinished: () => void
 }
+
+const clonedeep = require('lodash.clonedeep')
+const isEqual = require('lodash.isequal')
 
 export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 	const questions: QuestionFormType[] = useSelector((state: QuestionState) => {
@@ -61,38 +66,89 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 		if (questions) setIsStarted(true)
 	}, [])
 
-	const handleNext = (currentQuestion: QuestionFormType) => {
+	const handleNext = (currentQuestion : QuestionFormType) => {
 		if (isQuestionAnswered(currentQuestion, questions)) {
 			setNoAnswers(false)
 
-			try {
-				const nextQuestion = getNextQuestionByOrder(currentQuestion, questions)
-				setIsLastQuestion(false)
-
-				dispatch(
-					changeFocus(
-						nextQuestion.id as string,
-						{
-							fromQuestionId: currentQuestionId,
-							toQuestionId: nextQuestion.id,
-							stepDirection: "forward",
-						} as HistoryBlock
-					)
-				)
-			} catch (e: any) {
-				const isLastQuestion = isLastQuestionInSchema(
-					currentQuestion,
-					questions
-				)
-				if (isLastQuestion) {
-					setIsLastQuestion(true)
-					setIsOverview(true)
+			const checkLast = () => {
+				try {
+					return getNextQuestionByOrder(currentQuestion, questions);
+				} catch (e: any) {
+					const isLastQuestion = isLastQuestionInSchema(currentQuestion, questions)
+					if(isLastQuestion) {
+						setIsLastQuestion(true)
+						setIsOverview(true)
+					}
+					return undefined;
 				}
 			}
-		} else {
+
+			const runNext = () => {
+				const nextQuestion = checkLast()
+				if(!nextQuestion) {
+					return
+				}
+				setIsLastQuestion(false)
+
+				dispatch(changeFocus(
+					nextQuestion.id as string,
+					{
+						fromQuestionId: currentQuestionId,
+						fromQuestionIdAnswers: currentQuestion.answerValue.answers,
+						toQuestionId: nextQuestion.id,
+						stepDirection: "forward",
+						stepCount: history ? history.length + 1 : 1
+					} as HistoryBlock
+				))
+			}
+
+			if(
+				(history.filter(h => h.fromQuestionId === currentQuestion.id).length > 0) &&
+				(currentQuestion.inputType !== "number" && currentQuestion.inputType !== "text")    //TODO Temp. Bedre løning etter pilot
+			){
+
+				const nextQuestion = checkLast()
+				if(!nextQuestion) {
+					return
+				}
+				let lastHistoryEntry: HistoryBlock;
+				history.forEach(h => {
+					if(h.fromQuestionId === currentQuestion.id){
+						if(!lastHistoryEntry || h.stepCount > lastHistoryEntry.stepCount){
+							lastHistoryEntry = h
+						}
+					}
+				})
+
+				// @ts-ignore
+				if(!lastHistoryEntry) {
+					throw new Error("Did not find any question in history")
+				}
+
+				const historyAnswers = (lastHistoryEntry.fromQuestionIdAnswers as AnswerValueType[])
+				const currentAnswers = currentQuestion.answerValue.answers as AnswerValueType[]
+
+				const currentAndHistoryIsEqual = isEqual(historyAnswers, currentAnswers)
+
+				if(!currentAndHistoryIsEqual){
+					const deepCloneCurrentQuestion = clonedeep(currentQuestion)
+					const deepCloneQuestions = clonedeep(questions)
+
+					const newValues: QuestionFormType[] = getAllQuestionsThatAreDependentOnCurrent(deepCloneCurrentQuestion, deepCloneQuestions)
+
+					setIsLastQuestion(false)
+					dispatch(changeQuestionListAndFocus(newValues, deepCloneQuestions, deepCloneCurrentQuestion, history))
+				} else {
+					runNext()
+				}
+			} else {
+				runNext()
+			}
+		}
+		else {
 			setNoAnswers(true)
 
-			if (doesQuestionHaveVetIkkeOptionAndIsHidden(currentQuestion)) {
+			if(doesQuestionHaveVetIkkeOptionAndIsHidden(currentQuestion)){
 				dispatch(unhideAnswerOption(currentQuestion))
 			}
 		}
@@ -116,8 +172,10 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 				firstQuestionInSection.id as string,
 				{
 					fromQuestionId: currentQuestionId,
+					fromQuestionIdAnswers: currentQuestion.answerValue.answers as AnswerValueType[],
 					toQuestionId: firstQuestionInSection.id,
 					stepDirection: "forward",
+					stepCount: history ? history.length + 1 : 1
 				} as HistoryBlock
 			)
 		)
@@ -187,13 +245,16 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 														history
 													)
 												setNoAnswers(false)
-												dispatch(
-													changeFocus(questionToNavigateTo, {
+												dispatch(changeFocus(
+													questionToNavigateTo,
+													{
 														fromQuestionId: currentQuestionId,
+														fromQuestionIdAnswers: currentQuestion.answerValue.answers as AnswerValueType[],
 														toQuestionId: questionToNavigateTo,
 														stepDirection: "back",
-													} as HistoryBlock)
-												)
+														stepCount: history ? history.length + 1 : 1
+													} as HistoryBlock
+												))
 											}}
 										>
 											<div className='flex-container'>
@@ -253,7 +314,6 @@ export const ConsumptionForm: React.FC<ChildProps> = ({onFinished}) => {
 					<QuestionOverview
 						handleElementClick={setFocusToClickedSection}
 						questions={questions}
-						isSchemaFinished={isLastQuestion}
 						onFinishedClicked={onFinished}
 					/>
 				)}
