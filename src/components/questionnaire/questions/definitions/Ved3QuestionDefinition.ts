@@ -6,6 +6,7 @@ export const VED3: QuestionFormType = {
     theme: Theme.firewood,
     order: 79,
     questionText: 'For å kunne beregne en verdi av veden du har fått eller hugget , vil vi gjerne vite omtrent hvor mye ved du har fått/hugget',
+    subText: 'Velg mengdeenhet, og oppgi antall du har fått/checket i neste spørsmål',
     hasAnswered: false,
     answerValue: {
         answers: [

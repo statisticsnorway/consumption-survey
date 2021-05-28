@@ -5,7 +5,7 @@ export const OPPGRADF1: QuestionFormType = {
     id: 'oppgradf1',
     theme: Theme.renovationHolidayHome,
     order: 58,
-    questionText: 'Har du/dere hatt utgifter til oppgradering av fritidsboligen  som har bidratt til å øke fritidsboligens verdi de siste 12 månedene?',
+    questionText: 'Hvilke utgifter har du/dere hatt til oppgradering av fritidsboligen de siste 12 månedene?',
     hasAnswered: false,
     answerValue: {
         answers: [

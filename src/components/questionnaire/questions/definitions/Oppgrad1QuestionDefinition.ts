@@ -5,7 +5,7 @@ export const OPPGRAD1: QuestionFormType = {
     id: 'oppgrad1',
     theme: Theme.renovationDwelling,
     order: 36,
-    questionText: 'Har du/dere hatt utgifter til oppgradering av boligen  som har bidratt til å øke boligens verdi de siste 12 månedene.',
+    questionText: 'Hvilke utgifter har du/dere hatt til oppgradering av boligen de siste 12 månedene?',
     hasAnswered: false,
     answerValue: {
         answers: [

@@ -5,7 +5,7 @@ export const OPPUSS1: QuestionFormType = {
     id: 'oppuss1',
     theme: Theme.renovationDwelling,
     order: 38,
-    questionText: 'Har du/dere hatt utgifter til vedlikehold av boligens standard de siste 12 månedene?',
+    questionText: 'Hvilke utgifter har du/dere hatt til vedlikehold av boligens standard de siste 12 månedene?',
     hasAnswered: false,
     answerValue: {
         answers: [
