@@ -21,7 +21,7 @@ export const TOMTF15: QuestionFormType = {
         [
             {
                 questionId: "tomtf1",
-                questionValue: "7",
+                questionValue: "6",
             }
         ]
     ],

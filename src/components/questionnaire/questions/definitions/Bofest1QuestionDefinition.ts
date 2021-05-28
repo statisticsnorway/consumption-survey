@@ -36,6 +36,10 @@ export const BOFEST1: QuestionFormType = {
                 questionId: "eier2",
                 questionValue: "1"
             },
+            {
+                questionId: "hus1",
+                questionValue: "1"
+            },
         ]
     ],
     inputType: "radio"

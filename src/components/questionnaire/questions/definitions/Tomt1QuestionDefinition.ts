@@ -12,37 +12,37 @@ export const TOMT1: QuestionFormType = {
             {
                 id: 'tomt1_1',
                 value: "1",
-                descriptionValue: 'Graving eller planering på tomten?',
+                descriptionValue: 'Graving eller planering på tomten',
                 chosen: false
             },
             {
                 id: 'tomt1_2',
                 value: "2",
-                descriptionValue: 'å oppføre eller vedlikeholde uteplass?',
+                descriptionValue: 'å oppføre eller vedlikeholde uteplass',
                 chosen: false
             },
             {
                 id: 'tomt1_3',
                 value: "3",
-                descriptionValue: 'å oppføre eller vedlikeholde støttemur eller gjerder?',
+                descriptionValue: 'å oppføre eller vedlikeholde støttemur eller gjerder',
                 chosen: false
             },
             {
                 id: 'tomt1_4',
                 value: "4",
-                descriptionValue: 'å oppføre eller vedlikeholde adkomstvei?',
+                descriptionValue: 'å oppføre eller vedlikeholde adkomstvei',
                 chosen: false
             },
             {
                 id: 'tomt1_5',
                 value: "5",
-                descriptionValue: 'andre oppgraderings- eller vedlikeholdstiltak på tomten?',
+                descriptionValue: 'andre oppgraderings- eller vedlikeholdstiltak på tomten',
                 chosen: false
             },
             {
                 id: 'tomt1_6',
                 value: "6",
-                descriptionValue: 'å oppføre eller vedlikeholde garasje eller uthus?',
+                descriptionValue: 'å oppføre eller vedlikeholde garasje eller uthus',
                 chosen: false
             },
             {

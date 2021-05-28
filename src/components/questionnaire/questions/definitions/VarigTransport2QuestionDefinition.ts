@@ -13,43 +13,37 @@ export const VARIGTRANSPORT2: QuestionFormType = {
                 id: 'varigtransport2_1',
                 value: "",
                 descriptionValue: 'Sykkel, el-sparkesykkel',
-                chosen: false
+                chosen: true
             },
             {
-                id: 'varigmøbler2_2',
+                id: 'varigtransport2_2',
                 value: "",
                 descriptionValue: 'Motorsykkel, moped',
-                chosen: false
+                chosen: true
             },
             {
-                id: 'varigmøbler2_3',
+                id: 'varigtransport2_3',
                 value: "",
                 descriptionValue: 'Campingvogn, bobil',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigtransport2_4',
                 value: "",
                 descriptionValue: 'Båt, båtmotor',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigtransport2_5',
                 value: "",
                 descriptionValue: 'Tilhenger',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigtransport2_6',
                 value: "",
                 descriptionValue: 'Andre transportmidler',
-                chosen: false
-            },
-            {
-                id: 'varigtransport2_7',
-                value: "",
-                descriptionValue: 'Ingen av disse',
-                chosen: false
+                chosen: true
             },
         ]
     },

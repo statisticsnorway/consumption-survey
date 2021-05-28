@@ -15,12 +15,12 @@ export const UTGIFTFRITID1: QuestionFormType = {
                 descriptionValue: 'Ja',
                 chosen: false
             },
-            {
-                id: 'utgiftfritid1_2',
-                value: "2",
-                descriptionValue: 'Ja, men utgiftene deles med andre og er vanskelig å spesifisere',
-                chosen: false
-            },
+            // {
+            //     id: 'utgiftfritid1_2',
+            //     value: "2",
+            //     descriptionValue: 'Ja, men utgiftene deles med andre og er vanskelig å spesifisere',
+            //     chosen: false
+            // },
             {
                 id: 'utgiftfritid1_3',
                 value: "3",

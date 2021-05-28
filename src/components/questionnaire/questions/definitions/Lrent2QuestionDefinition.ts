@@ -24,6 +24,14 @@ export const LRENT2: QuestionFormType = {
             }
         ]
     },
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "laan1",
+                questionValue: "1",
+            }
+        ]
+    ],
     inputType: "number-checkbox",
     inputPostfix: "percent"
 } as QuestionFormType

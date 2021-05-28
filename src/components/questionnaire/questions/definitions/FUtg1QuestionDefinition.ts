@@ -5,7 +5,7 @@ export const FUTG1: QuestionFormType = {
     id: 'futg1',
     theme: Theme.ownerExpedenaturesEconomy,
     order: 20,
-    questionText: 'Betaler dere [du/dere] fellesutgifter til borettslag eller sameie?',
+    questionText: 'Betaler [du/dere] fellesutgifter til borettslag eller sameie?',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -28,6 +28,40 @@ export const FUTG1: QuestionFormType = {
             {
                 questionId: "eier1",
                 questionValue: "1"
+            },
+            {
+                questionId: "hus1",
+                questionValue: "2"
+            },
+        ],
+        [
+            {
+                questionId: "eier1",
+                questionValue: "1"
+            },
+            {
+                questionId: "hus1",
+                questionValue: "3"
+            },
+        ],
+        [
+            {
+                questionId: "eier1",
+                questionValue: "1"
+            },
+            {
+                questionId: "hus1",
+                questionValue: "4"
+            },
+        ],
+        [
+            {
+                questionId: "eier1",
+                questionValue: "1"
+            },
+            {
+                questionId: "hus1",
+                questionValue: "5"
             },
         ],
     ],

@@ -4,7 +4,7 @@ import {Theme} from "../themes";
 export const LEIEFRITIDEL: QuestionFormType = {
     id: 'leiefritidel',
     theme: Theme.holidayHome,
-    order: 51,
+    order: 63.4,
     questionText: 'Er elektrisitet og brensel inkludert i leien, eller betales dette separat?',
     hasAnswered: false,
     answerValue: {
@@ -23,5 +23,13 @@ export const LEIEFRITIDEL: QuestionFormType = {
             },
         ]
     },
+    dependentOnQuestionCriteria: [
+        [
+            {
+                questionId: "fritidsn2",
+                questionValue: "1"
+            },
+        ]
+    ],
     inputType: "radio"
 } as QuestionFormType
