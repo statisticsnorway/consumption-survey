@@ -19,7 +19,7 @@ export const FRITIDSN1: QuestionFormType = {
             {
                 id: 'fritidsn1_2',
                 value: "2",
-                descriptionValue: 'Ja, eier sammen med andre',
+                descriptionValue: 'Ja, eier sammen med andre (utenfor egen husholdning)',
                 chosen: false
             },
             {

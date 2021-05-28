@@ -50,9 +50,11 @@ export const QuestionOverview = (
                 </h1>
             </div>
             <div className="width-100">
-                <p>
-                    Du er allerede godt i gang. Forsett slik!
-                </p>
+                {!(contentList.filter(c => c.isDoneWithSection).length === sections.length) && (
+                    <p>
+                        Du er allerede godt i gang. Forsett slik!
+                    </p>
+                )}
                 <p>
                     Listen under viser til en hver tid hvor langt du har kommet i spørreskjema.
                     Når hele spørreskjema er besvart må du bekrefte svarene dine ved å sende inn med knappen nederst på denne siden.
