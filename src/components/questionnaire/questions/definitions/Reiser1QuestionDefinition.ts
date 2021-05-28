@@ -5,8 +5,8 @@ export const REISER1: QuestionFormType = {
     id: 'reiser1',
     order: 92,
     theme: Theme.travels,
-    questionText: 'Har du/dere hatt utgifter til fritidsresier de siste 12 månedene?\n' +
-        'Ta ikke med pakketurer' ,
+    questionText: 'Har du/dere hatt utgifter til fritidsresier de siste 12 månedene?',
+    subText: 'Ta ikke med pakketurer',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -38,6 +38,12 @@ export const REISER1: QuestionFormType = {
                 id: 'reiser1_5',
                 value: "5",
                 descriptionValue: 'Buss',
+                chosen: false
+            },
+            {
+                id: 'reiser1_6',
+                value: "6",
+                descriptionValue: 'Nei',
                 chosen: false
             },
         ]

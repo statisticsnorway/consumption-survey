@@ -5,7 +5,7 @@ export const HUSLEIE2: QuestionFormType = {
     id: 'husleie2',
     theme: Theme.ownerExpedenaturesEconomy,
     order: 18,
-    questionText: 'Hvor mye betaler [du/dere] i fellesutgifter eller husleie pr. måned',
+    questionText: 'Hvor mye betaler [du/dere] i husleie pr. måned',
     hasAnswered: false,
     answerValue: {
         answers: [

@@ -50,7 +50,7 @@ export const FUTG3: QuestionFormType = {
     dependentOnQuestionCriteria: [
         [
             {
-                questionId: "eier2",
+                questionId: "eier1",
                 questionValue: "1"
             },
             {

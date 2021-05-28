@@ -10,7 +10,7 @@ export const VARIGUNDERH15: QuestionFormType = {
     answerValue: {
         answers: [
             {
-                id: 'varigmøbler15_1',
+                id: 'varigunderh15_1',
                 value: "",
                 descriptionValue: 'Beskriv kort "Andre større eller kostbare elektriske artikler og underholdningsartikler"',
                 chosen: true

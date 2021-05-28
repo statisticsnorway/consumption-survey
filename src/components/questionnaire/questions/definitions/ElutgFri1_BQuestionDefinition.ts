@@ -12,7 +12,7 @@ export const ELUTGFRI1B: QuestionFormType = {
             {
                 id: 'elutgfri1b_1',
                 value: "",
-                descriptionValue: 'Både strøm og nettleie (hvis du/dere får samlet regning)',
+                descriptionValue: 'Både strøm og nettleie',
                 chosen: true
             },
 

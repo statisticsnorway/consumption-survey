@@ -124,11 +124,16 @@ export function BaseQuestion(
                     {currentQuestionDependsOnThisDomElement}
                 </div>
             )}
-            <div className={`${currentQuestionDependsOnThisDomElement ? "padding-lt-rt-20px" : ""}`}
+            <div className={`${currentQuestionDependsOnThisDomElement ? "padding-lt-rt-20px" : ""} question-content`}
                  id={`sub-container-${questionId}`}>
-                <h4 id={`header-text-${questionId}`}>
+                <h4 id={`header-text-${questionId}`} className={`${currentQuestion.subText ? "margin-bm-07em" : ""}`}>
                     {currentQuestion.questionText}
                 </h4>
+                {currentQuestion.subText && (
+                    <div id={`quesetion-sub-text-${currentQuestion.id}`} className={"padding-bm-15px"}>
+                        {currentQuestion.subText}
+                    </div>
+                )}
 
                 {!isMultipleQuestionsInOne && currentQuestion.inputType === 'radio' &&
                 <RadioGroup
@@ -147,6 +152,7 @@ export function BaseQuestion(
                     <InputNumberFormat value={currentChosenValue as string}
                                        label={""}
                                        autoFocus={true}
+                                       inputMode={(currentQuestion.inputPostfix === "percent") ? "decimal" : "numeric"}
                                        onChange={(event :ChangeEvent<HTMLInputElement>) => {
                                            updateQuestionAnswerToStoreText(
                                                event.target.value,

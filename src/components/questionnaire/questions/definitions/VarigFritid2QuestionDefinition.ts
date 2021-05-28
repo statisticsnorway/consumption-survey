@@ -13,31 +13,31 @@ export const VARIGFRITID2: QuestionFormType = {
                 id: 'varigfritid2_1',
                 value: "",
                 descriptionValue: 'Ski/skøyter',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigfritid2_2',
                 value: "",
                 descriptionValue: 'Jakt/fiskeutstyr',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigfritid2_3',
                 value: "",
                 descriptionValue: 'Dykkerutstyr',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigfritid2_4',
                 value: "",
                 descriptionValue: 'Telt eller annet friluftutstyr',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigfritid2_5',
                 value: "",
                 descriptionValue: 'Annet kostbart fritidsutstyr',
-                chosen: false
+                chosen: true
             },
         ]
     },

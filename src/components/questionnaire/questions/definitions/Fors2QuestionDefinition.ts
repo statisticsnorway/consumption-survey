@@ -12,44 +12,44 @@ export const FORS2: QuestionFormType = {
             {
                 id: 'fors2_1',
                 value: "",
-                descriptionValue: 'Boligfosikring (også for fritidsbolig)',
-                chosen: false
+                descriptionValue: 'Boligforsikring (også for fritidsbolig)',
+                chosen: true
             },
             {
                 id: 'fors2_2',
                 value: "",
                 descriptionValue: 'Innboforsikring (også for fritidsbolig)',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'fors2_3',
                 value: "",
                 descriptionValue: 'Livsforsikring',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'fors2_4',
                 value: "",
                 descriptionValue: 'Pensjonsforsikring',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'fors2_5',
                 value: "",
                 descriptionValue: 'Reiseforsikring',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'fors2_6',
                 value: "",
                 descriptionValue: 'Barneforsikring (hvis barn)',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'fors2_7',
                 value: "",
                 descriptionValue: 'Bilforsikring (hvis bil)',
-                chosen: false
+                chosen: true
             },
         ]
     },

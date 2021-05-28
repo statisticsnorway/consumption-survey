@@ -74,6 +74,10 @@
   height: 100%;
 }
 
+.margin-bm-07em {
+  margin-block-end: 0.7em;
+}
+
 .margin-lt-rt-20px {
   margin: 0 20px 0 20px;
 }
@@ -111,6 +115,14 @@
 
 .padding-bm-40px{
   padding-bottom: 40px;
+}
+
+.padding-bm-20px{
+  padding-bottom: 20px;
+}
+
+.padding-bm-15px{
+  padding-bottom: 15px;
 }
 
 .padding-tp-20px {
