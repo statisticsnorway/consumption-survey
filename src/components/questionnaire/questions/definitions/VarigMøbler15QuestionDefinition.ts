@@ -19,7 +19,7 @@ export const VARIGMØBLER15: QuestionFormType = {
         [
             {
                 questionId: "varigmøbler1",
-                questionValue: "9",
+                questionValue: "8",
             }
         ]
     ],

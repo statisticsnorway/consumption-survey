@@ -3,7 +3,8 @@ export interface QuestionFormType {
     id: string
     theme: string,
     order: number,
-    questionText: string
+    questionText: string,
+    subText?: string
     hasAnswered: boolean
     answerValue: QuestionAnswerType
     defaultNextQuestion?: string

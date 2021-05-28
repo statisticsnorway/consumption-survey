@@ -16,13 +16,13 @@ export const VARIGTRANSPORT1: QuestionFormType = {
                 chosen: false
             },
             {
-                id: 'varigmøbler1_2',
+                id: 'varigtransport1_2',
                 value: "2",
                 descriptionValue: 'Motorsykkel, moped',
                 chosen: false
             },
             {
-                id: 'varigmøbler1_3',
+                id: 'varigtransport1_3',
                 value: "3",
                 descriptionValue: 'Campingvogn, bobil',
                 chosen: false

@@ -4,7 +4,7 @@ import {Theme} from "../themes";
 export const LEIEFRITID: QuestionFormType = {
     id: 'leiefritid',
     theme: Theme.holidayHome,
-    order: 50,
+    order: 63.3,
     questionText: 'Hvor mye har din husholdning betalt samlet i langtidsleie de siste 12 månedene?',
     hasAnswered: false,
     answerValue: {

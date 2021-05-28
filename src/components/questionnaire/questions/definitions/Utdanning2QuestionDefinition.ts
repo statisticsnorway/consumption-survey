@@ -5,8 +5,8 @@ export const UTDANNING2: QuestionFormType = {
     id: 'utdanning2',
     order: 109,
     theme: Theme.education,
-    questionText: 'Hvor mye betaler [du/dere] hver måned for....?' +
-        'Hvis du/dere ikke betaler per måned, ber vi deg om å anslå hva utgiften er per måned.',
+    questionText: 'Hvor mye betaler [du/dere] hver måned for',
+    subText: 'Hvis du/dere ikke betaler per måned, ber vi deg om å anslå hva utgiften er per måned.',
     hasAnswered: false,
     answerValue: {
         answers: [
@@ -38,12 +38,6 @@ export const UTDANNING2: QuestionFormType = {
                 id: 'utdanning2_5',
                 value: "",
                 descriptionValue: 'Annen utdanning',
-                chosen: true
-            },
-            {
-                id: 'utdanning2_6',
-                value: "",
-                descriptionValue: 'Nei',
                 chosen: true
             },
         ]

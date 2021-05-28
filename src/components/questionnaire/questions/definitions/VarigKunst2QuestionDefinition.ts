@@ -13,31 +13,25 @@ export const VARIGKUNST2: QuestionFormType = {
                 id: 'varigkunst2_1',
                 value: "",
                 descriptionValue: 'Smykker',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigkunst2_2',
                 value: "",
                 descriptionValue: 'Kunst',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigkunst2_3',
                 value: "",
                 descriptionValue: 'Bunad',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'varigkunst2_4',
                 value: "",
                 descriptionValue: 'Sølvtøy',
-                chosen: false
-            },
-            {
-                id: 'varigkunst2_5',
-                value: "",
-                descriptionValue: 'Ingen av disse',
-                chosen: false
+                chosen: true
             },
         ]
     },

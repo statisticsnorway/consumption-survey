@@ -13,31 +13,31 @@ export const VED315: QuestionFormType = {
                 id: 'ved3_1',
                 value: "",
                 descriptionValue: 'Små sekker opptil 40 liter',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'ved3_2',
                 value: "",
                 descriptionValue: 'Små sekker opptil 60 liter',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'ved3_3',
                 value: "",
                 descriptionValue: 'Store sekker opptil 1000 liter',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'ved3_4',
                 value: "",
                 descriptionValue: 'Sekker, store ca 1500 liter',
-                chosen: false
+                chosen: true
             },
             {
                 id: 'ved3_5',
                 value: "",
                 descriptionValue: 'Kubikk',
-                chosen: false
+                chosen: true
             },
         ]
     },

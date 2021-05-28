@@ -5,7 +5,8 @@ export const OPPUSSF1: QuestionFormType = {
     id: 'oppussf1',
     theme: Theme.renovationHolidayHome,
     order: 60,
-    questionText: 'Har du/dere hatt utgifter til  vedlikehold av fritidsboligens standard de siste 12 månedene? Ta ikke med tiltak eller utgifter du allerede har oppgitt.',
+    questionText: 'Hvilke utgifter har du/dere hatt til vedlikehold av fritidsboligens standard  de siste 12 månedene?',
+    subText: 'Ta ikke med tiltak eller utgifter du allerede har oppgitt.' ,
     hasAnswered: false,
     answerValue: {
         answers: [
