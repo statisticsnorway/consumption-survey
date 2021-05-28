@@ -152,7 +152,7 @@ export function BaseQuestion(
                     <InputNumberFormat value={currentChosenValue as string}
                                        label={""}
                                        autoFocus={true}
-                                       inputMode={(currentQuestion.inputPostfix === "percent") ? "decimal" : "numeric"}
+                                       inputMode={(currentQuestion.inputPostfix === "percent") ? "text" : "numeric"}
                                        onChange={(event :ChangeEvent<HTMLInputElement>) => {
                                            updateQuestionAnswerToStoreText(
                                                event.target.value,

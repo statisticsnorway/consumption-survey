@@ -8,7 +8,7 @@ export interface Props {
     label: string,
     disabled?: boolean,
     autoFocus?: boolean,
-    inputMode?: ("numeric" | "decimal")
+    inputMode?: ("numeric" | "text")
 }
 const getSeparator = (x : string) => {
     return x.includes('.') ? '.' : (x.includes(',') ? ',' : '')
@@ -59,7 +59,7 @@ export default function InputNumberFormat({value, onChange = () => null, id, lab
                     autoFocus={autoFocus}
                     ref={inputRef}
                     value={showValue}
-                    inputMode={`${inputMode === "decimal" ? "decimal" : "numeric"}` as ("numeric" | "decimal")}
+                    inputMode={`${inputMode === "text" ? "text" : "numeric"}` as ("numeric" | "text")}
                     onChange={(event) => {
                         let position = event.target.selectionStart
                         let valueWithoutSpace = removeWhiteSpace(event.target.value)
