@@ -8,7 +8,7 @@ export interface Props {
     label: string,
     disabled?: boolean,
     autoFocus?: boolean,
-    inputMode?: ("numeric" | "text")
+    inputMode?: ("numeric" | "text" | undefined)
 }
 const getSeparator = (x : string) => {
     return x.includes('.') ? '.' : (x.includes(',') ? ',' : '')
@@ -35,7 +35,7 @@ const setCursorPosition = (currentPos : any, priorText : string, currentText : s
 }
 
 
-export default function InputNumberFormat({value, onChange = () => null, id, label, disabled = false, autoFocus=false, inputMode="numeric"} : Props) {
+export default function InputNumberFormat({value, onChange = () => null, id, label, disabled = false, autoFocus=false, inputMode} : Props) {
     const [showValue, setShowValue] = useState(numberWithSpaces(value))
     const [caretPosition, setCaretPosition] = useState(0)
     const inputRef = useRef(null)
@@ -48,6 +48,10 @@ export default function InputNumberFormat({value, onChange = () => null, id, lab
         // @ts-ignore
         inputRef.current.selectionEnd = caretPosition
     }, [caretPosition])
+
+    if(!inputMode){
+        inputMode = "text"
+    }
 
     return(
         <div key={id} className={`ssb-input`}>
