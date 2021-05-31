@@ -23,6 +23,9 @@
     "save": "Lagre",
     "cancel": "Avbryt",
 
+    "success": "Lagring av fastutgift vellykket",
+    "error": "Kunne ikke lagre fast utgift",
+
     "nameLabel": "Type utgift",
     "namePlaceholder": "Strøm, Kabel, Mobil, osv.",
 

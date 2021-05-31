@@ -124,25 +124,26 @@ const RegularExpensesList = ({ showExpensesList = true, showAddExpenseDialog = f
                 expense={expenseForEdit}
                 show={showAddExpense}
                 onSubmit={async (newValues: RegularExpenseType) => {
-                    if (expenseForEdit) {
-                        editExpense(expenseForEdit.id, convert(newValues))
-                            .then(async (res) => {
-                                if (typeof onComplete === 'function') {
-                                    onComplete();
-                                }
-                                console.log('regular expense updated');
-                            })
-                            .catch((err) => {
-                                console.log('regular expense update failed');
-                            });
-                    } else {
-                        addExpense(convert(newValues))
-                            .then(async res => {
-                                if (typeof onComplete === 'function') {
-                                    onComplete();
-                                }
-                                console.log('added new expense');
-                            });
+                    try {
+                        if (expenseForEdit) {
+                            editExpense(expenseForEdit.id, convert(newValues))
+                                .then(async (res) => {
+                                    if (typeof onComplete === 'function') {
+                                        onComplete();
+                                    }
+                                    console.log('regular expense updated');
+                                });
+                        } else {
+                            addExpense(convert(newValues))
+                                .then(async res => {
+                                    if (typeof onComplete === 'function') {
+                                        onComplete();
+                                    }
+                                    console.log('added new expense');
+                                });
+                        }
+                    } catch (err) {
+                        throw err;
                     }
                 }}
                 onCancel={() => {
