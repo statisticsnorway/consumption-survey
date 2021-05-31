@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import NumberStepper from '../../common/form/NumberStepper';
 import EditItem from './EditItem';
+import NumberStepper from '../../common/form/NumberStepper';
 import { PlusCircle } from 'react-feather';
 import { ItemType } from '../../../firebase/model/Purchase';
 import { krCents } from '../../../utils/jsUtils';
@@ -16,6 +16,7 @@ export type ItemsTableProps = {
     onItemQtyChange: (item: ItemType, newValue: number) => void;
     onItemUpdate: (oldValues: ItemType, newValues: ItemType) => void;
     onNewItem: (values: ItemType) => void;
+    showValidationError?: boolean;
 }
 
 const INIT_STATE: ItemType = {
@@ -36,7 +37,8 @@ const ItemsTable = ({
                         onItemUpdate,
                         showAddNewItem = true,
                         onNewItem,
-                        showTotal = true
+                        showTotal = true,
+                        showValidationError = false,
                     }: ItemsTableProps) => {
     const {t} = useTranslation('purchases');
     const [totalAmount, setTotalAmount] = useState<number>(0);
@@ -149,8 +151,8 @@ const ItemsTable = ({
                         <PlusCircle className={styles.icon}/>
                         <span className={styles.text}>{t('lineItems.addNew')}</span>
                     </td>
-                    <td className={styles.addNewRowEmptyCol} />
-                    <td className={styles.addNewRowEmptyCol} />
+                    <td className={styles.addNewRowEmptyCol}/>
+                    <td className={styles.addNewRowEmptyCol}/>
                 </tr>
                 }
                 {items && showTotal &&
@@ -162,6 +164,11 @@ const ItemsTable = ({
                 }
                 </tbody>
             </table>
+            {showValidationError && (!items || items.length < 1) &&
+            <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled">
+                {t('lineItems.noRecordsError')}
+            </p>
+            }
             <EditItem item={itemForEdit} show={showEditItem} onUpdate={onItemUpdated} onCancel={onItemEditCancel}/>
             <EditItem item={newItem} show={showNewItem} onUpdate={onNewItemUpdated} onCancel={onNewItemCancel}/>
         </div>

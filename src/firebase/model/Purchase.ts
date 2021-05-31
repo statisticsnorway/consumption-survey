@@ -118,6 +118,8 @@ export const INIT_PURCHASE = {
     items: [],
     purchaseDate: new Date().toISOString(),
     amount: 0,
+    receipts: [],
+    status: PurchaseStatus.CREATED,
 };
 
 export type PurchasesByDate = {

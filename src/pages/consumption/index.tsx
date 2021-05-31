@@ -43,7 +43,7 @@ const Consumption = () => {
                     iconName={'Edit3'}
                     text={ht('registerNew.manually')}
                     onClick={() => {
-                        router.push(addPurchasePath(ADD_PURCHASE_MODES.MANUAL));
+                        router.push(PATHS.EDIT_PURCHASE);
                     }}
                 />
                 <PurchaseCTA

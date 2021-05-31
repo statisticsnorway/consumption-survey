@@ -17,6 +17,7 @@ export type MessagePanelProps = {
     message: string;
     autoDisappear?: boolean;
     allowClose?: boolean;
+    onComplete?: () => void;
 };
 
 export const getFbuIconName = (type: MessagePanelType): IconName => {
@@ -37,12 +38,17 @@ export const getFbuIconName = (type: MessagePanelType): IconName => {
 export const getMessagePanelIcon = (type: MessagePanelType) =>
     <FbuIcon name={getFbuIconName(type)} size={32} className={styles.icon}/>;
 
-const MessagePanel = ({show, type = MessagePanelType.SUCCESS, message, autoDisappear = true }: MessagePanelProps) => {
+const MessagePanel = ({show, type = MessagePanelType.SUCCESS, message,
+                          autoDisappear = true, onComplete = () => {} }: MessagePanelProps) => {
     const {hideMessagePanel} = useContext(LayoutContext);
 
     useEffect(() => {
         if (show && autoDisappear) {
-            setTimeout(() => {
+            setTimeout(async () => {
+                if (typeof onComplete === 'function') {
+                    await onComplete();
+                }
+
                 hideMessagePanel();
             }, 1000);
         }
