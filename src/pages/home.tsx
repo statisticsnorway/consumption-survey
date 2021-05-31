@@ -18,6 +18,7 @@ import styles from './styles/home.module.scss';
 import { useRouter } from 'next/router';
 import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../uiConfig';
 import useReceiptUpload from '../hocs/useReceiptUpload';
+import RegularExpensesList from '../components/regularExpenses/RegularExpensesList';
 
 const dateMonth = (dateStr) => {
     const date = notEmptyString(dateStr) ? new Date(dateStr) : new Date();
@@ -28,13 +29,15 @@ const dateMonth = (dateStr) => {
 const Home = () => {
     const router = useRouter();
     const {t} = useTranslation('home');
+    const [showAddExpenseDialog, setShowAddExpensesDialog] = useState<boolean>(false);
     const {userInfo: {respondentDetails}} = useContext(UserContext);
 
     const {name, diaryStart, diaryEnd} = respondentDetails;
     const subText = `${t('surveyInfo')} ${dateMonth(diaryStart)} - ${dateMonth(diaryEnd)}`;
 
     const [firstName,] = name.split(',');
-    const greeting = `Hei ${capitalizeString(firstName)}`;
+    // const greeting = `Hei ${capitalizeString(firstName)}`;
+    const greeting = t('greeting');
 
     const onSuccessfulAdd = async (purchaseId) => {
         console.log('receipt uploaded, redirecting', purchaseId);
@@ -67,7 +70,7 @@ const Home = () => {
                     text={t('registerNew.regularExpense')}
                     iconComponent={<AddRegularExpenseIcon/>}
                     onClick={() => {
-                        router.push(PATHS.ADD_REGULAR_EXPENSE);
+                        setShowAddExpensesDialog(true);
                     }}
                 />
                 <HomeCTA
@@ -81,6 +84,7 @@ const Home = () => {
                 />
             </HomeCTAButtonGroup>
             {hiddenUploadComponent}
+            <RegularExpensesList showExpensesList={false} showAddExpenseDialog={showAddExpenseDialog} />
         </Workspace>
     );
 };

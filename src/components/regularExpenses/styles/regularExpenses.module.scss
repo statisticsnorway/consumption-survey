@@ -1,0 +1,147 @@
+@import '../../../styles/common';
+
+.regularExpenses {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  .expense {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 1.25rem 0;
+    background-color: #fff;
+
+    cursor: pointer;
+
+    .expenseHeaderRow {
+      border-bottom: $ssb-dark-2;
+    }
+
+    .expenseColumnHeader {
+      color: $ssb-dark-3;
+      font-weight: bold;
+
+      .frequencyIcon {
+        color: $ssb-dark-3;
+      }
+
+      .editExpense {
+        width: 1.25rem;
+      }
+
+
+    }
+
+    .expenseColumn {
+      display: flex;
+    }
+
+    .nameFrequency {
+      display: flex;
+      flex-direction: column;
+      flex: 2;
+
+      .name {
+        font-weight: bold;
+        font-family: Roboto;
+      }
+
+      .frequency {
+        text-align: left;
+        color: $ssb-dark-3;
+        font-weight: 400;
+
+        flex: 1;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+
+        .frequencyIcon {
+          text-align: right;
+        }
+      }
+    }
+
+    .amount {
+      justify-content: flex-end;
+      flex: 1;
+      text-align: right;
+    }
+
+    .editExpense {
+      width: 1.25rem;
+      text-align: right;
+      color: $ssb-green-4;
+      margin-left: 0.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .deleteExpense {
+      width: 1.25rem;
+      color: $ssb-red-4;
+      margin-left: 1rem;
+    }
+  }
+
+  .expense:last-of-type,
+  .expense + .expense {
+    /* margin-top: 1rem; */
+    border-top: 1px solid $ssb-dark-2;
+  }
+}
+
+.addExpenseForm {
+  padding: 1.25rem;
+
+  .nameAmountGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .expenseName {
+      flex: 2 1;
+    }
+
+    .addExpenseKrCents {
+      flex: 1;
+
+      input {
+        text-align: right;
+      }
+    }
+  }
+
+  .frequencyAmountGroup {
+    display: flex;
+    flex-direction: row;
+
+    .addExpenseFrequency {
+      flex: 2;
+      padding-left: 0.5rem;
+    }
+
+    .addExpenseKr {
+      flex: 1;
+
+      input {
+        text-align: right;
+      }
+    }
+  }
+}
+
+.noRecords {
+  font-style: italic;
+}

@@ -7,6 +7,8 @@ import PurchaseCTA from '../../components/purchases/cta/PurchasesCTA';
 import { useRouter } from 'next/router';
 import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../../uiConfig';
 import useReceiptUpload from '../../hocs/useReceiptUpload';
+import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
+import { useState } from 'react';
 
 const PurchasesListNoSSR = dynamic(
     () => import('../../components/purchases/PurchasesList'),
@@ -17,6 +19,7 @@ const Consumption = () => {
     const router = useRouter();
     const {t: ht} = useTranslation('home');
     const {t} = useTranslation('expenses');
+    const [showAddExpenseDialog, setShowAddExpenseDialog] = useState<boolean>(false);
 
     const onSuccessfulAdd = async (purchaseId) => {
         console.log('receipt uploaded, redirecting', purchaseId);
@@ -50,12 +53,16 @@ const Consumption = () => {
                     iconName={'Calendar'}
                     text={ht('registerNew.regularExpense')}
                     onClick={() => {
-                        router.push(PATHS.ADD_REGULAR_EXPENSE);
+                        setShowAddExpenseDialog(true);
                     }}
                 />
             </PurchasesCTAGroup>
             {hiddenUploadComponent}
             <PurchasesListNoSSR />
+            <RegularExpensesList
+                showAddExpenseDialog={showAddExpenseDialog}
+                onComplete={() => { setShowAddExpenseDialog(false); }}
+            />
         </Workspace>
     );
 };

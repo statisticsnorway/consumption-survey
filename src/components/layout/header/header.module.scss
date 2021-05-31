@@ -69,4 +69,9 @@ $header-border-color: $ssb-dark-5;
     cursor: pointer;
     color: $ssb-green-4;
   }
+
+  .disabled {
+    cursor: none !important;
+    color: $ssb-dark-2 !important;
+  }
 }
