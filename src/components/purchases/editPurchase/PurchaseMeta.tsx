@@ -10,12 +10,18 @@ export type PurchaseMetaProps = {
     registeredTime: string;
     name?: string;
     onUpdate: (object) => void;
+    skipValidation?: boolean;
 }
-const PurchaseMeta = ({purchaseDate, registeredTime, name, onUpdate}: PurchaseMetaProps) => {
+const PurchaseMeta = ({
+                          purchaseDate, registeredTime, name,
+                          onUpdate,
+                          skipValidation = false   // useful for init case
+                      }: PurchaseMetaProps) => {
     const {t} = useTranslation('purchases');
 
     const handleUpdate = (key) => (value) => {
-        onUpdate({ [key]: value})
+        console.log(`[PM] : updating ${key} => ${value}`);
+        onUpdate({[key]: value})
     };
 
     return (
@@ -24,7 +30,7 @@ const PurchaseMeta = ({purchaseDate, registeredTime, name, onUpdate}: PurchaseMe
                 id="purchaseDate"
                 label={t('addPurchase.purchaseDate.label')}
                 value={purchaseDate}
-                validate={(dt) => dt && dt !== registeredTime}
+                validate={(dt) => skipValidation || (dt && dt !== registeredTime)}
                 errorText={t('addPurchase.purchaseDate.error')}
                 onChange={handleUpdate('purchaseDate')}
             />
@@ -32,7 +38,7 @@ const PurchaseMeta = ({purchaseDate, registeredTime, name, onUpdate}: PurchaseMe
                 id="name"
                 label={t('addPurchase.purchaseName.label')}
                 value={name}
-                validate={nm => notEmptyString(nm) && (nm !== '??')}
+                validate={nm => skipValidation || (notEmptyString(nm) && (nm !== '??'))}
                 errorText={t('addPurchase.purchaseName.errorText')}
                 onChange={handleUpdate('name')}
                 styleClass={styles.name}

@@ -1,4 +1,4 @@
-import { ReactNode, ReactNodeArray, useState } from 'react';
+import { ReactNode, ReactNodeArray, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft } from 'react-feather';
 import useServiceWorkerHelper from '../../hocs/useServiceWorkerHelper';
@@ -24,6 +24,7 @@ const MESSAGE_PANEL_INIT_STATE = {
     type: MessagePanelType.NONE,
     msg: '',
     autoDisappear: true,
+    onComplete: null,
 };
 
 
@@ -43,12 +44,13 @@ const OpLayout = ({showAppHeader = false, children}: OpLayoutProps) => {
         setFullScreenLoaderState({ show: false, msg: ''});
     };
 
-    const showMessagePanel = async (type, msg, autoDisappear = true) => {
+    const showMessagePanel = async (type, msg, autoDisappear = true, onComplete = () => {}) => {
         setMsgPanelState({
             show: true,
             type,
             msg,
-            autoDisappear
+            autoDisappear,
+            onComplete,
         });
     };
 
@@ -63,8 +65,13 @@ const OpLayout = ({showAppHeader = false, children}: OpLayoutProps) => {
         messagePanelType: msgPanelState.type,
         messagePanelMsg: msgPanelState.msg,
         messagePanelAutoDisappear: msgPanelState.autoDisappear,
+        messageOnComplete: msgPanelState.onComplete,
         showMessagePanel, hideMessagePanel,
     };
+
+    useEffect(() => {
+        console.log('[MessagePanel] new state', msgPanelState);
+    }, [msgPanelState]);
 
     return (
         <LayoutContext.Provider value={contextValues}>

@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, ReactNodeArray, useState } from 'react';
+import { ReactElement, ReactNode, ReactNodeArray, useEffect, useState } from 'react';
 import useServiceWorkerHelper from '../../hocs/useServiceWorkerHelper';
 import Header from './header/Header';
 import { LayoutContext } from '../../uiContexts';
@@ -21,6 +21,7 @@ const MESSAGE_PANEL_INIT_STATE = {
     type: MessagePanelType.NONE,
     msg: '',
     autoDisappear: true,
+    onComplete: undefined,
 };
 
 const Layout = ({children}: LayoutProps) => {
@@ -36,14 +37,19 @@ const Layout = ({children}: LayoutProps) => {
         setFullScreenLoaderState(FULL_SCREEN_INIT_STATE);
     };
 
-    const showMessagePanel = async (type, msg, autoDisappear = true) => {
+    const showMessagePanel = async (type, msg, autoDisappear = true, onComplete = undefined) => {
         setMsgPanelState({
             show: true,
             type,
             msg,
             autoDisappear,
+            onComplete,
         });
     };
+
+    useEffect(() => {
+        console.log('[MessagePanel] new state', msgPanelState);
+    }, [msgPanelState]);
 
     const hideMessagePanel = async () => {
         setMsgPanelState(MESSAGE_PANEL_INIT_STATE);
@@ -56,6 +62,7 @@ const Layout = ({children}: LayoutProps) => {
         messagePanelType: msgPanelState.type,
         messagePanelMsg: msgPanelState.msg,
         messagePanelAutoDisappear: msgPanelState.autoDisappear,
+        messageOnComplete: msgPanelState.onComplete,
         showMessagePanel, hideMessagePanel,
     };
 

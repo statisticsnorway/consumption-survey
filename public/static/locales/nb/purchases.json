@@ -13,6 +13,7 @@
       "unitPrice": "Beløp"
     },
     "addNew": "Ny vare/tjeneste",
+    "noRecordsError": "Vennligst legge til minst 1 vare",
     "total": "Totalt",
     "editItem": {
       "addNew": "Legge til",
