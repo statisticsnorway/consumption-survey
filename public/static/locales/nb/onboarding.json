@@ -1,9 +1,22 @@
 {
   "onFBU": {
-    "title": "Forbruksundersøkelse 2021",
-    "description": "Forbruksundersøkelsens formål er å gi detaljert oversikt over utgifter i private husholdninger. For å forenkle arbeidet med føringen har vi laget dette verktøyet.",
+    "title": "Takk for at du bidrar",
+    "description": "Når du er med i forbruks-\u2028undersøkelsen bidrar du til offisiell statistikk om forbruk og forbrukeradferd i Norge.\u200B Dette er viktig informasjon som brukes på mange områder i samfunnet.",
     "detailsLink": "https://ssb.no",
-    "detailsLinkText": "Les mer om forbruksundersøkelsen her."
+    "detailsLinkText": "Les mer om forbruksundersøkelsen her.",
+    "dataUse": {
+      "title": "Statistikken brukes blant annet til å:\u200B",
+      "items": "Forstå endring i forbrukeradferd, Gi innsikt i sosial og økonomisk ulikhet i befolkningen, Beregne konsumprisindeksen, Utvikle modeller som beregner skatter og avgifter"
+    },
+    "whatToRegister": {
+      "title": "Utvikle modeller som beregner skatter og avgifter",
+      "intro": "Alt husholdningen    bruker penger på skal med. Dette inkluderer:",
+      "items": "Alle kjøp, Alle utgifter til tjenester og aktiviteter, Alle regninger og faste utgifter"
+    },
+    "forgottenExpenditures": {
+      "subtitle": "Utgifter som er lett å glemme",
+      "items": "Billetter på tog/buss/bane, Bruktkjøp på for eksempel finn.no eller loppemarked, Kjøp i nettbutikk, Vipps – har noen lagt ut for deg?, Lege, tannlege, fysioterapeut og lignende, Diverse fritidsaktiviteter for eksempel: - Kino/konsert/teater/svømmehall, Kjøp av musikk, film eller spill på nett, Kjøp av apper, Tipping/ Lotto og andre pengespill, Aviser, tidsskrifter i abonnement og løssalg, Barnevakt, Medlemskontingenter, Gaver til foreninger"
+    }
   },
 
   "goals": {
@@ -13,10 +26,19 @@
   },
 
   "howTo": {
-    "title": "Hvordan du tar i bruk vektøyet",
+    "title": "Slik gjør du det",
     "description": "I appen fordeler utgiftene seg slik: ",
     "tip": "Klikk på pil ned for å lese mer",
-
+    "todos": {
+      "registering": "Føre utgifter i hele registreringsperioden på to uker",
+      "questionnaire": "Svare på spørreskjemaet som du finner webappen."
+    },
+    "tooling": {
+      "fromReceipt": "Ta bilde av og skanne kvitteringer",
+      "manual": "Legge inn kjøp og regninger manuelt"
+    },
+    "incentive": "Når registreringsperioden er over og du har svart på spørreskjemaet og ført alle utgifter sender vi deg et gavekort på 500 kroner!",
+    "message": "Lykke til og takk for at du bidrar!",
     "purchases": {
       "title": "Løpende utgifger",
       "description": "Løpende utgifter er det du handler i butikk, på nett eller det du kjøper av tjenester i føringsperioden."
@@ -41,6 +63,11 @@
       "All innsamlet data blir slettet etter to år og du har rett til innsyn samt sletting av innsendt data."
     ],
 
-    "consent": "Jeg samtykker til at Statistisk sentralbyrå samler inn og behandler mine data for statistikkproduksjon."
+    "consent": {
+      "title": "Samtykke",
+      "intro": "Ved å føre utgifter og svare på spørreskjemaet i webappen, samtykker du til at opplysningene kan brukes til analyser i SSB i samsvar med gjeldene personvernregler:",
+      "items": "Undersøkelsen gjennomføres i samsvar med statistikkloven og personopplysningsloven, Webappen samler ikke inn noen andre opplysninger enn de du selv velger å legge inn, Opplysningene blir forsvarlig lagret i SSBs systemer i tråd med personvernreglene. Tar du bilder av kvitteringer, blir disse i tillegg lagret på din telefon, Bildene er innom en tredjepart for skanning, men slettes hos dem så snart skanning er utført, Undersøkelsen er frivillig, og du kan når som helst kontakte oss for å be om at opplysningene du har gitt blir slettet, Innen 1. juni 2022 vil alle opplysninger bli anonymisert",
+      "moreInfo": "Du kan lese mer om personvern på www.ssb.no/omssb/personvern. (ekstern lenke)."
+    }
   }
 }
