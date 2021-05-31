@@ -127,15 +127,28 @@ const EditRegularExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps
                     title: t('addExpense.save'),
                     onClick: async () => {
                         if (validateAllFields()) {
-                            onSubmit(values)
-                                .then(async () => {
-                                    await router.push(PATHS.CONSUMPTION);
-                                    clear();
-                                    showMessagePanel(
-                                        MessagePanelType.SUCCESS,
-                                        t('addExpense.success'),
-                                    );
-                                });
+                            try {
+                                onSubmit(values)
+                                    .then(async () => {
+                                        await router.push(PATHS.CONSUMPTION);
+                                        clear();
+                                        showMessagePanel(
+                                            MessagePanelType.SUCCESS,
+                                            t('addExpense.success'),
+                                        );
+                                    })
+                                    .catch((err) => {
+                                        showMessagePanel(
+                                            MessagePanelType.ERROR,
+                                            JSON.stringify(err)
+                                        );
+                                    });
+                            } catch (err) {
+                                showMessagePanel(
+                                    MessagePanelType.ERROR,
+                                    JSON.stringify(err)
+                                );
+                            }
                         } else {
                             setErrors({
                                 ...errors,
