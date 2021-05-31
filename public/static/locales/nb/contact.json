@@ -1,0 +1,15 @@
+{
+  "title" : "Kontakt oss",
+  "contactInfo" : "Har du spørsmål eller ønsker mer informasjon, kan du kontakte oss på:",
+  "fbuHeader" : "Forbruksundersøkelsen",
+  "openingHours" : "Åpen kl. 09-20 mandag - fredag",
+  "phoneNumber" : "21 09 42 28",
+  "email" : "forbruk@ssb.no",
+  "feedback" : {
+    "title" : "Gi oss en tilbakemelding",
+    "feedbackInfo" : "Vi vil gjerne høre hva du synes! Bruk skjema under for å sende inn en tilbakemelding om hvordan denne appen fungerer.",
+    "formTitle" : "Hva er din tilbakemelding?",
+    "formPlaceholder" : "Skriv her",
+    "formButton" : "Send inn"
+  }
+}

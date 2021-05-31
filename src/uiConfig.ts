@@ -11,6 +11,8 @@ export const PATHS = {
     QUESTIONNAIRE: '/questionnaire',
     TASKS: '/tasks',
     PROGRESS: '/progress',
+    CONTACT: '/support/contact',
+    ABOUT: '/support/about'
 };
 
 export const addPurchasePath = (mode) =>

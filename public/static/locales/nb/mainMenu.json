@@ -1,0 +1,14 @@
+{
+  "home" : {
+    "title": "Hjem",
+    "excerpt" : "Her registrerer du alle kjøp og utgifter du har i registreringsperioden."
+  },
+  "onFbu" : {
+    "title": "Om undersøkelsen",
+    "excerpt" : "Informasjon om undersøkelsen, personvern og samtykke."
+  },
+  "contact" : {
+    "title": "Kontakt oss",
+    "excerpt" : "Telefonnummer og e-postadresse for henvendelser."
+  }
+}

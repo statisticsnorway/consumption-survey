@@ -1,0 +1,19 @@
+{
+  "title" : "Om undersøkelsen",
+  "surveyInfo" : "Data fra forbruksundersøkelsen brukes til offisiell statistikk om forbruk og forbrukeradferd i Norge. Når du deltar i undersøkelsen bidrar du til viktig fakta om samfunnet.\nMer informasjon om undersøkelsen finner du på vår webside",
+  "website" : "www.ssb.no/forbruk-svar",
+  "privacy" : {
+    "title" : "Personvern",
+    "bulletPoints" : [
+      "Undersøkelsen gjennomføres i samsvar med statistikkloven og personopplysningsloven",
+      "Svarene du gir benyttes bare til analyser i SSB, og svar som kan identifisere enkeltpersoner vil aldri bli offentliggjort",
+      "Webappen samler ikke inn noen andre opplysninger enn de du selv velger å legge inn",
+      "Opplysningene blir forsvarlig lagret i SSBs systemer etter gjeldende personvernregler",
+      "Tar du bilder av kvitteringer, vil disse i tillegg bli lagret i appen på din telefon",
+      "Bildene er innom en tredjepart for scanning, men slettes hos dem når skanning er utført",
+      "Undersøkelsen er frivillig, og du kan når som helst trekke deg og be om at svarene du har gitt blir rette eller slettet. Du kan også be om innsyn i opplysningene",
+      "Innen 1. juni 2022 vil alle opplysninger bli anonymisert"
+    ],
+    "privacyInfo" : "Har du spørsmål om personvern kan du sende en e-post til personvernombud@ssb.no eller lese mer på www.ssb.no/omssb/personvern"
+  }
+}

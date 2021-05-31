@@ -1,0 +1,14 @@
+{
+  "home" : {
+    "title": "Home",
+    "excerpt" : "This is where you register all your purchases and expenses during the survey period."
+  },
+  "onFbu" : {
+    "title": "About the survey",
+    "excerpt" : "Information about the survey, privacy and consent."
+  },
+  "contact" : {
+    "title": "Contact us",
+    "excerpt" : "Telephone number and e-mail for contacting us."
+  }
+}
