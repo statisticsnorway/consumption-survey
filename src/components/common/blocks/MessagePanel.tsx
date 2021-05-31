@@ -44,12 +44,12 @@ const MessagePanel = ({show, type = MessagePanelType.SUCCESS, message,
 
     useEffect(() => {
         if (show && autoDisappear) {
-            setTimeout(() => {
-                hideMessagePanel();
-
+            setTimeout(async () => {
                 if (typeof onComplete === 'function') {
-                    onComplete();
+                    await onComplete();
                 }
+
+                hideMessagePanel();
             }, 1000);
         }
     }, [show]);
