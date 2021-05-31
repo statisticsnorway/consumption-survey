@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import EditPurchase from '../../../components/purchases/editPurchase/EditPurchase';
+import EditPurchase from '../../../components/purchases/EditPurchase';
 import OpLayout from '../../../components/layout/OpLayout';
 
 const EditPurchasePage = () => {

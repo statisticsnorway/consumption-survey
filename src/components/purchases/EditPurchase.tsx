@@ -1,22 +1,22 @@
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import Workspace from '../../layout/workspace/Workspace';
+import Workspace from '../layout/workspace/Workspace';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import usePurchases from '../../../hocs/usePurchases';
-import { INIT_PURCHASE, ItemType, PurchaseStatus, PurchaseType, ReceiptInfo } from '../../../firebase/model/Purchase';
-import { OpHeader } from '../../layout/header/Header';
+import usePurchases from '../../hocs/usePurchases';
+import { INIT_PURCHASE, ItemType, PurchaseStatus, PurchaseType, ReceiptInfo } from '../../firebase/model/Purchase';
+import { OpHeader } from '../layout/header/Header';
 import PurchaseMeta from './PurchaseMeta';
 import ItemsTable from './ItemsTable';
-import ReceiptPopup from '../../receipts/ReceiptPopup';
-import { LayoutContext } from '../../../uiContexts';
-import { MessagePanelType } from '../../common/blocks/MessagePanel';
-import DeletePurchaseDialog from '../support/DeletePurchaseDialog';
-import { PATHS } from '../../../uiConfig';
-import { krCents } from '../../../utils/jsUtils';
+import ReceiptPopup from '../receipts/ReceiptPopup';
+import { LayoutContext } from '../../uiContexts';
+import { MessagePanelType } from '../common/blocks/MessagePanel';
+import DeletePurchaseDialog from './support/DeletePurchaseDialog';
+import { PATHS } from '../../uiConfig';
+import { krCents } from '../../utils/jsUtils';
 
-import styles from '../styles/editPurchase.module.scss'
-import useReceiptUpload from '../../../hocs/useReceiptUpload';
-import FbuIcon from '../../common/icons/FbuIcon';
+import styles from './styles/editPurchase.module.scss'
+import useReceiptUpload from '../../hocs/useReceiptUpload';
+import FbuIcon from '../common/icons/FbuIcon';
 
 export type EditPurchaseProps = {
     purchaseId: string;

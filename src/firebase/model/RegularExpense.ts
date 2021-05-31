@@ -1,5 +1,5 @@
 export enum ExpenseFrequency {
-    NONE = '',
+    NONE = 'NONE',
     MONTHLY = 'MONTHLY',
     QUARTERLY = 'QUARTERLY',
     YEARLY = 'YEARLY',

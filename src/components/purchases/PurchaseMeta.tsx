@@ -1,9 +1,9 @@
-import LabelledInput from '../../common/form/LabelledInput';
+import LabelledInput from '../common/form/LabelledInput';
 import { useTranslation } from 'react-i18next';
-import { notEmptyString } from '../../../utils/jsUtils';
-import LabelledDatePicker from '../../common/form/LabelledDatePicker';
+import { notEmptyString } from '../../utils/jsUtils';
+import LabelledDatePicker from '../common/form/LabelledDatePicker';
 
-import styles from '../styles/editPurchase.module.scss';
+import styles from './styles/editPurchase.module.scss';
 
 export type PurchaseMetaProps = {
     purchaseDate?: string;

@@ -2,16 +2,16 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { TextField } from '@material-ui/core';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 import { useTranslation } from 'react-i18next';
-import NorwegianCurrencyFormat from '../../common/NorwegianCurrencyFormat';
-import useSearchTerms from '../../../hocs/useSearchTerms';
-import Modal from '../../common/dialog/Modal';
-import Loader from '../../common/Loader';
+import NorwegianCurrencyFormat from '../common/NorwegianCurrencyFormat';
+import useSearchTerms from '../../hocs/useSearchTerms';
+import Modal from '../common/dialog/Modal';
+import Loader from '../common/Loader';
 import { ArrowLeft } from 'react-feather';
-import { SearchTermType } from '../../../firebase/model/SearchTerm';
-import { ItemType } from '../../../firebase/model/Purchase';
+import { SearchTermType } from '../../firebase/model/SearchTerm';
+import { ItemType } from '../../firebase/model/Purchase';
 
-import styles from '../styles/item.module.scss';
-import formStyles from '../../common/form/form.module.scss';
+import styles from './styles/item.module.scss';
+import formStyles from '../common/form/form.module.scss';
 
 export type EditItemProps = {
     item: ItemType;

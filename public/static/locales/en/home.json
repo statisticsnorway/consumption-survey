@@ -1,5 +1,6 @@
 {
   "title": "Home",
+  "greeting": "Choose a task",
   "surveyInfo": "Your journal period is",
 
   "registerNew": {
