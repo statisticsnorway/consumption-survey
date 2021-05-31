@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EditItem from './EditItem';
-import NumberStepper from '../../common/form/NumberStepper';
+import NumberStepper from '../common/form/NumberStepper';
 import { PlusCircle } from 'react-feather';
-import { ItemType } from '../../../firebase/model/Purchase';
-import { krCents } from '../../../utils/jsUtils';
+import { ItemType } from '../../firebase/model/Purchase';
+import { krCents } from '../../utils/jsUtils';
 
-import styles from '../styles/items.module.scss';
+import styles from './styles/items.module.scss';
 
 export type ItemsTableProps = {
     items: ItemType[];

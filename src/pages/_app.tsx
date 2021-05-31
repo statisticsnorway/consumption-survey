@@ -19,6 +19,7 @@ import { DispatchType, QuestionAction } from '../store/actionCreators';
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux';
 import SearchTermsProvider from '../firebase/SearchTermsProvider';
+import ExpensesProvider from '../firebase/ExpensesProvider';
 
 const store: Store<QuestionState, QuestionAction> & {
     dispatch: DispatchType
@@ -60,11 +61,13 @@ const MyApp = ({Component, pageProps}) => {
                     <UserProvider>
                         <SearchTermsProvider>
                             <PurchasesProvider>
-                                {getLayout(
-                                    <ProtectedRoute>
-                                        <Component {...pageProps} />
-                                    </ProtectedRoute>
-                                )}
+                                <ExpensesProvider>
+                                    {getLayout(
+                                        <ProtectedRoute>
+                                            <Component {...pageProps} />
+                                        </ProtectedRoute>
+                                    )}
+                                </ExpensesProvider>
                             </PurchasesProvider>
                         </SearchTermsProvider>
                     </UserProvider>

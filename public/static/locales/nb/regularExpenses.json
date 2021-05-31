@@ -1,40 +1,39 @@
 {
   "noRecords": "Ingen utgifter registrert",
-
   "header": {
     "name": "Type utgift",
     "frequency": "Gjentas",
     "amount": "Beløp"
   },
-
   "frequency": {
     "NONE": "",
     "MONTHLY": "Månedlig",
     "QUARTERLY": "Kvartal",
     "YEARLY": "Årlig"
   },
-
   "addExpense": {
     "title": "Ny fast utgift",
     "save": "Lagre",
     "cancel": "Avbryt",
-
+    "success": "Lagring av fastutgift vellykket",
+    "error": "Kunne ikke lagre fast utgift",
     "nameLabel": "Type utgift",
     "namePlaceholder": "Strøm, Kabel, Mobil, osv.",
-
     "frequencyLabel": "Gjentas",
     "frequencyPlaceholder": "Velg en",
-
     "krLabel": "kr.",
     "krPlaceholder": "0",
-
     "centsLabel": "øre",
     "centsPlaceholder": "00",
-
     "krCentsLabel": "Beløp",
-    "krCentsPlaceholder": "0,00"
+    "krCentsPlaceholder": "0,00",
+    "name": "Type utgift",
+    "nameError": "Vennligst oppgi type regning",
+    "krCents": "Beløp",
+    "krCentsError": "Vennligt oppgi beløp",
+    "frequency": "Frekvens",
+    "frequencyError": "Vennligst velg frekvens"
   },
-
   "deleteExpense": {
     "title": "Slett fast utgift",
     "text": "Er du sikker på at du vil slette fast utgift",

@@ -82,19 +82,23 @@ p {
 .messagePanel--success {
   background-color: $ssb-green-1;
   color: $ssb-green-4;
+  border: 1px solid $ssb-green-4;
 }
 
 .messagePanel--error {
   background-color: $ssb-red-1;
   color: $ssb-red-3;
+  border: 1px solid $ssb-red-3;
 }
 
 .messagePanel--info {
   background-color: lightblue;
   color: $ssb-blue-3;
+  border: 1px solid $ssb-blue-3;
 }
 
 .messagePanel--warning {
   background-color: $ssb-red-1;
   color: $ssb-dark-4;
+  border: 1px solid $ssb-dark-4;
 }

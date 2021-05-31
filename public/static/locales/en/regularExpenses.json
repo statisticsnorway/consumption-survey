@@ -23,6 +23,9 @@
     "save": "Save",
     "cancel": "Cancel",
 
+    "success": "Regular expense saved successfully",
+    "error": "Could not save regular expense",
+
     "nameLabel": "Type of expenditure",
     "namePlaceholder": "Electricity, Cable, Mobile, etc.",
 
