@@ -11,6 +11,15 @@
 
     padding: 0.75rem 1.25rem;
 
+    .scanNew {
+      font-style: italic;
+    }
+
+    .icon {
+      color: $ssb-green-4;
+      margin-right: 0.5rem;
+    }
+
     img.thumbnail {
       width: 2.75rem;
       height: 2.75rem;

@@ -60,7 +60,7 @@ const Home = () => {
                     text={t('registerNew.manually')}
                     iconComponent={<AddPurchaseManualIcon/>}
                     onClick={() => {
-                        router.push(addPurchasePath(ADD_PURCHASE_MODES.MANUAL));
+                        router.push(PATHS.EDIT_PURCHASE);
                     }}
                 />
                 <HomeCTA

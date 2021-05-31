@@ -45,7 +45,6 @@
     }
 
     td.addNewRow {
-      border-bottom: 0;
       background-color: $ssb-green-1;
       color: $ssb-green-4;
       font-weight: 700;
@@ -79,7 +78,6 @@
 
     .totalRow {
       td {
-        border-top: 1px solid $ssb-dark-5;
         border-bottom: 0;
         color: $ssb-dark-5;
         font-weight: 700;

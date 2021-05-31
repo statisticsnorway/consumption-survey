@@ -19,7 +19,7 @@ const DeletePurchaseDialog = ({purchase, show, onConfirm, onCancel}: DeletePurch
         setShowPopup(show);
     }, [show]);
 
-    return (
+    return purchase ? (
         <DeleteConfirmDialog
             show={showPopup}
             onConfirm={onConfirm}
@@ -29,7 +29,7 @@ const DeletePurchaseDialog = ({purchase, show, onConfirm, onCancel}: DeletePurch
             warningText={t('deletePurchase.textWarning')}
             info={purchase.name}
         />
-    );
+    ) : null;
 };
 
 export default DeletePurchaseDialog;

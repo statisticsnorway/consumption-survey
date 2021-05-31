@@ -35,7 +35,10 @@ const Workspace = ({
         messagePanelType,
         messagePanelMsg,
         messagePanelAutoDisappear,
+        messageOnComplete,
     } = useContext(LayoutContext);
+
+    console.log('[MessagePanel]', messagePanelMsg, messageOnComplete);
 
     return (
         <>
@@ -48,6 +51,7 @@ const Workspace = ({
                         type={messagePanelType}
                         message={messagePanelMsg}
                         autoDisappear={messagePanelAutoDisappear}
+                        onComplete={messageOnComplete}
                     />
                     {children}
                 </div>

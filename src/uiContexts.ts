@@ -1,6 +1,8 @@
 import { createContext } from 'react';
 import { MessagePanelType } from './components/common/blocks/MessagePanel';
 
+export type ON_COMPLETE_FN = () => void;
+
 export type LayoutContextType = {
     showUpdateSnackbar: boolean;
     showMessage: (msg: string) => void;
@@ -9,7 +11,8 @@ export type LayoutContextType = {
     messagePanelType: MessagePanelType;
     messagePanelMsg: string;
     messagePanelAutoDisappear: boolean;
-    showMessagePanel: (type: MessagePanelType, msg: string, autoDisappear?: boolean) => void;
+    messageOnComplete: () => void;
+    showMessagePanel: (type: MessagePanelType, msg: string, autoDisappear?: boolean, onComplete?: ON_COMPLETE_FN) => void;
     hideMessagePanel: () => void;
 };
 
