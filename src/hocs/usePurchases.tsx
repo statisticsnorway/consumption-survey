@@ -1,9 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { FireContext, PurchasesContext, UserContext } from '../contexts';
-import { isPurchaseComplete, PurchaseStatus, PurchaseType } from '../firebase/model/Purchase';
+import { isPurchaseComplete, isPurchaseDeleted, PurchaseStatus, PurchaseType } from '../firebase/model/Purchase';
 import { simpleFormat } from '../utils/dateUtils';
 import useReceipts from './useReceipts';
-import { extractPurchaseInfo } from '../utils/receiptUtils';
 
 const usePurchases = () => {
         const {firestore} = useContext(FireContext);
@@ -39,6 +38,10 @@ const usePurchases = () => {
                             const {purchaseDate} = p.data();
                             const purchase = p.data() as PurchaseType;
 
+                            if (isPurchaseDeleted(purchase.status)) {
+                                return purchase;
+                            }
+
                             const receiptImages = await Promise.all((purchase.receipts || [])
                                 .map(async (receipt) => {
                                     if (receipt.imageId && receipt.imageName) {
@@ -66,7 +69,9 @@ const usePurchases = () => {
                         }));
 
                         console.log('records from firestore', pRecords);
-                        setPurchases(pRecords);
+                        const activePurchases = pRecords.filter(p => !isPurchaseDeleted(p.status));
+                        console.log('active purchases', activePurchases);
+                        setPurchases(activePurchases);
 
                         const pbd = pRecords.reduce((acc, p) => {
                             if (isPurchaseComplete(p.status)) {
@@ -104,7 +109,6 @@ const usePurchases = () => {
                 setPurchasesByDate(pbd);
             }
         }, [purchases]);
-
 
 
         /*
@@ -187,7 +191,7 @@ const usePurchases = () => {
 
             return firestore
                 .doc(`/users/${userInfo.userName}/purchases/${purchase.id}`)
-                .delete();
+                .update({status: PurchaseStatus.DELETE_REQUESTED});
         };
 
         return {purchases, purchasesByDate, initPurchase, addPurchase, editPurchase, deletePurchase};

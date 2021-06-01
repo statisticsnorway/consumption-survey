@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { ExpensesContext, FireContext, UserContext } from '../contexts';
-import { RegularExpenseType } from '../firebase/model/RegularExpense';
+import { isExpenseDeleted, RegularExpenseStatus, RegularExpenseType } from '../firebase/model/RegularExpense';
 
 const useExpenses = () => {
     const {firestore} = useContext(FireContext);
@@ -26,7 +26,10 @@ const useExpenses = () => {
                     }
                 });
 
-                setExpenses(expenseRecords);
+                console.log('regular expenses records from firebase', expenseRecords);
+                const activeExpenses = expenseRecords.filter(e => !isExpenseDeleted(e.status));
+                console.log('active expenses', activeExpenses);
+                setExpenses(activeExpenses);
                 console.log('EXPENSES', JSON.stringify(expenseRecords));
             })
     }, []);
@@ -45,14 +48,14 @@ const useExpenses = () => {
         console.log(`Updating ${id} with `, newValues);
         return firestore
             .doc(`/users/${userInfo.userName}/regularExpenses/${id}`)
-            .update(newValues);
+            .set(newValues, {merge: true});
     };
 
     const deleteExpense = (id: string) => {
         console.log(`Deleting ${id}`);
         return firestore
             .doc(`/users/${userInfo.userName}/regularExpenses/${id}`)
-            .delete();
+            .update({status: RegularExpenseStatus.DELETE_REQUESTED});
     };
 
     return {expenses, addExpense, editExpense, deleteExpense};
