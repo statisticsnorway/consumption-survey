@@ -75,11 +75,13 @@
       "addNewTerm": "Legge til",
       "name": {
         "label": "Jeg har kjøpt",
-        "placeholder": "Vare eller tjeneste"
+        "placeholder": "Vare eller tjeneste",
+        "errorText": "Velg/oppgi vare/tjeneste navn"
       },
       "qty": {
         "label": "Mengde",
-        "placeholder": "1, 2, ..."
+        "placeholder": "1, 2, ...",
+        "errorText": "Vennligst oppgi mengde"
       },
       "price": {
         "kr": {
