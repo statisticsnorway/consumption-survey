@@ -83,8 +83,6 @@ const EditRegularExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps
     };
 
     useEffect(() => {
-        const cs = validateAllFields();
-        console.log('should evaluate canSubmit to', cs);
         setCanSubmit(validateAllFields());
     }, [values]);
 

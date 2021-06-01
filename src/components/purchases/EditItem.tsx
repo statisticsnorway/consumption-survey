@@ -14,6 +14,7 @@ import styles from './styles/item.module.scss';
 import formStyles from '../common/form/form.module.scss';
 import LabelledInput from '../common/form/LabelledInput';
 import { notEmptyString } from '../../utils/jsUtils';
+import { OpHeader } from '../layout/header/Header';
 
 export type EditItemProps = {
     item: ItemType;
@@ -30,6 +31,10 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
     const [values, setValues] = useState<ItemType>(item);
     const {searchTerms} = useSearchTerms();
     const {t} = useTranslation('purchases');
+
+    const [skipValidation, setSkipValidation] = useState<boolean>(true);
+    const [isDirty, setIsDirty] = useState<boolean>(false);
+    const [canSubmit, setCanSubmit] = useState<boolean>(false);
 
     // refs
     const nameFieldRef = useRef(null);
@@ -89,7 +94,33 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             ...values,
             [key]: value,
         });
+
+        setIsDirty(true);
     };
+
+    useEffect(() => {
+        setSkipValidation(!isDirty);
+    }, [isDirty]);
+
+    const validateAllFields = () => {
+        if (!values) {
+            return false;
+        }
+
+        return (
+            values.name &&
+            (values.qty && !isNaN(Number(values.qty))) &&
+            (values.amount && !isNaN(Number(values.amount)))
+        );
+    };
+
+    useEffect(() => {
+        if (values && (values.idx !== -1)) {
+            setSkipValidation(false);
+        }
+
+        setCanSubmit(validateAllFields());
+    }, [values]);
 
     const extractValFromAutoComplete = (evt, newValue) => {
         console.log('selected', newValue, 'target', evt.target.value);
@@ -128,15 +159,14 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             showFooter={false}
         >
             <div className={styles.editItemDialog}>
-                <div className={styles.headerZone}>
-                    <div className={styles.leftSection} onClick={onCancelEdit}>
-                        <ArrowLeft className={styles.icon} width={20} height={20}/>
-                        {t('lineItems.editItem.cancel')}
-                    </div>
-                    <div className={styles.rightSection} onClick={onClose}>
-                        <span className={styles.saveChangesLink}>{t('lineItems.editItem.save')}</span>
-                    </div>
-                </div>
+                <OpHeader
+                    title={t('lineItems.title')}
+                    action={{
+                        title: t('lineItems.editItem.save'),
+                        onClick: onClose,
+                        disabled: skipValidation || !canSubmit,
+                    }}
+                />
                 <div className={`${formStyles.fbuForm} ${styles.newItemForm}`}>
                     <Autocomplete
                         inputValue={values.name}
@@ -157,7 +187,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                                 placeholder={t('addPurchase.newItem.name.placeholder')}
                                 value={values.name}
                                 onChange={updateValue('name')}
-                                validate={nm => notEmptyString(nm)}
+                                validate={nm => skipValidation || notEmptyString(nm)}
                                 errorText={t('addPurchase.newItem.name.errorText')}
                                 {...params}
                             />
@@ -207,17 +237,23 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                             id="newItemQty"
                             value={values.qty}
                             label={t('addPurchase.newItem.qty.label')}
-                            validate={qty => notEmptyString(qty) && !isNaN(Number(qty))}
+                            validate={qty => skipValidation || (notEmptyString(qty) && !isNaN(Number(qty)))}
                             errorText={t('addPurchase.newItem.qty.errorText')}
                             onChange={updateValue('qty')}
+                            InputProps={{
+                                inputComponent: NorwegianCurrencyFormat as any,
+                            }}
                             styleClass={styles.qty}
                         />
                         <LabelledInput
                             id="newItemAmount"
                             value={values.amount}
                             label={t('addPurchase.newItem.amount.label')}
-                            validate={amt => notEmptyString(amt) && !isNaN(Number(amt))}
+                            validate={amt => skipValidation || (notEmptyString(amt) && !isNaN(Number(amt)))}
                             errorText={t('addPurchase.newItem.amount.errorText')}
+                            InputProps={{
+                                inputComponent: NorwegianCurrencyFormat as any,
+                            }}
                             onChange={updateValue('amount')}
                             placeholder={t('addPurchase.newItem.amount.placeholder')}
                             styleClass={styles.amount}

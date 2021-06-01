@@ -12,7 +12,8 @@
       "qty": "Antall",
       "unitPrice": "Beløp"
     },
-    "addNew": "Ny vare/tjeneste",
+    "title": "Rediger vare/tjeneste",
+    "addNew": "Rediger vare/tjeneste",
     "noRecordsError": "Vennligst legge til minst 1 vare",
     "total": "Totalt",
     "editItem": {
