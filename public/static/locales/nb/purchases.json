@@ -12,6 +12,7 @@
       "qty": "Antall",
       "unitPrice": "Beløp"
     },
+    "title": "Rediger vare/tjeneste",
     "addNew": "Ny vare/tjeneste",
     "noRecordsError": "Vennligst legge til minst 1 vare",
     "total": "Totalt",
@@ -75,11 +76,13 @@
       "addNewTerm": "Legge til",
       "name": {
         "label": "Jeg har kjøpt",
-        "placeholder": "Vare eller tjeneste"
+        "placeholder": "Vare eller tjeneste",
+        "errorText": "Velg/oppgi vare/tjeneste navn"
       },
       "qty": {
         "label": "Mengde",
-        "placeholder": "1, 2, ..."
+        "placeholder": "1, 2, ...",
+        "errorText": "Vennligst oppgi mengde"
       },
       "price": {
         "kr": {
@@ -90,6 +93,11 @@
           "label": "øre",
           "placeholder": "øre"
         }
+      },
+      "amount": {
+        "label": "Beløp",
+        "placeholder": "1,00",
+        "errorText": "Vennligst oppgi beløp"
       }
     },
     "addAnotherItem": "Legge til ny vare eller tjeneste"

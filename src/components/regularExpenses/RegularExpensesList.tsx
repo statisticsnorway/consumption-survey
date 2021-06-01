@@ -20,15 +20,9 @@ export type RegularExpensesProps = {
     onComplete?: () => void;
 };
 
-export const convert = (values: RegularExpenseType) => {
-    const {id, amount, frequency, name} = values;
-    return {
-        id: id,
-        name,
-        frequency,
-        amount,
-    };
-};
+// not sure why we were added uuid if it was not present earlier.
+// just returning values as is, for now.
+export const convert = (values: RegularExpenseType) => values;
 
 const RegularExpensesList = ({ showExpensesList = true, showAddExpenseDialog = false, onComplete }: RegularExpensesProps) => {
     const router = useRouter();
