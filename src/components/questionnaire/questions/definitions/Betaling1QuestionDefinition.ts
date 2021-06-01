@@ -5,7 +5,7 @@ export const BETALING1: QuestionFormType = {
     id: 'betaling1',
     theme: Theme.paymentOptions,
     order: 126,
-    questionText: 'Hvordan betaler husholdningen vanligvis for dagligvarer?',
+    questionText: 'Hvordan betaler husholdningen vanligvis for dagligvarer? (flere svar mulig)',
     hasAnswered: false,
     answerValue: {
         answers: [
