@@ -45,10 +45,11 @@ export type ActionItem = {
 export type OpHeaderProps = {
     title: string;
     showBack?: boolean;
+    onBackClick?: (() => void) | null;
     action: ActionItem;
 };
 
-export const OpHeader = ({showBack = true, title, action = null}: OpHeaderProps) => {
+export const OpHeader = ({showBack = true, onBackClick = null, title, action = null}: OpHeaderProps) => {
     const router = useRouter();
     const {t} = useTranslation('common');
     const [actionComp, setActionComp] = useState<ReactNode>();
@@ -70,7 +71,11 @@ export const OpHeader = ({showBack = true, title, action = null}: OpHeaderProps)
     return (
         <div className={styles.header}>
             <div className={styles.back} onClick={() => {
-                router.back();
+                if (typeof onBackClick === 'function') {
+                    onBackClick();
+                } else {
+                    router.back();
+                }
             }}>
                 <FbuIcon name={'ArrowLeft'} size={20} className={styles.icon}/>{t('links.back')}
             </div>

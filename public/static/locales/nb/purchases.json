@@ -13,7 +13,7 @@
       "unitPrice": "Beløp"
     },
     "title": "Rediger vare/tjeneste",
-    "addNew": "Rediger vare/tjeneste",
+    "addNew": "Ny vare/tjeneste",
     "noRecordsError": "Vennligst legge til minst 1 vare",
     "total": "Totalt",
     "editItem": {

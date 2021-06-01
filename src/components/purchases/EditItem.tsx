@@ -61,13 +61,20 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
         setErrors({} as ItemType);
     };
 
+    const cleanup = () => {
+        setCanSubmit(false);
+        setSkipValidation(true);
+        setIsDirty(false);
+        clearErrors();
+    };
+
     const onClose = () => {
         console.log('verifying', values);
 
         if (values.name && values.qty && values.amount) {
             onUpdate(item, values);
             setShowPopup(false);
-            clearErrors();
+            cleanup();
         } else {
             setErrors({
                 ...errors,
@@ -79,7 +86,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
     };
     const onCancelEdit = () => {
         setShowPopup(false);
-        clearErrors();
+        cleanup();
         onCancel();
     };
 
@@ -161,6 +168,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             <div className={styles.editItemDialog}>
                 <OpHeader
                     title={t('lineItems.title')}
+                    onBackClick={onCancelEdit}
                     action={{
                         title: t('lineItems.editItem.save'),
                         onClick: onClose,
@@ -253,6 +261,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                             errorText={t('addPurchase.newItem.amount.errorText')}
                             InputProps={{
                                 inputComponent: NorwegianCurrencyFormat as any,
+                                inputRef: amountFieldRef
                             }}
                             onChange={updateValue('amount')}
                             placeholder={t('addPurchase.newItem.amount.placeholder')}
