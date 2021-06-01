@@ -19,5 +19,6 @@ export const Theme =  {
     travels: 'Reiser',
     education: 'Skole og utdanning',
     rarePurchases: 'Sjeldne kjøp (av varig verdi)',
-    insuranceCost: 'Forsikingsutgifter'
+    insuranceCost: 'Forsikingsutgifter',
+    paymentOptions: 'Betalingsmåter'
 }
