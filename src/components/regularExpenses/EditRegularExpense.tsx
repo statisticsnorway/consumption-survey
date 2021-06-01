@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
+import { ExpenseFrequency, RegularExpenseStatus, RegularExpenseType } from '../../firebase/model/RegularExpense';
 import Modal from '../common/dialog/Modal';
 import NorwegianCurrencyFormat from '../common/NorwegianCurrencyFormat';
 
@@ -20,6 +20,7 @@ const INIT_STATE: RegularExpenseType = {
     name: '',
     frequency: ExpenseFrequency.NONE,
     amount: '',
+    status: RegularExpenseStatus.COMPLETE,
 };
 
 export type AddExpenseProps = {

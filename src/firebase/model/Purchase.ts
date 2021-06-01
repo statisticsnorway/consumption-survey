@@ -24,6 +24,9 @@ export enum PurchaseStatus {
     /** Saved to backend service */
     FBU_COMPLETE = 'FBU_COMPLETE',
 
+    DELETE_REQUESTED = 'DELETE_REQUESTED',
+    DELETED = 'DELETED',
+
     /**
      * when created from a receipt:
      * - waiting for network: device is offline we could not upload
@@ -129,3 +132,11 @@ export type PurchasesByDate = {
 export type PurchaseGroupByDate = {
     readonly [date: string]: readonly PurchaseType[];
 };
+
+const PURCHASE_DELETE_STATUSES = [
+    PurchaseStatus.DELETE_REQUESTED,
+    PurchaseStatus.DELETED
+];
+
+export const isPurchaseDeleted = (status: PurchaseStatus) =>
+    PURCHASE_DELETE_STATUSES.includes(status);
