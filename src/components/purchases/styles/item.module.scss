@@ -44,11 +44,11 @@
     .qtyAmountGroup {
       display: flex;
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
 
       .qty {
         order: 1;
-        flex: 1 1;
+        flex: 1 1 50%;
 
         input {
           text-align: right;
@@ -57,7 +57,7 @@
 
       .amount {
         order: 2;
-        flex: 2 1;
+        flex: 0 0 50%;
 
         input {
           text-align: right;

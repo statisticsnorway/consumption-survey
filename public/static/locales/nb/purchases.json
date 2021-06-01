@@ -90,6 +90,11 @@
           "label": "øre",
           "placeholder": "øre"
         }
+      },
+      "amount": {
+        "label": "Beløp",
+        "placeholder": "1,00",
+        "errorText": "Vennligst oppgi beløp"
       }
     },
     "addAnotherItem": "Legge til ny vare eller tjeneste"

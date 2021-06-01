@@ -12,6 +12,8 @@ import { ItemType } from '../../firebase/model/Purchase';
 
 import styles from './styles/item.module.scss';
 import formStyles from '../common/form/form.module.scss';
+import LabelledInput from '../common/form/LabelledInput';
+import { notEmptyString } from '../../utils/jsUtils';
 
 export type EditItemProps = {
     item: ItemType;
@@ -82,10 +84,10 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
         }
     }, [item]);
 
-    const updateValue = (key: keyof ItemType) => (e: ChangeEvent<HTMLInputElement>) => {
+    const updateValue = (key) => (value) => {
         setValues({
             ...values,
-            [key]: e.target.value,
+            [key]: value,
         });
     };
 
@@ -143,27 +145,22 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                             return (
                                 <div className={styles.searchTermOption}>
                                     <span className={styles.searchTermName}>{option.text}</span>
-                                    <span className={styles.searchTermCode}>{option.coicopCode}</span>
                                 </div>
                             );
                         }}
                         autoHighlight
                         renderInput={(params) => (
-                            <div className={formStyles.fbuFormField}>
-                                <label className={formStyles.fbuFieldLabel}>
-                                    Jeg har kjøpt
-                                </label>
-                                <TextField
-                                    inputRef={nameFieldRef}
-                                    placeholder={t('addPurchase.newItem.name.placeholder')}
-                                    required
-                                    value={values.name}
-                                    onChange={updateValue('name')}
-                                    {...params}
-                                    className={styles.itemName}
-                                    error={errors['name'] === 'error'}
-                                />
-                            </div>
+                            <LabelledInput
+                                id="newItemName"
+                                label={t('addPurchase.newItem.name.label')}
+                                inputRef={nameFieldRef}
+                                placeholder={t('addPurchase.newItem.name.placeholder')}
+                                value={values.name}
+                                onChange={updateValue('name')}
+                                validate={nm => notEmptyString(nm)}
+                                errorText={t('addPurchase.newItem.name.errorText')}
+                                {...params}
+                            />
                         )}
                         onChange={(evt, newValue) => {
                             setValues({
@@ -206,38 +203,25 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                         className={formStyles.fbuFormGroup}
                     />
                     <div className={`${formStyles.fbuFormGroup} ${styles.qtyAmountGroup}`}>
-                        <div className={`${formStyles.fbuFormField} ${styles.qty}`}>
-                            <span className={formStyles.fbuFieldLabel}>
-                                Antall
-                            </span>
-                            <TextField
-                                placeholder="1"
-                                id="newItem-qty"
-                                inputRef={qtyFieldRef}
-                                value={values.qty}
-                                onChange={updateValue('qty')}
-                                InputProps={{
-                                    inputComponent: NorwegianCurrencyFormat as any,
-                                }}
-                                error={errors['qty'] === 'error'}
-                            />
-                        </div>
-                        <div className={`${formStyles.fbuFormField} ${styles.amount}`}>
-                            <span className={formStyles.fbuFieldLabel}>
-                                Beløp
-                            </span>
-                            <TextField
-                                placeholder={`1,00`}
-                                id="newItem-price"
-                                inputRef={amountFieldRef}
-                                value={values.amount}
-                                onChange={updateValue('amount')}
-                                InputProps={{
-                                    inputComponent: NorwegianCurrencyFormat as any,
-                                }}
-                                error={errors['amount'] === 'error'}
-                            />
-                        </div>
+                        <LabelledInput
+                            id="newItemQty"
+                            value={values.qty}
+                            label={t('addPurchase.newItem.qty.label')}
+                            validate={qty => notEmptyString(qty) && !isNaN(Number(qty))}
+                            errorText={t('addPurchase.newItem.qty.errorText')}
+                            onChange={updateValue('qty')}
+                            styleClass={styles.qty}
+                        />
+                        <LabelledInput
+                            id="newItemAmount"
+                            value={values.amount}
+                            label={t('addPurchase.newItem.amount.label')}
+                            validate={amt => notEmptyString(amt) && !isNaN(Number(amt))}
+                            errorText={t('addPurchase.newItem.amount.errorText')}
+                            onChange={updateValue('amount')}
+                            placeholder={t('addPurchase.newItem.amount.placeholder')}
+                            styleClass={styles.amount}
+                        />
                     </div>
                 </div>
             </div>
