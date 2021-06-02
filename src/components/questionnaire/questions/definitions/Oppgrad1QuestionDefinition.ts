@@ -72,7 +72,7 @@ export const OPPGRAD1: QuestionFormType = {
             {
                 id: 'oppgrad1_11',
                 value: "11",
-                descriptionValue: 'Nei, ingen av disse',
+                descriptionValue: 'Ingen av disse',
                 chosen: false
             },
         ]
