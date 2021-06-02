@@ -1,4 +1,9 @@
+@import 'src/styles/common';
+.fullScreen {
+  @include makeFullScreen
+}
 .menu {
+  position: relative;
   background-color: #274247;
   color: #fff;
   hr {
@@ -18,15 +23,22 @@
     }
   }
   .logoutSection {
-    margin-bottom: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
-    .logoutButton {
-      background-color: inherit;
-      border: 2px solid #b6e8b8;
-      color: #b6e8b8;
-      width: 100%;
-      padding: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    .buttonContainer {
+      margin-right: 20px;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      .logoutButton {
+        background-color: inherit;
+        border: 2px solid #b6e8b8;
+        color: #b6e8b8;
+        width: 100%;
+        padding: 10px;
+      }
     }
+
   }
 }

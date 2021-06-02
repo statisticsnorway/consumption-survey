@@ -13,11 +13,12 @@ const Menu = ({onClose = () => console.log('placeholder')} : MenuProps) => {
     const router = useRouter()
     const {t} = useTranslation('mainMenu')
     return (
-        <div className={style.menu}>
+        <div style={{position: 'relative'}} className={`${style.menu} ${style.fullScreen}`}>
             <MenuHeader onClose={onClose}/>
             <div className={style.menuItems}>
                 <div onClick={() => {
                     router.push(PATHS.HOME)
+                    onClose()
                 }} className={style.menuItem}>
                     <div>
                         <h3 style={{color: 'white'}} className={'ssb-title'}>{t('home.title')}</h3>
@@ -28,6 +29,7 @@ const Menu = ({onClose = () => console.log('placeholder')} : MenuProps) => {
                 <hr/>
                 <div onClick={() => {
                     router.push(PATHS.ABOUT)
+                    onClose()
                 }} className={style.menuItem}>
                     <div>
                         <h3 style={{color: 'white'}} className={'ssb-title'}>{t('onFbu.title')}</h3>
@@ -38,6 +40,7 @@ const Menu = ({onClose = () => console.log('placeholder')} : MenuProps) => {
                 <hr/>
                 <div onClick={() => {
                     router.push(PATHS.CONTACT)
+                    onClose()
                 }} className={style.menuItem}>
                     <div>
                         <h3 style={{color: 'white'}} className={'ssb-title'}>{t('contact.title')}</h3>
@@ -47,12 +50,15 @@ const Menu = ({onClose = () => console.log('placeholder')} : MenuProps) => {
                 </div>
 
             </div>
-            <hr/>
+
 
             <div className={style.logoutSection}>
-                <button className={style.logoutButton}>
-                    Logg ut
-                </button>
+                <hr/>
+                <div className={style.buttonContainer}>
+                    <button className={style.logoutButton}>
+                        Logg ut
+                    </button>
+                </div>
             </div>
         </div>
     )

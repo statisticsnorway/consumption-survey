@@ -8,6 +8,8 @@ import { ArrowLeft } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import FbuIcon from '../../common/icons/FbuIcon';
+import {Modal} from "@material-ui/core";
+import Menu from "../../menu/Menu";
 
 export type HeaderProps = {
     showAppBanner?: boolean;
@@ -15,6 +17,7 @@ export type HeaderProps = {
 };
 
 const Header = ({headerComp, showAppBanner = false}: HeaderProps) => {
+    const [menuOpen, setMenuOpen] = useState(false)
     return (
         <div className={layoutStyles.headerZone} id={'ssb-main-header'}>
             {headerComp}
@@ -30,8 +33,16 @@ const Header = ({headerComp, showAppBanner = false}: HeaderProps) => {
                     </div>
                     }
                 </div>
+                <button style={{backgroundColor: 'inherit', border: 'none', color: '#192326'}} onClick={() => setMenuOpen(true)}>
+                    <div style={{display: 'flex', alignItems: 'center'}}><FbuIcon name={'Menu'} style={{color: '#1a9d49'}} /> <b>Meny</b></div>
+                </button>
+
             </div>
             }
+
+            <Modal open={menuOpen}  >
+                <Menu onClose={() => setMenuOpen(false)}/>
+            </Modal>
         </div>
     );
 };
