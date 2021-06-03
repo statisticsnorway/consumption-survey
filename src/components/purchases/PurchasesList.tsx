@@ -133,7 +133,7 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
         if (purchasesByDate) {
             setSorted(Object.keys(purchasesByDate)
                 .sort(dateComparator(
-                    (sortOrder === PurchasesSortOrder.OLDEST_FIRST) ?
+                    (sortOrder === PurchasesSortOrder.NEWEST_FIRST) ?
                         DateSortOrder.DESC :
                         DateSortOrder.ASC
                 )));
