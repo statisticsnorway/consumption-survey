@@ -5,6 +5,8 @@ import Loader from '../common/Loader';
 // import PouchDBProvider from '../../pouchdb/PouchDBProvider';
 import getConfig from 'next/config';
 import PouchDBProvider from '../../pouchdb/PouchDBProvider';
+import usePreferences from '../../hocs/usePreferences';
+import { PATHS } from '../../uiConfig';
 
 const appConfig = getConfig();
 
@@ -21,6 +23,7 @@ const EXCLUDE_AUTH = [
 const ProtectedRoute = (props) => {
     const router = useRouter();
     const {isAuthenticated, isLoggingIn, isLoggingOut} = useContext(UserContext);
+    const {getPreference} = usePreferences();
     const {envVars} = appConfig.publicRuntimeConfig;
 
     const getAuthUrl = () => {
@@ -46,6 +49,7 @@ const ProtectedRoute = (props) => {
             }
 
              */
+
         }
     }, [isLoggingIn, isLoggingOut, isAuthenticated, router.pathname]);
 
@@ -56,6 +60,13 @@ const ProtectedRoute = (props) => {
             </PouchDBProvider>
         );
     } else if (EXCLUDE_AUTH.includes(router.pathname)) {
+        const showOnboarding = getPreference('showOnboarding');
+        if (Boolean(showOnboarding)) {
+            router.push(PATHS.ONBOARDING);
+        } else {
+            console.log('skipping onboarding slides');
+        }
+
         return props.children;
     } else {
         return <Loader/>;

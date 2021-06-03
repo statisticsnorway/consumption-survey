@@ -1,4 +1,5 @@
 import styles from './modal.module.scss';
+import { useEffect } from 'react';
 
 export interface ModalProps {
     show: boolean;
@@ -29,6 +30,13 @@ const Modal: React.FC<ModalProps> = ({
         if (!show) {
             return null;
         }
+
+        useEffect(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+        }, []);
 
         return (
             <div className={styles.fbuModalOverlay} style={style}>

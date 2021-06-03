@@ -1,38 +1,26 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { Edit3 } from 'react-feather';
+import { ChevronDown, ChevronUp, Edit3 } from 'react-feather';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
 import { krCents, notEmptyString } from '../../utils/jsUtils';
-import {
-    DASHBOARD_DATE_GROUPING_FORMAT,
-    dateComparator,
-    dateFormatDayDate,
-    parseDate,
-    simpleFormat
-} from '../../utils/dateUtils';
+import { dateComparator, dateFormatDayDate, DateSortOrder, parseDate } from '../../utils/dateUtils';
 import { PATHS } from '../../uiConfig'
-
-import styles from './styles/purchases.module.scss';
 import NoRecords from '../common/blocks/NoRecords';
-import { isPurchaseComplete, PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
+import {
+    isPurchaseComplete,
+    makePurchasesSortOptions,
+    PurchasesSortOrder,
+    PurchaseStatus,
+    PurchaseType
+} from '../../firebase/model/Purchase';
 import OcrStatus from './status/OcrStatus';
 import Loader from '../common/Loader';
 import { extractPurchaseInfo } from '../../utils/receiptUtils';
 
-const prepForDisplay = (date) => {
-    const [dt, month] =
-        simpleFormat(parseDate(date), DASHBOARD_DATE_GROUPING_FORMAT)
-            .split('.');
-
-    return (
-        <>
-            <span className={styles.purchaseGroupDateMonth}>{month.toLowerCase()}</span>
-            <span className={styles.purchaseGroupDateDay}>{dt}</span>
-        </>
-    );
-};
+import styles from './styles/purchases.module.scss';
+import RadioGroup from '../questionnaire/RadioGroup';
 
 export const listDayDate = (date, styles) => {
     const [dt, day] =
@@ -50,11 +38,11 @@ export const listDayDate = (date, styles) => {
 export const getPurchaseName = (purchase) => {
     return notEmptyString(purchase.name) ? (
         <span className={styles.purchaseEntryName}>{purchase.name}</span>
-    ) : null /* (
+    ) : (
         <span className={`${styles.purchaseEntryName} ${styles.temporaryPurchaseName}`}>
             ({(purchase.items && purchase.items[0] && purchase.items[0].name) || '??'})
         </span>
-    )*/;
+    );
 };
 
 export const ERROR_CASES = [
@@ -77,6 +65,8 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
     const [beingScanned, setBeingScanned] = useState([]);
     const [waitingApproval, setWaitingApproval] = useState([]);
     const [errorCases, setErrorCases] = useState([]);
+    const [showPurchases, setShowPurchases] = useState<boolean>(true);
+    const [sortOrder, setSortOrder] = useState<PurchasesSortOrder>(PurchasesSortOrder.NEWEST_FIRST);
 
     useEffect(() => {
         if (highlight) {
@@ -135,9 +125,13 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
     useEffect(() => {
         if (purchasesByDate) {
             setSorted(Object.keys(purchasesByDate)
-                .sort(dateComparator));
+                .sort(dateComparator(
+                        (sortOrder === PurchasesSortOrder.OLDEST_FIRST) ?
+                            DateSortOrder.DESC :
+                            DateSortOrder.ASC
+                    )));
         }
-    }, [purchasesByDate]);
+    }, [purchasesByDate, sortOrder]);
 
     useEffect(() => {
         setDatesForDisplay((limit > 0) ? sorted.slice(0, limit) : sorted);
@@ -166,7 +160,9 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
             {datesForDisplay
                 .map((dateOfPurchase) => {
                     const purchases = (purchasesByDate[dateOfPurchase] || [])
-                        .sort((a, b) => dateComparator(a.registeredTime, b.registeredTime));
+                        .sort(dateComparator(
+                            (sortOrder === PurchasesSortOrder.NEWEST_FIRST) ? DateSortOrder.DESC : DateSortOrder.ASC
+                        ));
                     return (
                         <div className={styles.purchaseGroup}>
                             <div className={styles.purchaseGroupDate}>
@@ -225,7 +221,11 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
 
     console.log('should show', purchases, purchasesByDate, sorted);
 
-    return (purchases && purchasesByDate) ? (
+    const togglePurchasesVisibility = () => {
+        setShowPurchases(!showPurchases);
+    };
+
+    const purchasesComp = (purchases && purchasesByDate) ? (
         <div className={styles.purchasesList}>
             {(errorCases.length > 0) && makeListing(errorCases)}
             {(waitingApproval.length > 0) && makeListing(waitingApproval)}
@@ -233,6 +233,41 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
             {dfdComp}
         </div>
     ) : <Loader/>;
+
+    const sortComp = (
+        <div className={styles.sortable}>
+            <RadioGroup
+                id="purchasesSort"
+                items={makePurchasesSortOptions(t)}
+                orientation={'row'}
+                selectedValue={sortOrder}
+                onChange={(value) => setSortOrder(value)}
+                disabled={false}
+                noSkin={true}
+                className={styles.radioGroup}
+                radioClass={styles.radio}
+            />
+        </div>
+    );
+
+    return (
+        <div className={styles.section}>
+            <div className={styles.sectionHeader}>
+                <span className={styles.sectionTitle}>{t('purchases.title')}</span>
+                <span className={styles.sectionVisisbility} onClick={togglePurchasesVisibility}>
+                    {showPurchases && <ChevronDown/>}
+                    {!showPurchases && <ChevronUp/>}
+                </span>
+            </div>
+
+            {showPurchases &&
+            <div className={styles.sortable}>
+                {sortComp}
+                {purchasesComp}
+            </div>
+            }
+        </div>
+    );
 };
 
 export default PurchasesList;

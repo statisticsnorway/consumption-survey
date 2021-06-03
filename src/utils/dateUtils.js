@@ -72,7 +72,9 @@ export const formatDate = (date, fmt) =>
 
 export const simpleFormat = (date, fmt = SIMPLE_DATE_FORMAT) => {
     console.log('trying to format', date, typeof date);
-    if (!date) { return null; }
+    if (!date) {
+        return null;
+    }
     return formatDate(sanitizeDate(date), fmt);
 }
 
@@ -82,6 +84,13 @@ export const dateFormatMonthDate = (date, fmt = DASHBOARD_DATE_GROUPING_FORMAT) 
 export const dateFormatDayDate = (date, fmt = DASHBOARD_DAY_DATE_FORMAT) =>
     formatDate(date, fmt);
 
-export const dateComparator = (dt1, dt2, fmt = SIMPLE_DATE_FORMAT) => {
-    return compareDesc(parseDate(dt1, fmt), parseDate(dt2, fmt));
+export const DateSortOrder = {
+    ASC: 'ascending',
+    DESC: 'descending'
+};
+
+export const dateComparator = (sortOrder = DateSortOrder.DESC, fmt = SIMPLE_DATE_FORMAT) => (dt1, dt2) => {
+    const cmp1 = sortOrder === DateSortOrder.DESC ? dt1 : dt2;
+    const cmp2 = sortOrder === DateSortOrder.DESC ? dt2 : dt1;
+    return compareDesc(parseDate(cmp1, fmt), parseDate(cmp2, fmt));
 };

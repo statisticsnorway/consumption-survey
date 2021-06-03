@@ -14,6 +14,7 @@ export const PATHS = {
     CONTACT: '/support/contact',
     ABOUT: '/support/about',
     LOGOUT: '/logout'
+    ONBOARDING: '/support/onboarding'
 };
 
 export const addPurchasePath = (mode) =>
@@ -65,3 +66,8 @@ export const POUCH_DATABASES = [
 
 /** Change Event Handler */
 export type INPUT_CHANGE_HANDLER = (e: ChangeEvent<HTMLInputElement>) => void;
+
+export enum SortOptions {
+    ASC =  'ascending',
+    DESC = 'descending',
+};

@@ -53,5 +53,10 @@
     "title": "Rediger kjøp",
     "delete": "Slett",
     "scannedReceipt": "Skannet kvittering"
+  },
+
+  "sorting": {
+    "ascending": "Nyeste først",
+    "descending": "Eldste først"
   }
 }

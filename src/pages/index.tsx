@@ -1,10 +1,16 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { useTranslation } from 'react-i18next';
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
-import { useEffect } from 'react';
 import { isPWA } from '../utils/pwaUtils';
 import { PATHS } from '../uiConfig';
-import { useRouter } from 'next/router';
+
+const WelcomeNoSSR = dynamic(
+    () => import('../components/Welcome'),
+    { ssr: false }
+);
 
 const Index = () => {
     const router = useRouter();
@@ -26,10 +32,9 @@ const Index = () => {
     ));
 
     return (
-        <Workspace>
+        <Workspace showFooter={false}>
             <PageTitle title={t('title')}/>
-            {langComp}
-            <hr/>
+            <WelcomeNoSSR />
         </Workspace>
     );
 };

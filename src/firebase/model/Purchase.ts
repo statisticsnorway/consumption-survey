@@ -140,3 +140,17 @@ const PURCHASE_DELETE_STATUSES = [
 
 export const isPurchaseDeleted = (status: PurchaseStatus) =>
     PURCHASE_DELETE_STATUSES.includes(status);
+
+export enum PurchasesSortOrder {
+    OLDEST_FIRST = 'newestFirst',
+    NEWEST_FIRST = 'oldestFirst'
+}
+
+export const makePurchasesSortOptions = (t) => [{
+   label: t(`sorting.${PurchasesSortOrder.NEWEST_FIRST}`),
+   value: PurchasesSortOrder.NEWEST_FIRST,
+}, {
+    label: t(`sorting.${PurchasesSortOrder.OLDEST_FIRST}`),
+    value: PurchasesSortOrder.OLDEST_FIRST,
+}];
+

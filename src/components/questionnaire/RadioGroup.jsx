@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RadioButtonAlt from "./RadioButtonAlt";
 
-const RadioGroup = ({ id, className, groupName, header, items, onChange, orientation, selectedValue, disabled=false }) => {
+const RadioGroup = ({ id, className, groupName, header, items, onChange, orientation, selectedValue, disabled=false,
+						noSkin = false, radioClass = '' }) => {
 
 	return (
 		<div id={id} className={`ssb-radio-group width-100 ${className ? ` ${className}` : ''}`}>
@@ -21,6 +22,8 @@ const RadioGroup = ({ id, className, groupName, header, items, onChange, orienta
 							onChange(e)
 						}}
 						disabled={it.disabled || disabled}
+						noSkin={noSkin}
+						className={radioClass}
 					>{it.label}
 					</RadioButtonAlt>
 				))}

@@ -6,6 +6,7 @@ import { FirebaseStorage } from '@firebase/storage-types';
 import { FirebaseDatabase } from '@firebase/database-types';
 import { RegularExpenseType } from './firebase/model/RegularExpense';
 import { SearchTermType } from './firebase/model/SearchTerm';
+import { CommunicationPreference } from './firebase/UserProvider';
 
 export type SurveyInfo = {
     journalStart: Date;
@@ -39,8 +40,16 @@ export type IDPortenTokenInfo = {
     idTokenUserInfo: any;
 };
 
+export type UserPreferences = {
+    language: string;
+    communicationPreferences: CommunicationPreference[];
+    pin: string;
+    init: boolean;
+}
+
 export type UserContextType = {
     userInfo: UserInfoType;
+    userPreferences?: UserPreferences;
     respondentDetails: RespondentDetails;
     login: (respondentDetails: RespondentDetails, idPortenTokenInfo: IDPortenTokenInfo) => Promise<void>;
     logout: () => void;
