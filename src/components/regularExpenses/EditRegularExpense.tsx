@@ -122,6 +122,9 @@ const EditRegularExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps
         >
             <OpHeader
                 title={t('addExpense.title')}
+                onBackClick={() => {
+                    router.push(PATHS.CONSUMPTION);
+                }}
                 action={{
                     title: t('addExpense.save'),
                     onClick: async () => {

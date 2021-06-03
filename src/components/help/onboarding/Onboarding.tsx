@@ -4,12 +4,13 @@ import OnFBU from './slides/OnFBU';
 import Goals from './slides/Goals';
 import HowTo from './slides/HowTo';
 import DataSec from './slides/DataSec';
+import { PATHS } from '../../../uiConfig';
 
 const Onboarding = () => {
     const router = useRouter();
 
     const onComplete = () => {
-        router.push(`/dashboard/Dashboard`);
+        router.push(PATHS.HOME);
     };
 
     return (

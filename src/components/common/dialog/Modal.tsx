@@ -29,14 +29,12 @@ const Modal: React.FC<ModalProps> = ({
                                      }) => {
         if (!show) {
             return null;
-        }
-
-        useEffect(() => {
+        } else {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth',
             });
-        }, []);
+        }
 
         return (
             <div className={styles.fbuModalOverlay} style={style}>
