@@ -129,6 +129,14 @@
   padding-top: 20px;
 }
 
+.prefix {
+  margin-right: 0.5rem;
+}
+
+.align-center {
+  align-items: center !important;
+}
+
 .padding-tp-100px {
   padding-top: 100px;
 }

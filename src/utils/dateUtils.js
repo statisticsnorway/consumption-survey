@@ -37,7 +37,7 @@ export const DAYS_SHORT = [
 ];
 
 export const SIMPLE_DATE_FORMAT = 'dd.MM.yyyy';
-export const DASHBOARD_DATE_GROUPING_FORMAT = 'dd.MMM.yyyy';
+export const DASHBOARD_DATE_GROUPING_FORMAT = 'dd.MMM';
 export const DASHBOARD_DAY_DATE_FORMAT = 'dd.eee.yyyy';
 export const OCR_DATE_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 
@@ -78,7 +78,7 @@ export const simpleFormat = (date, fmt = SIMPLE_DATE_FORMAT) => {
     return formatDate(sanitizeDate(date), fmt);
 }
 
-export const dateFormatMonthDate = (date, fmt = DASHBOARD_DATE_GROUPING_FORMAT) =>
+export const dateFormatDateMonth = (date, fmt = DASHBOARD_DATE_GROUPING_FORMAT) =>
     formatDate(date, fmt);
 
 export const dateFormatDayDate = (date, fmt = DASHBOARD_DAY_DATE_FORMAT) =>

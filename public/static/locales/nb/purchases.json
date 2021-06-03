@@ -6,6 +6,17 @@
   "error": {
     "purchaseNotFound": "Registreringen kan ikke finnes"
   },
+  "sections": {
+    "purchases": {
+      "title": "Kjøp",
+      "sorting": {
+        "prefix": "Vis",
+        "newestFirst": "Nyeste først",
+        "oldestFirst": "Eldste først"
+      }
+    },
+    "regularExpenses": "Regninger"
+  },
   "lineItems": {
     "table": {
       "name": "Vare",

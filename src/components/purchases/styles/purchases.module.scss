@@ -1,4 +1,4 @@
-@import '../../../styles/colours';
+@import '../../../styles/mixins';
 
 .purchases {
   display: flex;
@@ -48,7 +48,6 @@
     .purchaseGroupDate {
       flex-grow: 0;
       display: flex;
-      flex-direction: column;
       justify-content: flex-start;
       margin-right: 1.25rem;
       margin-bottom: 1rem;
@@ -56,17 +55,21 @@
       /* border-right: 1px solid #eee; */
 
       .purchaseGroupDateMonth {
-        font-variant: small-caps;
-        color: #666;
-        font-size: 0.875rem;
-        font-family: "Open Sans";
-        color: $ssb-dark-3;
+        /* font-variant: small-caps; */
+        color: $ssb-dark-6;
+        font-size: 1rem;
+        @include roboto();
       }
 
       .purchaseGroupDateDay {
-        colof: #333;
+        colof: $ssb-dark-6;
         font-size: 1rem;
-        font-family: "Open Sans";
+        @include roboto();
+        font-weight: 700;
+      }
+
+      .purchaseGroupDateDay + .purchaseGroupDateMonth {
+        margin-left: 0.25rem;
       }
     }
 
@@ -142,10 +145,23 @@
 
 .radioGroup {
   display: flex !important;
+  align-items: center !important;
+
+  .radioBox {
+    align-items: center !important;
+    border-bottom: 1px solid $ssb-dark-5;
+    padding-bottom: 0.5rem;
+  }
 
   .radio {
     display: flex !important;
     flex-direction: row !important;
+    align-items: center !important;
+
+    input {
+      width: 20px !important;
+      height: 20px !important;
+    }
   }
 }
 

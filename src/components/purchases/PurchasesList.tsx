@@ -5,7 +5,13 @@ import { ChevronDown, ChevronUp, Edit3 } from 'react-feather';
 import usePurchases from '../../hocs/usePurchases';
 // import usePurchases from '../../mock/usePurchases';
 import { krCents, notEmptyString } from '../../utils/jsUtils';
-import { dateComparator, dateFormatDayDate, DateSortOrder, parseDate } from '../../utils/dateUtils';
+import {
+    dateComparator,
+    dateFormatDateMonth,
+    dateFormatDayDate,
+    DateSortOrder,
+    parseDate
+} from '../../utils/dateUtils';
 import { PATHS } from '../../uiConfig'
 import NoRecords from '../common/blocks/NoRecords';
 import {
@@ -19,18 +25,19 @@ import OcrStatus from './status/OcrStatus';
 import Loader from '../common/Loader';
 import { extractPurchaseInfo } from '../../utils/receiptUtils';
 
+import workspaceStyles from '../layout/workspace/workspace.module.scss';
 import styles from './styles/purchases.module.scss';
 import RadioGroup from '../questionnaire/RadioGroup';
 
 export const listDayDate = (date, styles) => {
-    const [dt, day] =
-        dateFormatDayDate(parseDate(date))
+    const [dt, mon] =
+        dateFormatDateMonth(parseDate(date))
             .split('.');
 
     return (
         <>
-            <span className={styles.purchaseGroupDateMonth}>{day.toLowerCase()}</span>
             <span className={styles.purchaseGroupDateDay}>{dt}</span>
+            <span className={styles.purchaseGroupDateMonth}>{mon.toLowerCase().slice(0, 3)}</span>
         </>
     );
 };
@@ -126,10 +133,10 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
         if (purchasesByDate) {
             setSorted(Object.keys(purchasesByDate)
                 .sort(dateComparator(
-                        (sortOrder === PurchasesSortOrder.OLDEST_FIRST) ?
-                            DateSortOrder.DESC :
-                            DateSortOrder.ASC
-                    )));
+                    (sortOrder === PurchasesSortOrder.OLDEST_FIRST) ?
+                        DateSortOrder.DESC :
+                        DateSortOrder.ASC
+                )));
         }
     }, [purchasesByDate, sortOrder]);
 
@@ -235,33 +242,33 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
     ) : <Loader/>;
 
     const sortComp = (
-        <div className={styles.sortable}>
-            <RadioGroup
-                id="purchasesSort"
-                items={makePurchasesSortOptions(t)}
-                orientation={'row'}
-                selectedValue={sortOrder}
-                onChange={(value) => setSortOrder(value)}
-                disabled={false}
-                noSkin={true}
-                className={styles.radioGroup}
-                radioClass={styles.radio}
-            />
-        </div>
+        <RadioGroup
+            id="purchasesSort"
+            items={makePurchasesSortOptions(t)}
+            orientation={'row'}
+            selectedValue={sortOrder}
+            onChange={(value) => setSortOrder(value)}
+            disabled={false}
+            noSkin={true}
+            className={styles.radioGroup}
+            boxClass={styles.radioBox}
+            radioClass={styles.radio}
+            prefix={t('sections.purchases.sorting.prefix')}
+        />
     );
 
     return (
-        <div className={styles.section}>
-            <div className={styles.sectionHeader}>
-                <span className={styles.sectionTitle}>{t('purchases.title')}</span>
-                <span className={styles.sectionVisisbility} onClick={togglePurchasesVisibility}>
+        <div className={workspaceStyles.section}>
+            <div className={workspaceStyles.sectionHeader}>
+                <span className={workspaceStyles.sectionTitle}>{t('sections.purchases.title')}</span>
+                <span className={workspaceStyles.sectionVisibility} onClick={togglePurchasesVisibility}>
                     {showPurchases && <ChevronDown/>}
                     {!showPurchases && <ChevronUp/>}
                 </span>
             </div>
 
             {showPurchases &&
-            <div className={styles.sortable}>
+            <div className={workspaceStyles.sortableList}>
                 {sortComp}
                 {purchasesComp}
             </div>

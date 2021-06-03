@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import RadioButtonAlt from "./RadioButtonAlt";
 
 const RadioGroup = ({ id, className, groupName, header, items, onChange, orientation, selectedValue, disabled=false,
-						noSkin = false, radioClass = '' }) => {
+						noSkin = false, radioClass = '', prefix = null, boxClass = ''}) => {
 
 	return (
 		<div id={id} className={`ssb-radio-group width-100 ${className ? ` ${className}` : ''}`}>
 			{header && <div className="radio-group-header">{header}</div>}
-			<div className={`boxes flex-${orientation} ${orientation === "row" ? "width-100" : "width-100"}`}>
+			<div className={`boxes ${boxClass} flex-${orientation} ${orientation === "row" ? "width-100" : "width-100"}`}>
+				{prefix && <span className="prefix">{prefix}:</span>}
 				{items.map((it, index) => (
 					<RadioButtonAlt
 						id={`${id}-${it.value}`}
