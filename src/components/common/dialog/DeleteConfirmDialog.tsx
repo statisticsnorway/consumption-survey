@@ -25,13 +25,19 @@ const DeleteConfirmDialog = ({
                              }: DeleteConfirmDialogProps) => {
     if (!show) {
         return null;
+    } else {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     }
 
     return (
         <div className={styles.fbuModalOverlay} style={style}>
             <div className={`${styles.fbuModalDialog} ${className || ''}`}>
                 <span className={styles.fbuDeleteConfirmLeadingText}>{leadingText} {!info && '?'}</span>
-                {info && <span className={styles.fbuDeleteConfirmInfo}>{info} <span style={{ color: '#000' }}>?</span></span>}
+                {info &&
+                <span className={styles.fbuDeleteConfirmInfo}>{info} <span style={{color: '#000'}}>?</span></span>}
                 {warningText && <span className={styles.fbuDeleteConfirmWarning}>{warningText}</span>}
 
                 <div className={`${styles.fbuModalFooter} ${styles.fbuDeleteConfirmFooter}`}>

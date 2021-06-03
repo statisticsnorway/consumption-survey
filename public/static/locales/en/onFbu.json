@@ -1,0 +1,19 @@
+{
+  "title" : "About the survey",
+  "surveyInfo" : "Data from the consumption survey is used for official statstics on consumption and consumer behaviour in Norway. When you participate in this survey you contribute important information to society.\nMore information about the survey can be found on our website",
+  "website" : "www.ssb.no/forbruk-svar",
+  "privacy" : {
+    "title" : "Privacy",
+    "bulletPoints" : [
+      "The survey is carried out in accordance with the Statistics Act and the Personal Data Act",
+      "The answers you submit will only be used for statistical analyses in SSB and answers that can identify individuals will never be publically available",
+      "The web application does not collect any other information than the information you choose to provide",
+      "The information will be stored in a safe manner in SSBs systems in accordance with current privacy rules",
+      "Pictures taken of receipts will also be stored on your device",
+      "The scanning of the pictures is performed by a third party provider, but are deleted on their side as soon as the scanning is complete",
+      "The survey is voluntary, and you can at any time pull out and request that data provided by you is corrected or deleted. You can also request access to data stored about you",
+      "By July 1 2022 all data will be anonymized"
+    ],
+    "privacyInfo" : "If you have questions regarding privacy feel free to send an email to personvernombud@ssb.no or read more  at www.ssb.no/omssb/personvern"
+  }
+}

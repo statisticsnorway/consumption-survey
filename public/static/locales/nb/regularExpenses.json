@@ -40,5 +40,10 @@
     "textWarning": "Denne operasjonen kan ikke angres",
     "confirmText": "Slett",
     "cancelText": "Nei"
+  },
+  "sections": {
+    "regularExpenses": {
+      "title": "Regninger"
+    }
   }
 }

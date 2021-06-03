@@ -221,6 +221,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     }, [dirty]);
 
     const savePurchase = () => {
+        console.log('saving ', purchaseId);
         const receiptsForFirebase = values.receipts
             ? values.receipts.map(r => ({
                 imageName: r.imageName,
@@ -231,26 +232,41 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             : null;
 
         try {
-            if (!purchaseId) {
+            if (purchaseId) {
                 editPurchase(values.id, {
                     ...values,
                     receipts: receiptsForFirebase,
                     status: PurchaseStatus.COMPLETE,
-                    name: values.name.endsWith('3') ? undefined : values.name,
+                    name: values.name.endsWith('_xyz_') ? undefined : values.name, // <-- todo _xyz_ test option
                 })
                     .then(() => {
                         const msg = t('editPurchase.saveSuccess');
                         console.log(msg);
-                        showMessagePanel(MessagePanelType.SUCCESS, msg);
+                        showMessagePanel(MessagePanelType.SUCCESS, msg, true, () => {
+                            router.push(PATHS.CONSUMPTION);
+                        });
+                    })
+                    .catch(err => {
+                        const msg = t('editPurchase.saveError');
+                        console.log(msg, err);
+                        showMessagePanel(MessagePanelType.ERROR, msg + ' ' + err, false);
                     });
             } else {
-                addPurchase(values)
+                addPurchase({
+                    ...values,
+                    receipts: receiptsForFirebase,
+                })
                     .then(() => {
                         const msg = t('addPurchase.saveSuccess');
                         console.log(msg);
                         showMessagePanel(MessagePanelType.SUCCESS, msg, true, () => {
                             router.push(PATHS.CONSUMPTION);
                         });
+                    })
+                    .catch(err => {
+                        const msg = t('editPurchase.saveError');
+                        console.log(msg, err);
+                        showMessagePanel(MessagePanelType.ERROR, msg + ' ' + err, false);
                     });
             }
         } catch (err) {
@@ -261,22 +277,6 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     };
 
     const initializeCTAComp = () => {
-        const enabled = dirty && validateAllFields();
-
-        setEditPurchaseCTAComp(
-            <div className={styles.editPurchaseCTA}>
-                <button
-                    className={`ssb-btn primary-btn ${styles.saveButton}`}
-                    disabled={!enabled}
-                    onClick={savePurchase}
-                >
-                    {(values && (values.status === PurchaseStatus.OCR_PENDING_USER_APPROVAL))
-                        ? t('addPurchase.approveChanges')
-                        : t('addPurchase.save')
-                    }
-                </button>
-            </div>
-        )
     };
 
     /**
@@ -315,7 +315,18 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         onNewItem={onItemAdd}
                         showValidationError={showItemsValidationError}
                     />
-                    {editPurchaseCTAComp}
+                    <div className={styles.editPurchaseCTA}>
+                        <button
+                            className={`ssb-btn primary-btn ${styles.saveButton}`}
+                            disabled={!(dirty && validateAllFields())}
+                            onClick={savePurchase}
+                        >
+                            {(values && (values.status === PurchaseStatus.OCR_PENDING_USER_APPROVAL))
+                                ? t('addPurchase.approveChanges')
+                                : t('addPurchase.save')
+                            }
+                        </button>
+                    </div>
                 </div>
                 {purchase &&
                 <DeletePurchaseDialog

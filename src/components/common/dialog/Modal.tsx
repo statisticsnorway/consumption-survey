@@ -1,4 +1,5 @@
 import styles from './modal.module.scss';
+import { useEffect } from 'react';
 
 export interface ModalProps {
     show: boolean;
@@ -28,6 +29,11 @@ const Modal: React.FC<ModalProps> = ({
                                      }) => {
         if (!show) {
             return null;
+        } else {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
         }
 
         return (

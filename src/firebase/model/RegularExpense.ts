@@ -30,3 +30,8 @@ const EXPENSE_DELETE_STATUSES = [
 
 export const isExpenseDeleted = (status: RegularExpenseStatus) =>
    EXPENSE_DELETE_STATUSES.includes(status);
+
+export enum ExpensesSortOrder {
+    OLDEST_FIRST = 'newestFirst',
+    NEWEST_FIRST = 'oldestFirst'
+}

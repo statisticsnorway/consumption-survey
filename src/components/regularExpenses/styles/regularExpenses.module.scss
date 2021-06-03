@@ -6,6 +6,9 @@
   align-items: center;
   justify-content: center;
 
+  border-top: 1px solid $ssb-dark-5;
+  margin-top: 1.25rem;
+
   padding: 0;
 
   .expense {
@@ -54,7 +57,7 @@
 
       .frequency {
         text-align: left;
-        color: $ssb-dark-3;
+        color: $ssb-purple-3;
         font-weight: 400;
 
         flex: 1;

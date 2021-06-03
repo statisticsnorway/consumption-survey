@@ -112,6 +112,9 @@ import { FRITIDSUTL15 } from "../../components/questionnaire/questions/definitio
 import {AnswerValueType, QuestionFormType} from "../../components/questionnaire/questions/QuestionFormType"
 import {VED315} from "../../components/questionnaire/questions/definitions/Ved315QuestionDefinition";
 import {UTDANNING15} from "../../components/questionnaire/questions/definitions/Utdanning15QuestionDefinition";
+import {BETALING1} from "../../components/questionnaire/questions/definitions/Betaling1QuestionDefinition";
+import {BETALING2} from "../../components/questionnaire/questions/definitions/Betaling2QuestionDefinition";
+import {BETALING15} from "../../components/questionnaire/questions/definitions/Betaling15QuestionDefinition";
 
 export type HistoryBlock = {
 	fromQuestionId: string
@@ -307,6 +310,9 @@ export const defaultState: QuestionState = {
 		FORS2,
 
 		FGJELD,
+		BETALING1,
+		BETALING2,
+		BETALING15
 
 		// Tatt ut
 		// TILSYN1,

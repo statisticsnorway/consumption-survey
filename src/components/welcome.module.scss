@@ -1,0 +1,19 @@
+@import '../styles/common';
+
+.welcome {
+  .welcomeText {
+    font-family: "Open Sans";
+    font-size: 1rem;
+  }
+
+  .loginLink {
+    color: $ssb-green-4;
+    display: block;
+    margin: 2rem 0;
+    cursor: pointer;
+  }
+
+  .installText {
+    margin-bottom: 2.5rem;
+  }
+}

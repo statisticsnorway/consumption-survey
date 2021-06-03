@@ -1,8 +1,10 @@
+@import '/src/styles/mixins';
+
 .workspace {
   display: flex;
   flex-direction: column;
 
-  padding: 0 1.25rem;
+  padding: 0 1.25rem 5rem 1.25rem;
 
   .pageTitle {
     margin: 2.5rem 0;
@@ -16,6 +18,38 @@
 
     .subText {
       font-size: 1rem;
+    }
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 1.25rem;
+
+    .sectionHeader {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+
+      .sectionTitle {
+        font-size: 1.75rem;
+        @include roboto-condensed();
+        font-weight: 700;
+        lin-height: 2.5rem;
+      }
+
+      .sectionVisibility {
+        /* font-size: 1.75rem; */
+      }
+
+      .sectionTitle + .sectionVisibility {
+        margin-left: 0.5rem;
+      }
+    }
+
+    .sortableList {
+      margin: 1.25rem 0;
     }
   }
 }

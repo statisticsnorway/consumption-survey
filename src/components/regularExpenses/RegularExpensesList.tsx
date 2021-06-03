@@ -1,6 +1,7 @@
 import { ReactNode, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { MinusCircle } from 'react-feather';
+import { MinusCircle, ChevronDown, ChevronUp } from 'react-feather';
 import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
 import EditRegularExpense from './EditRegularExpense';
 import { krCents } from '../../utils/jsUtils';
@@ -8,11 +9,8 @@ import DeleteConfirmDialog from '../common/dialog/DeleteConfirmDialog';
 import NoRecords from '../common/blocks/NoRecords';
 import useExpenses from '../../hocs/useExpenses';
 
+import workspaceStyles from '../layout/workspace/workspace.module.scss';
 import styles from './styles/regularExpenses.module.scss';
-import { useRouter } from 'next/router';
-import { PATHS } from '../../uiConfig';
-import { LayoutContext } from '../../uiContexts';
-import { MessagePanelType } from '../common/blocks/MessagePanel';
 
 export type RegularExpensesProps = {
     showExpensesList?: boolean;
@@ -24,15 +22,20 @@ export type RegularExpensesProps = {
 // just returning values as is, for now.
 export const convert = (values: RegularExpenseType) => values;
 
-const RegularExpensesList = ({ showExpensesList = true, showAddExpenseDialog = false, onComplete }: RegularExpensesProps) => {
+const RegularExpensesList = ({showExpensesList = true, showAddExpenseDialog = false, onComplete}: RegularExpensesProps) => {
     const router = useRouter();
     const {t} = useTranslation('regularExpenses');
     const {expenses, addExpense, editExpense, deleteExpense} = useExpenses();
     const [showAddExpense, setShowAddExpense] = useState(showAddExpenseDialog);
+    const [expensesVisible, setExpensesVisible] = useState<boolean>(true);
 
     useEffect(() => {
         setShowAddExpense(showAddExpenseDialog);
     }, [showAddExpenseDialog]);
+
+    const toggleExpensesVisibility = () => {
+        setExpensesVisible(!expensesVisible);
+    };
 
     const [expenseForEdit, setExpenseForEdit] = useState(null);
     const [expenseForDelete, setExpenseForDelete] = useState(null);
@@ -46,57 +49,70 @@ const RegularExpensesList = ({ showExpensesList = true, showAddExpenseDialog = f
 
     useEffect(() => {
         console.log('new list', expenses);
-        const comp = (showExpensesList && (Array.isArray(expenses) && expenses.length > 0)) ? (
-            <div className={styles.regularExpenses}>
-                {expenses.map((expense: RegularExpenseType) => (
-                    <div
-                        className={styles.expense}
-                        key={expense.id}
-                    >
-                        <div
-                            className={`${styles.expenseColumn} ${styles.nameFrequency}`}
-                            onClick={() => {
-                                setExpenseForEdit(expense);
-                                setShowAddExpense(true);
-                            }}
-                        >
-                            <span className={styles.name}>{expense.name}</span>
-                            <span className={styles.frequency}>
+        if (showExpensesList) {
+            const comp = (Array.isArray(expenses) && expenses.length > 0) ? (
+                <div className={workspaceStyles.section}>
+                    <div className={workspaceStyles.sectionHeader}>
+                        <span className={workspaceStyles.sectionTitle}>{t('sections.regularExpenses.title')}</span>
+                        <span className={workspaceStyles.sectionVisibility} onClick={toggleExpensesVisibility}>
+                        {expensesVisible && <ChevronDown/>}
+                            {!expensesVisible && <ChevronUp/>}
+                    </span>
+                    </div>
+                    {expensesVisible &&
+                    <div className={styles.regularExpenses}>
+                        {expenses.map((expense: RegularExpenseType) => (
+                            <div
+                                className={styles.expense}
+                                key={expense.id}
+                            >
+                                <div
+                                    className={`${styles.expenseColumn} ${styles.nameFrequency}`}
+                                    onClick={() => {
+                                        setExpenseForEdit(expense);
+                                        setShowAddExpense(true);
+                                    }}
+                                >
+                                    <span className={styles.name}>{expense.name}</span>
+                                    <span className={styles.frequency}>
                             {(expense.frequency === ExpenseFrequency.NONE) ?
                                 '' :
                                 t(`frequency.${expense.frequency}`)
                             }
                         </span>
-                        </div>
-                        <div
-                            className={`${styles.expenseColumn} ${styles.amount}`}
-                            onClick={() => {
-                                setExpenseForEdit(expense);
-                                setShowAddExpense(true);
-                            }}
-                        >
-                            {krCents(expense.amount)}
-                        </div>
-                        <div
-                            className={`${styles.expenseColumn} ${styles.deleteExpense}`}
-                            onClick={() => {
-                                onDelete(expense);
-                            }}
-                        >
-                            <MinusCircle
-                                width={20}
-                                height={20}
-                            />
-                        </div>
+                                </div>
+                                <div
+                                    className={`${styles.expenseColumn} ${styles.amount}`}
+                                    onClick={() => {
+                                        setExpenseForEdit(expense);
+                                        setShowAddExpense(true);
+                                    }}
+                                >
+                                    {krCents(expense.amount)}
+                                </div>
+                                <div
+                                    className={`${styles.expenseColumn} ${styles.deleteExpense}`}
+                                    onClick={() => {
+                                        onDelete(expense);
+                                    }}
+                                >
+                                    <MinusCircle
+                                        width={20}
+                                        height={20}
+                                    />
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-        ) : (
-            <NoRecords singularText="en ny utgift" pluralText="de faste ugiftene" />
-        );
+                    }
+                </div>
+            ) : (
+                <NoRecords singularText="en ny utgift" pluralText="de faste ugiftene"/>
+            );
 
-        setExpensesComp(comp);
-    }, [expenses]);
+            setExpensesComp(comp);
+        }
+    }, [expenses, expensesVisible]);
 
     const tableHeader = (
         <div className={`${styles.expense} ${styles.expenseHeaderRow}`} key="expensesHeader">

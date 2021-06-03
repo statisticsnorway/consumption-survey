@@ -5,7 +5,7 @@ import PageTitle from '../../components/common/PageTitle';
 import PurchasesCTAGroup from '../../components/purchases/cta/PurchasesCTAGroup';
 import PurchaseCTA from '../../components/purchases/cta/PurchasesCTA';
 import { useRouter } from 'next/router';
-import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../../uiConfig';
+import { PATHS } from '../../uiConfig';
 import useReceiptUpload from '../../hocs/useReceiptUpload';
 import RegularExpensesList from '../../components/regularExpenses/RegularExpensesList';
 import { useState } from 'react';
@@ -58,10 +58,12 @@ const Consumption = () => {
                 />
             </PurchasesCTAGroup>
             {hiddenUploadComponent}
-            <PurchasesListNoSSR />
+            <PurchasesListNoSSR/>
             <RegularExpensesList
                 showAddExpenseDialog={showAddExpenseDialog}
-                onComplete={() => { setShowAddExpenseDialog(false); }}
+                onComplete={() => {
+                    setShowAddExpenseDialog(false);
+                }}
             />
         </Workspace>
     );
