@@ -28,7 +28,7 @@ const Logout = () => {
             focus: defState.currentFocus,
         })
         const doIdportenLogout = async () => {
-            window.location.href = "https://fbu.ssb.no/auth/logout"     //TODO Must be done dynamically
+            window.location.href = getLogoutUrl()     //TODO Must be done dynamically
         };
 
         doIdportenLogout();
