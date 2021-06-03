@@ -140,3 +140,12 @@
   }
 }
 
+.radioGroup {
+  display: flex !important;
+
+  .radio {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+}
+

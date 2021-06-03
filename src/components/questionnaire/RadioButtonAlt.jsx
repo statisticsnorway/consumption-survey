@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {CheckCircle} from "react-feather";
 
 const RadioButton = ({
-	id, callback, children, className, disabled, name, selected, tabIndex, value, orientation
+	id, callback, children, className, disabled, name, selected, tabIndex, value, orientation, noSkin = false
 }) => (
-	<div className={`radio-alt-container ${orientation === "row" ? "width-90 padding-rt-10px" : "width-100"} padding-tp-bm-7px ${className ? ` ${className}` : ''}`}>
+	<div className={`${noSkin ? '' : 'radio-alt-container'} ${orientation === "row" ? "width-90 padding-rt-10px" : "width-100"} padding-tp-bm-7px ${className ? ` ${className}` : ''}`}>
 		<input
 			tabIndex={tabIndex}
 			checked={selected}
@@ -17,6 +17,7 @@ const RadioButton = ({
 			value={value}
 		/>
 		<label className="radio-label flex-container" htmlFor={id}>
+			{!noSkin &&
 			<CheckCircle
 				className={`ui-icon-circle-check ${selected ? "margin-rt-15px dy-true" : "dy-none"}`}
 				size={22}
@@ -25,6 +26,7 @@ const RadioButton = ({
 					event.preventDefault();
 				}}
 			/>
+			}
 			{children}
 		</label>
 	</div>
