@@ -13,8 +13,8 @@ export const PATHS = {
     PROGRESS: '/progress',
     CONTACT: '/support/contact',
     ABOUT: '/support/about',
+    ONBOARDING: '/support/onboarding',
     LOGOUT: '/logout'
-    ONBOARDING: '/support/onboarding'
 };
 
 export const addPurchasePath = (mode) =>
