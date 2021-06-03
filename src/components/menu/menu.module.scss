@@ -13,6 +13,9 @@
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  h3 {
+    margin-bottom: 5px;
+  }
   .menuItems {
     padding-right: 20px;
     padding-left: 20px;
@@ -26,6 +29,14 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    .whoamiContainer {
+      margin-right: 20px;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      padding: 10px;
+      background-color: $ssb-dark-3;
+    }
     .buttonContainer {
       margin-right: 20px;
       margin-left: 20px;
