@@ -1,5 +1,6 @@
 import { format, parse, compareDesc } from 'date-fns';
 import nbLocale from 'date-fns/locale/nb'
+import { IDENTITY_FN } from './jsUtils';
 
 export const MONTHS = [
     'Januar',
@@ -89,8 +90,8 @@ export const DateSortOrder = {
     DESC: 'descending'
 };
 
-export const dateComparator = (sortOrder = DateSortOrder.DESC, fmt = SIMPLE_DATE_FORMAT) => (dt1, dt2) => {
-    const cmp1 = sortOrder === DateSortOrder.DESC ? dt1 : dt2;
-    const cmp2 = sortOrder === DateSortOrder.DESC ? dt2 : dt1;
+export const dateComparator = (sortOrder = DateSortOrder.DESC, extractor = IDENTITY_FN, fmt = SIMPLE_DATE_FORMAT) => (dt1, dt2) => {
+    const cmp1 = sortOrder === DateSortOrder.DESC ? extractor(dt1) : extractor(dt2);
+    const cmp2 = sortOrder === DateSortOrder.DESC ? extractor(dt2) : extractor(dt1);
     return compareDesc(parseDate(cmp1, fmt), parseDate(cmp2, fmt));
 };

@@ -110,6 +110,11 @@ const EditRegularExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps
             showFooter={false}
             fullScreen={true}
             onClose={() => {
+                if (!expense) {
+                    clear();
+                }
+
+                onCancel();
             }}
             closeText={t('addExpense.save')}
             onCancel={() => {
@@ -122,8 +127,13 @@ const EditRegularExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps
         >
             <OpHeader
                 title={t('addExpense.title')}
-                onBackClick={() => {
-                    router.push(PATHS.CONSUMPTION);
+                onBackClick={async () => {
+                    if (!expense) {
+                        clear();
+                    }
+
+                    onCancel();
+                    await router.push(PATHS.CONSUMPTION);
                 }}
                 action={{
                     title: t('addExpense.save'),
