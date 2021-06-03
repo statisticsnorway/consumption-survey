@@ -76,3 +76,23 @@
   &.slide3 {
   }
 }
+.onFbuOuter {
+  ul {
+    list-style: none;
+    margin-right: 1rem;
+
+    li::before {
+      content: "\2022";
+      color: $ssb-green-4;
+      width: 1.5rem;
+      margin-left: -1.5rem;
+      display: inline-block;
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    li + li {
+      margin-top: 1px;
+    }
+  }
+}
