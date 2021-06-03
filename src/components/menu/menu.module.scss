@@ -1,0 +1,44 @@
+@import 'src/styles/common';
+.fullScreen {
+  @include makeFullScreen
+}
+.menu {
+  position: relative;
+  background-color: #274247;
+  color: #fff;
+  hr {
+    background-color: #c8dbdc;
+    height: 1px;
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .menuItems {
+    padding-right: 20px;
+    padding-left: 20px;
+    .menuItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .logoutSection {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    .buttonContainer {
+      margin-right: 20px;
+      margin-left: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      .logoutButton {
+        background-color: inherit;
+        border: 2px solid #b6e8b8;
+        color: #b6e8b8;
+        width: 100%;
+        padding: 10px;
+      }
+    }
+
+  }
+}
