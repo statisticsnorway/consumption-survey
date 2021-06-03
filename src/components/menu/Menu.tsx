@@ -4,6 +4,8 @@ import FbuIcon from "../common/icons/FbuIcon";
 import { useRouter } from 'next/router';
 import {PATHS} from "../../uiConfig";
 import style from './menu.module.scss'
+import {useContext} from "react";
+import {UserContext} from "../../contexts";
 
 export type MenuProps = {
     onClose?: () => void
@@ -11,6 +13,7 @@ export type MenuProps = {
 
 const Menu = ({onClose = () => console.log('placeholder')} : MenuProps) => {
     const router = useRouter()
+    const {userInfo} = useContext(UserContext)
     const {t} = useTranslation('mainMenu')
     return (
         <div style={{position: 'relative'}} className={`${style.menu} ${style.fullScreen}`}>
@@ -53,9 +56,17 @@ const Menu = ({onClose = () => console.log('placeholder')} : MenuProps) => {
 
 
             <div className={style.logoutSection}>
-                <hr/>
+                <div className={style.whoamiContainer}>
+                    Du er logget inn som
+                    <h3>{userInfo.respondentDetails.name}</h3>
+                </div>
                 <div className={style.buttonContainer}>
-                    <button className={style.logoutButton}>
+                    <button
+                        onClick={() => {
+                            onClose()
+                            router.push(PATHS.LOGOUT)
+                        }}
+                        className={style.logoutButton}>
                         Logg ut
                     </button>
                 </div>
