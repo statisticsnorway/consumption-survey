@@ -40,7 +40,11 @@
       }
 
       .sectionVisibility {
-        font-size: 1.75rem;
+        /* font-size: 1.75rem; */
+      }
+
+      .sectionTitle + .sectionVisibility {
+        margin-left: 0.5rem;
       }
     }
 
