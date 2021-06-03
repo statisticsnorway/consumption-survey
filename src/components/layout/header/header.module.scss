@@ -12,7 +12,7 @@ $header-border-color: $ssb-dark-5;
 
   padding: $default-padding-width;
 
-  height: $header-height;
+  min-height: $header-height !important;
   padding: $header-padding;
 
   border-bottom: 1px solid $header-border-color;
