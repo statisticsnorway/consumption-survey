@@ -20,13 +20,13 @@ const Logout = () => {
 
     useEffect(() => {
         //not sure if necessary
-        const defState = defaultState
+        /*const defState = defaultState
         store.dispatch({
             type: CHANGE_ALL,
             questions: defState.questions,
             allHistory: defState.history,
             focus: defState.currentFocus,
-        })
+        })*/
         const doIdportenLogout = async () => {
             window.location.href = getLogoutUrl()
         };
