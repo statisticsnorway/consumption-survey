@@ -9,11 +9,19 @@ export default () => {
             title={t('howTo.title')}
             description={
                 <>
-                    <p>{t('howTo.description')}</p>
-                    <p style={{marginBottom: '2.5rem', color: '#6C9099'}}>{t('howTo.tip')}</p>
-                    <Accordion title={t('howTo.purchases.title')}>{t('howTo.purchases.description')}</Accordion>
-                    <Accordion title={t('howTo.expenses.title')}>{t('howTo.expenses.description')}</Accordion>
-                    <Accordion title={t('howTo.forms.title')}>{t('howTo.forms.description')}</Accordion>
+                    <h3 style={{marginBottom: '5px'}}>{t("howTo.toComplete.title")}</h3>
+                    <ul>
+                        <li>{t('howTo.toComplete.todos.registering')}</li>
+                        <li style={{marginTop: '2px'}}>{t('howTo.toComplete.todos.questionnaire')}</li>
+                    </ul>
+                    <h3 style={{marginBottom: '5px'}}>{t("howTo.howToComplete.title")}</h3>
+                    <ul>
+                        <li>{t('howTo.howToComplete.tooling.fromReceipt')}</li>
+                        <li style={{marginTop: '2px'}}>{t('howTo.howToComplete.tooling.manual')}</li>
+                    </ul>
+                    {t('howTo.incentive')}
+                    <span style={{fontSize: '1.2rem', marginTop: '25px'}}>{t('howTo.message')}</span>
+
                 </>
             }
         />

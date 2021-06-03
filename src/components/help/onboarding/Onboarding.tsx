@@ -18,7 +18,6 @@ const Onboarding = () => {
             onComplete={onComplete}
         >
             <Slide><OnFBU/></Slide>
-            <Slide><Goals/></Slide>
             <Slide><HowTo/></Slide>
             <Slide><DataSec/></Slide>
         </Carousel>
