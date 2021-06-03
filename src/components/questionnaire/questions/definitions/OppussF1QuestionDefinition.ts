@@ -13,13 +13,13 @@ export const OPPUSSF1: QuestionFormType = {
             {
                 id: 'oppussf1_1',
                 value: "1",
-                descriptionValue: 'Utvendig maling eller annen overflatebehandling?',
+                descriptionValue: 'Utvendig maling eller annen overflatebehandling',
                 chosen: false
             },
             {
                 id: 'oppussf1_2',
                 value: "2",
-                descriptionValue: 'Mindre vedlikehold av kjøkken, bad eller wc? For eksempel ny armatur, servant, maling, lys eller lignende?',
+                descriptionValue: 'Mindre vedlikehold av kjøkken, bad eller wc? For eksempel ny armatur, servant, maling, lys eller lignende',
                 chosen: false
             },
             {
@@ -31,19 +31,19 @@ export const OPPUSSF1: QuestionFormType = {
             {
                 id: 'oppussf1_4',
                 value: "4",
-                descriptionValue: 'Oppussing og vedlikehold av soverom? ',
+                descriptionValue: 'Oppussing og vedlikehold av soverom',
                 chosen: false
             },
             {
                 id: 'oppussf1_5',
                 value: "5",
-                descriptionValue: 'Oppussing og vedlikehold av gang, entré eller lignende?',
+                descriptionValue: 'Oppussing og vedlikehold av gang, entré eller lignende',
                 chosen: false
             },
             {
                 id: 'oppussf1_6',
                 value: "6",
-                descriptionValue: 'Annet?',
+                descriptionValue: 'Annet',
                 chosen: false
             },
             {

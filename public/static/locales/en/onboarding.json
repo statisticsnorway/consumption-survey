@@ -1,0 +1,96 @@
+{
+  "onFBU": {
+    "title": "Thank you for contributing!",
+    "description": "By participating in the consumption survey you contribute to official statistics on consumer behaviour in Norway. This is important information that is useful for several areas of state governance.",
+    "detailsLink": "https://ssb.no",
+    "detailsLinkText": "Read more about the consumption survey here.",
+    "dataUse": {
+      "title": "The statistics is used for:\u200B",
+      "items": "Understanding changes in consumer behaviour, Give insight in social and economical inequality in the population, Calculate the consumer price index, Develop models to calculate taxes"
+    },
+    "whatToRegister": {
+      "title": "What to register",
+      "intro": "Everything the household spends money on. This includes",
+      "items": "All purchases, All expenses for services and activities, All bills and regular expenses"
+    },
+    "forgottenExpenditures": {
+      "subtitle": "Expenditures easily forgotten",
+      "items": "Tickets for public transprt, Second hand purchases from flea markets and the like, Online purchases, Utlegg, Health services (doctor/dentist), Miscellaneous past time activites (movies/concerts), Music purchases, Purchasing movies or games online, Purchasing apps, Gambling, Newspapers, Magazines, Babysitter, Membership fees, Charity"
+    }
+  },
+
+  "goals": {
+    "title": "Hva du skal gjøre",
+    "description1": "Dette verktøyet skal du bruke til å rapportere og registrere alle utgifter du har de neste fjorten dagene.",
+    "description2": "Det innebærer alt fra hva du handler på matbutikk, om du går til frisøren eller bruker penger på oppusing."
+  },
+
+  "howTo": {
+    "title": "How to",
+    "toComplete": {
+      "title" : "To complete the survey you will have to:",
+      "todos": {
+        "registering": "Register expenses during the two week register period.",
+        "questionnaire": "Answer the questionnaire located in the app."
+      }
+    },
+    "howToComplete" : {
+      "title" : "You can register expenses by:",
+      "tooling": {
+        "fromReceipt": "Taking a picture of a receipt and scanning it",
+        "manual": "Add purchases and regular expenses manually"
+      }
+    },
+    "description": "I appen fordeler utgiftene seg slik: ",
+    "tip": "Klikk på pil ned for å lese mer",
+    "todos": {
+      "registering": "Føre utgifter i hele registreringsperioden på to uker",
+      "questionnaire": "Svare på spørreskjemaet som du finner webappen."
+    },
+    "tooling": {
+      "fromReceipt": "Ta bilde av og skanne kvitteringer",
+      "manual": "Legge inn kjøp og regninger manuelt"
+    },
+    "incentive": "Whn the survey period is over, all expenses are registered and the questionnaire is completed we will send you a gift card worth 500 kr!",
+    "message": "Good luck and thank your for your contribution  !",
+    "purchases": {
+      "title": "Løpende utgifger",
+      "description": "Løpende utgifter er det du handler i butikk, på nett eller det du kjøper av tjenester i føringsperioden."
+    },
+
+    "expenses": {
+      "title": "Faste utgifter",
+      "description": "Tekst kommer"
+    },
+
+    "forms": {
+      "title": "Spørreskjema",
+      "description": "Tekst kommer"
+    }
+  },
+
+  "dataSec": {
+    "title": "Personvern",
+    "bullets": [
+      "SSB lagrer informasjon og bruker det til å analysere forbruket i norske husholdninger.",
+      "Informasjonen er anonymisert og SSB kan ikke spore forbruket tilbake til en bestemt husholdning.",
+      "All innsamlet data blir slettet etter to år og du har rett til innsyn samt sletting av innsendt data."
+    ],
+
+    "consent": {
+      "title": "Samtykke",
+      "intro": "Ved å føre utgifter og svare på spørreskjemaet i webappen, samtykker du til at opplysningene kan brukes til analyser i SSB i samsvar med gjeldene personvernregler:",
+      "bulletPoints" : [
+        "The survey is carried out in accordance with the Statistics Act and the Personal Data Act",
+        "The answers you submit will only be used for statistical analyses in SSB and answers that can identify individuals will never be publically available",
+        "The web application does not collect any other information than the information you choose to provide",
+        "The information will be stored in a safe manner in SSBs systems in accordance with current privacy rules",
+        "Pictures taken of receipts will also be stored on your device",
+        "The scanning of the pictures is performed by a third party provider, but are deleted on their side as soon as the scanning is complete",
+        "The survey is voluntary, and you can at any time pull out and request that data provided by you is corrected or deleted. You can also request access to data stored about you",
+        "By July 1 2022 all data will be anonymized"
+      ],
+      "moreInfo": "Du kan lese mer om personvern på www.ssb.no/omssb/personvern. (ekstern lenke)."
+    }
+  }
+}

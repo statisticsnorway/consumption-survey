@@ -5,13 +5,17 @@ export default () => {
     const {t} = useTranslation('onboarding');
     return (
         <OnboardingCard
-            title={t('dataSec.title')}
+            title={t('dataSec.consent.title')}
             description={
-                <ul>
-                    {(t('dataSec.bullets', {returnObjects: true}) as string[])
-                        .map(txt => <li>{txt}</li>)
-                    }
-                </ul>
+                <>
+                    {t('dataSec.consent.intro')}
+                    <ul>
+                        {(t('dataSec.consent.bulletPoints', {returnObjects: true}) as string[])
+                            .map(txt => <li style={{marginTop: '2px'}}>{txt}</li>)
+                        }
+                    </ul>
+                    {t('dataSec.consent.moreInfo')}
+                </>
             }
         />
     );
