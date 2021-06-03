@@ -49,67 +49,69 @@ const RegularExpensesList = ({showExpensesList = true, showAddExpenseDialog = fa
 
     useEffect(() => {
         console.log('new list', expenses);
-        const comp = (showExpensesList && (Array.isArray(expenses) && expenses.length > 0)) ? (
-            <div className={workspaceStyles.section}>
-                <div className={workspaceStyles.sectionHeader}>
-                    <span className={workspaceStyles.sectionTitle}>{t('sections.regularExpenses.title')}</span>
-                    <span className={workspaceStyles.sectionVisibility} onClick={toggleExpensesVisibility}>
-                        {expensesVisible && <ChevronDown />}
-                        {!expensesVisible && <ChevronUp />}
+        if (showExpensesList) {
+            const comp = (Array.isArray(expenses) && expenses.length > 0) ? (
+                <div className={workspaceStyles.section}>
+                    <div className={workspaceStyles.sectionHeader}>
+                        <span className={workspaceStyles.sectionTitle}>{t('sections.regularExpenses.title')}</span>
+                        <span className={workspaceStyles.sectionVisibility} onClick={toggleExpensesVisibility}>
+                        {expensesVisible && <ChevronDown/>}
+                            {!expensesVisible && <ChevronUp/>}
                     </span>
-                </div>
-                {expensesVisible &&
-                <div className={styles.regularExpenses}>
-                    {expenses.map((expense: RegularExpenseType) => (
-                        <div
-                            className={styles.expense}
-                            key={expense.id}
-                        >
+                    </div>
+                    {expensesVisible &&
+                    <div className={styles.regularExpenses}>
+                        {expenses.map((expense: RegularExpenseType) => (
                             <div
-                                className={`${styles.expenseColumn} ${styles.nameFrequency}`}
-                                onClick={() => {
-                                    setExpenseForEdit(expense);
-                                    setShowAddExpense(true);
-                                }}
+                                className={styles.expense}
+                                key={expense.id}
                             >
-                                <span className={styles.name}>{expense.name}</span>
-                                <span className={styles.frequency}>
+                                <div
+                                    className={`${styles.expenseColumn} ${styles.nameFrequency}`}
+                                    onClick={() => {
+                                        setExpenseForEdit(expense);
+                                        setShowAddExpense(true);
+                                    }}
+                                >
+                                    <span className={styles.name}>{expense.name}</span>
+                                    <span className={styles.frequency}>
                             {(expense.frequency === ExpenseFrequency.NONE) ?
                                 '' :
                                 t(`frequency.${expense.frequency}`)
                             }
                         </span>
+                                </div>
+                                <div
+                                    className={`${styles.expenseColumn} ${styles.amount}`}
+                                    onClick={() => {
+                                        setExpenseForEdit(expense);
+                                        setShowAddExpense(true);
+                                    }}
+                                >
+                                    {krCents(expense.amount)}
+                                </div>
+                                <div
+                                    className={`${styles.expenseColumn} ${styles.deleteExpense}`}
+                                    onClick={() => {
+                                        onDelete(expense);
+                                    }}
+                                >
+                                    <MinusCircle
+                                        width={20}
+                                        height={20}
+                                    />
+                                </div>
                             </div>
-                            <div
-                                className={`${styles.expenseColumn} ${styles.amount}`}
-                                onClick={() => {
-                                    setExpenseForEdit(expense);
-                                    setShowAddExpense(true);
-                                }}
-                            >
-                                {krCents(expense.amount)}
-                            </div>
-                            <div
-                                className={`${styles.expenseColumn} ${styles.deleteExpense}`}
-                                onClick={() => {
-                                    onDelete(expense);
-                                }}
-                            >
-                                <MinusCircle
-                                    width={20}
-                                    height={20}
-                                />
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+                    }
                 </div>
-                }
-            </div>
-        ) : (
-            <NoRecords singularText="en ny utgift" pluralText="de faste ugiftene"/>
-        );
+            ) : (
+                <NoRecords singularText="en ny utgift" pluralText="de faste ugiftene"/>
+            );
 
-        setExpensesComp(comp);
+            setExpensesComp(comp);
+        }
     }, [expenses, expensesVisible]);
 
     const tableHeader = (
