@@ -69,7 +69,7 @@ const ProtectedRoute = (props) => {
 
         return props.children;
     } else {
-        return <Loader/>;
+        return isLoggingIn ? <Loader/> : null;
     }
 };
 

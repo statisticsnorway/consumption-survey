@@ -14,5 +14,7 @@
     "suffix": "du registrerer.",
     "addNewPrefix": "Legg inn",
     "addNewSuffix": "med (+) knappen under for å starte."
-  }
+  },
+
+  "noRespondentInfo": "IDPorten innlogging vellykket, men ser ikke ut som du er registrert som respondent!"
 }

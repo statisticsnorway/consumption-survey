@@ -201,6 +201,7 @@ const UserProvider = ({children}) => {
                 } else {
                     console.log('Response without token!');
                     setLoginLogoutErrors('No token in BFF response');
+                    setIsLoggingIn(false);
                 }
             } else {
                 console.log('[Login Err]: could not get auth token from BFF', res);

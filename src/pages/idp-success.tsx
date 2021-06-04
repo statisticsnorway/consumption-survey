@@ -7,10 +7,13 @@ import UserCard from '../components/user/UserCard';
 import Loader from '../components/common/Loader';
 import { PATHS } from '../uiConfig';
 import Workspace from '../components/layout/workspace/Workspace';
+import { useTranslation } from 'react-i18next';
+import style from '../components/menu/menu.module.scss';
 
 const appConfig = getConfig();
 
 const IDPSuccess = () => {
+    const {t} = useTranslation('common');
     const router = useRouter();
     const {state, code} = router.query;
 
@@ -18,6 +21,7 @@ const IDPSuccess = () => {
     const [idPortenInfo, setIdPortenInfo] = useState<IDPortenTokenInfo>(null);
     const [respondentInfo, setRespondentInfo] = useState<RespondentDetails>(null);
     const [idPortenError, setIdPortenError] = useState<Error>(null);
+    const [fbuError, setFbuError] = useState<string>(null);
 
     const getAuthTokenEndpoint = () => {
         const {envVars} = appConfig.publicRuntimeConfig;
@@ -48,7 +52,7 @@ const IDPSuccess = () => {
     }, []);
 
     useEffect(() => {
-        if (respondentInfo) {
+        if (respondentInfo && respondentInfo.respondentId) {
             console.log('[IDP-S] trying to fetch fb token', respondentInfo, idPortenInfo);
             login(respondentInfo, idPortenInfo)
                 .then(() => {
@@ -59,6 +63,7 @@ const IDPSuccess = () => {
                 });
         } else {
             console.log('[IDP-S] No respondent info');
+            setFbuError(t('noRespondentInfo'));
         }
     }, [respondentInfo]);
 
@@ -68,7 +73,7 @@ const IDPSuccess = () => {
         }
     }, [isAuthenticated, userInfo]);
 
-    const traceInfo = true ? (
+    const traceInfo = false ? (
         <>
             <h3>IDPorten :: BFF </h3>
             <p>isAuthenticated: {isAuthenticated}</p>
@@ -82,7 +87,19 @@ const IDPSuccess = () => {
     return (
         <Workspace showFooter={false}>
             {traceInfo}
-            {(!isAuthenticated || isLoggingIn) && <Loader/>}
+            {(!isAuthenticated && isLoggingIn) && <Loader/>}
+            {fbuError &&
+            <div style={{ background: '#fcc', padding: '1rem', margin: '1rem 0', display: 'flex' }}>
+                <p>{fbuError}</p>
+                <button
+                    onClick={() => {
+                        router.push(PATHS.LOGOUT)
+                    }}
+                    className={`ssb-btn primary-btn`}>
+                    Logg ut
+                </button>
+            </div>
+            }
             {isAuthenticated && !userInfo &&
             <p>
                 IDPorten innlogging vellykket, men vi kunne ikke finne hente
