@@ -152,6 +152,21 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
         }
     };
 
+    const qtyField = false ? (
+        <LabelledInput
+            id="newItemQty"
+            value={values.qty}
+            label={t('addPurchase.newItem.qty.label')}
+            validate={qty => skipValidation || (notEmptyString(qty) && !isNaN(Number(qty)))}
+            errorText={t('addPurchase.newItem.qty.errorText')}
+            onChange={updateValue('qty')}
+            InputProps={{
+                inputComponent: NorwegianCurrencyFormat as any,
+            }}
+            styleClass={styles.qty}
+        />
+    ) : null;
+
     console.log('values before render', values);
 
     return values ? (
@@ -241,18 +256,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                         className={formStyles.fbuFormGroup}
                     />
                     <div className={`${formStyles.fbuFormGroup} ${styles.qtyAmountGroup}`}>
-                        <LabelledInput
-                            id="newItemQty"
-                            value={values.qty}
-                            label={t('addPurchase.newItem.qty.label')}
-                            validate={qty => skipValidation || (notEmptyString(qty) && !isNaN(Number(qty)))}
-                            errorText={t('addPurchase.newItem.qty.errorText')}
-                            onChange={updateValue('qty')}
-                            InputProps={{
-                                inputComponent: NorwegianCurrencyFormat as any,
-                            }}
-                            styleClass={styles.qty}
-                        />
+                        {qtyField}
                         <LabelledInput
                             id="newItemAmount"
                             value={values.amount}
