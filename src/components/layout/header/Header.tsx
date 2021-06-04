@@ -8,8 +8,8 @@ import { ArrowLeft } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import FbuIcon from '../../common/icons/FbuIcon';
-import {Modal} from "@material-ui/core";
-import Menu from "../../menu/Menu";
+import { Modal } from '@material-ui/core';
+import Menu from '../../menu/Menu';
 
 export type HeaderProps = {
     showAppBanner?: boolean;
@@ -33,14 +33,17 @@ const Header = ({headerComp, showAppBanner = false}: HeaderProps) => {
                     </div>
                     }
                 </div>
-                <button style={{backgroundColor: 'inherit', border: 'none', color: '#192326'}} onClick={() => setMenuOpen(true)}>
-                    <div style={{display: 'flex', alignItems: 'center'}}><FbuIcon name={'Menu'} style={{color: '#1a9d49'}} /> <b>Meny</b></div>
+                <button style={{backgroundColor: 'inherit', border: 'none', color: '#192326'}}
+                        onClick={() => setMenuOpen(true)}>
+                    <div style={{display: 'flex', alignItems: 'center'}}><FbuIcon name={'Menu'}
+                                                                                  style={{color: '#1a9d49'}}/>
+                        <b>Meny</b></div>
                 </button>
 
             </div>
             }
 
-            <Modal open={menuOpen}  >
+            <Modal open={menuOpen}>
                 <Menu onClose={() => setMenuOpen(false)}/>
             </Modal>
         </div>
@@ -51,13 +54,15 @@ export type ActionItem = {
     title: string;
     onClick: () => void;
     disabled?: boolean;
+    styleClass?: string;
+    style?: object;
 }
 
 export type OpHeaderProps = {
     title: string;
     showBack?: boolean;
     onBackClick?: (() => void) | null;
-    action: ActionItem;
+    action?: ActionItem;
 };
 
 export const OpHeader = ({showBack = true, onBackClick = null, title, action = null}: OpHeaderProps) => {
@@ -67,9 +72,12 @@ export const OpHeader = ({showBack = true, onBackClick = null, title, action = n
 
     useEffect(() => {
         if (action) {
+            const actionClasses =
+                `${styles.actionLink} ${action.styleClass ? action.styleClass : ''} ${action.disabled ? styles.disabled : ''}`;
             setActionComp(
                 <span
-                    className={`${styles.actionLink} ${action.disabled ? styles.disabled : ''}`}
+                    className={actionClasses}
+                    style={action.style || {}}
                     onClick={!action.disabled ? action.onClick : () => {
                     }}
                 >
@@ -80,7 +88,7 @@ export const OpHeader = ({showBack = true, onBackClick = null, title, action = n
     }, [action]);
 
     return (
-        <div className={styles.header}>
+        <div className={styles.header} style={{justifyContent: 'center !important'}}>
             <div className={styles.back} onClick={() => {
                 if (typeof onBackClick === 'function') {
                     onBackClick();
@@ -90,8 +98,10 @@ export const OpHeader = ({showBack = true, onBackClick = null, title, action = n
             }}>
                 <FbuIcon name={'ArrowLeft'} size={20} className={styles.icon}/>{t('links.back')}
             </div>
-            <div className={styles.pageTitle}>{title}</div>
-            {actionComp}
+            <div className={styles.titleAction}>
+                <div className={styles.pageTitle}>{title}</div>
+                {actionComp}
+            </div>
         </div>
     );
 };

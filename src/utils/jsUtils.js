@@ -21,6 +21,9 @@ export const krCents = (amt) =>
     NOK.format(amt).replace('NOK', '').replace('kr', '');
 
 // string
+export const isEmptyString = (str) =>
+    !str || str === '';
+
 export const notEmptyString = (str) =>
     str && str !== '';
 

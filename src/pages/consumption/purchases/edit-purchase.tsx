@@ -14,8 +14,10 @@ const EditPurchasePage = () => {
              * for different pages. Hence delegating it to the child component instead
              *
              * ToDo: better Component.getLayout and per-page (per-page-group) layouts
+             *
+             * <EditPurchase purchaseId={purchaseId as string}/>
              */
-            <EditPurchase purchaseId={purchaseId as string}/>
+            <EditPurchase purchaseId={purchaseId as string} />
         );
     } catch (err) {
         console.log('error while rendering page', err);

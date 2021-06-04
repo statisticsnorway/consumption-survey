@@ -25,7 +25,7 @@ const PurchaseMeta = ({
     };
 
     return (
-        <>
+        <div className={styles.purchaseMeta}>
             <LabelledDatePicker
                 id="purchaseDate"
                 label={t('addPurchase.purchaseDate.label')}
@@ -43,7 +43,7 @@ const PurchaseMeta = ({
                 onChange={handleUpdate('name')}
                 styleClass={styles.name}
             />
-        </>
+        </div>
     );
 };
 

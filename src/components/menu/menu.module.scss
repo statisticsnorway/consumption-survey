@@ -2,6 +2,9 @@
 .fullScreen {
   @include makeFullScreen
 }
+
+/* TODO: use rem instead of px */
+
 .menu {
   position: relative;
   background-color: #274247;
@@ -19,6 +22,9 @@
   .menuItems {
     padding-right: 20px;
     padding-left: 20px;
+
+    margin: 1.75rem 0;
+
     .menuItem {
       display: flex;
       justify-content: space-between;

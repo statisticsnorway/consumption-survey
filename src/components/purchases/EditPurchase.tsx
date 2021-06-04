@@ -1,58 +1,49 @@
-import { ReactNode, useContext, useEffect, useState } from 'react';
-import Workspace from '../layout/workspace/Workspace';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import usePurchases from '../../hocs/usePurchases';
-import { INIT_PURCHASE, ItemType, PurchaseStatus, PurchaseType, ReceiptInfo } from '../../firebase/model/Purchase';
+import { INIT_PURCHASE, ItemType, PurchaseStatus, PurchaseType } from '../../firebase/model/Purchase';
 import { OpHeader } from '../layout/header/Header';
 import PurchaseMeta from './PurchaseMeta';
-import ItemsTable from './ItemsTable';
-import ReceiptPopup from '../receipts/ReceiptPopup';
+import { krCents, notEmptyString } from '../../utils/jsUtils';
 import { LayoutContext } from '../../uiContexts';
 import { MessagePanelType } from '../common/blocks/MessagePanel';
+import Workspace from '../layout/workspace/Workspace';
+import Loader from '../common/Loader';
+import ReceiptPreview from './support/ReceiptPreview';
+import usePurchases from '../../hocs/usePurchases';
+import ItemsTable from './ItemsTable';
 import DeletePurchaseDialog from './support/DeletePurchaseDialog';
 import { PATHS } from '../../uiConfig';
-import { krCents } from '../../utils/jsUtils';
 
-import styles from './styles/editPurchase.module.scss'
-import useReceiptUpload from '../../hocs/useReceiptUpload';
-import FbuIcon from '../common/icons/FbuIcon';
+import styles from './styles/editPurchase.module.scss';
 
-export type EditPurchaseProps = {
-    purchaseId: string;
-};
-
-const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
+const EditPurchase = ({purchaseId}) => {
     const router = useRouter();
     const {t} = useTranslation('purchases');
-    const {t: ct} = useTranslation('common');
-    const {t: ht} = useTranslation('home');
-
-    const onSuccessfulAdd = async (purchaseId) => {
-        console.log('receipt uploaded, redirecting', purchaseId);
-        await router.push(`${PATHS.CONSUMPTION}?highlight=${purchaseId}`);
-    };
-
-    const {hiddenUploadComponent, captureReceiptFromCameraOrLibrary} = useReceiptUpload(onSuccessfulAdd);
+    const {showMessagePanel} = useContext(LayoutContext);
+    const [values, setValues] = useState<PurchaseType>(INIT_PURCHASE);
+    const [init, setInit] = useState<boolean>(true);
+    const [isDirty, setIsDirty] = useState<boolean>(false);
+    const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>(false);
+    const [canSubmit, setCanSubmit] = useState<boolean>(false);
 
     const {purchases, addPurchase, editPurchase, deletePurchase} = usePurchases();
-    const [purchase, setPurchase] = useState<PurchaseType>();
+    const [purchase, setPurchase] = useState<PurchaseType>(null);
 
-    const [values, setValues] = useState<PurchaseType>();
-    const [dirty, setDirty] = useState(false);
-
-    const [showReceiptPopup, setShowReceiptPopup] = useState(false);
-    const {showMessagePanel, hideMessagePanel} = useContext(LayoutContext);
-    const [showPurchaseDeleteConfirm, setShowPurchaseDeleteConfirm] = useState<boolean>(false);
-    const [showItemsValidationError, setShowItemsValidationError] = useState<boolean>(false);
 
     useEffect(() => {
-        if (purchaseId) {
-            setPurchase(purchases.find(p => p.id === purchaseId));
-        } else {
-            setValues(INIT_PURCHASE);
+        console.log('at []: init is', init);
+        console.log('at []: purchaseId is', purchaseId);
+        if (!purchaseId) {
+            setInit(false);
         }
-    }, [purchaseId]);
+    }, []);
+
+    useEffect(() => {
+        if (purchaseId && purchases) {
+            setPurchase(purchases.find(p => p.id === purchaseId));
+        }
+    }, [purchases, purchaseId]);
 
     useEffect(() => {
         if (purchase) {
@@ -61,26 +52,34 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
     }, [purchase]);
 
     useEffect(() => {
-        if (values) {
-            initializeHeader();
-            initializePurchaseMeta();
-
-            const {receipts} = values;
-            initializeReceiptPreview(receipts);
-            initializeCTAComp();
+        if (isDirty) {
+            const cs = validateAllFields();
+            console.log('[d.v] ', isDirty, values, cs);
+            setCanSubmit(cs);
         }
-    }, [values]);
+    }, [isDirty, values]);
 
-    useEffect(() => {
-
-    }, [showReceiptPopup]);
-
-    const onUpdate = (change) => {
+    const updateValues = (delta) => {
         setValues({
             ...values,
-            ...change,
+            ...delta
         });
-        setDirty(true);
+
+        setIsDirty(true);
+    };
+
+    const validateAllFields = () => {
+        if (values) {
+            const {items} = values;
+            if (!items || items.length < 1) {
+                return false;
+            }
+
+            return (notEmptyString(values.name) && (values.name !== '??')) &&
+                (notEmptyString(values.purchaseDate));
+        } else {
+            return false;
+        }
     };
 
     const computeTotal = (items) =>
@@ -95,7 +94,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
         const amount = computeTotal(items);
 
-        onUpdate({items, amount});
+        updateValues({items, amount});
     };
 
     const onItemQtyChange = (item: ItemType, newQty: number) => {
@@ -112,7 +111,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
             const amount = computeTotal(items);
 
-            onUpdate({items, amount})
+            updateValues({items, amount})
         }
     };
 
@@ -128,7 +127,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
 
         const amount = computeTotal(items);
 
-        onUpdate({items, amount});
+        updateValues({items, amount});
     };
 
     const onItemAdd = (newItem: ItemType) => {
@@ -137,88 +136,11 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
             {...newItem, idx: values.items.length},
         ];
 
-        onUpdate({
+        updateValues({
             items,
             amount: computeTotal(items)
         });
     };
-
-    const initializeHeader = () => {
-        setHeaderComp(
-            <OpHeader
-                title={t('editPurchase.title')}
-                action={{
-                    title: t('editPurchase.delete'),
-                    onClick: () => {
-                        setShowPurchaseDeleteConfirm(true);
-                    }
-                }}
-            />
-        );
-    };
-
-    const initializeReceiptPreview = (receipts: ReceiptInfo[] | null) => {
-        if (receipts && receipts.length > 0) {
-            const receipt = receipts[0];
-            const {imageName, imageId, previewUrl} = receipt;
-            setReceiptPreviewComp(
-                <div className={styles.receiptPreview} onClick={() => {
-                    setShowReceiptPopup(true);
-                }}>
-                    {previewUrl && <img src={receipt.previewUrl} className={styles.thumbnail}/>}
-                    <span className={styles.infoText}>{t('editPurchase.scannedReceipt')}</span>
-                </div>
-            );
-        } else {
-            setReceiptPreviewComp(
-                <div
-                    onClick={captureReceiptFromCameraOrLibrary}
-                    className={styles.receiptPreview}
-                >
-                    <FbuIcon name={'Camera'} size={20} className={styles.icon}/>
-                    <span className={styles.scanNew}>{ht('registerNew.fromReceipt')}</span>
-                </div>
-            );
-        }
-    };
-
-    const initializePurchaseMeta = () => {
-        if (values) {
-            setPurchaseMetaComp(
-                <div className={styles.purchaseMeta}>
-                    <PurchaseMeta
-                        name={values.name}
-                        purchaseDate={values.purchaseDate}
-                        registeredTime={values.registeredTime}
-                        onUpdate={onUpdate}
-                        skipValidation={!purchaseId && !dirty}
-                    />
-                </div>
-            )
-        }
-    };
-
-    const validateAllFields = () => {
-        if (!values) {
-            return false;
-        }
-
-        const {name, purchaseDate, registeredTime, items} = values;
-
-        if (!items || items.length < 1) {
-            setShowItemsValidationError(true);
-        }
-
-        // ToDo: DRY - cleaner way to validate all fields at one place, please!
-        //       options: formik might be an overkill. 'Yup' schema validation maybe ?
-        return name &&
-            (purchaseDate && (purchaseDate !== registeredTime)) &&
-            (items && (items.length > 0));
-    };
-
-    useEffect(() => {
-        initializeCTAComp();
-    }, [dirty]);
 
     const savePurchase = () => {
         console.log('saving ', purchaseId);
@@ -258,7 +180,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     status: PurchaseStatus.COMPLETE,
                 })
                     .then(() => {
-                        const msg = t('addPurchase.saveSuccess');
+                        const msg = t('editPurchase.saveSuccess');
                         console.log(msg);
                         showMessagePanel(MessagePanelType.SUCCESS, msg, true, () => {
                             router.push(PATHS.CONSUMPTION);
@@ -277,57 +199,53 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
         }
     };
 
-    const initializeCTAComp = () => {
-    };
+    console.log('current values', values);
 
-    /**
-     * Render components
-     */
-    const [headerComp, setHeaderComp] = useState<ReactNode>();
-    const [receiptPreviewComp, setReceiptPreviewComp] = useState<ReactNode>();
-    const [purchaseMetaComp, setPurchaseMetaComp] = useState<ReactNode>();
-    const [editPurchaseCTAComp, setEditPurchaseCTAComp] = useState<ReactNode>();
-
-    console.log('current', values);
-
-    try {
-        return values ? (
-            <Workspace headerComp={headerComp} showFooter={false} style={{padding: 0}}>
-                <div className={styles.editPurchase}>
-                    {receiptPreviewComp}
-                    {(values.receipts && values.receipts.length > 0) &&
-                    <ReceiptPopup
-                        show={showReceiptPopup}
-                        receipt={values.receipts[0]}
-                        onClose={() => {
-                            setShowReceiptPopup(false);
-                        }}
-                        onCancel={() => {
-                            setShowReceiptPopup(false);
-                        }}
-                    />
-                    }
-                    {purchaseMetaComp}
-                    <ItemsTable
-                        items={values.items}
-                        ocrTotal={krCents(values.amount)}
-                        onItemQtyChange={onItemQtyChange}
-                        onItemUpdate={onItemUpdate}
-                        onNewItem={onItemAdd}
-                        showValidationError={showItemsValidationError}
-                    />
-                    <div className={styles.editPurchaseCTA}>
-                        <button
-                            className={`ssb-btn primary-btn ${styles.saveButton}`}
-                            disabled={!(dirty && validateAllFields())}
-                            onClick={savePurchase}
-                        >
-                            {(values && (values.status === PurchaseStatus.OCR_PENDING_USER_APPROVAL))
-                                ? t('addPurchase.approveChanges')
-                                : t('addPurchase.save')
-                            }
-                        </button>
-                    </div>
+    return values ? (
+        <Workspace
+            headerComp={
+                <OpHeader
+                    title={t('editPurchase.title')}
+                    action={purchaseId ? {
+                        title: t('editPurchase.delete'),
+                        onClick: () => {
+                            setShowPurchaseDeleteConfirm(true);
+                        },
+                        style: { color: '#ED5935' },  // <- red-5; needs to be better handled in design
+                    } : null}
+                />
+            }
+            showFooter={false}
+            style={{padding: 0}}
+        >
+            <div className={styles.editPurchase}>
+                <ReceiptPreview receipts={values.receipts} text={t('editPurchase.scannedReceipt')}/>
+                <PurchaseMeta
+                    registeredTime={values.registeredTime}
+                    purchaseDate={values.purchaseDate}
+                    name={values.name}
+                    onUpdate={updateValues}
+                    skipValidation={!purchaseId && !isDirty}
+                />
+                <ItemsTable
+                    items={values.items}
+                    ocrTotal={krCents(values.amount)}
+                    onItemQtyChange={onItemQtyChange}
+                    onItemUpdate={onItemUpdate}
+                    onNewItem={onItemAdd}
+                    showValidationError={isDirty}
+                />
+                <div className={styles.editPurchaseCTA}>
+                    <button
+                        className={`ssb-btn primary-btn ${styles.saveButton}`}
+                        disabled={!canSubmit}
+                        onClick={savePurchase}
+                    >
+                        {(values && (values.status === PurchaseStatus.OCR_PENDING_USER_APPROVAL))
+                            ? t('addPurchase.approveChanges')
+                            : t('addPurchase.save')
+                        }
+                    </button>
                 </div>
                 {purchase &&
                 <DeletePurchaseDialog
@@ -352,13 +270,9 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                     }}
                 />
                 }
-                {hiddenUploadComponent}
-            </Workspace>
-        ) : null;
-    } catch (err) {
-        console.log('[EP] exception', err);
-        return <p>Error: {JSON.stringify(err)}</p>
-    }
+            </div>
+        </Workspace>
+    ) : <Loader/>;
 };
 
 export default EditPurchase;

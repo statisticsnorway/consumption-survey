@@ -47,6 +47,8 @@ $header-border-color: $ssb-dark-5;
     justify-content: flex-start;
     align-items: center;
 
+    flex: 1 0 auto;
+
     color: $ssb-green-4;
     font-size: 1rem;
     cursor: pointer;
@@ -56,6 +58,13 @@ $header-border-color: $ssb-dark-5;
       width: 20px;
       height: 20px;
     }
+  }
+
+  .titleAction {
+    display: flex;
+    flex: 2 0 auto;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .pageTitle {
