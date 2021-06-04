@@ -255,6 +255,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                 addPurchase({
                     ...values,
                     receipts: receiptsForFirebase,
+                    status: PurchaseStatus.COMPLETE,
                 })
                     .then(() => {
                         const msg = t('addPurchase.saveSuccess');
