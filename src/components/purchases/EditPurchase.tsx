@@ -206,7 +206,7 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
         const {name, purchaseDate, registeredTime, items} = values;
 
         if (!items || items.length < 1) {
-            setShowItemsValidationError(true);
+            return false;
         }
 
         // ToDo: DRY - cleaner way to validate all fields at one place, please!
