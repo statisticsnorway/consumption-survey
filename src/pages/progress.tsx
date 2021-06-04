@@ -54,7 +54,30 @@ const Progress = () => {
                             <h3>{t('questionnaire.title')}</h3>
                             <div>{t('questionnaire.complete.boxText')}</div>
                         </div>
+                        <p>{t('questionnaire.complete.innerText')}</p>
                     </div>
+
+                }
+                {questionnaireStatus === 'STARTED' &&
+                <div>
+                    <div>
+                        <Circle/>
+                        <h3>{t('questionnaire.title')}</h3>
+                        <div>{t('questionnaire.onGoing.boxText')}</div>
+                    </div>
+                    <p>{t('questionnaire.onGoing.innerText')}</p>
+                </div>
+
+                }
+                {questionnaireStatus === 'NOT_STARTED' &&
+                <div>
+                    <div>
+                        <Circle/>
+                        <h3>{t('questionnaire.title')}</h3>
+                        <div>{t('questionnaire.notStarted.boxText')}</div>
+                    </div>
+                    <p>{t('questionnaire.notStarted.innerText')}</p>
+                </div>
 
                 }
 
