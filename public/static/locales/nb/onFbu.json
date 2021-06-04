@@ -1,7 +1,7 @@
 {
   "title" : "Om undersøkelsen",
   "surveyInfo" : "Data fra forbruksundersøkelsen brukes til offisiell statistikk om forbruk og forbrukeradferd i Norge. Når du deltar i undersøkelsen bidrar du til viktig fakta om samfunnet.\nMer informasjon om undersøkelsen finner du på vår webside",
-  "website" : "www.ssb.no/forbruk-svar",
+  "website" : "https://www.ssb.no/forbruk-svar",
   "privacy" : {
     "title" : "Personvern",
     "bulletPoints" : [

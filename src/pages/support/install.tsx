@@ -4,7 +4,7 @@ import { isPWA } from '../../utils/pwaUtils';
 import PageTitle from '../../components/common/PageTitle';
 
 const Install = () => makeWorkspace(
-    isPWA ? (
+    isPWA() ? (
         <>
             <PageTitle title="Hurrah!"/>
             <p>Hurrah! du har allerede installert og bruker verktøyet som en app!</p>
