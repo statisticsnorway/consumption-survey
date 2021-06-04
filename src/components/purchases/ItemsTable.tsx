@@ -164,7 +164,7 @@ const ItemsTable = ({
                 }
                 </tbody>
             </table>
-            {showValidationError && (!items || items.length < 1) &&
+            {(!items || items.length < 1) &&
             <p className="MuiFormHelperText-root Mui-error MuiFormHelperText-filled">
                 {t('lineItems.noRecordsError')}
             </p>

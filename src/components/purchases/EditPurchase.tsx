@@ -314,7 +314,6 @@ const EditPurchase = ({purchaseId}: EditPurchaseProps) => {
                         onItemQtyChange={onItemQtyChange}
                         onItemUpdate={onItemUpdate}
                         onNewItem={onItemAdd}
-                        showValidationError={showItemsValidationError}
                     />
                     <div className={styles.editPurchaseCTA}>
                         <button
