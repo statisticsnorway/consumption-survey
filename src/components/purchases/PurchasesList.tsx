@@ -199,8 +199,9 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
         </>
     ) : (
         <NoRecords
-            singularText="et nytt kjøp"
-            pluralText="alle kjøpene og løpende utgifter"
+            singularText="et kjøp"
+            pluralText="alle kjøp"
+            showAddNew={false}
         />
     );
 

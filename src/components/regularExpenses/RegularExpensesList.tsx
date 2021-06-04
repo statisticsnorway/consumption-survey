@@ -50,15 +50,8 @@ const RegularExpensesList = ({showExpensesList = true, showAddExpenseDialog = fa
     useEffect(() => {
         console.log('new list', expenses);
         if (showExpensesList) {
-            const comp = (Array.isArray(expenses) && expenses.length > 0) ? (
-                <div className={workspaceStyles.section}>
-                    <div className={workspaceStyles.sectionHeader}>
-                        <span className={workspaceStyles.sectionTitle}>{t('sections.regularExpenses.title')}</span>
-                        <span className={workspaceStyles.sectionVisibility} onClick={toggleExpensesVisibility}>
-                        {expensesVisible && <ChevronDown/>}
-                            {!expensesVisible && <ChevronUp/>}
-                    </span>
-                    </div>
+            const listComp = (Array.isArray(expenses) && expenses.length > 0) ? (
+                <>
                     {expensesVisible &&
                     <div className={styles.regularExpenses}>
                         {expenses.map((expense: RegularExpenseType) => (
@@ -105,9 +98,24 @@ const RegularExpensesList = ({showExpensesList = true, showAddExpenseDialog = fa
                         ))}
                     </div>
                     }
-                </div>
+                </>
             ) : (
-                <NoRecords singularText="en ny utgift" pluralText="de faste ugiftene"/>
+                <NoRecords singularText="ny utgift" pluralText="de faste ugiftene" showAddNew={false}/>
+            );
+
+            const comp = (
+                <div className={workspaceStyles.section}>
+                    <div className={workspaceStyles.sectionHeader}>
+                        <span className={workspaceStyles.sectionTitle}>
+                            {t('sections.regularExpenses.title')}
+                        </span>
+                        <span className={workspaceStyles.sectionVisibility} onClick={toggleExpensesVisibility}>
+                            {expensesVisible && <ChevronDown/>}
+                            {!expensesVisible && <ChevronUp/>}
+                        </span>
+                    </div>
+                    {listComp}
+                </div>
             );
 
             setExpensesComp(comp);
