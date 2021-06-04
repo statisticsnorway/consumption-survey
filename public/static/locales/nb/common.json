@@ -16,5 +16,6 @@
     "addNewSuffix": "med (+) knappen under for å starte."
   },
 
-  "noRespondentInfo": "IDPorten innlogging vellykket, men ser ikke ut som du er registrert som respondent!"
+  "noRespondentInfo": "IDPorten innlogging vellykket, men ser ikke ut som du er registrert som respondent!",
+  "logoutSuccess": "Du er nå logget ut og blir videresendt.."
 }

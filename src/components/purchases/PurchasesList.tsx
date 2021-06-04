@@ -37,7 +37,7 @@ export const listDayDate = (date, styles) => {
     return (
         <>
             <span className={styles.purchaseGroupDateDay}>{dt}</span>
-            <span className={styles.purchaseGroupDateMonth}>{mon.toLowerCase().slice(0, 3)}</span>
+            <span className={styles.purchaseGroupDateMonth}><pre>{mon.toLowerCase().slice(0, 3)}</pre></span>
         </>
     );
 };
