@@ -1,3 +1,59 @@
 {
-  "title": "Fremdrift"
+  "title": "Fremdrift",
+  "intro": "Her er en oversikt over registreringsperioden og hvilke oppgaver du har fullført",
+  "registerPeriod" : {
+    "showRegisterPeriod" : "Vis registreringsperiode",
+    "hideRegisterPeriod" : "Skjul registreringsperiode",
+    "period": "Din registreringsperiode",
+    "daysLeft": "dager gjenstår",
+    "newPeriod" : {
+      "preText" : "Passer ikke den avtalte registreringsperioden?",
+      "contactText" : "Ta kontakt med oss",
+      "postText" : "(åpner ny side)"
+    }
+  },
+  "recruitment": {
+    "title" : "Startintervju",
+    "complete" : {
+      "boxText" : "Ferdig",
+      "innerText" : "Dette er du allerede ferdig med"
+    }
+  },
+  "registerExpenses" : {
+    "title" : "Registrere utgifter",
+    "complete" : {
+      "boxText" : "Ferdig",
+      "innerText" : "Dette er du allerede ferdig med"
+    },
+    "ongoing" : {
+      "boxText" : "Pågår",
+      "innerTextPre" : "Registreringsperioden din er ",
+      "innerTextPost" : "Du kan avslutte når du har ført alle utgiftene dine for perioden"
+    },
+    "notStarted" : {
+      "boxText" : "Ikke startet",
+      "innerTextPre" : "Registreringsperioden din er ",
+      "innerTextPost" : "Du kan avslutte når du har ført alle utgiftene dine for perioden"
+    }
+  },
+  "questionnaire" : {
+    "complete" : {
+      "boxText" : "Ferdig",
+      "innerText" : "Spørreskjema er besvart"
+    },
+    "onGoing" : {
+      "boxText" : "Pågår",
+      "innerText" : "Spørreskjema må besvares før du kan avslutte undersøkelsen"
+    },
+    "notStarted" : {
+      "boxText": "Ikke started",
+      "innerText" : "Spørreskjema må besvares før du kan avslutte undersøkelsen"
+    }
+  },
+  "completeSurvey" : {
+    "title": "Fullfør undersøkelsen",
+    "completeButtonText" : "Fullfør undersøkelsen",
+    "notFinishedText" : "Du kan ikke avslutte undersøkelsen helt enda. Du må først føre utgifter i hele registreringsperioden og svare på spørreundersøkelsen.",
+    "finishedText": "Du har fullført alle oppgavene og kan avslutte undersøkelsen. Er du klar for å avslutte?"
+  }
 }
