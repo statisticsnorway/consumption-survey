@@ -1,0 +1,45 @@
+.progress {
+  hr {
+    background-color: #c3dcdc;
+    height: 1px;
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .completeSurvey {
+    padding: 20px;
+    background-color: #f0f8f9;
+
+  }
+  .subSection {
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      .headerTitle {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+        .notStarted {
+          margin-left: 10px;
+          background-color: #3396d2;
+          padding: 5px;
+          color: #fff;
+        }
+        .started {
+          margin-left: 10px;
+          background-color: #9272fc;
+          padding: 5px;
+          color: #fff;
+        }
+        .complete {
+          margin-left: 10px;
+          background-color: #00824d;
+          padding: 5px;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
