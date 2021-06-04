@@ -52,18 +52,20 @@ const IDPSuccess = () => {
     }, []);
 
     useEffect(() => {
-        if (respondentInfo && respondentInfo.respondentId) {
-            console.log('[IDP-S] trying to fetch fb token', respondentInfo, idPortenInfo);
-            login(respondentInfo, idPortenInfo)
-                .then(() => {
-                    console.log('Firebase token obtained!');
-                })
-                .catch((err) => {
-                    console.log('error obtaining firebase token', err);
-                });
-        } else {
-            console.log('[IDP-S] No respondent info');
-            setFbuError(t('noRespondentInfo'));
+        if (respondentInfo) {
+            if (respondentInfo.respondentId) {
+                console.log('[IDP-S] trying to fetch fb token', respondentInfo, idPortenInfo);
+                login(respondentInfo, idPortenInfo)
+                    .then(() => {
+                        console.log('Firebase token obtained!');
+                    })
+                    .catch((err) => {
+                        console.log('error obtaining firebase token', err);
+                    });
+            } else {
+                console.log('[IDP-S] No respondent info');
+                setFbuError(t('noRespondentInfo'));
+            }
         }
     }, [respondentInfo]);
 
