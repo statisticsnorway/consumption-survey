@@ -1,0 +1,21 @@
+@import "../../../styles/mixins";
+.unsupported {
+  .browser, .os {
+    font-weight: 700;
+    @include roboto();
+    color: $ssb-dark-6;
+    margin: 0 0.5rem;
+    background-color: $ssb-dark-1;
+  }
+
+  .browserIcons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1.25rem 0;
+  }
+
+  .alternative {
+    margin-top: 1.25rem;
+  }
+}

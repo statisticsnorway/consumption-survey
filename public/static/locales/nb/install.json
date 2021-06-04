@@ -1,0 +1,18 @@
+{
+  "title": "Slik installeres appen",
+  "description": "",
+  "android": {
+  },
+  "iOS": {
+  },
+  "unsupported": {
+    "title": "Aæsj!",
+    "leadingText": "Vi ser at du har åpnet undersøkelsen med",
+    "browser": "nettleser",
+    "os": "på",
+    "supported": "For tiden støtter vi kun Chrome nettleser på Android, og Safari på iOS",
+    "useSupported": "Vennligst åpne lenk til undersøkelsen i nettlesere nevnt ovenfor",
+    "continueInBrowser": "Du kan fortsett gjennomføre undersøkelsen fra din nettleser,",
+    "recommendation": "men vi sterk anbefaler å bruke nettlesere nevent ovenfor for den beste opplevelsen!"
+  }
+}

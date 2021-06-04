@@ -1,7 +1,11 @@
-import styles from './carousel.module.scss';
+import { useEffect } from 'react';
 import { range } from 'rambda';
 import { DO_NOTHING } from '../../../utils/jsUtils';
-import { useEffect } from 'react';
+
+import styles from './carousel.module.scss';
+import { isPWACompatible } from '../../../utils/pwaUtils';
+import { useRouter } from 'next/router';
+import { PATHS } from '../../../uiConfig';
 
 export type SlideNavProps = {
     currentSlide: number;
@@ -24,6 +28,7 @@ const SlideNav = ({
                       style = {},
                       className = ''
                   }: SlideNavProps) => {
+    const router = useRouter();
     useEffect(() => {
         onSlideChange(currentSlide);
     }, [currentSlide]);
@@ -34,15 +39,19 @@ const SlideNav = ({
         alignItems: 'center'
     };
 
+    const hopOver = (
+        <a onClick={onComplete} className={styles.skip}>Hopp over</a>
+    );
+
     return (
         <div className={styles.slideNavContainer}>
-            {currentSlide === (totalSlides - 1) &&
-            <button
-                className={`ssb-btn primary-btn ${styles.nextButton}`}
-                onClick={onComplete}
-            >
-                Kom i gang!
-            </button>
+            {(currentSlide === (totalSlides - 1))  &&
+                <span
+                    className={styles.continueInBrowserLink}
+                    onClick={() => {router.push(PATHS.HOME); }}
+                >
+                    Fortsett i nettleseren
+                </span>
             }
             {currentSlide !== (totalSlides - 1) &&
             <div className={styles.buttonComplex}>
@@ -52,7 +61,6 @@ const SlideNav = ({
                 >
                     Neste
                 </button>
-                <a onClick={onComplete} className={styles.skip}>Hopp over</a>
             </div>
             }
             <div className={`${styles.slideNav} ${className}`} style={style}>

@@ -10,5 +10,9 @@
   "contact" : {
     "title": "Kontakt oss",
     "excerpt" : "Telefonnummer og e-postadresse for henvendelser."
+  },
+  "install": {
+    "title": "Installér som app",
+    "excerpt": "Slik installerer du verktøyet som en app"
   }
 }

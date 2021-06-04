@@ -1,4 +1,4 @@
-@import '../../../styles/common';
+@import '../../../styles/mixins';
 
 .carousel {
   width: 100%;
@@ -49,11 +49,28 @@
         margin: 1.25rem 0;
       }
 
+
+
       .skip {
         color: $ssb-green-4;
       }
     }
 
+    .continueInBrowserLink {
+      color: #00824d;
+      font-family: 'Roboto', sans-serif !important;
+      font-stretch: normal;
+      font-weight: bold;
+      font-weight: 700;
+    }
+
+    .lykkeTil {
+      color: #162327;
+      font-family: 'Roboto', sans-serif !important;
+      font-stretch: normal;
+      font-weight: bold;
+      font-weight: 700;
+    }
 
     .slideNav {
       display: flex;

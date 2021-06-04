@@ -1,9 +1,9 @@
 import { MoreVertical } from 'react-feather';
 import { InstructionStep } from './Instructions';
-import AddOp from './assets/iOS/AddOp';
-import SSBAppIcon from './assets/iOS/SSBAppIcon';
+import AddOp from '../assets/iOS/AddOp';
+import SSBAppIcon from '../assets/iOS/SSBAppIcon';
 import InstallInstructions from './InstallInstructions';
-import ChromeAppIcon from './assets/android/ChromeAppIcon';
+import ChromeAppIcon from '../assets/android/ChromeAppIcon';
 
 const steps: InstructionStep[] = [
     {

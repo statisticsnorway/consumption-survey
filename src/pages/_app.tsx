@@ -20,6 +20,7 @@ import thunk from 'redux-thunk'
 import { Provider } from 'react-redux';
 import SearchTermsProvider from '../firebase/SearchTermsProvider';
 import ExpensesProvider from '../firebase/ExpensesProvider';
+import { AppContextStatus, AppContextType, AppContext } from '../uiContexts';
 
 const store: Store<QuestionState, QuestionAction> & {
     dispatch: DispatchType
@@ -43,36 +44,60 @@ const getCfg = () => {
     }
 };
 
+export const APP_META_KEYS = {
+    ONBOARDING: 'onboarding',
+    CONSENT: 'consent',
+    INSTALL: 'installation',
+};
+
+export const INIT_APP_META = {
+    onboarding: AppContextStatus.INIT,
+    consent: AppContextStatus.INIT,
+    installation: AppContextStatus.INIT,
+};
+
+const getLocalStorageItems = (keys) =>
+    keys.reduce((acc, key) => {
+        const value = localStorage.getItem(key);
+        return (value) ? {
+            ...acc,
+            [key]: value,
+        } : acc;
+    }, {});
+
 const MyApp = ({Component, pageProps}) => {
     const {i18n} = useTranslation('welcome');
     const [firebaseConfig, setFirebaseConfig] = useState<object>(null);
+    const [appMeta, setAppMeta] = useState<AppContextType>(INIT_APP_META);
 
     const getLayout = Component.getLayout || (comp => <Layout>{comp}</Layout>);
 
     useEffect(() => {
         setFirebaseConfig(getCfg());
+        setAppMeta(getLocalStorageItems(Object.keys(APP_META_KEYS)));
     }, []);
-
 
     try {
         return firebaseConfig ? (
-            <FireProvider config={firebaseConfig}>
-                <Provider store={store}>
-                    <UserProvider>
-                        <SearchTermsProvider>
-                            <PurchasesProvider>
-                                <ExpensesProvider>
-                                    {getLayout(
-                                        <ProtectedRoute>
-                                            <Component {...pageProps} />
-                                        </ProtectedRoute>
-                                    )}
-                                </ExpensesProvider>
-                            </PurchasesProvider>
-                        </SearchTermsProvider>
-                    </UserProvider>
-                </Provider>
-            </FireProvider>
+            <AppContext.Provider value={appMeta}>
+                <FireProvider config={firebaseConfig}>
+                    <Provider store={store}>
+                        <UserProvider>
+                            <SearchTermsProvider>
+                                <PurchasesProvider>
+                                    <ExpensesProvider>
+                                        {getLayout(
+                                            <ProtectedRoute>
+                                                <Component {...pageProps} />
+                                            </ProtectedRoute>
+                                        )}
+                                    </ExpensesProvider>
+                                </PurchasesProvider>
+                            </SearchTermsProvider>
+                        </UserProvider>
+                    </Provider>
+                </FireProvider>
+            </AppContext.Provider>
         ) : <Loader/>;
     } catch (err) {
         console.log('Error while rendering app', err);

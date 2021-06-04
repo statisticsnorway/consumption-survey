@@ -1,3 +1,5 @@
+import { isAndroid, isChrome, isDesktop, isIOS, isMobileSafari } from 'react-device-detect';
+
 export const isBrowser = () => (typeof window !== 'undefined')
 
 export const isServiceWorker = () =>
@@ -5,6 +7,10 @@ export const isServiceWorker = () =>
 
 export const isWorkboxActive = () =>
     isServiceWorker() && window.workbox !== undefined;
+
+export const isPWACompatible = (isIOS && isMobileSafari)
+    || (isAndroid && isChrome)
+    || isDesktop;
 
 export const isPWA = () => {
     if (!isBrowser()) {

@@ -19,6 +19,12 @@ export type WorkspaceProps = {
     style?: object;
 };
 
+export const makeWorkspace = (component) => (
+    <Workspace>
+        {component}
+    </Workspace>
+);
+
 const Workspace = ({
                        children,
                        showFooter = true,

@@ -1,5 +1,6 @@
 import { add, sub } from 'date-fns';
 import { ChangeEvent } from 'react';
+import Workspace from './components/layout/workspace/Workspace';
 
 export const PATHS = {
     HOME: '/home',
@@ -14,6 +15,10 @@ export const PATHS = {
     CONTACT: '/support/contact',
     ABOUT: '/support/about',
     ONBOARDING: '/support/onboarding',
+    INSTALL: '/support/install',
+    CONSENT: '/support/consent',
+    HOWTO: '/support/howTo',
+    WHATS: '/support/whats',
     LOGOUT: '/logout'
 };
 
@@ -68,6 +73,7 @@ export const POUCH_DATABASES = [
 export type INPUT_CHANGE_HANDLER = (e: ChangeEvent<HTMLInputElement>) => void;
 
 export enum SortOptions {
-    ASC =  'ascending',
+    ASC = 'ascending',
     DESC = 'descending',
 };
+

@@ -1,6 +1,6 @@
 import Instructions, { InstructionStep } from './Instructions';
 import { useState } from 'react';
-import Accordion from '../common/accordion/Accordion';
+import Accordion from '../../common/accordion/Accordion';
 
 export type InstallInstructionsProps = {
     headerTextOpen: string;
@@ -9,7 +9,7 @@ export type InstallInstructionsProps = {
 };
 
 const InstallInstructions = ({headerTextClosed, headerTextOpen, instructions}: InstallInstructionsProps) => {
-    const [isOpen, setIsOpen] = useState<boolean>();
+    const [isOpen, setIsOpen] = useState<boolean>(true);
 
     return (
         <Accordion

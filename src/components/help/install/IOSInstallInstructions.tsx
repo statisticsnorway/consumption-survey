@@ -1,8 +1,8 @@
 import { InstructionStep } from './Instructions';
-import DrawerIcon from './assets/iOS/DrawerIcon';
-import AddToHomeIcon from './assets/iOS/AddToHomeIcon';
-import AddOp from './assets/iOS/AddOp';
-import SSBAppIcon from './assets/iOS/SSBAppIcon';
+import DrawerIcon from '../assets/iOS/DrawerIcon';
+import AddToHomeIcon from '../assets/iOS/AddToHomeIcon';
+import AddOp from '../assets/iOS/AddOp';
+import SSBAppIcon from '../assets/iOS/SSBAppIcon';
 import InstallInstructions from './InstallInstructions';
 
 const steps: InstructionStep[] = [

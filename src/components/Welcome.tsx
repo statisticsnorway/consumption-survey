@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { isIOS } from 'react-device-detect';
-import IOSInstallInstructions from './help/IOSInstallInstructions';
-import AndroidInstallInstructions from './help/AndroidInstallInstructions';
+import IOSInstallInstructions from './help/install/IOSInstallInstructions';
+import AndroidInstallInstructions from './help/install/AndroidInstallInstructions';
 import { isPWA } from '../utils/pwaUtils';
 import { useRouter } from 'next/router';
 import { PATHS } from '../uiConfig';
