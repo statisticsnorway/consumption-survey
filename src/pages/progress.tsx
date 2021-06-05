@@ -7,14 +7,20 @@ import Accordion from "../components/common/accordion/Accordion";
 import {CheckCircle, Circle} from "react-feather";
 import usePurchases from "../hocs/usePurchases";
 import style from './styles/progress.module.scss'
-import {Divider} from "@material-ui/core";
+import Modal from "../components/common/dialog/Modal";
+import {useRouter} from "next/router";
+import {PATHS} from "../uiConfig";
+
 
 const Progress = () => {
     const {userInfo, isAuthenticated} = useContext(UserContext);
     const [questionnaireStatus, setQuestionnaireStatus] = useState("NOT_STARTED")
     const { firestore} = useContext(FireContext)
+    const [submitModalOpen, setSubmitModalOpen] = useState(false)
     const {t} = useTranslation('progress');
     const {purchases} = usePurchases()
+    const router = useRouter()
+
     useEffect(() => {
         firestore
             .collection(`/users/${userInfo.userName}/questionnaire`)
@@ -128,11 +134,27 @@ const Progress = () => {
                     <p>{t('completeSurvey.notFinishedText')}</p>
                     }
                     <hr/>
-                    <button style={{width: '100%'}} className={`ssb-btn primary-btn`} disabled={questionnaireStatus !== 'COMPLETE'}>
+                    <button
+                        onClick={() => setSubmitModalOpen(true)}
+                        style={{width: '100%'}} className={`ssb-btn primary-btn`} disabled={questionnaireStatus !== 'COMPLETE'}>
                         {t('completeSurvey.completeButtonText')}
                     </button>
                 </div>
             </div>
+            <Modal
+                closeText={t('completeSurvey.modal.confirm')}
+                cancelText={t('completeSurvey.modal.cancel')}
+                show={submitModalOpen}
+                onClose={() => {
+                    firestore.doc(`/users/${userInfo.userName}`).
+                        set({diaryStatus : 'COMPLETE'}, {merge: true})
+                    setSubmitModalOpen(false)
+                    router.push(PATHS.HOME)
+                }}
+                onCancel={() => setSubmitModalOpen(false)}
+                title={t('completeSurvey.modal.title')}>
+                <p style={{textAlign : 'center'}}>{t('completeSurvey.modal.text')}</p>
+            </Modal>
         </Workspace>
     );
 };
