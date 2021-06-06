@@ -85,6 +85,9 @@ const UserProvider = ({children}) => {
         journalStart: respondentInfo.diaryStart,
         journalEnd: respondentInfo.diaryEnd,
     });
+    const updateUserInfo = (key, val) => {
+        setUserInfo({...userInfo, [key] : val})
+    }
 
 
     const login = async (respondentInfo: RespondentDetails, idPortenInfo: IDPortenTokenInfo) => {
@@ -118,7 +121,7 @@ const UserProvider = ({children}) => {
                                 respondentDetails: authInfo.respondentDetails,
                             };
 
-                            setUserInfo(loginInfo)
+
 
                             firestore
                                 .collection(`/users/${authInfo.userInfo.id}/questionnaire`)
@@ -200,6 +203,24 @@ const UserProvider = ({children}) => {
                                             .set(INIT_USER_PREFERENCES);
                                     }
                                 })
+                            firestore
+                                .doc(`/users/${authInfo.userInfo.id}`)
+                                .get()
+                                .then( userDoc => {
+                                    if(userDoc.exists) {
+                                        const userData = userDoc.data()
+                                        if(userData.diaryStatus) {
+                                            setUserInfo({...loginInfo, diaryStatus: userData.diaryStatus})
+                                            console.log('USER STATUS DIARY STATUS', userData.diaryStatus)
+                                        }
+                                    else {
+                                        console.log('no diaryStatus set on user')
+                                            setUserInfo(loginInfo)
+                                        }
+                                    } else {
+                                        console.log('user does not exist')
+                                    }
+                                }).catch(e => console.log(e))
                         })
                 } else {
                     console.log('Response without token!');
@@ -325,6 +346,7 @@ const UserProvider = ({children}) => {
     return (
         <UserContext.Provider
             value={{
+                updateUserInfo,
                 isAuthenticated,
                 userInfo,
                 userPreferences,

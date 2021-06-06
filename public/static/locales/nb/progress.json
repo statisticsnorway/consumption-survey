@@ -4,7 +4,7 @@
   "registerPeriod" : {
     "showRegisterPeriod" : "Vis registreringsperiode",
     "hideRegisterPeriod" : "Skjul registreringsperiode",
-    "period": "Din registreringsperiode",
+    "period": "Din registreringsperiode er",
     "daysLeft": "dager gjenstår",
     "newPeriod" : {
       "preText" : "Passer ikke den avtalte registreringsperioden?",
@@ -62,5 +62,9 @@
       "confirm" : "Ja, avslutt",
       "cancel" : "Nei, vent litt"
     }
+  },
+  "completedSurvey" : {
+    "title" : "Fullført",
+    "text" : "Gratulerer! Du har gjnnomført hele undersøkelsen. Vi takker for deltakelsen."
   }
 }

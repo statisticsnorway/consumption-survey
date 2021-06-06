@@ -3,8 +3,6 @@ import PageTitle from '../components/common/PageTitle';
 import React, {useContext, useEffect, useState} from 'react';
 import {FireContext, UserContext} from '../contexts';
 import { useTranslation } from 'react-i18next';
-import Accordion from "../components/common/accordion/Accordion";
-import {CheckCircle, Circle} from "react-feather";
 import usePurchases from "../hocs/usePurchases";
 import style from './styles/progress.module.scss'
 import Modal from "../components/common/dialog/Modal";
@@ -13,7 +11,7 @@ import {PATHS} from "../uiConfig";
 
 
 const Progress = () => {
-    const {userInfo, isAuthenticated} = useContext(UserContext);
+    const {userInfo,updateUserInfo, isAuthenticated} = useContext(UserContext);
     const [questionnaireStatus, setQuestionnaireStatus] = useState("NOT_STARTED")
     const { firestore} = useContext(FireContext)
     const [submitModalOpen, setSubmitModalOpen] = useState(false)
@@ -41,45 +39,48 @@ const Progress = () => {
         <Workspace>
             <PageTitle title={t('title')} />
             <p>{t('intro')}</p>
-            <Accordion title={t('registerPeriod.showRegisterPeriod')}>
-                Kalender
-            </Accordion>
+            <p>{t('registerPeriod.period')}{`: ${userInfo.respondentDetails.diaryStart} - ${userInfo.respondentDetails.diaryEnd}`}</p>
             <div className={style.progress}>
                 <div className={style.subSection}>
                     <div className={style.header}>
-                        <CheckCircle size={22}
-                                     color={"green"}/>
                         <div className={style.headerTitle}>
                             <h3 style={{margin: 0}} className={'ssb-title'}>{t('recruitment.title')}</h3>
                             <div className={style.complete}>{t('recruitment.complete.boxText')}</div>
                         </div>
                     </div>
-                    <p>{t('recruitment.complete.innerText')}</p>
                 </div>
                 <hr/>
-                {purchases && purchases.length > 0 &&
+                {purchases && purchases.length > 0 && userInfo.diaryStatus &&
+                <div className={style.subSection}>
+                    <div className={style.header}>
+
+                        <div className={style.headerTitle}>
+                            <h3 style={{margin: 0}} className={'ssb-title'}>{t('registerExpenses.title')}</h3>
+                            <div className={style.complete}>{t('registerExpenses.complete.boxText')}</div>
+                        </div>
+                    </div>
+                </div>
+
+                }
+                {purchases && purchases.length > 0 && !userInfo.diaryStatus &&
                     <div className={style.subSection}>
                         <div className={style.header}>
-                            <Circle/>
                             <div className={style.headerTitle}>
                                 <h3 style={{margin: 0}} className={'ssb-title'}>{t('registerExpenses.title')}</h3>
                                 <div className={style.started}>{t('registerExpenses.ongoing.boxText')}</div>
                             </div>
                         </div>
-                        <p>{t('registerExpenses.notStarted.innerTextPre')}{userInfo.respondentDetails.diaryStart}{' - '}{userInfo.respondentDetails.diaryEnd}{t('registerExpenses.notStarted.innerTextPost')}</p>
                     </div>
 
                 }
                 {(!purchases || purchases.length < 1) &&
                 <div className={style.subSection}>
                     <div className={style.header}>
-                        <Circle/>
                         <div className={style.headerTitle}>
                             <h3 style={{margin: 0}} className={'ssb-title'}>{t('registerExpenses.title')}</h3>
                             <div className={style.notStarted}>{t('registerExpenses.notStarted.boxText')}</div>
                         </div>
                     </div>
-                    <p>{t('registerExpenses.notStarted.innerTextPre')}{userInfo.respondentDetails.diaryStart}{' - '}{userInfo.respondentDetails.diaryEnd}{t('registerExpenses.notStarted.innerTextPost')}</p>
                 </div>
 
                 }
@@ -87,21 +88,17 @@ const Progress = () => {
                 {questionnaireStatus === 'COMPLETE' &&
                     <div className={style.subSection}>
                         <div className={style.header}>
-                            <CheckCircle size={22}
-                                         color={"green"}/>
                             <div className={style.headerTitle}>
                                 <h3 style={{margin: 0}} className={'ssb-title'}>{t('questionnaire.title')}</h3>
                                 <div className={style.complete}>{t('questionnaire.complete.boxText')}</div>
                             </div>
                         </div>
-                        <p>{t('questionnaire.complete.innerText')}</p>
                     </div>
 
                 }
                 {questionnaireStatus === 'STARTED' &&
                 <div className={style.subSection}>
                     <div className={style.header}>
-                        <Circle/>
                         <div className={style.headerTitle}>
                             <h3 style={{margin: 0}} className={'ssb-title'}>{t('questionnaire.title')}</h3>
                             <div className={style.started}>{t('questionnaire.onGoing.boxText')}</div>
@@ -114,7 +111,6 @@ const Progress = () => {
                 {questionnaireStatus === 'NOT_STARTED' &&
                 <div className={style.subSection}>
                     <div style={{display: 'flex'}}>
-                        <Circle/>
                         <div className={style.headerTitle}>
                             <h3 style={{margin: 0}} className={'ssb-title'}>{t('questionnaire.title')}</h3>
                             <div className={style.notStarted}>{t('questionnaire.notStarted.boxText')}</div>
@@ -125,6 +121,7 @@ const Progress = () => {
 
                 }
                 <hr/>
+                {userInfo && !userInfo.diaryStatus &&
                 <div className={style.completeSurvey}>
                     <h3>{t('completeSurvey.title')}</h3>
                     {questionnaireStatus === 'COMPLETE' &&
@@ -139,7 +136,13 @@ const Progress = () => {
                         style={{width: '100%'}} className={`ssb-btn primary-btn`} disabled={questionnaireStatus !== 'COMPLETE'}>
                         {t('completeSurvey.completeButtonText')}
                     </button>
-                </div>
+                </div>}
+                {userInfo && userInfo.diaryStatus &&
+                    <div className={style.completedSurvey}>
+                        <h3>{t('completedSurvey.title')}</h3>
+                        <p>{t('completedSurvey.text')}</p>
+                    </div>
+                }
             </div>
             <Modal
                 closeText={t('completeSurvey.modal.confirm')}
@@ -147,7 +150,9 @@ const Progress = () => {
                 show={submitModalOpen}
                 onClose={() => {
                     firestore.doc(`/users/${userInfo.userName}`).
-                        set({diaryStatus : 'COMPLETE'}, {merge: true})
+                        set({diaryStatus : 'COMPLETE'}, {merge: true}).then(() => {
+                        updateUserInfo('diaryStatus', 'COMPLETE')
+                    })
                     setSubmitModalOpen(false)
                     router.push(PATHS.HOME)
                 }}

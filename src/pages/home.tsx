@@ -30,7 +30,7 @@ const Home = () => {
     const router = useRouter();
     const {t} = useTranslation('home');
     const [showAddExpenseDialog, setShowAddExpensesDialog] = useState<boolean>(false);
-    const {userInfo: {respondentDetails}} = useContext(UserContext);
+    const {userInfo: {respondentDetails, diaryStatus}} = useContext(UserContext);
 
     const {name, diaryStart, diaryEnd} = respondentDetails;
     const subText = `${t('surveyInfo')} ${dateMonth(diaryStart)} - ${dateMonth(diaryEnd)}`;
@@ -50,7 +50,8 @@ const Home = () => {
 
     return (
         <Workspace showFooter={true}>
-            <PageTitle title={greeting} subText={subText}/>
+            {!diaryStatus &&
+            <><PageTitle title={greeting} subText={subText}/>
             <HomeCTAButtonGroup>
                 <HomeCTA
                     text={t('registerNew.fromReceipt')}
@@ -85,6 +86,18 @@ const Home = () => {
             </HomeCTAButtonGroup>
             {hiddenUploadComponent}
             <RegularExpensesList showExpensesList={false} showAddExpenseDialog={showAddExpenseDialog} />
+          </>}
+            {diaryStatus &&
+                <>
+                    <PageTitle title={t('completed.title')}/>
+                    <p>{t('completed.text')}</p>
+                    <h2>{t('completed.contactInfo.title')}</h2>
+                    {t('completed.contactInfo.openingHours')}
+                    {t('completed.contactInfo.phone')}
+                    {t('completed.contactInfo.email')}
+                </>
+
+            }
         </Workspace>
     );
 };

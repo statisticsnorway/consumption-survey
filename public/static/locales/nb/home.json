@@ -11,5 +11,15 @@
 
   "questionnaire": {
     "title": "Svar på spørreskjema"
+  },
+  "completed" : {
+    "title" : "Undersøkelsen er avsluttet",
+    "text" : "Du kan ikke legge til flere utgifter. Har du gjort en feil? Ta kontakt hvis du har behov for at appen åpnes igjen.",
+    "contactInfo" : {
+      "title" : "Forbruksundersøkelsen",
+      "openingHours" : "Åpen kl. 09-20 mandafg - fredag",
+      "phone" : "Telefon: 21 09 42 28",
+      "email" : "Epost: forbruk@ssb.no"
+    }
   }
 }
