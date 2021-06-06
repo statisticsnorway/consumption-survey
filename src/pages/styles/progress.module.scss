@@ -1,0 +1,92 @@
+@import '../../styles/colours';
+
+@mixin statusBadge () {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.progress {
+  margin: 1.25rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid $ssb-dark-2;
+  border-bottom: 1px solid $ssb-dark-2;
+
+  hr {
+    background-color: #c3dcdc;
+    height: 1px;
+    border: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .subSection {
+    padding-bottom: 1.25rem;
+    .header {
+      display: flex;
+      align-items: center;
+      /* margin-bottom: 10px; */
+
+      .headerTitle {
+        display: flex;
+        align-items: center;
+        /* margin-left: 20px; */
+        .notStarted {
+          margin-left: 10px;
+          background-color: #3396d2;
+          color: #fff;
+          @include statusBadge();
+        }
+        .started {
+          margin-left: 10px;
+          background-color: #9272fc;
+          color: #fff;
+          @include statusBadge();
+        }
+        .complete {
+          margin-left: 10px;
+          background-color: #00824d;
+          color: #fff;
+          @include statusBadge();
+        }
+      }
+    }
+
+    .header + .innerText {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .subSection + .subSection {
+    padding-top: 1.25rem;
+    border-top: 1px solid $ssb-dark-2;
+  }
+}
+
+.completion {
+  display: flex;
+  border-bottom: 1px solid $ssb-dark-2;
+
+  .completeSurvey {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+
+    background-color: $ssb-dark-1;
+
+    .title {
+      margin: 0;
+    }
+
+    .title + .infoText,
+    .infoText + .action {
+      margin-top: 1.25rem;
+    }
+  }
+
+  .completedSurvey {
+    background-color: #ecfeed;
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+  }
+}

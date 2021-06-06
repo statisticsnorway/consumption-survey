@@ -18,6 +18,7 @@ export type UserInfoType = {
     firstName?: string;
     lastName?: string;
     email: string;
+    diaryStatus?: string;
     surveyInfo: SurveyInfo;
     respondentDetails: RespondentDetails;
 };
@@ -48,6 +49,7 @@ export type UserPreferences = {
 }
 
 export type UserContextType = {
+    updateUserInfo: (key, val) => void
     userInfo: UserInfoType;
     userPreferences?: UserPreferences;
     respondentDetails: RespondentDetails;

@@ -85,6 +85,9 @@ const UserProvider = ({children}) => {
         journalStart: respondentInfo.diaryStart,
         journalEnd: respondentInfo.diaryEnd,
     });
+    const updateUserInfo = (key, val) => {
+        setUserInfo({...userInfo, [key] : val})
+    }
 
 
     const login = async (respondentInfo: RespondentDetails, idPortenInfo: IDPortenTokenInfo) => {
@@ -118,26 +121,8 @@ const UserProvider = ({children}) => {
                                 respondentDetails: authInfo.respondentDetails,
                             };
 
-                            setUserInfo(loginInfo)
-                            store.subscribe(() => {
-                                const state = store.getState()
-                                const quesetionsState = state.questions
-                                const history = state.history
-                                const currentFocus = state.currentFocus
-                                const answers = getAnsweredValues(quesetionsState)
-                                console.log('trying to store to firebase')
-                                firestore
-                                    .doc(`/users/${authInfo.userInfo.id}/questionnaire/data`)
-                                    .set(
-                                        {
-                                            status: 'STARTED',
-                                            answers,
-                                            history,
-                                            currentFocus,
-                                        },
-                                        {merge: true}
-                                    )
-                            })
+
+
                             firestore
                                 .collection(`/users/${authInfo.userInfo.id}/questionnaire`)
                                 .doc('data')
@@ -170,7 +155,28 @@ const UserProvider = ({children}) => {
                                                 {merge: true}
                                             )
                                     }
+                                }).then(() => {
+                                store.subscribe(() => {
+                                    const state = store.getState()
+                                    const quesetionsState = state.questions
+                                    const history = state.history
+                                    const currentFocus = state.currentFocus
+                                    const answers = getAnsweredValues(quesetionsState)
+                                    console.log('trying to store to firebase')
+                                    firestore
+                                        .doc(`/users/${authInfo.userInfo.id}/questionnaire/data`)
+                                        .set(
+                                            {
+                                                status: 'STARTED',
+                                                answers,
+                                                history,
+                                                currentFocus,
+                                            },
+                                            {merge: true}
+                                        )
                                 })
+
+                            })
                                 .catch((err) => {
                                     console.log('cannot update answers', err)
                                 })
@@ -197,6 +203,24 @@ const UserProvider = ({children}) => {
                                             .set(INIT_USER_PREFERENCES);
                                     }
                                 })
+                            firestore
+                                .doc(`/users/${authInfo.userInfo.id}`)
+                                .get()
+                                .then( userDoc => {
+                                    if(userDoc.exists) {
+                                        const userData = userDoc.data()
+                                        if(userData.diaryStatus) {
+                                            setUserInfo({...loginInfo, diaryStatus: userData.diaryStatus})
+                                            console.log('USER STATUS DIARY STATUS', userData.diaryStatus)
+                                        }
+                                    else {
+                                        console.log('no diaryStatus set on user')
+                                            setUserInfo(loginInfo)
+                                        }
+                                    } else {
+                                        console.log('user does not exist')
+                                    }
+                                }).catch(e => console.log(e))
                         })
                 } else {
                     console.log('Response without token!');
@@ -240,49 +264,7 @@ const UserProvider = ({children}) => {
                                 });
                                 setIsLoggingIn(false);
                             });
-                        /*store.subscribe(() => {
-                            const state = store.getState()
-                            const quesetionsState = state.questions
-                            const history = state.history
-                            const currentFocus = state.currentFocus
-                            const answers = getAnsweredValues(quesetionsState)
-                            console.log('trying to store to firebase')
-                            firestore
-                                .doc(`/users/${user.uid}/questionnaire/data`)
-                                .set(
-                                    {
-                                        status: "STARTED",
-                                        answers,
-                                        history,
-                                        currentFocus,
-                                    },
-                                    { merge: true }
-                                )
-                        })
-                        firestore
-                            .collection(`/users/${user.uid}/questionnaire`)
-                            .doc("data")
-                            .get()
-                            .then((doc) => {
-                                const data = doc.data()
-                                console.log('DATA', data)
-                                if (data && data.answers) {
-                                    const curState = store.getState()
-                                    const hydrated = hydrateQuestionnaire(
-                                        data.answers,
-                                        curState.questions
-                                    )
-                                    store.dispatch({
-                                        type: CHANGE_ALL,
-                                        questions: hydrated,
-                                        allHistory: data.history,
-                                        focus: data.currentFocus,
-                                    })
-                                }
-                            })
-                            .catch((err) => {
-                                console.log("cannot update answers", err)
-                            })*/
+
                         firestore
                             .doc(`/users/${user.uid}/profile/preferences`)
                             .onSnapshot(snapshot => {
@@ -364,6 +346,7 @@ const UserProvider = ({children}) => {
     return (
         <UserContext.Provider
             value={{
+                updateUserInfo,
                 isAuthenticated,
                 userInfo,
                 userPreferences,

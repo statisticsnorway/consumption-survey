@@ -1,3 +1,70 @@
 {
-  "title": "Fremdrift"
+  "title": "Fremdrift",
+  "intro": "Her er en oversikt over registreringsperioden og hvilke oppgaver du har fullført",
+  "registerPeriod" : {
+    "showRegisterPeriod" : "Vis registreringsperiode",
+    "hideRegisterPeriod" : "Skjul registreringsperiode",
+    "period": "Din registreringsperiode er",
+    "daysLeft": "dager gjenstår",
+    "newPeriod" : {
+      "preText" : "Passer ikke den avtalte registreringsperioden?",
+      "contactText" : "Ta kontakt med oss",
+      "postText" : "(åpner ny side)"
+    }
+  },
+  "recruitment": {
+    "title" : "Startintervju",
+    "complete" : {
+      "boxText" : "Ferdig",
+      "innerText" : "Dette er du allerede ferdig med"
+    }
+  },
+  "registerExpenses" : {
+    "title" : "Registrere utgifter",
+    "complete" : {
+      "boxText" : "Ferdig",
+      "innerText" : "Dette er du allerede ferdig med"
+    },
+    "ongoing" : {
+      "boxText" : "Pågår",
+      "innerTextPre" : "Registreringsperioden din er ",
+      "innerTextPost" : "Du kan avslutte når du har ført alle utgiftene dine for perioden"
+    },
+    "notStarted" : {
+      "boxText" : "Ikke startet",
+      "innerTextPre" : "Registreringsperioden din er ",
+      "innerTextPost" : "Du kan avslutte når du har ført alle utgiftene dine for perioden"
+    }
+  },
+  "questionnaire" : {
+    "title" : "Spørreskjema",
+    "complete" : {
+      "boxText" : "Ferdig",
+      "innerText" : "Spørreskjema er besvart"
+    },
+    "onGoing" : {
+      "boxText" : "Pågår",
+      "innerText" : "Spørreskjema må besvares før du kan avslutte undersøkelsen"
+    },
+    "notStarted" : {
+      "boxText": "Ikke startet",
+      "innerText" : "Spørreskjema må besvares før du kan avslutte undersøkelsen"
+    }
+  },
+  "completeSurvey" : {
+    "title": "Fullfør undersøkelsen",
+    "completeButtonText" : "Fullfør undersøkelsen",
+    "notFinishedText" : "Du kan ikke avslutte undersøkelsen helt enda. Du må først føre utgifter i hele registreringsperioden og svare på spørreundersøkelsen.",
+    "finishedText": "Du har fullført alle oppgavene og kan avslutte undersøkelsen. Er du klar for å avslutte?",
+    "modal" : {
+      "title" : "Fullfør undersøkelsen",
+      "text" : "Dette bekrefter at du har ført inn og kontrollert alle utgiftene dine i føringsperioden. Det vil ikke være mulig å legge til flere registreringer etter undersøkelsen er avsluttet.",
+      "confirm" : "Ja, avslutt",
+      "cancel" : "Nei, vent litt"
+    }
+  },
+  "completedSurvey" : {
+    "title" : "Fullført",
+    "text" : "Gratulerer! Du har gjnnomført hele undersøkelsen. Vi takker for deltakelsen."
+  }
 }
