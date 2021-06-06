@@ -15,7 +15,7 @@ export const AppHeader = (): ReactElement => {
                     onClick={event => {
                         event.preventDefault();
                         router.push("/home");
-                        header.style.display = "block"
+                        header.style.display = "flex"
                     }}
                 />
                 Tilbake

@@ -22,7 +22,7 @@ function Questionnaire() {
 				},
 			)
 			router.push(PATHS.HOME)
-			header.style.display = "block"
+			header.style.display = "flex"
 		}
 
 	} />
