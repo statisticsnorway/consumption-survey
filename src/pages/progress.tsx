@@ -118,6 +118,8 @@ const Progress = () => {
                 </div>
 
                 }
+            </div>
+            <div className={style.completion}>
                 {userInfo && !userInfo.diaryStatus &&
                 <div className={style.completeSurvey}>
                     <h3 className={style.title}>{t('completeSurvey.title')}</h3>
