@@ -92,11 +92,10 @@ const Home = () => {
                     <PageTitle title={t('completed.title')}/>
                     <p>{t('completed.text')}</p>
                     <h2>{t('completed.contactInfo.title')}</h2>
-                    {t('completed.contactInfo.openingHours')}
-                    {t('completed.contactInfo.phone')}
-                    {t('completed.contactInfo.email')}
+                    <div>{t('completed.contactInfo.openingHours')}</div>
+                    <div>{t('completed.contactInfo.phone')}</div>
+                    <div>{t('completed.contactInfo.email')}</div>
                 </>
-
             }
         </Workspace>
     );
