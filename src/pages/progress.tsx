@@ -33,7 +33,7 @@ const Progress = () => {
             .catch((err) => {
                 console.log('cannot update answers', err)
             })
-    }, [])
+    }, []);
     console.log('userInfo', isAuthenticated, userInfo);
     return (
         <Workspace>
@@ -49,7 +49,6 @@ const Progress = () => {
                         </div>
                     </div>
                 </div>
-                <hr/>
                 {purchases && purchases.length > 0 && userInfo.diaryStatus &&
                 <div className={style.subSection}>
                     <div className={style.header}>
@@ -84,7 +83,6 @@ const Progress = () => {
                 </div>
 
                 }
-                <hr/>
                 {questionnaireStatus === 'COMPLETE' &&
                     <div className={style.subSection}>
                         <div className={style.header}>
@@ -104,7 +102,7 @@ const Progress = () => {
                             <div className={style.started}>{t('questionnaire.onGoing.boxText')}</div>
                         </div>
                     </div>
-                    <p>{t('questionnaire.onGoing.innerText')}</p>
+                    <p className={style.innerText}>{t('questionnaire.onGoing.innerText')}</p>
                 </div>
 
                 }
@@ -120,20 +118,21 @@ const Progress = () => {
                 </div>
 
                 }
-                <hr/>
                 {userInfo && !userInfo.diaryStatus &&
                 <div className={style.completeSurvey}>
-                    <h3>{t('completeSurvey.title')}</h3>
+                    <h3 className={style.title}>{t('completeSurvey.title')}</h3>
+                    <div className={style.infoText}>
                     {questionnaireStatus === 'COMPLETE' &&
                         <p>{t('completeSurvey.finishedText')}</p>
                     }
                     {questionnaireStatus !== 'COMPLETE' &&
                     <p>{t('completeSurvey.notFinishedText')}</p>
                     }
-                    <hr/>
+                    </div>
                     <button
                         onClick={() => setSubmitModalOpen(true)}
-                        style={{width: '100%'}} className={`ssb-btn primary-btn`} disabled={questionnaireStatus !== 'COMPLETE'}>
+                        className={`ssb-btn primary-btn ${style.action}`}
+                        disabled={questionnaireStatus !== 'COMPLETE'}>
                         {t('completeSurvey.completeButtonText')}
                     </button>
                 </div>}
