@@ -69,7 +69,7 @@ export const QuestionOverview = (
                         event.preventDefault()
                         onFinishedClicked()
                     }}>
-                        Avslutt undersøkelse
+                        Avslutt spørreskjema
                     </Button>
                 </div>
             )}

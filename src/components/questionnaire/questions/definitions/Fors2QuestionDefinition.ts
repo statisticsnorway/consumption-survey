@@ -54,34 +54,13 @@ export const FORS2: QuestionFormType = {
         ]
     },
     dependentOnQuestionCriteria: [
-        [{
-            questionId: 'fors1',
-            questionValue: '1'
-        }],
-        [{
-            questionId: 'fors1',
-            questionValue: '2'
-        }],
-        [{
-            questionId: 'fors1',
-            questionValue: '3'
-        }],
-        [{
-            questionId: 'fors1',
-            questionValue: '4'
-        }],
-        [{
-            questionId: 'fors1',
-            questionValue: '5'
-        }],
-        [{
-            questionId: 'fors1',
-            questionValue: '6'
-        }],
-        [{
-            questionId: 'fors1',
-            questionValue: '7'
-        }],
+        [
+            {
+                questionId: "fors1",
+                questionValue: "8",
+                specialCompare: "logicNot"
+            }
+        ]
     ],
     inputType: "multifield-number-dependent",
     inputPostfix: "cash"
