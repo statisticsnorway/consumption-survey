@@ -11,7 +11,7 @@ export type ReceiptPreviewProps = {
 const ReceiptPreview = ({receipts, text}: ReceiptPreviewProps) => {
     const [showReceiptPopup, setShowReceiptPopup] = useState<boolean>(false);
 
-    return (receipts && receipts.length > 1) ? (
+    return (receipts && receipts.length > 0) ? (
         <>
             <div className={styles.receiptPreview} onClick={() => {
                 setShowReceiptPopup(true);
