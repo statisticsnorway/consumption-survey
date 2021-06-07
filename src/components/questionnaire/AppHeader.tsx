@@ -13,7 +13,7 @@ export const AppHeader = (): ReactElement => {
                         onClick={event => {
                             event.preventDefault();
                             router.push("/home");
-                            header.style.display = "flex"
+                            header.style.display = "block"
                     }}>
                         <ArrowLeft
                         className="arrow-icon"
