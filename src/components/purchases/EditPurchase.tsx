@@ -205,7 +205,7 @@ const EditPurchase = ({purchaseId}) => {
         <Workspace
             headerComp={
                 <OpHeader
-                    title={t('editPurchase.title')}
+                    title={purchaseId ? t('editPurchase.title') : t('addPurchase.title')}
                     action={purchaseId ? {
                         title: t('editPurchase.delete'),
                         onClick: () => {

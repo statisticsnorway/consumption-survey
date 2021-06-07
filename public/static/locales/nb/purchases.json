@@ -43,7 +43,7 @@
     }
   },
   "addPurchase": {
-    "title": "Ny utgift",
+    "title": "Registrer kjøp",
     "total": "Sum",
     "cancel": "Avbryt",
     "save": "Lagre",
