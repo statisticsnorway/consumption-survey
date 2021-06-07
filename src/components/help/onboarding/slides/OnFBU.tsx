@@ -41,10 +41,16 @@ export default () => {
         <div className={style.onFbuOuter} style={{textAlign: 'center'}}>
             <div style={{padding: '45px'}}>
                 <h1 className={'ssb-title'}>{t('onFBU.title')}</h1>
-                <ImagePlaceholder/>
                 <p>{t('onFBU.description')}</p>
             </div>
-            {ON_FBU_COMP(t)}
+            <div style={{backgroundColor: '#f0f8f9', padding: '30px', textAlign: 'left'}}>
+                <h2 className={'ssb-title'}>{t('onFBU.dataUse.title')}</h2>
+                <ul style={{textAlign: 'left'}}>
+                    {t('onFBU.dataUse.items').split(', ').map(txt => <li>
+                        {txt}
+                    </li>)}
+                </ul>
+            </div>
 
             {/*
              <OnboardingCard

@@ -9,6 +9,8 @@ import IOSInstallInstructions from '../install/IOSInstallInstructions';
 import { useTranslation } from 'react-i18next';
 import AndroidInstallInstructions from '../install/AndroidInstallInstructions';
 import PWA from './slides/PWA';
+import { PATHS } from '../../../uiConfig';
+import WhatTo from "./slides/WhatTo";
 
 const Onboarding = () => {
     const {t: wt} = useTranslation('welcome');
@@ -22,6 +24,7 @@ const Onboarding = () => {
             }}
        >
             <Slide><OnFBU/></Slide>
+            <Slide><WhatTo/></Slide>
             <Slide><HowTo/></Slide>
             <Slide><DataSec/></Slide>
             <Slide><PWA/></Slide>
