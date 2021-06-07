@@ -10,7 +10,7 @@
     },
     "whatToRegister": {
       "title": "Hva du skal registrere",
-      "intro": "Alt husholdningen    bruker penger på skal med. Dette inkluderer:",
+      "intro": "Alt husholdningen bruker penger på skal med. Dette inkluderer:",
       "items": "Alle kjøp, Alle utgifter til tjenester og aktiviteter, Alle regninger og faste utgifter"
     },
     "forgottenExpenditures": {
@@ -45,7 +45,7 @@
     "tip": "Klikk på pil ned for å lese mer",
     "todos": {
       "registering": "Føre utgifter i hele registreringsperioden på to uker",
-      "questionnaire": "Svare på spørreskjemaet som du finner webappen."
+      "questionnaire": "Svare på spørreskjemaet som du finner i webappen."
     },
     "tooling": {
       "fromReceipt": "Ta bilde av og skanne kvitteringer",
@@ -87,7 +87,7 @@
         "Opplysningene blir forsvarlig lagret i SSBs systemer etter gjeldende personvernregler",
         "Tar du bilder av kvitteringer, vil disse i tillegg bli lagret i appen på din telefon",
         "Bildene er innom en tredjepart for scanning, men slettes hos dem når skanning er utført",
-        "Undersøkelsen er frivillig, og du kan når som helst trekke deg og be om at svarene du har gitt blir rette eller slettet. Du kan også be om innsyn i opplysningene",
+        "Undersøkelsen er frivillig, og du kan når som helst trekke deg og be om at svarene du har gitt blir slettet. Du kan også be om innsyn i opplysningene",
         "Innen 1. juni 2022 vil alle opplysninger bli anonymisert"
       ],
       "moreInfo": "Du kan lese mer om personvern på www.ssb.no/omssb/personvern. (ekstern lenke)."
