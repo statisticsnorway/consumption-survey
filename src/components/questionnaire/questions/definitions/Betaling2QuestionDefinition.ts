@@ -5,7 +5,8 @@ export const BETALING2: QuestionFormType = {
     id: 'betaling2',
     theme: Theme.paymentOptions,
     order: 127,
-    questionText: 'Hvor ofte betaler husholdningen med ...? Gi et anslag i prosent',
+    questionText: 'Hvor ofte betaler husholdningen med disse betalingsmåtene?',
+    subText: 'Gi et anslag i prosent',
     hasAnswered: false,
     answerValue: {
         answers: [

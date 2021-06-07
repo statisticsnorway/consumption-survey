@@ -51,6 +51,12 @@ export const FORS1: QuestionFormType = {
                 descriptionValue: 'Bilforsikring (hvis bil)',
                 chosen: false
             },
+            {
+                id: 'fors1_8',
+                value: "8",
+                descriptionValue: 'Ingen av disse',
+                chosen: false
+            },
         ]
     },
 
