@@ -44,7 +44,13 @@ export type UserPreferencesType = {
     communicationPreferences?: CommunicationPreference[];
     pin?: string;
     showOnboarding?: boolean;
-}
+};
+
+export type UserStatusesType = {
+    surveyStatus: string;
+    journalStatus: string;
+    questionnaireStatus: string;
+};
 
 export type UserContextType = {
     userInfo: UserInfoType;

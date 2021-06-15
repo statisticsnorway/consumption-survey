@@ -7,13 +7,13 @@ import {
     IDPortenTokenInfo,
     RespondentDetails,
     UserInfoType,
-    UserPreferencesType
+    UserPreferencesType, UserStatusesType
 } from '../contexts';
 import {
     getPreferencesPathForUser,
     getProfilePathForUser,
-    getRespondentDetailsSecure,
-    getUserPath, INIT_USER_PREFERENCES,
+    getRespondentDetailsSecure, getStatusesPathForUser,
+    getUserPath, INIT_USER_PREFERENCES, INIT_USER_STATUSES,
     RespondentTypeSecure
 } from './model/User';
 
@@ -43,11 +43,13 @@ export const INIT_LOGIN_STATE: LoginStateType = {
 export type UserStateType = {
     userInfo: UserInfoType | null;
     userPreferences: UserPreferencesType | null;
+    userStatuses: UserStatusesType | null;
 };
 
 export const INIT_USER_STATE: UserStateType = {
     userInfo: null,
     userPreferences: null,
+    userStatuses: null,
 };
 
 const getLoginUrl = () => {
@@ -216,10 +218,11 @@ const UserProvider = ({children}) => {
         const fbPromises = [
             await firestore.doc(getProfilePathForUser(respondentId)).get(),
             await firestore.doc(getPreferencesPathForUser(respondentId)).get(),
+            await firestore.doc(getStatusesPathForUser(respondentId)).get(),
         ];
 
         return await Promise.all(fbPromises)
-            .then(([profileDoc, prefDoc]) => {
+            .then(([profileDoc, prefDoc, statusDoc]) => {
                 const profile = profileDoc.data() as RespondentTypeSecure;
                 const {respondentDetails} = loginState.loginInfo;
                 console.log('fetched profile', profile);
@@ -227,10 +230,13 @@ const UserProvider = ({children}) => {
                 const prefs = prefDoc.data() as UserPreferencesType;
                 console.log('fetched preferences', prefs);
 
+                const statuses = statusDoc.data() as UserStatusesType;
+
                 setUserState({
                     ...userState,
                     userInfo: makeUserInfoFromRespondentDetails(respondentDetails),
                     userPreferences: prefs,
+                    userStatuses: statuses,
                 });
             });
     };
@@ -251,10 +257,16 @@ const UserProvider = ({children}) => {
             .doc(getPreferencesPathForUser(respondentId))
             .set(INIT_USER_PREFERENCES);
 
+    const saveStatusDefaults = async (respondentId) =>
+        firestore
+            .doc(getStatusesPathForUser(respondentId))
+            .set(INIT_USER_STATUSES)
+
     const setupDefaults = async (respondentId) => {
         const fbPromises = [
             await saveProfileDefaults(respondentId),
             await savePreferencesDefaults(respondentId),
+            await saveStatusDefaults(respondentId),
         ];
 
         return await Promise.all(fbPromises)
@@ -267,6 +279,7 @@ const UserProvider = ({children}) => {
                         respondentDetails,
                     },
                     userPreferences: INIT_USER_PREFERENCES,
+                    userStatuses: INIT_USER_STATUSES,
                 });
             });
     };

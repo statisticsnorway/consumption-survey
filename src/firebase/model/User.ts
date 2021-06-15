@@ -1,4 +1,4 @@
-import { RespondentDetails } from '../../contexts';
+import { RespondentDetails, UserStatusesType } from '../../contexts';
 
 export const getUserPath = (uid: string) =>
     `/users/${uid}`;
@@ -8,6 +8,9 @@ export const getProfilePathForUser = (uid: string) =>
 
 export const getPreferencesPathForUser = (uid: string) =>
     `/users/${uid}/profile/preferences`;
+
+export const getStatusesPathForUser = (uid: string) =>
+    `/users/${uid}/profile/statuses`;
 
 export const getQuestionnairePathForUser = (uid: string) =>
     `/users/${uid}/questionnaire/data`;
@@ -22,6 +25,17 @@ export const INIT_USER_PREFERENCES = {
      * for now, we will assume that when a user has logged in, they have gone through onboarding
      */
     showOnboarding: false,
+};
+
+export enum StatusConstants {
+    NOT_STARTED = 'NOT_STARTED',
+    COMPLETE = 'COMPLETE',
+}
+
+export const INIT_USER_STATUSES:UserStatusesType = {
+    surveyStatus: StatusConstants.NOT_STARTED,
+    journalStatus: StatusConstants.NOT_STARTED,
+    questionnaireStatus: StatusConstants.NOT_STARTED,
 };
 
 export const INIT_QUESTIONNAIRE_DATA = {
