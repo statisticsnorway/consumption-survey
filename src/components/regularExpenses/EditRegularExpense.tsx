@@ -91,7 +91,7 @@ const EditRegularExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps
         const {name, amount, frequency} = values;
         return (
             notEmptyString(name) &&
-            (notEmptyString(amount) && !isNaN(Number(amount))) &&
+            (notEmptyString(amount) && !Number.isNaN(Number(amount))) &&
             (notEmptyString(frequency) && (frequency !== ExpenseFrequency.NONE))
         );
     };
@@ -190,7 +190,7 @@ const EditRegularExpense = ({expense, show, onSubmit, onCancel}: AddExpenseProps
                     InputProps={{
                         inputComponent: NorwegianCurrencyFormat as any,
                     }}
-                    validate={amt => skipValidation || (amt && notEmptyString(amt) && !isNaN(Number(amt)))}
+                    validate={amt => skipValidation || (amt && notEmptyString(amt) && !Number.isNaN(Number(amt)))}
                     errorText={t('addExpense.krCentsError')}
                     onChange={updateValue('amount')}
                     placeholder={t('addExpense.krCentsPlaceholder')}

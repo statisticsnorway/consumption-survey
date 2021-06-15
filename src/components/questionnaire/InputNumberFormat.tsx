@@ -20,8 +20,8 @@ const numberWithSpaces = (x : string) => {
     return removeWhiteSpace(number[0]).replace(/\B(?=(\d{3})+(?!\d))/g, " ")+ (separator)+(number[1] ? number[1] : '')
 }
 const isNaNWithComma = (number : string) => {
-    let n = number.replace(',', '.')
-    return isNaN(Number(n));
+    let n = number.replace(/,/g, '.')
+    return Number.isNaN(Number(n));
 
 }
 const setCursorPosition = (currentPos : any, priorText : string, currentText : string) => {
@@ -70,7 +70,7 @@ export default function InputNumberFormat({value, onChange = () => null, id, lab
                         let newValue = isNaNWithComma(valueWithoutSpace) ? value : valueWithoutSpace
                         setCaretPosition(setCursorPosition(position, numberWithSpaces(value) as string, numberWithSpaces(newValue)))
                         setShowValue(numberWithSpaces(newValue))
-                        event.target.value = newValue.replace(',', '.')
+                        event.target.value = newValue.replace(/,/g, '.')
                         onChange(event)
                     }}
                 />

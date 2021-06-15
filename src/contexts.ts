@@ -9,15 +9,13 @@ import { SearchTermType } from './firebase/model/SearchTerm';
 import { CommunicationPreference } from './firebase/UserProvider';
 
 export type SurveyInfo = {
+    ioNumber: number;
     journalStart: Date;
     journalEnd: Date;
 };
 
 export type UserInfoType = {
     userName: string;
-    firstName?: string;
-    lastName?: string;
-    email: string;
     diaryStatus?: string;
     surveyInfo: SurveyInfo;
     respondentDetails: RespondentDetails;
@@ -41,17 +39,16 @@ export type IDPortenTokenInfo = {
     idTokenUserInfo: any;
 };
 
-export type UserPreferences = {
+export type UserPreferencesType = {
     language: string;
-    communicationPreferences: CommunicationPreference[];
-    pin: string;
-    init: boolean;
+    communicationPreferences?: CommunicationPreference[];
+    pin?: string;
+    showOnboarding?: boolean;
 }
 
 export type UserContextType = {
-    updateUserInfo: (key, val) => void
     userInfo: UserInfoType;
-    userPreferences?: UserPreferences;
+    userPreferences?: UserPreferencesType;
     respondentDetails: RespondentDetails;
     login: (respondentDetails: RespondentDetails, idPortenTokenInfo: IDPortenTokenInfo) => Promise<void>;
     logout: () => void;
@@ -59,6 +56,7 @@ export type UserContextType = {
     isLoggingIn: boolean;
     isLoggingOut: boolean;
     loginLogoutErrors: any;
+    updateUserInfo: (key: string, val: string) => void;
 };
 
 export const UserContext = createContext({} as UserContextType);

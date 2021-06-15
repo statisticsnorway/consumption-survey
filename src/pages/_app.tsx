@@ -10,7 +10,7 @@ import '../styles/QuestionnaireApp.css'
 import { useEffect, useState } from 'react';
 import FireProvider from '../firebase/FireProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
-import UserProvider from '../firebase/UserProvider';
+import UserProvider from '../firebase/Neo';
 import Loader from '../components/common/Loader';
 import PurchasesProvider from '../firebase/PurchasesProvider';
 import { applyMiddleware, createStore, Store } from 'redux';

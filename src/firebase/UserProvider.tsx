@@ -7,7 +7,7 @@ import {
     RespondentDetails,
     SurveyInfo,
     UserContext,
-    UserInfoType, UserPreferences,
+    UserInfoType, UserPreferencesType,
 } from '../contexts'
 import { add, sub } from 'date-fns'
 import { useRouter } from 'next/router'
@@ -40,6 +40,7 @@ const getLoginUrl = () => {
 const TODAY = new Date();
 
 export const DUMMY_SURVEY_INFO: SurveyInfo = {
+    ioNumber: -1,
     journalStart: sub(TODAY, {days: 3}),
     journalEnd: add(TODAY, {days: 12}),
 }
@@ -52,7 +53,7 @@ const UserProvider = ({children}) => {
     const [userInfo, setUserInfo] = useState<UserInfoType>(null)
     const [respondentDetails, setRespondentDetails] =
         useState<RespondentDetails>(null)
-    const [userPreferences, setUserPreferences] = useState<UserPreferences>(null)
+    const [userPreferences, setUserPreferences] = useState<UserPreferencesType>(null)
     const [isLoggingIn, setIsLoggingIn] = useState(false)
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
@@ -197,7 +198,7 @@ const UserProvider = ({children}) => {
                                 .then(prefsDoc => {
                                     if (prefsDoc.exists) {
                                         const userPrefs = prefsDoc.data();
-                                        setUserPreferences(userPrefs as UserPreferences);
+                                        setUserPreferences(userPrefs as UserPreferencesType);
                                     } else {
                                         firestore.doc(getPreferencesPathForUser(authInfo.userInfo.id))
                                             .set(INIT_USER_PREFERENCES);
@@ -271,12 +272,12 @@ const UserProvider = ({children}) => {
                                 setUserPreferences({
                                     ...snapshot.data(),
                                     language: 'nb',
-                                } as UserPreferences);
+                                } as UserPreferencesType);
                             }, (err) => {
                                 console.log('could not get preferences', err);
                                 setUserPreferences({
                                     language: 'nb',
-                                } as UserPreferences);
+                                } as UserPreferencesType);
                             })
                     } catch (err) {
                         console.log('Could not fetch user info/preferences');
@@ -346,11 +347,11 @@ const UserProvider = ({children}) => {
     return (
         <UserContext.Provider
             value={{
-                updateUserInfo,
                 isAuthenticated,
                 userInfo,
                 userPreferences,
                 respondentDetails,
+                updateUserInfo,
                 login,
                 logout,
                 isLoggingIn,

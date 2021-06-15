@@ -102,6 +102,18 @@ const IDPSuccess = () => {
                 </button>
             </div>
             }
+            {loginLogoutErrors &&
+            <div style={{ background: '#fcc', padding: '1rem', margin: '1rem 0', display: 'flex' }}>
+                <p>{JSON.stringify(loginLogoutErrors)}</p>
+                <button
+                    onClick={() => {
+                        router.push(PATHS.LOGOUT)
+                    }}
+                    className={`ssb-btn primary-btn`}>
+                    Logg ut
+                </button>
+            </div>
+            }
             {isAuthenticated && !userInfo &&
             <p>
                 IDPorten innlogging vellykket, men vi kunne ikke finne hente

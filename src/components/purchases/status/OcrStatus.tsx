@@ -23,7 +23,6 @@ const getStyleForStatus = (status: PurchaseStatus) => {
         default:
             return status;
     }
-    ;
 };
 
 export type OcrStatusProps = {

@@ -529,7 +529,7 @@ export function BaseQuestion(
                                         }) as AnswerValueType
 
                                     return (
-                                        <div className={"padding-tp-bm-20px"}>
+                                        <div key={`${currentQuestion.id}-aanser-${answer.id}`} className={"padding-tp-bm-20px"}>
                                             {currentQuestion.inputType === 'multifield-text-dependent' && <InputAlt
                                                 type={"text"}
                                                 label={answer.descriptionValue as string}
