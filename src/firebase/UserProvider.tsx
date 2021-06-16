@@ -182,7 +182,15 @@ const UserProvider = ({children}) => {
                                 })
 
                             firestore.doc(`/users/${authInfo.userInfo.id}/profile/about`)
-                                .set(loginInfo)
+                                // PATCH: FBU-692 : remove fnr from data stored on firebase
+                                //   proper fix along with refactoring work (FBU-693)
+                                .set({
+                                    ...loginInfo,
+                                    respondentDetails: {
+                                        ...loginInfo.respondentDetails,
+                                        pid: '',
+                                    },
+                                })
                                 .then(res => {
                                     console.log('successfully updated userInfo', res);
                                 })
