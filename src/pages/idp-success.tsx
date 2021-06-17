@@ -52,7 +52,7 @@ const IDPSuccess = () => {
     }, []);
 
     useEffect(() => {
-        if (respondentInfo) {
+        if (respondentInfo && idPortenInfo) {
             if (respondentInfo.respondentId) {
                 console.log('[IDP-S] trying to fetch fb token', respondentInfo, idPortenInfo);
                 login(respondentInfo, idPortenInfo)
@@ -67,7 +67,7 @@ const IDPSuccess = () => {
                 setFbuError(t('noRespondentInfo'));
             }
         }
-    }, [respondentInfo]);
+    }, [respondentInfo, idPortenInfo]);
 
     useEffect(() => {
         if (isAuthenticated && userInfo) {
