@@ -10,49 +10,49 @@ export const VARIGMØBLER2: QuestionFormType = {
     answerValue: {
         answers: [
             {
-                id: 'varigmøbler1_1',
+                id: 'varigmøbler2_1',
                 value: "",
                 descriptionValue: 'Sofa',
                 chosen: true
             },
             {
-                id: 'varigmøbler1_2',
+                id: 'varigmøbler2_2',
                 value: "",
                 descriptionValue: 'Utemøbler',
                 chosen: true
             },
             {
-                id: 'varigmøbler1_3',
+                id: 'varigmøbler2_3',
                 value: "",
                 descriptionValue: 'Spisebord',
                 chosen: true
             },
             {
-                id: 'varigmøbler1_4',
+                id: 'varigmøbler2_4',
                 value: "",
                 descriptionValue: 'Seng',
                 chosen: true
             },
             {
-                id: 'varigmøbler1_5',
+                id: 'varigmøbler2_5',
                 value: "",
                 descriptionValue: 'Bokhyller/reol',
                 chosen: true
             },
             {
-                id: 'varigmøbler1_6',
+                id: 'varigmøbler2_6',
                 value: "",
                 descriptionValue: 'Skap',
                 chosen: true
             },
             {
-                id: 'varigmøbler1_7',
+                id: 'varigmøbler2_7',
                 value: "",
                 descriptionValue: 'Lamper/belysning',
                 chosen: true
             },
             {
-                id: 'varigmøbler1_8',
+                id: 'varigmøbler2_8',
                 value: "",
                 descriptionValue: 'Andre større møbler/inventar',
                 chosen: true
