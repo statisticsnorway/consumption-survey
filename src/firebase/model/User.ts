@@ -4,7 +4,7 @@ export const getUserPath = (uid: string) =>
     `/users/${uid}`;
 
 export const getProfilePathForUser = (uid: string) =>
-        `/users/${uid}/profile/about`;
+    `/users/${uid}/profile/about`;
 
 export const getPreferencesPathForUser = (uid: string) =>
     `/users/${uid}/profile/preferences`;
@@ -29,10 +29,11 @@ export const INIT_USER_PREFERENCES = {
 
 export enum StatusConstants {
     NOT_STARTED = 'NOT_STARTED',
+    STARTED = 'STARTED',
     COMPLETE = 'COMPLETE',
 }
 
-export const INIT_USER_STATUSES:UserStatusesType = {
+export const INIT_USER_STATUSES: UserStatusesType = {
     surveyStatus: StatusConstants.NOT_STARTED,
     journalStatus: StatusConstants.NOT_STARTED,
     questionnaireStatus: StatusConstants.NOT_STARTED,
