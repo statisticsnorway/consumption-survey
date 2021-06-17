@@ -9,7 +9,12 @@ export const FYRUTGFRI2: QuestionFormType = {
     hasAnswered: false,
     answerValue: {
         answers: [
-
+            {
+                id: 'fyrutgfri2_1',
+                value: "",
+                descriptionValue: 'Elektrisitet',
+                chosen: true
+            },
             {
                 id: 'fyrutgfri2_2',
                 value: "",
