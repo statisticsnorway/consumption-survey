@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { FireContext, UserContext } from '../contexts';
-import { getQuestionnairePathForUser, INIT_QUESTIONNAIRE_DATA, StatusConstants } from '../firebase/model/User';
+import {
+    getQuestionnairePathForUser,
+    getStatusesPathForUser,
+    INIT_QUESTIONNAIRE_DATA,
+    StatusConstants
+} from '../firebase/model/User';
 import { hydrateQuestionnaire } from '../components/questionnaire/questions/UpdateQuestionValue';
 import { CHANGE_ALL } from '../store/actionTypes';
 import { getAnsweredValues } from '../components/questionnaire/questions/questionFunctionsUtils';
@@ -62,18 +67,32 @@ const useQuestionnaire = () => {
 
                 questionnaireRef
                     .set({
-                        status: StatusConstants.STARTED,
+                        status: StatusConstants.STARTED,        // <-- ToDo: remove this and use getStatusesForUser()
                         answers,
                         history,
                         currentFocus,
-                    }, {merge: true})
+                    }, {merge: true});
 
+                // ideally it should suffice setting status at one place
+                // - including update at both places for the sake of backward compatibility
+                firestore
+                    .doc(getStatusesPathForUser(respondentDetails.respondentId))
+                    .set({questionnaireStatus: StatusConstants.STARTED}, {merge: true});
             });
         }
     }, [initialized, questionnaireRef]);
 
-    const updateStatus = (status: StatusConstants) =>
-        questionnaireRef.set({status}, {merge: true});
+    const updateStatus = async (status: StatusConstants) => {
+        // ideally it should suffice setting status at one place
+        // - including update at both places for the sake of backward compatibility
+        const statusPromises = [
+            questionnaireRef.set({status}, {merge: true}),
+            firestore.doc(getStatusesPathForUser(respondentDetails.respondentId))
+                .set({questionnaireStatus: status}, {merge: true}),
+        ];
+
+        return await Promise.all(statusPromises);
+    }
 
     return {questionnaireRef, initialized, updateStatus};
 };
