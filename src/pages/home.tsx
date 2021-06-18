@@ -4,7 +4,7 @@ import { ArrowRight } from 'react-feather';
 import uuid from 'uuid';
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
-import { UserContext } from '../contexts';
+import { UserContext, FireContext } from '../contexts';
 import { simpleFormat } from '../utils/dateUtils';
 import { capitalizeString, notEmptyString } from '../utils/jsUtils';
 import ScanReceiptIcon from '../components/common/icons/custom/ScanReceiptIcon';
@@ -20,6 +20,8 @@ import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../uiConfig';
 import useReceiptUpload from '../hocs/useReceiptUpload';
 import RegularExpensesList from '../components/regularExpenses/RegularExpensesList';
 
+
+
 const dateMonth = (dateStr) => {
     const date = notEmptyString(dateStr) ? new Date(dateStr) : new Date();
     const [dd, mm] = simpleFormat(date).split('.');
@@ -30,7 +32,9 @@ const Home = () => {
     const router = useRouter();
     const {t} = useTranslation('home');
     const [showAddExpenseDialog, setShowAddExpensesDialog] = useState<boolean>(false);
-    const {userInfo: {respondentDetails, diaryStatus}} = useContext(UserContext);
+    const {userInfo: {respondentDetails, diaryStatus}, userInfo} = useContext(UserContext);
+    const [questionnaireStatus, setQuestionnaireStatus] = useState("NOT_STARTED")
+    const { firestore} = useContext(FireContext)
 
     const {name, diaryStart, diaryEnd} = respondentDetails;
     const subText = `${t('surveyInfo')} ${dateMonth(diaryStart)} - ${dateMonth(diaryEnd)}`;
@@ -47,6 +51,22 @@ const Home = () => {
     const {hiddenUploadComponent, captureReceiptFromCameraOrLibrary} = useReceiptUpload(onSuccessfulAdd);
 
     console.log('hiddenComponent', hiddenUploadComponent);
+
+    useEffect(() => {
+        firestore
+            .collection(`/users/${userInfo.userName}/questionnaire`)
+            .doc('data')
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data()
+                    setQuestionnaireStatus(data.status)
+                }
+            })
+            .catch((err) => {
+                console.log('cannot update answers', err)
+            })
+    }, []);
 
     return (
         <Workspace showFooter={true}>
@@ -74,8 +94,19 @@ const Home = () => {
                         setShowAddExpensesDialog(true);
                     }}
                 />
+                {questionnaireStatus === 'COMPLETE' &&
                 <HomeCTA
                     text={t('questionnaire.title')}
+                    styleClass={styles.questionnaireCTA}
+                    onClick={() => {
+
+                    }}
+                    iconComponent={<ArrowRight width={28} height={28}/>}
+                    iconPosition={IconPosition.AFTER}
+                />}
+                {questionnaireStatus !== 'COMPLETE' &&
+                <HomeCTA
+                    text={t('questionnaire.complete')}
                     styleClass={styles.questionnaireCTA}
                     onClick={() => {
                         router.push(PATHS.QUESTIONNAIRE);
@@ -83,6 +114,7 @@ const Home = () => {
                     iconComponent={<ArrowRight width={28} height={28}/>}
                     iconPosition={IconPosition.AFTER}
                 />
+                }
             </HomeCTAButtonGroup>
             {hiddenUploadComponent}
             <RegularExpensesList showExpensesList={false} showAddExpenseDialog={showAddExpenseDialog} />
