@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight } from 'react-feather';
+import {ArrowRight, Check} from 'react-feather';
 import uuid from 'uuid';
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
@@ -32,8 +32,7 @@ const Home = () => {
     const router = useRouter();
     const {t} = useTranslation('home');
     const [showAddExpenseDialog, setShowAddExpensesDialog] = useState<boolean>(false);
-    const {userInfo: {respondentDetails, diaryStatus}, userInfo} = useContext(UserContext);
-    const [questionnaireStatus, setQuestionnaireStatus] = useState("NOT_STARTED")
+    const {userInfo: {respondentDetails, diaryStatus}, questionnaireStatus} = useContext(UserContext);
     const { firestore} = useContext(FireContext)
 
     const {name, diaryStart, diaryEnd} = respondentDetails;
@@ -51,22 +50,6 @@ const Home = () => {
     const {hiddenUploadComponent, captureReceiptFromCameraOrLibrary} = useReceiptUpload(onSuccessfulAdd);
 
     console.log('hiddenComponent', hiddenUploadComponent);
-
-    useEffect(() => {
-        firestore
-            .collection(`/users/${userInfo.userName}/questionnaire`)
-            .doc('data')
-            .get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data()
-                    setQuestionnaireStatus(data.status)
-                }
-            })
-            .catch((err) => {
-                console.log('cannot update answers', err)
-            })
-    }, []);
 
     return (
         <Workspace showFooter={true}>
@@ -97,11 +80,11 @@ const Home = () => {
                 {questionnaireStatus === 'COMPLETE' &&
                 <HomeCTA
                     text={t('questionnaire.title')}
-                    styleClass={styles.questionnaireCTA}
+                    styleClass={styles.questionnaireCTAdisabled}
                     onClick={() => {
 
                     }}
-                    iconComponent={<ArrowRight width={28} height={28}/>}
+                    iconComponent={<Check width={28} height={28}/>}
                     iconPosition={IconPosition.AFTER}
                 />}
                 {questionnaireStatus !== 'COMPLETE' &&

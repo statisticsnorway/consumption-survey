@@ -10,13 +10,13 @@ export const VED1: QuestionFormType = {
     answerValue: {
         answers: [
             {
-                id: 'ved_1',
+                id: 'ved1_1',
                 value: "1",
                 descriptionValue: 'Ja',
                 chosen: false
             },
             {
-                id: 'ved_2',
+                id: 'ved1_2',
                 value: "2",
                 descriptionValue: 'Nei',
                 chosen: false

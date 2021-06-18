@@ -57,6 +57,7 @@ const UserProvider = ({children}) => {
     const [isLoggingOut, setIsLoggingOut] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [loginLogoutErrors, setLoginLogoutErrors] = useState<any>(null)
+    const [questionnaireStatus, setQuestionnaireStatus] = useState(null)
 
     useEffect(() => {
         setIsAuthenticated(false);
@@ -229,6 +230,20 @@ const UserProvider = ({children}) => {
                                         console.log('user does not exist')
                                     }
                                 }).catch(e => console.log(e))
+                            firestore
+                                .collection(`/users/${authInfo.userInfo.id}/questionnaire`)
+                                .doc('data')
+                                .get()
+                                .then((doc) => {
+                                    if (doc.exists) {
+                                        const data = doc.data()
+                                        setQuestionnaireStatus(data.status)
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.log('cannot fetch questionnaire status', err)
+                                })
+
                         })
                 } else {
                     console.log('Response without token!');
@@ -354,6 +369,7 @@ const UserProvider = ({children}) => {
     return (
         <UserContext.Provider
             value={{
+                questionnaireStatus,
                 updateUserInfo,
                 isAuthenticated,
                 userInfo,
