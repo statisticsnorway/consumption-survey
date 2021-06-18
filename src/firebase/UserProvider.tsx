@@ -174,7 +174,9 @@ const UserProvider = ({children}) => {
                                                 currentFocus,
                                             },
                                             {merge: true}
-                                        )
+                                        ).then(() => {
+                                            setQuestionnaireStatus('STARTED')
+                                        })
                                 })
 
                             })
@@ -369,6 +371,7 @@ const UserProvider = ({children}) => {
     return (
         <UserContext.Provider
             value={{
+                setQuestionnaireStatus,
                 questionnaireStatus,
                 updateUserInfo,
                 isAuthenticated,

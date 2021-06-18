@@ -60,6 +60,7 @@ export type UserContextType = {
     isLoggingOut: boolean;
     loginLogoutErrors: any;
     questionnaireStatus: any;
+    setQuestionnaireStatus: any;
 };
 
 export const UserContext = createContext({} as UserContextType);
