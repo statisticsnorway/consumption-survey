@@ -13,9 +13,10 @@ import {
     getPreferencesPathForUser,
     getProfilePathForUser,
     getRespondentDetailsSecure, getStatusesPathForUser,
-    getUserPath, INIT_USER_PREFERENCES, INIT_USER_STATUSES,
+    INIT_USER_PREFERENCES, INIT_USER_STATUSES,
     RespondentTypeSecure
 } from './model/User';
+import { LogContext } from '../uiContexts';
 
 const appConfig = getConfig();
 
@@ -67,6 +68,8 @@ const UserProvider = ({children}) => {
     const {auth, firestore} = useContext(FireContext);
     const [userState, setUserState] = useState<UserStateType>(INIT_USER_STATE);
     const [loginState, setLoginState] = useState<LoginStateType>(INIT_LOGIN_STATE);
+
+    const {logger} = useContext(LogContext);
 
     const updateUserInfo = (key, val) => {
         const userInfo = {
@@ -138,6 +141,7 @@ const UserProvider = ({children}) => {
                 })
                 .catch(err => {
                     console.log('unable to sign into firebase with custom token', err);
+                    logger.error('unable to sign into firebase with custom token %o', err);
                     setLoginState(prevState => ({
                         ...prevState,
                         loginLogoutErrors: err,
@@ -145,6 +149,7 @@ const UserProvider = ({children}) => {
                 });
         } catch (err) {
             console.log('unable to fetch BFF token or sign into FB', err);
+            logger.error('unable to fetch BFF token or sign into FB %o', err);
             setLoginState(prevState => ({
                 ...prevState,
                 loginLogoutErrors: err,
@@ -303,6 +308,7 @@ const UserProvider = ({children}) => {
 
     const handleLoginError = (msg, err) => {
         console.log(`[Login error] ${msg}`, err);
+        logger.error(`[Login error] ${msg} %o`, err);
         setLoginState(prevState => ({
             ...prevState,
             isLoggingIn: false,
@@ -317,11 +323,11 @@ const UserProvider = ({children}) => {
             const {respondentDetails} = loginState.loginInfo;
             try {
                 setupUserInfo(respondentDetails);
-            } catch(err) {
+            } catch (err) {
                 handleLoginError('[surrounding try/catch] could not setup user info', err);
             }
         }
-    }, [loginState]);
+    }, [loginState, logger]);
 
     const logout = () => {
         if (auth && loginState.isAuthenticated) {
@@ -337,6 +343,7 @@ const UserProvider = ({children}) => {
                 })
                 .catch(err => {
                     console.log('could not logout of firebase', err);
+                    logger.error('Could not signout of firebase %o', err);
                     setLoginState(prevState => ({
                         ...prevState,
                         loginLogoutErrors: err,

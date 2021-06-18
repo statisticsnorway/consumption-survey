@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts';
 import Loader from '../common/Loader';
-// import PouchDBProvider from '../../pouchdb/PouchDBProvider';
 import getConfig from 'next/config';
 import PouchDBProvider from '../../pouchdb/PouchDBProvider';
+
 
 const appConfig = getConfig();
 
