@@ -154,7 +154,9 @@ const UserProvider = ({children}) => {
                                                     status: 'NOT_STARTED',
                                                 },
                                                 {merge: true}
-                                            )
+                                            ).then(() => {
+                                                setQuestionnaireStatus("NOT_STARTED")
+                                        })
                                     }
                                 }).then(() => {
                                 store.subscribe(() => {
