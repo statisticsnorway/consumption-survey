@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowRight } from 'react-feather';
+import {ArrowRight, Check} from 'react-feather';
 import uuid from 'uuid';
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
-import { UserContext } from '../contexts';
+import { UserContext, FireContext } from '../contexts';
 import { simpleFormat } from '../utils/dateUtils';
 import { capitalizeString, notEmptyString } from '../utils/jsUtils';
 import ScanReceiptIcon from '../components/common/icons/custom/ScanReceiptIcon';
@@ -20,6 +20,8 @@ import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../uiConfig';
 import useReceiptUpload from '../hocs/useReceiptUpload';
 import RegularExpensesList from '../components/regularExpenses/RegularExpensesList';
 
+
+
 const dateMonth = (dateStr) => {
     const date = notEmptyString(dateStr) ? new Date(dateStr) : new Date();
     const [dd, mm] = simpleFormat(date).split('.');
@@ -30,7 +32,8 @@ const Home = () => {
     const router = useRouter();
     const {t} = useTranslation('home');
     const [showAddExpenseDialog, setShowAddExpensesDialog] = useState<boolean>(false);
-    const {userInfo: {respondentDetails, diaryStatus}} = useContext(UserContext);
+    const {userInfo: {respondentDetails, diaryStatus}, questionnaireStatus} = useContext(UserContext);
+    const { firestore} = useContext(FireContext)
 
     const {name, diaryStart, diaryEnd} = respondentDetails;
     const subText = `${t('surveyInfo')} ${dateMonth(diaryStart)} - ${dateMonth(diaryEnd)}`;
@@ -74,8 +77,19 @@ const Home = () => {
                         setShowAddExpensesDialog(true);
                     }}
                 />
+                {questionnaireStatus === 'COMPLETE' &&
                 <HomeCTA
                     text={t('questionnaire.title')}
+                    styleClass={styles.questionnaireCTAdisabled}
+                    onClick={() => {
+
+                    }}
+                    iconComponent={<Check width={28} height={28}/>}
+                    iconPosition={IconPosition.AFTER}
+                />}
+                {questionnaireStatus !== 'COMPLETE' &&
+                <HomeCTA
+                    text={t('questionnaire.complete')}
                     styleClass={styles.questionnaireCTA}
                     onClick={() => {
                         router.push(PATHS.QUESTIONNAIRE);
@@ -83,6 +97,7 @@ const Home = () => {
                     iconComponent={<ArrowRight width={28} height={28}/>}
                     iconPosition={IconPosition.AFTER}
                 />
+                }
             </HomeCTAButtonGroup>
             {hiddenUploadComponent}
             <RegularExpensesList showExpensesList={false} showAddExpenseDialog={showAddExpenseDialog} />

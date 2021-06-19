@@ -11,29 +11,13 @@ import {PATHS} from "../uiConfig";
 
 
 const Progress = () => {
-    const {userInfo,updateUserInfo, isAuthenticated} = useContext(UserContext);
-    const [questionnaireStatus, setQuestionnaireStatus] = useState("NOT_STARTED")
+    const {userInfo,updateUserInfo, isAuthenticated, questionnaireStatus} = useContext(UserContext);
     const { firestore} = useContext(FireContext)
     const [submitModalOpen, setSubmitModalOpen] = useState(false)
     const {t} = useTranslation('progress');
     const {purchases} = usePurchases()
     const router = useRouter()
 
-    useEffect(() => {
-        firestore
-            .collection(`/users/${userInfo.userName}/questionnaire`)
-            .doc('data')
-            .get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data()
-                    setQuestionnaireStatus(data.status)
-                }
-            })
-            .catch((err) => {
-                console.log('cannot update answers', err)
-            })
-    }, []);
     console.log('userInfo', isAuthenticated, userInfo);
     return (
         <Workspace>
