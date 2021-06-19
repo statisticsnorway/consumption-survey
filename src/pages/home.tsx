@@ -79,7 +79,7 @@ const Home = () => {
                 />
                 {questionnaireStatus === 'COMPLETE' &&
                 <HomeCTA
-                    text={t('questionnaire.title')}
+                    text={t('questionnaire.complete')}
                     styleClass={styles.questionnaireCTAdisabled}
                     onClick={() => {
 
@@ -89,7 +89,7 @@ const Home = () => {
                 />}
                 {questionnaireStatus !== 'COMPLETE' &&
                 <HomeCTA
-                    text={t('questionnaire.complete')}
+                    text={t('questionnaire.title')}
                     styleClass={styles.questionnaireCTA}
                     onClick={() => {
                         router.push(PATHS.QUESTIONNAIRE);
