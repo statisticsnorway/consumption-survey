@@ -13,3 +13,17 @@
     color: $ssb-dark-5;
   }
 }
+
+.questionnaireCTAdisabled {
+  background-color: $ssb-dark-1 !important;
+  border: 2px solid $ssb-dark-1 !important;
+  padding-bottom: 0 !important;
+
+  .icon {
+    color: $ssb-green-2;
+  }
+
+  .text {
+    color: $ssb-dark-2;
+  }
+}

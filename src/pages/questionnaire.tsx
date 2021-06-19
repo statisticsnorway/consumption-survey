@@ -8,7 +8,7 @@ import {PATHS} from "../uiConfig";
 
 function Questionnaire() {
 	const { firestore } = useContext(FireContext)
-	const {userInfo} = useContext(UserContext)
+	const {userInfo, setQuestionnaireStatus} = useContext(UserContext)
 	const router = useRouter();
 	const {t} = useTranslation('questionnaire');
 	const header = document.getElementById("ssb-main-header") as HTMLElement
@@ -20,9 +20,13 @@ function Questionnaire() {
 				{
 					status: "COMPLETE",
 				},
-			)
-			router.push(PATHS.HOME)
-			header.style.display = "block"
+			).then(() => {
+				setQuestionnaireStatus('COMPLETE')
+				router.push(PATHS.HOME)
+				header.style.display = "block"
+			})
+			.catch(err => console.log('error on finishing questionnaire'))
+
 		}
 
 	} />

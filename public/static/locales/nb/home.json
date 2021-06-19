@@ -10,7 +10,8 @@
   },
 
   "questionnaire": {
-    "title": "Svar på spørreskjema"
+    "title": "Svar på spørreskjema",
+    "complete" : "Spørreskjema er fullført"
   },
   "completed" : {
     "title" : "Undersøkelsen er avsluttet",

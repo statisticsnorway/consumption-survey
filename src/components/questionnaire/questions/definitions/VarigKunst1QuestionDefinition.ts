@@ -5,8 +5,7 @@ export const VARIGKUNST1: QuestionFormType = {
     id: 'varigkunst1',
     order: 119,
     theme: Theme.rarePurchases,
-    questionText: 'Kunst, smykker ol.\n' +
-        'Har du/dere kjøpt i løpet av de siste 12 månedene kjøpt eller fått… ',
+    questionText: 'Kunst, smykker ol.\n'+'Har du/dere i løpet av de siste 12 månedene kjøpt eller fått… ',
     hasAnswered: false,
     answerValue: {
         answers: [
