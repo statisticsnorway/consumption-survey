@@ -5,7 +5,7 @@ export const VARIGMØBLER1: QuestionFormType = {
     id: 'varigmøbler1',
     order: 111,
     theme: Theme.rarePurchases,
-    questionText: 'Møbler og inventar Har du/dere i løpet av de siste 12 månedene kjøpt eller fått… ',
+    questionText: 'Har du/dere i løpet av de siste 12 månedene kjøpt eller fått… ',
     hasAnswered: false,
     answerValue: {
         answers: [
