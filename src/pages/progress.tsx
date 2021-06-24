@@ -1,8 +1,8 @@
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
-import React, {useContext, useEffect, useState} from 'react';
-import {FireContext, UserContext} from '../contexts';
-import { useTranslation } from 'react-i18next';
+import React, {useContext, useState} from 'react';
+import {FireContext, UserContext, UserStatusesKeys} from '../contexts';
+import {useTranslation} from 'react-i18next';
 import usePurchases from "../hocs/usePurchases";
 import style from './styles/progress.module.scss'
 import Modal from "../components/common/dialog/Modal";
@@ -12,7 +12,7 @@ import {StatusConstants} from "../firebase/model/User";
 
 
 const Progress = () => {
-    const {userInfo,updateUserInfo, isAuthenticated, userStatuses} = useContext(UserContext);
+    const {userInfo,updateUserInfo, isAuthenticated, userStatuses, updateUserStatus} = useContext(UserContext);
     const [questionnaireStatus, setQuestionnaireStatus] = useState("NOT_STARTED")
     const { firestore} = useContext(FireContext)
     const [submitModalOpen, setSubmitModalOpen] = useState(false)
@@ -136,9 +136,11 @@ const Progress = () => {
                 cancelText={t('completeSurvey.modal.cancel')}
                 show={submitModalOpen}
                 onClose={() => {
-                    //TODO use updateUserStatus
-                    setSubmitModalOpen(false)
-                    router.push(PATHS.HOME)
+                    updateUserStatus(UserStatusesKeys.SURVEY_STATUS, StatusConstants.COMPLETE).then(() => {
+                        router.push(PATHS.HOME)
+                    }).finally(() => {
+                        setSubmitModalOpen(false)
+                    })
                 }}
                 onCancel={() => setSubmitModalOpen(false)}
                 title={t('completeSurvey.modal.title')}>
