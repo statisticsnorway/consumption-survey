@@ -5,7 +5,7 @@ import {
     getQuestionnairePathForUser,
     getStatusesPathForUser,
     INIT_QUESTIONNAIRE_DATA,
-    StatusConstants
+    StatusConstants, UserStatusesKeys
 } from '../firebase/model/User';
 import { hydrateQuestionnaire } from '../components/questionnaire/questions/UpdateQuestionValue';
 import { CHANGE_ALL } from '../store/actionTypes';
@@ -16,7 +16,7 @@ import { DocumentReference, DocumentSnapshot } from '@firebase/firestore-types';
 const useQuestionnaire = () => {
     const store = useStore();
     const {firestore} = useContext(FireContext);
-    const {isAuthenticated, respondentDetails} = useContext(UserContext);
+    const {isAuthenticated, respondentDetails, updateUserStatus} = useContext(UserContext);
     const [initialized, setInitialized] = useState<boolean>(false);
     const {logger} = useContext(LogContext);
 
@@ -86,7 +86,7 @@ const useQuestionnaire = () => {
         // ideally it should suffice setting status at one place
         // - including update at both places for the sake of backward compatibility
         const statusPromises = [
-            questionnaireRef.set({status}, {merge: true}),
+            updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status),
             firestore.doc(getStatusesPathForUser(respondentDetails.respondentId))
                 .set({questionnaireStatus: status}, {merge: true}),
         ];

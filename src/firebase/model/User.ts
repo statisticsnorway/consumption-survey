@@ -1,4 +1,5 @@
-import { RespondentDetails, UserStatusesType } from '../../contexts';
+import {RespondentDetails, UserContext, UserStatusesType} from '../../contexts';
+import {useContext} from "react";
 
 export const getUserPath = (uid: string) =>
     `/users/${uid}`;
@@ -33,6 +34,12 @@ export enum StatusConstants {
     COMPLETE = 'COMPLETE',
 }
 
+export enum UserStatusesKeys {
+    SURVEY_STATUS = 'surveyStatus',
+    JOURNAL_STATUS = 'journalStatus',
+    QUESTIONNAIRE_STATUS = 'questionnaireStatus',
+}
+
 export const INIT_USER_STATUSES: UserStatusesType = {
     surveyStatus: StatusConstants.NOT_STARTED,
     journalStatus: StatusConstants.NOT_STARTED,
@@ -60,3 +67,19 @@ export const getRespondentDetailsSecure = (respondentDetails: RespondentDetails)
         journalEnd: diaryEnd ? new Date(diaryEnd) : new Date(),
     };
 };
+
+const isStatus = (statusKey: UserStatusesKeys, statusValue: StatusConstants): boolean => {
+    const {userStatuses} = useContext(UserContext);
+    return userStatuses && userStatuses[statusKey] === statusValue
+}
+export const isStatusComplete = (statusKey: UserStatusesKeys) : boolean => {
+    return isStatus(statusKey, StatusConstants.COMPLETE)
+}
+
+export const isStatusStarted = (statusKey: UserStatusesKeys) : boolean => {
+    return isStatus(statusKey, StatusConstants.STARTED)
+}
+
+export const isStatusNotStarted = (statusKey: UserStatusesKeys) : boolean => {
+    return !isStatus(statusKey, StatusConstants.COMPLETE) && !isStatus(statusKey, StatusConstants.STARTED)
+}

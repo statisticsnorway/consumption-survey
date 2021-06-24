@@ -7,7 +7,7 @@ import {
     RespondentDetails,
     SurveyInfo,
     UserContext,
-    UserInfoType, UserPreferencesType, UserStatusesKeys, UserStatusesType,
+    UserInfoType, UserPreferencesType, UserStatusesType,
 } from '../contexts'
 import { add, sub } from 'date-fns'
 import { useRouter } from 'next/router'

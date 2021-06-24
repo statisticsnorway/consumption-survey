@@ -7,7 +7,7 @@ import { FirebaseDatabase } from '@firebase/database-types';
 import { RegularExpenseType } from './firebase/model/RegularExpense';
 import { SearchTermType } from './firebase/model/SearchTerm';
 import { CommunicationPreference } from './firebase/UserProvider';
-import { StatusConstants } from './firebase/model/User';
+import {StatusConstants, UserStatusesKeys} from './firebase/model/User';
 
 export type SurveyInfo = {
     ioNumber: number;
@@ -46,11 +46,7 @@ export type UserPreferencesType = {
     showOnboarding?: boolean;
 };
 
-export enum UserStatusesKeys {
-    SURVEY_STATUS = 'surveyStatus',
-    JOURNAL_STATUS = 'journalStatus',
-    QUESTIONNAIRE_STATUS = 'questionnaireStatus',
-}
+
 
 export type UserStatusesType = {
     [key in UserStatusesKeys]: StatusConstants;
