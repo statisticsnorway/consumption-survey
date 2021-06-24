@@ -7,7 +7,7 @@ import {
     RespondentDetails,
     SurveyInfo,
     UserContext,
-    UserInfoType, UserPreferencesType,
+    UserInfoType, UserPreferencesType, UserStatusesKeys, UserStatusesType,
 } from '../contexts'
 import { add, sub } from 'date-fns'
 import { useRouter } from 'next/router'
@@ -20,7 +20,7 @@ import { CHANGE_ALL, CHANGE_QUESTION_LIST } from '../store/actionTypes'
 
 import getConfig from 'next/config';
 import { defaultState } from '../store/reducers/questionReducer';
-import { getPreferencesPathForUser, INIT_USER_PREFERENCES } from './model/User';
+import { getPreferencesPathForUser, INIT_USER_PREFERENCES, StatusConstants } from './model/User';
 
 export enum CommunicationPreference {
     EMAIL = 'EMAIL',
@@ -90,6 +90,9 @@ const UserProvider = ({children}) => {
         setUserInfo({...userInfo, [key] : val})
     }
 
+    const updateUserStatus = async (key: keyof UserStatusesType, val: StatusConstants) => {
+        console.log('[Archived]');
+    };
 
     const login = async (respondentInfo: RespondentDetails, idPortenInfo: IDPortenTokenInfo) => {
         if (!auth) {
@@ -352,6 +355,7 @@ const UserProvider = ({children}) => {
                 userPreferences,
                 respondentDetails,
                 updateUserInfo,
+                updateUserStatus,
                 login,
                 logout,
                 isLoggingIn,
