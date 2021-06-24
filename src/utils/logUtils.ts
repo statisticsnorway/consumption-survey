@@ -11,22 +11,42 @@ export type LoggerType = {
 export const getLogger = (logpkg): LoggerType => ({
     trace: (msgWithFormat, ...rest) => {
         CONSOLE_LOGGER.trace(msgWithFormat, ...rest);
-        logpkg.trace(msgWithFormat, ...rest);
+        try {
+            logpkg.trace(msgWithFormat, ...rest);
+        } catch (err) {
+            CONSOLE_LOGGER.error('could not log to remote (offline?)');
+        }
     },
     debug: (msgWithFormat, ...rest) => {
         CONSOLE_LOGGER.debug(msgWithFormat, ...rest);
-        logpkg.debug(msgWithFormat, ...rest);
+        try {
+            logpkg.debug(msgWithFormat, ...rest);
+        } catch (err) {
+            CONSOLE_LOGGER.error('could not log to remote (offline?)');
+        }
     },
     info: (msgWithFormat, ...rest) => {
         CONSOLE_LOGGER.info(msgWithFormat, ...rest);
-        logpkg.info(msgWithFormat, ...rest);
+        try {
+            logpkg.info(msgWithFormat, ...rest);
+        } catch (err) {
+            CONSOLE_LOGGER.error('could not log to remote (offline?)');
+        }
     },
     warn: (msgWithFormat, ...rest) => {
         CONSOLE_LOGGER.warn(msgWithFormat, ...rest);
-        logpkg.warn(msgWithFormat, ...rest);
+        try {
+            logpkg.warn(msgWithFormat, ...rest);
+        } catch (err) {
+            CONSOLE_LOGGER.error('could not log to remote (offline?)');
+        }
     },
     error: (msgWithFormat, ...rest) => {
         CONSOLE_LOGGER.error(msgWithFormat, ...rest);
-        logpkg.error(msgWithFormat, ...rest);
+        try {
+            logpkg.error(msgWithFormat, ...rest);
+        } catch (err) {
+            CONSOLE_LOGGER.error('could not log to remote (offline?)');
+        }
     },
 });

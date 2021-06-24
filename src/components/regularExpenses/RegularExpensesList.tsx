@@ -161,11 +161,6 @@ const RegularExpensesList = ({showExpensesList = true, showAddExpenseDialog = fa
                                         onComplete();
                                     }
                                     console.log('added new expense');
-
-                                    updateUserStatus(UserStatusesKeys.JOURNAL_STATUS, StatusConstants.STARTED)
-                                        .then(() => {
-                                            logger.debug('[Add Expense] journal status updated');
-                                        })
                                 });
                         }
                     } catch (err) {
