@@ -14,7 +14,7 @@ import {
     getProfilePathForUser,
     getRespondentDetailsSecure, getStatusesPathForUser,
     INIT_USER_PREFERENCES, INIT_USER_STATUSES,
-    RespondentTypeSecure
+    RespondentTypeSecure, StatusConstants
 } from './model/User';
 import { LogContext } from '../uiContexts';
 
@@ -83,23 +83,64 @@ const UserProvider = ({children}) => {
         });
     };
 
+    const inSecureContext = () =>
+        auth && firestore &&
+        logger &&
+        loginState?.isAuthenticated &&
+        userState?.userInfo?.respondentDetails;
+
+    const updateUserStatus = async (key: keyof UserStatusesType, val: StatusConstants) => {
+        if (inSecureContext()) {
+            const {respondentDetails} = userState.userInfo;
+            const {respondentId} = respondentDetails;
+            return firestore
+                .doc(getStatusesPathForUser(respondentId))
+                .get()
+                .then(statusesDoc => {
+                    statusesDoc.ref
+                        .set({[key]: val}, {merge: true})
+                        .then(() => {
+                            logger.info('status %o updated successfully', {key, val});
+                            setUserState(prevState => {
+                                const statuses = prevState.userStatuses;
+                                return {
+                                    ...prevState,
+                                    userStatuses: {
+                                        ...statuses,
+                                        [key]: val,
+                                    }
+                                };
+                            });
+                        })
+                        .catch(err => {
+                            logger.error('could not update status %o %o', {key, val}, err);
+                        });
+                })
+                .catch(err => {
+                    logger.error('could not fetch status %s %o', getStatusesPathForUser(respondentId), err);
+                });
+        } else {
+            logger.warn('Attempt to update status %o without a proper security context. ignoring', {key, val});
+        }
+    };
+
     const login = async (respondentInfo: RespondentDetails, idPortenInfo: IDPortenTokenInfo) => {
         if (!auth) {
-            console.log('auth not ready');
+            logger.error('[UserProvider] Firebase Auth not ready');
             return;
         }
 
         if (loginState.isLoggingIn) {
-            console.log('there is a login process already running, skipping', loginState);
+            logger.warn('[User Provider] there is a login process already running, skipping', loginState);
             return;
         }
 
         if (!respondentInfo || !respondentInfo.respondentId) {
-            console.log('no respondent id to fetch bff token for yet');
+            logger.error('[User Provider] no respondent id to fetch bff token for %o', respondentInfo);
             return;
         }
 
-        console.log('trying to obtain fb token for', respondentInfo, idPortenInfo, loginState, getLoginUrl());
+        logger.info('[User Provider] trying to obtain fb token for', respondentInfo, idPortenInfo, loginState, getLoginUrl());
         setLoginState(prevState => ({
             ...prevState,
             isLoggingIn: true,
@@ -362,6 +403,7 @@ const UserProvider = ({children}) => {
             logout,
             respondentDetails: loginState?.loginInfo?.respondentDetails,
             updateUserInfo,
+            updateUserStatus,
         }}>
             {children}
         </UserContext.Provider>

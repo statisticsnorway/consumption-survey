@@ -20,7 +20,7 @@ export const LOG_DEFAULTS = {
 logpkg.enableAll();
 remoteLogger.apply(logpkg, LOG_DEFAULTS);
 
-const CONSOLE_LOGGER: LoggerType = {
+export const CONSOLE_LOGGER: LoggerType = {
     debug: console.log,
     error: console.error,
     info: console.info,

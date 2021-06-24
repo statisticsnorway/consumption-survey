@@ -7,6 +7,7 @@ import { FirebaseDatabase } from '@firebase/database-types';
 import { RegularExpenseType } from './firebase/model/RegularExpense';
 import { SearchTermType } from './firebase/model/SearchTerm';
 import { CommunicationPreference } from './firebase/UserProvider';
+import { StatusConstants } from './firebase/model/User';
 
 export type SurveyInfo = {
     ioNumber: number;
@@ -45,10 +46,14 @@ export type UserPreferencesType = {
     showOnboarding?: boolean;
 };
 
+export enum UserStatusesKeys {
+    SURVEY_STATUS = 'surveyStatus',
+    JOURNAL_STATUS = 'journalStatus',
+    QUESTIONNAIRE_STATUS = 'questionnaireStatus',
+}
+
 export type UserStatusesType = {
-    surveyStatus: string;
-    journalStatus: string;
-    questionnaireStatus: string;
+    [key in UserStatusesKeys]: StatusConstants;
 };
 
 export type UserContextType = {
@@ -63,6 +68,7 @@ export type UserContextType = {
     isLoggingOut: boolean;
     loginLogoutErrors: any;
     updateUserInfo: (key: string, val: string) => void;
+    updateUserStatus: (key: keyof UserStatusesType, val: StatusConstants) => Promise<void>;
 };
 
 export const UserContext = createContext({} as UserContextType);
