@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../uiConfig';
 import useReceiptUpload from '../hocs/useReceiptUpload';
 import RegularExpensesList from '../components/regularExpenses/RegularExpensesList';
+import {StatusConstants} from "../firebase/model/User";
 
 const dateMonth = (dateStr) => {
     const date = notEmptyString(dateStr) ? new Date(dateStr) : new Date();
@@ -30,7 +31,7 @@ const Home = () => {
     const router = useRouter();
     const {t} = useTranslation('home');
     const [showAddExpenseDialog, setShowAddExpensesDialog] = useState<boolean>(false);
-    const {userInfo: {respondentDetails, diaryStatus}} = useContext(UserContext);
+    const {userInfo: {respondentDetails}, userStatuses} = useContext(UserContext);
 
     const {name, diaryStart, diaryEnd} = respondentDetails;
     const subText = `${t('surveyInfo')} ${dateMonth(diaryStart)} - ${dateMonth(diaryEnd)}`;
@@ -50,7 +51,7 @@ const Home = () => {
 
     return (
         <Workspace showFooter={true}>
-            {!diaryStatus &&
+            {(!userStatuses ||  userStatuses.surveyStatus !== StatusConstants.COMPLETE) &&
             <><PageTitle title={greeting} subText={subText}/>
             <HomeCTAButtonGroup>
                 <HomeCTA
@@ -87,7 +88,7 @@ const Home = () => {
             {hiddenUploadComponent}
             <RegularExpensesList showExpensesList={false} showAddExpenseDialog={showAddExpenseDialog} />
           </>}
-            {diaryStatus &&
+            {(userStatuses && userStatuses.surveyStatus === StatusConstants.COMPLETE) &&
                 <>
                     <PageTitle title={t('completed.title')}/>
                     <p>{t('completed.text')}</p>

@@ -8,10 +8,11 @@ import style from './styles/progress.module.scss'
 import Modal from "../components/common/dialog/Modal";
 import {useRouter} from "next/router";
 import {PATHS} from "../uiConfig";
+import {StatusConstants} from "../firebase/model/User";
 
 
 const Progress = () => {
-    const {userInfo,updateUserInfo, isAuthenticated} = useContext(UserContext);
+    const {userInfo,updateUserInfo, isAuthenticated, userStatuses} = useContext(UserContext);
     const [questionnaireStatus, setQuestionnaireStatus] = useState("NOT_STARTED")
     const { firestore} = useContext(FireContext)
     const [submitModalOpen, setSubmitModalOpen] = useState(false)
@@ -19,21 +20,6 @@ const Progress = () => {
     const {purchases} = usePurchases()
     const router = useRouter()
 
-    useEffect(() => {
-        firestore
-            .collection(`/users/${userInfo.userName}/questionnaire`)
-            .doc('data')
-            .get()
-            .then((doc) => {
-                if (doc.exists) {
-                    const data = doc.data()
-                    setQuestionnaireStatus(data.status)
-                }
-            })
-            .catch((err) => {
-                console.log('cannot update answers', err)
-            })
-    }, []);
     console.log('userInfo', isAuthenticated, userInfo);
     return (
         <Workspace>
@@ -49,7 +35,7 @@ const Progress = () => {
                         </div>
                     </div>
                 </div>
-                {purchases && purchases.length > 0 && userInfo.diaryStatus &&
+                {userStatuses && userStatuses.journalStatus === StatusConstants.COMPLETE &&
                 <div className={style.subSection}>
                     <div className={style.header}>
 
@@ -61,7 +47,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {purchases && purchases.length > 0 && !userInfo.diaryStatus &&
+                {userStatuses && userStatuses.journalStatus === StatusConstants.STARTED &&
                     <div className={style.subSection}>
                         <div className={style.header}>
                             <div className={style.headerTitle}>
@@ -72,7 +58,7 @@ const Progress = () => {
                     </div>
 
                 }
-                {(!purchases || purchases.length < 1) &&
+                {(!userStatuses || userStatuses.journalStatus === StatusConstants.NOT_STARTED) &&
                 <div className={style.subSection}>
                     <div className={style.header}>
                         <div className={style.headerTitle}>
@@ -83,7 +69,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {questionnaireStatus === 'COMPLETE' &&
+                {userStatuses && userStatuses.questionnaireStatus === StatusConstants.COMPLETE &&
                     <div className={style.subSection}>
                         <div className={style.header}>
                             <div className={style.headerTitle}>
@@ -94,7 +80,7 @@ const Progress = () => {
                     </div>
 
                 }
-                {questionnaireStatus === 'STARTED' &&
+                {userStatuses && userStatuses.questionnaireStatus === StatusConstants.STARTED &&
                 <div className={style.subSection}>
                     <div className={style.header}>
                         <div className={style.headerTitle}>
@@ -106,7 +92,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {questionnaireStatus === 'NOT_STARTED' &&
+                {(!userStatuses || userStatuses.questionnaireStatus === StatusConstants.NOT_STARTED) &&
                 <div className={style.subSection}>
                     <div style={{display: 'flex'}}>
                         <div className={style.headerTitle}>
@@ -120,25 +106,25 @@ const Progress = () => {
                 }
             </div>
             <div className={style.completion}>
-                {userInfo && !userInfo.diaryStatus &&
-                <div className={style.completeSurvey}>
-                    <h3 className={style.title}>{t('completeSurvey.title')}</h3>
-                    <div className={style.infoText}>
-                    {questionnaireStatus === 'COMPLETE' &&
-                        <p>{t('completeSurvey.finishedText')}</p>
-                    }
-                    {questionnaireStatus !== 'COMPLETE' &&
-                    <p>{t('completeSurvey.notFinishedText')}</p>
-                    }
-                    </div>
-                    <button
-                        onClick={() => setSubmitModalOpen(true)}
-                        className={`ssb-btn primary-btn ${style.action}`}
-                        disabled={questionnaireStatus !== 'COMPLETE'}>
-                        {t('completeSurvey.completeButtonText')}
-                    </button>
-                </div>}
-                {userInfo && userInfo.diaryStatus &&
+                {userStatuses && userStatuses.surveyStatus !== StatusConstants.COMPLETE &&
+                    <div className={style.completeSurvey}>
+                        <h3 className={style.title}>{t('completeSurvey.title')}</h3>
+                        <div className={style.infoText}>
+                        {userStatuses && userStatuses.questionnaireStatus === StatusConstants.COMPLETE &&
+                            <p>{t('completeSurvey.finishedText')}</p>
+                        }
+                        {(!userStatuses || userStatuses.questionnaireStatus !== StatusConstants.COMPLETE) &&
+                        <p>{t('completeSurvey.notFinishedText')}</p>
+                        }
+                        </div>
+                        <button
+                            onClick={() => setSubmitModalOpen(true)}
+                            className={`ssb-btn primary-btn ${style.action}`}
+                            disabled={(!userStatuses || userStatuses.questionnaireStatus !== StatusConstants.COMPLETE)}>
+                            {t('completeSurvey.completeButtonText')}
+                        </button>
+                    </div>}
+                    {userStatuses && userStatuses.surveyStatus === StatusConstants.COMPLETE &&
                     <div className={style.completedSurvey}>
                         <h3>{t('completedSurvey.title')}</h3>
                         <p>{t('completedSurvey.text')}</p>
@@ -150,10 +136,7 @@ const Progress = () => {
                 cancelText={t('completeSurvey.modal.cancel')}
                 show={submitModalOpen}
                 onClose={() => {
-                    firestore.doc(`/users/${userInfo.userName}`).
-                        set({diaryStatus : 'COMPLETE'}, {merge: true}).then(() => {
-                        updateUserInfo('diaryStatus', 'COMPLETE')
-                    })
+                    //TODO use updateUserStatus
                     setSubmitModalOpen(false)
                     router.push(PATHS.HOME)
                 }}

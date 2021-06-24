@@ -16,7 +16,6 @@ export type SurveyInfo = {
 
 export type UserInfoType = {
     userName: string;
-    diaryStatus?: string;
     surveyInfo: SurveyInfo;
     respondentDetails: RespondentDetails;
 };
@@ -55,6 +54,7 @@ export type UserStatusesType = {
 export type UserContextType = {
     userInfo: UserInfoType;
     userPreferences?: UserPreferencesType;
+    userStatuses?: UserStatusesType;
     respondentDetails: RespondentDetails;
     login: (respondentDetails: RespondentDetails, idPortenTokenInfo: IDPortenTokenInfo) => Promise<void>;
     logout: () => void;
