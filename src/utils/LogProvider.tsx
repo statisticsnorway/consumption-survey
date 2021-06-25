@@ -12,7 +12,7 @@ const customJSON = log => ({
 });
 
 export const LOG_DEFAULTS = {
-    url: `${process.env.NEXT_PUBLIC_BFF_HOST}/logger1`,
+    url: `${process.env.NEXT_PUBLIC_BFF_HOST}/logger`,
     level: 'debug',
     format: customJSON,
 };
