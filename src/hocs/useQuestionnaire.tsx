@@ -1,17 +1,17 @@
-import { useContext, useEffect, useState } from 'react';
-import { useStore } from 'react-redux';
-import { FireContext, UserContext } from '../contexts';
+import {useContext, useEffect, useState} from 'react';
+import {useStore} from 'react-redux';
+import {FireContext, UserContext} from '../contexts';
 import {
     getQuestionnairePathForUser,
-    getStatusesPathForUser,
     INIT_QUESTIONNAIRE_DATA,
-    StatusConstants, UserStatusesKeys
+    StatusConstants,
+    UserStatusesKeys
 } from '../firebase/model/User';
-import { hydrateQuestionnaire } from '../components/questionnaire/questions/UpdateQuestionValue';
-import { CHANGE_ALL } from '../store/actionTypes';
-import { getAnsweredValues } from '../components/questionnaire/questions/questionFunctionsUtils';
-import { LogContext } from '../uiContexts';
-import { DocumentReference, DocumentSnapshot } from '@firebase/firestore-types';
+import {hydrateQuestionnaire} from '../components/questionnaire/questions/UpdateQuestionValue';
+import {CHANGE_ALL} from '../store/actionTypes';
+import {getAnsweredValues} from '../components/questionnaire/questions/questionFunctionsUtils';
+import {LogContext} from '../uiContexts';
+import {DocumentReference} from '@firebase/firestore-types';
 
 const useQuestionnaire = () => {
     const store = useStore();
@@ -60,11 +60,11 @@ const useQuestionnaire = () => {
         if (initialized && questionnaireRef) {
             // subscribe to store events ie., whenever the redux store is
             // updated with answers, push the change to firestore
+
             store.subscribe(() => {
                 const state = store.getState();
                 const {questions, history, currentFocus} = state;
                 const answers = getAnsweredValues(questions);
-
                 questionnaireRef
                     .set({
                         status: StatusConstants.STARTED,        // <-- ToDo: remove this and use getStatusesForUser()
@@ -75,9 +75,7 @@ const useQuestionnaire = () => {
 
                 // ideally it should suffice setting status at one place
                 // - including update at both places for the sake of backward compatibility
-                firestore
-                    .doc(getStatusesPathForUser(respondentDetails.respondentId))
-                    .set({questionnaireStatus: StatusConstants.STARTED}, {merge: true});
+                updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, StatusConstants.STARTED)
             });
         }
     }, [initialized, questionnaireRef]);
@@ -87,8 +85,7 @@ const useQuestionnaire = () => {
         // - including update at both places for the sake of backward compatibility
         const statusPromises = [
             updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status),
-            firestore.doc(getStatusesPathForUser(respondentDetails.respondentId))
-                .set({questionnaireStatus: status}, {merge: true}),
+            questionnaireRef.set({status}, {merge: true})
         ];
 
         return await Promise.all(statusPromises);
