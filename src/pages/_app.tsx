@@ -2,7 +2,6 @@ import App from 'next/app';
 import getConfig from 'next/config';
 import { appWithTranslation } from '../../i18n';
 import { sanitizeConfig, loadFromEnvVars } from '../utils/cfgUtils';
-import { useTranslation } from 'react-i18next';
 import Layout from '../components/layout/Layout';
 
 import '../styles/globals.scss'
@@ -10,7 +9,7 @@ import '../styles/QuestionnaireApp.css'
 import { useEffect, useState } from 'react';
 import FireProvider from '../firebase/FireProvider';
 import ProtectedRoute from '../components/auth/ProtectedRoute';
-import UserProvider from '../firebase/UserProvider';
+import UserProvider from '../firebase/Neo';
 import Loader from '../components/common/Loader';
 import PurchasesProvider from '../firebase/PurchasesProvider';
 import { applyMiddleware, createStore, Store } from 'redux';
@@ -22,11 +21,19 @@ import SearchTermsProvider from '../firebase/SearchTermsProvider';
 import ExpensesProvider from '../firebase/ExpensesProvider';
 import { AppContextStatus, AppContextType, AppContext } from '../uiContexts';
 
+import dynamic from 'next/dynamic';
+import QuestionnaireProvider from '../firebase/QuestionnaireProvider';
+
+const LogProvider = dynamic(
+    () => import('../utils/LogProvider'),
+    {ssr: false}
+);
+
 const store: Store<QuestionState, QuestionAction> & {
     dispatch: DispatchType
 } = createStore(reducer,
     applyMiddleware(thunk)
-)
+);
 
 const appConfig = getConfig();
 const getCfg = () => {
@@ -65,8 +72,8 @@ const getLocalStorageItems = (keys) =>
         } : acc;
     }, {});
 
+
 const MyApp = ({Component, pageProps}) => {
-    const {i18n} = useTranslation('welcome');
     const [firebaseConfig, setFirebaseConfig] = useState<object>(null);
     const [appMeta, setAppMeta] = useState<AppContextType>(INIT_APP_META);
 
@@ -80,23 +87,27 @@ const MyApp = ({Component, pageProps}) => {
     try {
         return firebaseConfig ? (
             <AppContext.Provider value={appMeta}>
-                <FireProvider config={firebaseConfig}>
-                    <Provider store={store}>
-                        <UserProvider>
-                            <SearchTermsProvider>
-                                <PurchasesProvider>
-                                    <ExpensesProvider>
-                                        {getLayout(
-                                            <ProtectedRoute>
-                                                <Component {...pageProps} />
-                                            </ProtectedRoute>
-                                        )}
-                                    </ExpensesProvider>
-                                </PurchasesProvider>
-                            </SearchTermsProvider>
-                        </UserProvider>
-                    </Provider>
-                </FireProvider>
+                <LogProvider>
+                    <FireProvider config={firebaseConfig}>
+                        <Provider store={store}>
+                            <UserProvider>
+                                <SearchTermsProvider>
+                                    <PurchasesProvider>
+                                        <ExpensesProvider>
+                                            <QuestionnaireProvider>
+                                                {getLayout(
+                                                    <ProtectedRoute>
+                                                        <Component {...pageProps} />
+                                                    </ProtectedRoute>
+                                                )}
+                                            </QuestionnaireProvider>
+                                        </ExpensesProvider>
+                                    </PurchasesProvider>
+                                </SearchTermsProvider>
+                            </UserProvider>
+                        </Provider>
+                    </FireProvider>
+                </LogProvider>
             </AppContext.Provider>
         ) : <Loader/>;
     } catch (err) {

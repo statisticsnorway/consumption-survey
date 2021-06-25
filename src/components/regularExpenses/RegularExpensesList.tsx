@@ -1,13 +1,15 @@
 import { ReactNode, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'react-i18next';
-import { MinusCircle, ChevronDown, ChevronUp } from 'react-feather';
+import { ChevronDown, ChevronUp, MinusCircle } from 'react-feather';
 import { ExpenseFrequency, RegularExpenseType } from '../../firebase/model/RegularExpense';
 import EditRegularExpense from './EditRegularExpense';
 import { krCents } from '../../utils/jsUtils';
 import DeleteConfirmDialog from '../common/dialog/DeleteConfirmDialog';
 import NoRecords from '../common/blocks/NoRecords';
 import useExpenses from '../../hocs/useExpenses';
+import { UserContext } from '../../contexts';
+import {StatusConstants, UserStatusesKeys} from '../../firebase/model/User';
+import { LogContext } from '../../uiContexts';
 
 import workspaceStyles from '../layout/workspace/workspace.module.scss';
 import styles from './styles/regularExpenses.module.scss';
@@ -23,8 +25,9 @@ export type RegularExpensesProps = {
 export const convert = (values: RegularExpenseType) => values;
 
 const RegularExpensesList = ({showExpensesList = true, showAddExpenseDialog = false, onComplete}: RegularExpensesProps) => {
-    const router = useRouter();
     const {t} = useTranslation('regularExpenses');
+    const {updateUserStatus} = useContext(UserContext);
+    const {logger} = useContext(LogContext);
     const {expenses, addExpense, editExpense, deleteExpense} = useExpenses();
     const [showAddExpense, setShowAddExpense] = useState(showAddExpenseDialog);
     const [expensesVisible, setExpensesVisible] = useState<boolean>(true);

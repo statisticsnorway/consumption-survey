@@ -104,7 +104,7 @@ const ItemsTable = ({
                 </thead>
                 <tbody>
                 {(items || []).map((item) => (
-                    <tr>
+                    <tr key={`item-${item.id || item.idx}`}>
                         <td
                             className={styles.itemName}
                             onClick={() => {

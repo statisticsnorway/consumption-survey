@@ -116,8 +116,8 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
 
         return (
             values.name &&
-            (values.qty && !isNaN(Number(values.qty))) &&
-            (values.amount && !isNaN(Number(values.amount)))
+            (values.qty && !Number.isNaN(Number(values.qty))) &&
+            (values.amount && !Number.isNaN(Number(values.amount)))
         );
     };
 
@@ -157,7 +157,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
             id="newItemQty"
             value={values.qty}
             label={t('addPurchase.newItem.qty.label')}
-            validate={qty => skipValidation || (notEmptyString(qty) && !isNaN(Number(qty)))}
+            validate={qty => skipValidation || (notEmptyString(qty) && !Number.isNaN(Number(qty)))}
             errorText={t('addPurchase.newItem.qty.errorText')}
             onChange={updateValue('qty')}
             InputProps={{
@@ -261,7 +261,7 @@ const EditItem = ({item, show, onUpdate, onCancel}: EditItemProps) => {
                             id="newItemAmount"
                             value={values.amount}
                             label={t('addPurchase.newItem.amount.label')}
-                            validate={amt => skipValidation || (notEmptyString(amt) && !isNaN(Number(amt)))}
+                            validate={amt => skipValidation || (notEmptyString(amt) && !Number.isNaN(Number(amt)))}
                             errorText={t('addPurchase.newItem.amount.errorText')}
                             InputProps={{
                                 inputComponent: NorwegianCurrencyFormat as any,

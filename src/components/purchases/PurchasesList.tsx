@@ -165,13 +165,13 @@ const PurchasesList = ({limit = -1, highlight = undefined}: PurchasesListProps) 
     const dfdComp = (datesForDisplay && (datesForDisplay.length >= 1)) ? (
         <>
             {datesForDisplay
-                .map((dateOfPurchase) => {
+                .map((dateOfPurchase, idx) => {
                     const purchases = (purchasesByDate[dateOfPurchase] || [])
                         .sort(dateComparator(
                             (sortOrder === PurchasesSortOrder.NEWEST_FIRST) ? DateSortOrder.DESC : DateSortOrder.ASC
                         ));
                     return (
-                        <div className={styles.purchaseGroup}>
+                        <div key={`purchaseGroup-${dateOfPurchase}`} className={styles.purchaseGroup}>
                             <div className={styles.purchaseGroupDate}>
                                 {listDayDate(dateOfPurchase, styles)}
                             </div>

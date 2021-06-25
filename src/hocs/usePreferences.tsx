@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { FireContext, UserContext, UserPreferences } from '../contexts';
+import { FireContext, UserContext, UserPreferencesType } from '../contexts';
 
 const usePreferences = () => {
     const {userInfo, userPreferences, isAuthenticated} = useContext(UserContext);
@@ -15,7 +15,7 @@ const usePreferences = () => {
     const getPrefsDocForUser = () =>
         `/user/${userInfo.respondentDetails.respondentId}/profile/preferences`
 
-    const getPreferences = (): UserPreferences => {
+    const getPreferences = (): UserPreferencesType => {
         if (ready) {
             return userPreferences;
         } else {
@@ -25,7 +25,7 @@ const usePreferences = () => {
     };
 
 
-    const savePreferences = (prefs: UserPreferences) => {
+    const savePreferences = (prefs: UserPreferencesType) => {
         if (ready) {
             return firestore.doc(getPrefsDocForUser())
                 .set(prefs, {merge: true});

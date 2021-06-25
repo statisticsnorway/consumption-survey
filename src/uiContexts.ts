@@ -1,5 +1,6 @@
 import { createContext } from 'react';
 import { MessagePanelType } from './components/common/blocks/MessagePanel';
+import { LoggerType } from './utils/logUtils';
 
 export type ON_COMPLETE_FN = () => void;
 
@@ -15,6 +16,12 @@ export type AppContextType = {
 };
 
 export const AppContext = createContext({} as AppContextType);
+
+export type LogContextType = {
+    logger: LoggerType;
+};
+
+export const LogContext = createContext({} as LogContextType);
 
 export type LayoutContextType = {
     showUpdateSnackbar: boolean;

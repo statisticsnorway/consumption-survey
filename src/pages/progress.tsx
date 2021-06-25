@@ -1,21 +1,26 @@
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
-import React, {useContext, useEffect, useState} from 'react';
-import {FireContext, UserContext} from '../contexts';
-import { useTranslation } from 'react-i18next';
-import usePurchases from "../hocs/usePurchases";
+import React, {useContext, useState} from 'react';
+import {UserContext} from '../contexts';
+import {useTranslation} from 'react-i18next';
 import style from './styles/progress.module.scss'
 import Modal from "../components/common/dialog/Modal";
 import {useRouter} from "next/router";
 import {PATHS} from "../uiConfig";
+import {
+    StatusConstants,
+    UserStatusesKeys
+} from "../firebase/model/User";
+import {useStatusCheck} from "../hocs/useStatuses";
 
 
 const Progress = () => {
-    const {userInfo,updateUserInfo, isAuthenticated, questionnaireStatus} = useContext(UserContext);
-    const { firestore} = useContext(FireContext)
+    const {userInfo, isAuthenticated, updateUserStatus} = useContext(UserContext);
+    const {isComplete : isSurveyComplete} = useStatusCheck(UserStatusesKeys.SURVEY_STATUS)
+    const {isComplete : isJournalComplete, isStarted: isJournalStarted, isNotStarted: isJournalNotStarted} = useStatusCheck(UserStatusesKeys.JOURNAL_STATUS)
+    const {isComplete : isQuestionnaireComplete, isStarted: isQuestionnaireStarted, isNotStarted: isQuestionnaireNotStarted} = useStatusCheck(UserStatusesKeys.QUESTIONNAIRE_STATUS)
     const [submitModalOpen, setSubmitModalOpen] = useState(false)
     const {t} = useTranslation('progress');
-    const {purchases} = usePurchases()
     const router = useRouter()
 
     console.log('userInfo', isAuthenticated, userInfo);
@@ -33,7 +38,7 @@ const Progress = () => {
                         </div>
                     </div>
                 </div>
-                {purchases && purchases.length > 0 && userInfo.diaryStatus &&
+                {isJournalComplete() &&
                 <div className={style.subSection}>
                     <div className={style.header}>
 
@@ -45,7 +50,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {purchases && purchases.length > 0 && !userInfo.diaryStatus &&
+                {isJournalStarted() &&
                     <div className={style.subSection}>
                         <div className={style.header}>
                             <div className={style.headerTitle}>
@@ -56,7 +61,7 @@ const Progress = () => {
                     </div>
 
                 }
-                {(!purchases || purchases.length < 1) &&
+                {isJournalNotStarted() &&
                 <div className={style.subSection}>
                     <div className={style.header}>
                         <div className={style.headerTitle}>
@@ -67,7 +72,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {questionnaireStatus === 'COMPLETE' &&
+                {isQuestionnaireComplete() &&
                     <div className={style.subSection}>
                         <div className={style.header}>
                             <div className={style.headerTitle}>
@@ -78,7 +83,7 @@ const Progress = () => {
                     </div>
 
                 }
-                {questionnaireStatus === 'STARTED' &&
+                {isQuestionnaireStarted() &&
                 <div className={style.subSection}>
                     <div className={style.header}>
                         <div className={style.headerTitle}>
@@ -90,7 +95,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {questionnaireStatus === 'NOT_STARTED' &&
+                {isQuestionnaireNotStarted() &&
                 <div className={style.subSection}>
                     <div style={{display: 'flex'}}>
                         <div className={style.headerTitle}>
@@ -104,42 +109,43 @@ const Progress = () => {
                 }
             </div>
             <div className={style.completion}>
-                {userInfo && !userInfo.diaryStatus &&
-                <div className={style.completeSurvey}>
-                    <h3 className={style.title}>{t('completeSurvey.title')}</h3>
-                    <div className={style.infoText}>
-                    {questionnaireStatus === 'COMPLETE' &&
-                        <p>{t('completeSurvey.finishedText')}</p>
+                {!isSurveyComplete() &&
+                    <div className={style.completeSurvey}>
+                        <h3 className={style.title}>{t('completeSurvey.title')}</h3>
+                        <div className={style.infoText}>
+                        {isQuestionnaireComplete() &&
+                            <p>{t('completeSurvey.finishedText')}</p>
+                        }
+                        {!isQuestionnaireComplete() &&
+                            <p>{t('completeSurvey.notFinishedText')}</p>
+                        }
+                        </div>
+                        <button
+                            onClick={() => setSubmitModalOpen(true)}
+                            className={`ssb-btn primary-btn ${style.action}`}
+                            disabled={!isQuestionnaireComplete()}>
+                            {t('completeSurvey.completeButtonText')}
+                        </button>
+                    </div>}
+                    {isSurveyComplete() &&
+                        <div className={style.completedSurvey}>
+                            <h3>{t('completedSurvey.title')}</h3>
+                            <p>{t('completedSurvey.text')}</p>
+                        </div>
                     }
-                    {questionnaireStatus !== 'COMPLETE' &&
-                    <p>{t('completeSurvey.notFinishedText')}</p>
-                    }
-                    </div>
-                    <button
-                        onClick={() => setSubmitModalOpen(true)}
-                        className={`ssb-btn primary-btn ${style.action}`}
-                        disabled={questionnaireStatus !== 'COMPLETE'}>
-                        {t('completeSurvey.completeButtonText')}
-                    </button>
-                </div>}
-                {userInfo && userInfo.diaryStatus &&
-                    <div className={style.completedSurvey}>
-                        <h3>{t('completedSurvey.title')}</h3>
-                        <p>{t('completedSurvey.text')}</p>
-                    </div>
-                }
             </div>
             <Modal
                 closeText={t('completeSurvey.modal.confirm')}
                 cancelText={t('completeSurvey.modal.cancel')}
                 show={submitModalOpen}
                 onClose={() => {
-                    firestore.doc(`/users/${userInfo.userName}`).
-                        set({diaryStatus : 'COMPLETE'}, {merge: true}).then(() => {
-                        updateUserInfo('diaryStatus', 'COMPLETE')
-                    })
-                    setSubmitModalOpen(false)
-                    router.push(PATHS.HOME)
+                    updateUserStatus(UserStatusesKeys.JOURNAL_STATUS, StatusConstants.COMPLETE)
+                        .then(() => {
+                            updateUserStatus(UserStatusesKeys.SURVEY_STATUS, StatusConstants.COMPLETE)
+                                .finally(() => {
+                                    router.push(PATHS.HOME)
+                                    setSubmitModalOpen(false)
+                                })})
                 }}
                 onCancel={() => setSubmitModalOpen(false)}
                 title={t('completeSurvey.modal.title')}>

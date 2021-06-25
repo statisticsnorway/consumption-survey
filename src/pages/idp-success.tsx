@@ -52,7 +52,7 @@ const IDPSuccess = () => {
     }, []);
 
     useEffect(() => {
-        if (respondentInfo) {
+        if (respondentInfo && idPortenInfo) {
             if (respondentInfo.respondentId) {
                 console.log('[IDP-S] trying to fetch fb token', respondentInfo, idPortenInfo);
                 login(respondentInfo, idPortenInfo)
@@ -67,7 +67,7 @@ const IDPSuccess = () => {
                 setFbuError(t('noRespondentInfo'));
             }
         }
-    }, [respondentInfo]);
+    }, [respondentInfo, idPortenInfo]);
 
     useEffect(() => {
         if (isAuthenticated && userInfo) {
@@ -93,6 +93,18 @@ const IDPSuccess = () => {
             {fbuError &&
             <div style={{ background: '#fcc', padding: '1rem', margin: '1rem 0', display: 'flex' }}>
                 <p>{fbuError}</p>
+                <button
+                    onClick={() => {
+                        router.push(PATHS.LOGOUT)
+                    }}
+                    className={`ssb-btn primary-btn`}>
+                    Logg ut
+                </button>
+            </div>
+            }
+            {loginLogoutErrors &&
+            <div style={{ background: '#fcc', padding: '1rem', margin: '1rem 0', display: 'flex' }}>
+                <p>{JSON.stringify(loginLogoutErrors)}</p>
                 <button
                     onClick={() => {
                         router.push(PATHS.LOGOUT)

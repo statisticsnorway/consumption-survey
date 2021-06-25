@@ -15,7 +15,7 @@ const Instructions = ({steps = []}: InstructionsProps) => {
     return (
         <div className={styles.instructions}>
             {steps.map((step, idx) => (
-                <div className={styles.instructionStep}>
+                <div className={styles.instructionStep} key={`instruction-${idx}`}>
                     <div className={styles.stepNr}>{idx + 1}</div>
                     <div className={styles.text}>{step.text}</div>
                     <div className={styles.figure}>{step.figure}</div>

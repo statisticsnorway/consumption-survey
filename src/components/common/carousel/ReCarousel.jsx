@@ -121,10 +121,10 @@ class ReCarousel extends Component {
         const {pageX, pageY} = (e.touches && e.touches[0]) || e
         let deltaX = pageX - this.state.startX
         let deltaY = pageY - this.state.startY
-        this.setState({
-            deltaX: deltaX,
-            deltaY: deltaY
-        })
+        this.setState(prevState => ({
+            deltaX: prevState.deltaX,
+            deltaY: prevState.deltaY
+        }));
 
         if (this.props.axis === 'x' && Math.abs(deltaX) > Math.abs(deltaY)) {
             e.preventDefault()

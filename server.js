@@ -24,5 +24,8 @@ app.prepare()
                 if (err) throw err;
                 console.log('Custom Server started on port ', PORT);
             })
+    })
+    .catch(err => {
+        console.log('Could not start server', err);
     });
 

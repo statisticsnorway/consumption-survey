@@ -778,6 +778,7 @@ export const updateMultipleQuestionAnswerToStoreTextIMprovedCheckComponentFromEx
 		return updatedQuestion
 	}
 export const hydrateQuestionnaire = (answers, questions) => {
+	console.log('******* hydrate is called ...');
 	const hydratedQuestions = questions.map((question) => {
 		answers.forEach((answer) => {
 			const splitAnswer = answer.split("_")
