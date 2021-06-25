@@ -81,11 +81,9 @@ const useQuestionnaire = () => {
         }
     }, [initialized, questionnaireRef]);
 
-    const updateStatus = async (status: StatusConstants) => {
-        // ideally it should suffice setting status at one place
-        // - including update at both places for the sake of backward compatibility
-        return updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status);
-    }
+    const updateStatus = async (status: StatusConstants) =>
+        updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status);
+
 
     return {questionnaireRef, initialized, updateStatus};
 };
