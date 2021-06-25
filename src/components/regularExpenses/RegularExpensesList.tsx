@@ -7,8 +7,8 @@ import { krCents } from '../../utils/jsUtils';
 import DeleteConfirmDialog from '../common/dialog/DeleteConfirmDialog';
 import NoRecords from '../common/blocks/NoRecords';
 import useExpenses from '../../hocs/useExpenses';
-import { UserContext, UserStatusesKeys } from '../../contexts';
-import { StatusConstants } from '../../firebase/model/User';
+import { UserContext } from '../../contexts';
+import {StatusConstants, UserStatusesKeys} from '../../firebase/model/User';
 import { LogContext } from '../../uiContexts';
 
 import workspaceStyles from '../layout/workspace/workspace.module.scss';

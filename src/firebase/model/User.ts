@@ -1,4 +1,5 @@
-import { RespondentDetails, UserStatusesType } from '../../contexts';
+import {RespondentDetails, UserContext, UserStatusesType} from '../../contexts';
+import {useContext} from "react";
 
 export const getUserPath = (uid: string) =>
     `/users/${uid}`;
@@ -33,6 +34,12 @@ export enum StatusConstants {
     COMPLETE = 'COMPLETE',
 }
 
+export enum UserStatusesKeys {
+    SURVEY_STATUS = 'surveyStatus',
+    JOURNAL_STATUS = 'journalStatus',
+    QUESTIONNAIRE_STATUS = 'questionnaireStatus',
+}
+
 export const INIT_USER_STATUSES: UserStatusesType = {
     surveyStatus: StatusConstants.NOT_STARTED,
     journalStatus: StatusConstants.NOT_STARTED,
@@ -60,3 +67,4 @@ export const getRespondentDetailsSecure = (respondentDetails: RespondentDetails)
         journalEnd: diaryEnd ? new Date(diaryEnd) : new Date(),
     };
 };
+
