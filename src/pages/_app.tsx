@@ -22,6 +22,7 @@ import ExpensesProvider from '../firebase/ExpensesProvider';
 import { AppContextStatus, AppContextType, AppContext } from '../uiContexts';
 
 import dynamic from 'next/dynamic';
+import QuestionnaireProvider from '../firebase/QuestionnaireProvider';
 
 const LogProvider = dynamic(
     () => import('../utils/LogProvider'),
@@ -93,11 +94,13 @@ const MyApp = ({Component, pageProps}) => {
                                 <SearchTermsProvider>
                                     <PurchasesProvider>
                                         <ExpensesProvider>
-                                            {getLayout(
-                                                <ProtectedRoute>
-                                                    <Component {...pageProps} />
-                                                </ProtectedRoute>
-                                            )}
+                                            <QuestionnaireProvider>
+                                                {getLayout(
+                                                    <ProtectedRoute>
+                                                        <Component {...pageProps} />
+                                                    </ProtectedRoute>
+                                                )}
+                                            </QuestionnaireProvider>
                                         </ExpensesProvider>
                                     </PurchasesProvider>
                                 </SearchTermsProvider>

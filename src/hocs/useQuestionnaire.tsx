@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { FireContext, UserContext } from '../contexts';
+import { FireContext, QuestionnaireContext, UserContext } from '../contexts';
 import {
     getQuestionnairePathForUser,
     getStatusesPathForUser,
@@ -14,16 +14,15 @@ import { LogContext } from '../uiContexts';
 import { DocumentReference, DocumentSnapshot } from '@firebase/firestore-types';
 
 const useQuestionnaire = () => {
-    const store = useStore();
     const {firestore} = useContext(FireContext);
     const {isAuthenticated, respondentDetails} = useContext(UserContext);
-    const [initialized, setInitialized] = useState<boolean>(false);
+    const {store, initialized, setInitialized} = useContext(QuestionnaireContext);
     const {logger} = useContext(LogContext);
 
     const [questionnaireRef, setQuestionnaireRef] = useState<DocumentReference>();
 
     useEffect(() => {
-        if (firestore && isAuthenticated) {
+        if (firestore && isAuthenticated && !initialized) {
             const questionRef = firestore.doc(getQuestionnairePathForUser(respondentDetails.respondentId));
             questionRef
                 .get()
@@ -32,6 +31,7 @@ const useQuestionnaire = () => {
                         const data = doc.data();
                         if (data && data.answers) {
                             const currState = store.getState();
+
                             const hydrated = hydrateQuestionnaire(data.answers, currState.questions);
                             store.dispatch({
                                 type: CHANGE_ALL,
@@ -54,7 +54,7 @@ const useQuestionnaire = () => {
                     logger.error(`Could not update answers %o`, err);
                 });
         }
-    }, [firestore, isAuthenticated]);
+    }, [firestore, isAuthenticated, initialized]);
 
     useEffect(() => {
         if (initialized && questionnaireRef) {
@@ -64,6 +64,8 @@ const useQuestionnaire = () => {
                 const state = store.getState();
                 const {questions, history, currentFocus} = state;
                 const answers = getAnsweredValues(questions);
+
+                console.log('**** new answers', answers);
 
                 questionnaireRef
                     .set({
