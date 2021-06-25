@@ -8,16 +8,17 @@ import Modal from "../components/common/dialog/Modal";
 import {useRouter} from "next/router";
 import {PATHS} from "../uiConfig";
 import {
-    isStatusComplete,
-    isStatusNotStarted,
-    isStatusStarted,
     StatusConstants,
     UserStatusesKeys
 } from "../firebase/model/User";
+import {useStatusCheck} from "../hocs/useStatuses";
 
 
 const Progress = () => {
     const {userInfo, isAuthenticated, updateUserStatus} = useContext(UserContext);
+    const {isComplete : isSurveyComplete} = useStatusCheck(UserStatusesKeys.SURVEY_STATUS)
+    const {isComplete : isJournalComplete, isStarted: isJournalStarted, isNotStarted: isJournalNotStarted} = useStatusCheck(UserStatusesKeys.JOURNAL_STATUS)
+    const {isComplete : isQuestionnaireComplete, isStarted: isQuestionnaireStarted, isNotStarted: isQuestionnaireNotStarted} = useStatusCheck(UserStatusesKeys.QUESTIONNAIRE_STATUS)
     const [submitModalOpen, setSubmitModalOpen] = useState(false)
     const {t} = useTranslation('progress');
     const router = useRouter()
@@ -37,7 +38,7 @@ const Progress = () => {
                         </div>
                     </div>
                 </div>
-                {isStatusComplete(UserStatusesKeys.JOURNAL_STATUS) &&
+                {isJournalComplete() &&
                 <div className={style.subSection}>
                     <div className={style.header}>
 
@@ -49,7 +50,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {isStatusStarted(UserStatusesKeys.JOURNAL_STATUS) &&
+                {isJournalStarted() &&
                     <div className={style.subSection}>
                         <div className={style.header}>
                             <div className={style.headerTitle}>
@@ -60,7 +61,7 @@ const Progress = () => {
                     </div>
 
                 }
-                {isStatusNotStarted(UserStatusesKeys.JOURNAL_STATUS) &&
+                {isJournalNotStarted() &&
                 <div className={style.subSection}>
                     <div className={style.header}>
                         <div className={style.headerTitle}>
@@ -71,7 +72,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {isStatusComplete(UserStatusesKeys.QUESTIONNAIRE_STATUS) &&
+                {isQuestionnaireComplete() &&
                     <div className={style.subSection}>
                         <div className={style.header}>
                             <div className={style.headerTitle}>
@@ -82,7 +83,7 @@ const Progress = () => {
                     </div>
 
                 }
-                {isStatusStarted(UserStatusesKeys.QUESTIONNAIRE_STATUS) &&
+                {isQuestionnaireStarted() &&
                 <div className={style.subSection}>
                     <div className={style.header}>
                         <div className={style.headerTitle}>
@@ -94,7 +95,7 @@ const Progress = () => {
                 </div>
 
                 }
-                {isStatusNotStarted(UserStatusesKeys.QUESTIONNAIRE_STATUS) &&
+                {isQuestionnaireNotStarted() &&
                 <div className={style.subSection}>
                     <div style={{display: 'flex'}}>
                         <div className={style.headerTitle}>
@@ -108,25 +109,25 @@ const Progress = () => {
                 }
             </div>
             <div className={style.completion}>
-                {!isStatusComplete(UserStatusesKeys.SURVEY_STATUS) &&
+                {!isSurveyComplete() &&
                     <div className={style.completeSurvey}>
                         <h3 className={style.title}>{t('completeSurvey.title')}</h3>
                         <div className={style.infoText}>
-                        {isStatusComplete(UserStatusesKeys.QUESTIONNAIRE_STATUS) &&
+                        {isQuestionnaireComplete() &&
                             <p>{t('completeSurvey.finishedText')}</p>
                         }
-                        {!isStatusComplete(UserStatusesKeys.QUESTIONNAIRE_STATUS) &&
+                        {!isQuestionnaireComplete() &&
                             <p>{t('completeSurvey.notFinishedText')}</p>
                         }
                         </div>
                         <button
                             onClick={() => setSubmitModalOpen(true)}
                             className={`ssb-btn primary-btn ${style.action}`}
-                            disabled={!isStatusComplete(UserStatusesKeys.QUESTIONNAIRE_STATUS)}>
+                            disabled={!isQuestionnaireComplete()}>
                             {t('completeSurvey.completeButtonText')}
                         </button>
                     </div>}
-                    {isStatusComplete(UserStatusesKeys.SURVEY_STATUS) &&
+                    {isSurveyComplete() &&
                         <div className={style.completedSurvey}>
                             <h3>{t('completedSurvey.title')}</h3>
                             <p>{t('completedSurvey.text')}</p>

@@ -68,18 +68,3 @@ export const getRespondentDetailsSecure = (respondentDetails: RespondentDetails)
     };
 };
 
-const isStatus = (statusKey: UserStatusesKeys, statusValue: StatusConstants): boolean => {
-    const {userStatuses} = useContext(UserContext);
-    return userStatuses && userStatuses[statusKey] === statusValue
-}
-export const isStatusComplete = (statusKey: UserStatusesKeys) : boolean => {
-    return isStatus(statusKey, StatusConstants.COMPLETE)
-}
-
-export const isStatusStarted = (statusKey: UserStatusesKeys) : boolean => {
-    return isStatus(statusKey, StatusConstants.STARTED)
-}
-
-export const isStatusNotStarted = (statusKey: UserStatusesKeys) : boolean => {
-    return !isStatus(statusKey, StatusConstants.COMPLETE) && !isStatus(statusKey, StatusConstants.STARTED)
-}
