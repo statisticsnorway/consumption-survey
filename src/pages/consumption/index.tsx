@@ -13,8 +13,8 @@ import useExpenses from '../../hocs/useExpenses';
 import usePurchases from '../../hocs/usePurchases';
 import { isRegularExpenseComplete, RegularExpenseStatus } from '../../firebase/model/RegularExpense';
 import { isPurchaseComplete, PurchaseStatus } from '../../firebase/model/Purchase';
-import { StatusConstants } from '../../firebase/model/User';
-import { UserContext, UserStatusesKeys } from '../../contexts';
+import {StatusConstants, UserStatusesKeys} from '../../firebase/model/User';
+import { UserContext } from '../../contexts';
 import { LogContext } from '../../uiContexts';
 
 const PurchasesListNoSSR = dynamic(
