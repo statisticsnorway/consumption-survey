@@ -63,16 +63,7 @@ export const QuestionOverview = (
                     Fortsett spørreskjema ved å trykke på en kategori
                 </p>
             </div>
-            {contentList.filter(c => c.isDoneWithSection).length === sections.length && (
-                <div className={`padding-tp-bm-15px`}>
-                    <Button primary onClick={(event: React.MouseEvent<HTMLElement>) => {
-                        event.preventDefault()
-                        onFinishedClicked()
-                    }}>
-                        Avslutt spørreskjema
-                    </Button>
-                </div>
-            )}
+
             <div className="width-100 flex-fill-remaining-vertical">
                 {
                     contentList.map(contentItem =>
@@ -92,6 +83,16 @@ export const QuestionOverview = (
                         </div>)
                 }
             </div>
+            {contentList.filter(c => c.isDoneWithSection).length === sections.length && (
+                <div className={`padding-tp-bm-15px`}>
+                    <Button primary onClick={(event: React.MouseEvent<HTMLElement>) => {
+                        event.preventDefault()
+                        onFinishedClicked()
+                    }}>
+                        Avslutt spørreskjema
+                    </Button>
+                </div>
+            )}
         </div>
     )
 }

@@ -1,5 +1,6 @@
 {
   "title": "Spørreskjema",
   "completionSuccess": "Lagring av spørreskjema vellykket",
-  "completionFailure": "Kunne ikke avslutte spørreskjema"
+  "completionFailure": "Kunne ikke avslutte spørreskjema",
+  "complete" : "Spørreskjema er fullført"
 }
