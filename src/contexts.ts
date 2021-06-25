@@ -107,3 +107,11 @@ export type SearchTermsContextType = {
 
 export const SearchTermsContext = createContext({} as SearchTermsContextType);
 
+export type QuestionnaireContextType = {
+    store: any;   // ToDo: Get proper Typescript type for Redux store
+    initialized: boolean;
+    setInitialized: (boolean) => void;
+};
+
+export const QuestionnaireContext = createContext({} as QuestionnaireContextType);
+
