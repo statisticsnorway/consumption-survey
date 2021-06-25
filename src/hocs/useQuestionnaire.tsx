@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { useStore } from 'react-redux';
 import { FireContext, QuestionnaireContext, UserContext } from '../contexts';
 import {
     getQuestionnairePathForUser,
@@ -14,7 +15,7 @@ import {DocumentReference} from '@firebase/firestore-types';
 
 const useQuestionnaire = () => {
     const {firestore} = useContext(FireContext);
-    const {isAuthenticated, respondentDetails, updateUserStatus} = useContext(UserContext);
+    const {isAuthenticated, respondentDetails} = useContext(UserContext);
     const {store, initialized, setInitialized} = useContext(QuestionnaireContext);
     const {logger} = useContext(LogContext);
 
@@ -66,7 +67,6 @@ const useQuestionnaire = () => {
                 const answers = getAnsweredValues(questions);
 
                 console.log('**** new answers', answers);
-
                 questionnaireRef
                     .set({
                         status: StatusConstants.STARTED,        // <-- ToDo: remove this and use getStatusesForUser()
