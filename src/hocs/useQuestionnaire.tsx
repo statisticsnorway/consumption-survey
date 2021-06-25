@@ -84,12 +84,7 @@ const useQuestionnaire = () => {
     const updateStatus = async (status: StatusConstants) => {
         // ideally it should suffice setting status at one place
         // - including update at both places for the sake of backward compatibility
-        const statusPromises = [
-            updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status),
-            questionnaireRef.set({status}, {merge: true})
-        ];
-
-        return await Promise.all(statusPromises);
+        return await Promise.resolve(updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status));
     }
 
     return {questionnaireRef, initialized, updateStatus};
