@@ -84,7 +84,7 @@ const useQuestionnaire = () => {
     const updateStatus = async (status: StatusConstants) => {
         // ideally it should suffice setting status at one place
         // - including update at both places for the sake of backward compatibility
-        return await Promise.resolve(updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status));
+        return updateUserStatus(UserStatusesKeys.QUESTIONNAIRE_STATUS, status);
     }
 
     return {questionnaireRef, initialized, updateStatus};
