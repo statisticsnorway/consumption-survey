@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import { useContext, useEffect } from 'react';
 import { UserContext } from '../../contexts';
 import Loader from '../common/Loader';
-// import PouchDBProvider from '../../pouchdb/PouchDBProvider';
 import getConfig from 'next/config';
 import PouchDBProvider from '../../pouchdb/PouchDBProvider';
+
 
 const appConfig = getConfig();
 
@@ -29,10 +29,13 @@ const ProtectedRoute = (props) => {
     };
 
     useEffect(() => {
-        // console.log('isAuthenticated', isAuthenticated);
-        // console.log('path', router.pathname);
-        // console.log('check2', !EXCLUDE_AUTH.includes(router.pathname));
-        // console.log('final', (!isAuthenticated && (!EXCLUDE_AUTH.includes(router.pathname))));
+        console.log('[PR] flags',
+            `isAuthenticated: ${isAuthenticated}`,
+            `isLoggingIn: ${isLoggingIn}`,
+            `isLoggingOut: ${isLoggingOut}`);
+        console.log('[PR] route', router.pathname);
+        console.log('[PR] excludes', !EXCLUDE_AUTH.includes(router.pathname));
+        console.log('[PR] should trigger auth', (!isAuthenticated && !isLoggingOut && (!EXCLUDE_AUTH.includes(router.pathname))));
         if (!isAuthenticated && !isLoggingOut && (!EXCLUDE_AUTH.includes(router.pathname))) {
             console.log('Auth url', getAuthUrl());
             router.push(getAuthUrl());

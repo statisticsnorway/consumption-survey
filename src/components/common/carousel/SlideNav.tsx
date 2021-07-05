@@ -65,7 +65,7 @@ const SlideNav = ({
             }
             <div className={`${styles.slideNav} ${className}`} style={style}>
                 {range(0, totalSlides).map((idx) => (
-                    <div className={`${styles.slideDot} ${currentSlide === idx ? styles.current : ''}`}>
+                    <div key={`slideDot-${idx}`} className={`${styles.slideDot} ${currentSlide === idx ? styles.current : ''}`}>
                         &middot;
                     </div>
                 ))}

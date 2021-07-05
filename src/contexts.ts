@@ -7,18 +7,16 @@ import { FirebaseDatabase } from '@firebase/database-types';
 import { RegularExpenseType } from './firebase/model/RegularExpense';
 import { SearchTermType } from './firebase/model/SearchTerm';
 import { CommunicationPreference } from './firebase/UserProvider';
+import {StatusConstants, UserStatusesKeys} from './firebase/model/User';
 
 export type SurveyInfo = {
+    ioNumber: number;
     journalStart: Date;
     journalEnd: Date;
 };
 
 export type UserInfoType = {
     userName: string;
-    firstName?: string;
-    lastName?: string;
-    email: string;
-    diaryStatus?: string;
     surveyInfo: SurveyInfo;
     respondentDetails: RespondentDetails;
 };
@@ -41,17 +39,23 @@ export type IDPortenTokenInfo = {
     idTokenUserInfo: any;
 };
 
-export type UserPreferences = {
+export type UserPreferencesType = {
     language: string;
-    communicationPreferences: CommunicationPreference[];
-    pin: string;
-    init: boolean;
-}
+    communicationPreferences?: CommunicationPreference[];
+    pin?: string;
+    showOnboarding?: boolean;
+};
+
+
+
+export type UserStatusesType = {
+    [key in UserStatusesKeys]: StatusConstants;
+};
 
 export type UserContextType = {
-    updateUserInfo: (key, val) => void
     userInfo: UserInfoType;
-    userPreferences?: UserPreferences;
+    userPreferences?: UserPreferencesType;
+    userStatuses?: UserStatusesType;
     respondentDetails: RespondentDetails;
     login: (respondentDetails: RespondentDetails, idPortenTokenInfo: IDPortenTokenInfo) => Promise<void>;
     logout: () => void;
@@ -59,8 +63,8 @@ export type UserContextType = {
     isLoggingIn: boolean;
     isLoggingOut: boolean;
     loginLogoutErrors: any;
-    questionnaireStatus: any;
-    setQuestionnaireStatus: any;
+    updateUserInfo: (key: string, val: string) => void;
+    updateUserStatus: (key: keyof UserStatusesType, val: StatusConstants) => Promise<void>;
 };
 
 export const UserContext = createContext({} as UserContextType);
@@ -102,4 +106,12 @@ export type SearchTermsContextType = {
 };
 
 export const SearchTermsContext = createContext({} as SearchTermsContextType);
+
+export type QuestionnaireContextType = {
+    store: any;   // ToDo: Get proper Typescript type for Redux store
+    initialized: boolean;
+    setInitialized: (boolean) => void;
+};
+
+export const QuestionnaireContext = createContext({} as QuestionnaireContextType);
 

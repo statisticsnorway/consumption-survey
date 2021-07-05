@@ -1,26 +1,25 @@
-import { useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import {ArrowRight, Check} from 'react-feather';
-import uuid from 'uuid';
+import {useContext, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {ArrowRight} from 'react-feather';
 import Workspace from '../components/layout/workspace/Workspace';
 import PageTitle from '../components/common/PageTitle';
-import { UserContext, FireContext } from '../contexts';
-import { simpleFormat } from '../utils/dateUtils';
-import { capitalizeString, notEmptyString } from '../utils/jsUtils';
+import {UserContext} from '../contexts';
+import {simpleFormat} from '../utils/dateUtils';
+import {notEmptyString} from '../utils/jsUtils';
 import ScanReceiptIcon from '../components/common/icons/custom/ScanReceiptIcon';
 import AddPurchaseManualIcon from '../components/common/icons/custom/AddPurchaseManualIcon';
 import AddRegularExpenseIcon from '../components/common/icons/custom/AddRegularExpenseIcon';
-import { IconPosition } from '../components/common/icons/IconProps';
+import {IconPosition} from '../components/common/icons/IconProps';
 import HomeCTA from '../components/home/homeCTA/HomeCTA';
 import HomeCTAButtonGroup from '../components/home/homeCTA/HomeCTAButtonGroup';
 
 import styles from './styles/home.module.scss';
-import { useRouter } from 'next/router';
-import { ADD_PURCHASE_MODES, addPurchasePath, PATHS } from '../uiConfig';
+import {useRouter} from 'next/router';
+import {PATHS} from '../uiConfig';
 import useReceiptUpload from '../hocs/useReceiptUpload';
 import RegularExpensesList from '../components/regularExpenses/RegularExpensesList';
-
-
+import { UserStatusesKeys} from "../firebase/model/User";
+import {useStatusCheck} from "../hocs/useStatuses";
 
 const dateMonth = (dateStr) => {
     const date = notEmptyString(dateStr) ? new Date(dateStr) : new Date();
@@ -32,8 +31,8 @@ const Home = () => {
     const router = useRouter();
     const {t} = useTranslation('home');
     const [showAddExpenseDialog, setShowAddExpensesDialog] = useState<boolean>(false);
-    const {userInfo: {respondentDetails, diaryStatus}, questionnaireStatus} = useContext(UserContext);
-    const { firestore} = useContext(FireContext)
+    const {userInfo: {respondentDetails}, userStatuses} = useContext(UserContext);
+    const {isComplete : isSurveyComplete} = useStatusCheck(UserStatusesKeys.SURVEY_STATUS)
 
     const {name, diaryStart, diaryEnd} = respondentDetails;
     const subText = `${t('surveyInfo')} ${dateMonth(diaryStart)} - ${dateMonth(diaryEnd)}`;
@@ -53,7 +52,7 @@ const Home = () => {
 
     return (
         <Workspace showFooter={true}>
-            {!diaryStatus &&
+            {!isSurveyComplete() &&
             <><PageTitle title={greeting} subText={subText}/>
             <HomeCTAButtonGroup>
                 <HomeCTA
@@ -77,17 +76,6 @@ const Home = () => {
                         setShowAddExpensesDialog(true);
                     }}
                 />
-                {questionnaireStatus === 'COMPLETE' &&
-                <HomeCTA
-                    text={t('questionnaire.complete')}
-                    styleClass={styles.questionnaireCTAdisabled}
-                    onClick={() => {
-
-                    }}
-                    iconComponent={<Check width={28} height={28}/>}
-                    iconPosition={IconPosition.AFTER}
-                />}
-                {questionnaireStatus !== 'COMPLETE' &&
                 <HomeCTA
                     text={t('questionnaire.title')}
                     styleClass={styles.questionnaireCTA}
@@ -97,12 +85,11 @@ const Home = () => {
                     iconComponent={<ArrowRight width={28} height={28}/>}
                     iconPosition={IconPosition.AFTER}
                 />
-                }
             </HomeCTAButtonGroup>
             {hiddenUploadComponent}
             <RegularExpensesList showExpensesList={false} showAddExpenseDialog={showAddExpenseDialog} />
           </>}
-            {diaryStatus &&
+            {isSurveyComplete() &&
                 <>
                     <PageTitle title={t('completed.title')}/>
                     <p>{t('completed.text')}</p>

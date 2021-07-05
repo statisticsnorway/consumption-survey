@@ -30,7 +30,6 @@ const EditPurchase = ({purchaseId}) => {
     const {purchases, addPurchase, editPurchase, deletePurchase} = usePurchases();
     const [purchase, setPurchase] = useState<PurchaseType>(null);
 
-
     useEffect(() => {
         console.log('at []: init is', init);
         console.log('at []: purchaseId is', purchaseId);
@@ -211,7 +210,7 @@ const EditPurchase = ({purchaseId}) => {
                         onClick: () => {
                             setShowPurchaseDeleteConfirm(true);
                         },
-                        style: { color: '#ED5935' },  // <- red-5; needs to be better handled in design
+                        style: {color: '#ED5935'},  // <- red-5; needs to be better handled in design
                     } : null}
                 />
             }

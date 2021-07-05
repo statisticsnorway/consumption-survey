@@ -7,6 +7,9 @@ export enum RegularExpenseStatus {
     DELETED = 'DELETED',
 }
 
+export const isRegularExpenseComplete = (status: RegularExpenseStatus) =>
+    [RegularExpenseStatus.COMPLETE, RegularExpenseStatus.FBU_COMPLETE].includes(status);
+
 export enum ExpenseFrequency {
     NONE = 'NONE',
     MONTHLY = 'MONTHLY',
