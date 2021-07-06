@@ -31,7 +31,7 @@
     "loglevel": "^1.7.1",
     "loglevel-plugin-remote": "^0.6.8",
     "moment": "^2.29.1",
-    "next": "^9.5.5",
+    "next": "^10.0.6",
     "next-compose-plugins": "^2.2.1",
     "next-i18next": "^6.0.3",
     "next-pwa": "^3.1.5",
